@@ -1,0 +1,2443 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SocialPosts",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "social"
+  },
+  "paths" : {
+    "/api/v1/socialBrands/{brandId}/instagramPosts" : {
+      "get" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Get InstagramPosts",
+        "description" : "Get InstagramPosts of Brand",
+        "operationId" : "getInstagramPosts",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cursor"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getInstagramPosts"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 4000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "2ef4fc3f9ff191d161351ebcc7c93373",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.getInstagramPosts"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramPosts/{postId}/convertAsTicket" : {
+      "post" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Convert instagramPosts to Ticket",
+        "description" : "Convert instagramPosts to Ticket",
+        "operationId" : "convertInstagramPostToTicket",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "#/components/parameters/postId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/convertInstagramPostToTicket"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "e88d254d56e8ffbb5016166efa13d110",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.convertInstagramPostToTicket"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramConversations/{conversationId}" : {
+      "post" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Reply to InstagramConversation",
+        "description" : "Reply to Instagram Conversation",
+        "operationId" : "replyInstagramConversation",
+        "parameters" : [ {
+          "name" : "receiverId",
+          "in" : "query",
+          "description" : "To Profile which Reply has to be sent",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To Profile which Reply has to be sent",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/message"
+        }, {
+          "$ref" : "#/components/parameters/conversationId"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/replyInstagramConversationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "4dfadee29c2f50df7213f2dd31f91a27",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.replyInstagramConversation"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramPosts/comment" : {
+      "post" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Post comment to instagram",
+        "description" : "Post comment to instagram",
+        "operationId" : "replyInstagramComment",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "query",
+          "description" : "ID of post or comment",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of post or comment",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/message"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/replyInstagramComment"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "9fe8aaf857d209d50331b6d214f36918",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.replyInstagramComment"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramConversations/{conversationId}/convertAsTicket" : {
+      "post" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Convert InstagramConversation to Ticket",
+        "description" : "Convert Instagram Converstion to Ticket",
+        "operationId" : "convertInstagramConversationToTicket",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/conversationId"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/convertInstagramConversationToTicket"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE", "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "deprecatedScopes" : [ "settings" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "4bd765cd1946e406931ead59909347e1",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.convertInstagramConversationToTicket"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramConversations/{conversationId}/messages" : {
+      "get" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Get InstagramConversation Messages",
+        "description" : "Conversation from a Instagram Account of a Brand",
+        "operationId" : "getInstagramConvoMesssages",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/conversationId"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getInstagramConvoMesssagesResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 35,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "2e4aa29cd0b652c8e01790ddc318cba6",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.getInstagramConvoMesssages"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramPosts/{postId}/comments" : {
+      "get" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Get InstagramPosts Comments",
+        "description" : "Get InstagramPosts comments",
+        "operationId" : "getInstagramComments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cursor"
+        }, {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "#/components/parameters/postId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getInstagramCommentsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "32b967a0af66b391fe87dca97697d9d8",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.getInstagramComments"
+        }
+      }
+    },
+    "/api/v1/socialBrands/{brandId}/instagramConversations" : {
+      "get" : {
+        "tags" : [ "SocialPosts" ],
+        "summary" : "Get Instagram Conversations",
+        "description" : "Conversation from a Instagram Account of a Brand",
+        "operationId" : "getInstagramConversations",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/brandId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getInstagramConversations"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "632266d5056c6fc3dce720ba8d568cad",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.getInstagramConversations"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "cursor" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "before" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "after" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "after", "before" ]
+      },
+      "attachments" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "IMAGE", "VIDEO", "photo", "shared_post_photo" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "id", "type" ]
+      },
+      "attachmentsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SocialPosts.json#/components/schemas/attachments"
+        }
+      },
+      "replies" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "canComment" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "canComment", "count" ]
+      },
+      "author" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "username" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "id", "name", "username" ]
+      },
+      "likes" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "count" ]
+      },
+      "data" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "attachments" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArr"
+          },
+          "replies" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/replies"
+          },
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/author"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "likes" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/likes"
+          }
+        },
+        "required" : [ "attachments", "author", "createdTime", "id", "likes", "replies" ]
+      },
+      "ticketdata" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ticketNumber" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "encryptedTicketId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "departmentId", "encryptedTicketId", "id", "ticketNumber" ]
+      },
+      "datawithtickets" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/data"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            }
+          },
+          "required" : [ "ticket" ]
+        } ]
+      },
+      "datawithmessage" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/data"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "message" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 65535,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "message" ]
+        } ]
+      },
+      "datawithticketsandmessage" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/data"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            },
+            "message" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/datawithmessage"
+            }
+          },
+          "required" : [ "message", "ticket" ]
+        } ]
+      },
+      "dataArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SocialPosts.json#/components/schemas/data"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/datawithtickets"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/datawithmessage"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/datawithticketsandmessage"
+          } ]
+        }
+      },
+      "authorConverstions" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "id", "name" ]
+      },
+      "to" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "href", "id", "name" ]
+      },
+      "attachmentsMessages" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "IMAGE", "VIDEO", "photo", "shared_post_photo" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "type" ]
+      },
+      "attachmentsArrMessages" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SocialPosts.json#/components/schemas/attachmentsMessages"
+        }
+      },
+      "replyInstagramConversation" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/authorConverstions"
+          },
+          "conversationId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "to" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/to"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Message to be Replied",
+              "secret" : false,
+              "preserveCharsLimit" : 50,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "5,6",
+              "xss" : "antisamyfilter_custom",
+              "importUrl" : false,
+              "decrypt" : false,
+              "mask" : "partial"
+            }
+          }
+        },
+        "required" : [ "author", "conversationId", "createdTime", "id", "message", "to" ]
+      },
+      "author1" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "ID of post or comment",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "username" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "id", "username" ]
+      },
+      "likes1" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "canLike" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "canLike", "count" ]
+      },
+      "data1" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "like_count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/author1"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "ID of post or comment",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Message to be Replied",
+              "secret" : false,
+              "preserveCharsLimit" : 50,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "5,6",
+              "xss" : "antisamyfilter_custom",
+              "importUrl" : false,
+              "decrypt" : false,
+              "mask" : "partial"
+            }
+          },
+          "likes" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/likes1"
+          }
+        },
+        "required" : [ "author", "createdTime", "id", "like_count", "likes", "message" ]
+      },
+      "dataArr1" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SocialPosts.json#/components/schemas/data1"
+        }
+      },
+      "replies2" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataArr1"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "canComment" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "canComment", "count", "data" ]
+      },
+      "author3" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "ID of post or comment",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "username" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "id", "name", "username" ]
+      },
+      "likes3" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "canLike" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "canLike", "count" ]
+      },
+      "replyData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "like_count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "replies" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/replies2"
+          },
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/author3"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "ID of post or comment",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Message to be Replied",
+              "secret" : false,
+              "preserveCharsLimit" : 50,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "5,6",
+              "xss" : "antisamyfilter_custom",
+              "importUrl" : false,
+              "decrypt" : false,
+              "mask" : "partial"
+            }
+          },
+          "likes" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/likes3"
+          }
+        },
+        "required" : [ "author", "createdTime", "id", "like_count", "likes", "message", "replies" ]
+      },
+      "dataConvoMessages" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/authorConverstions"
+          },
+          "conversationId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "to" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/to"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "author", "conversationId", "createdTime", "id", "message", "to" ]
+      },
+      "dataConvoMessageswithattachments" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessages"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "attachments" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+            }
+          },
+          "required" : [ "attachments" ]
+        } ]
+      },
+      "dataConvoMessageswithtickets" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessages"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            }
+          },
+          "required" : [ "ticket" ]
+        } ]
+      },
+      "dataConvoMessageswithticketandattachments" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessages"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "attachments" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+            },
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            }
+          },
+          "required" : [ "attachments", "ticket" ]
+        } ]
+      },
+      "dataArrConvoMessages" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessages"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessageswithattachments"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessageswithtickets"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConvoMessageswithticketandattachments"
+          } ]
+        }
+      },
+      "cusrsoroffset" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "offset" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "after" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "after", "offset" ]
+      },
+      "getInstagramConvoMesssages" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataArrConvoMessages"
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "replies1" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataArr1"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "canComment" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "canComment", "count", "data" ]
+      },
+      "author2" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "username" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "href", "id", "name", "username" ]
+      },
+      "likes2" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "canLike" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "canLike", "count" ]
+      },
+      "data2" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "like_count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "replies" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/replies1"
+          },
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/author2"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          },
+          "likes" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/likes2"
+          }
+        },
+        "required" : [ "author", "createdTime", "id", "like_count", "likes", "message", "replies" ]
+      },
+      "dataArr2" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SocialPosts.json#/components/schemas/data2"
+        }
+      },
+      "finish" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "column1" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "column1" ]
+      },
+      "database" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "finish" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/finish"
+          }
+        },
+        "required" : [ "finish" ]
+      },
+      "commentsapi" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "max_id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "max_id" ]
+      },
+      "commentscursor" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "database" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/database"
+          },
+          "api" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/commentsapi"
+          }
+        },
+        "required" : [ "api", "database" ]
+      },
+      "getInstagramComments" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataArr2"
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "dataConversations" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "author" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/authorConverstions"
+          },
+          "conversationId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "to" : {
+            "$ref" : "./SocialPosts.json#/components/schemas/to"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "author", "conversationId", "createdTime", "id", "message", "to" ]
+      },
+      "dataConversationswithtickets" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConversations"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            }
+          },
+          "required" : [ "ticket" ]
+        } ]
+      },
+      "dataConversationswithattachments" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConversations"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "attachments" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+            }
+          },
+          "required" : [ "attachments" ]
+        } ]
+      },
+      "dataConversationswithticketandattachments" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialPosts.json#/components/schemas/dataConversations"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "attachments" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+            },
+            "ticket" : {
+              "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+            }
+          },
+          "required" : [ "attachments", "ticket" ]
+        } ]
+      },
+      "dataArrConverstions" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConversations"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConversationswithtickets"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConversationswithattachments"
+          }, {
+            "$ref" : "./SocialPosts.json#/components/schemas/dataConversationswithticketandattachments"
+          } ]
+        }
+      }
+    },
+    "responses" : {
+      "getInstagramPosts" : {
+        "description" : "getInstagramPosts template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "cursor" : {
+                  "$ref" : "./SocialPosts.json#/components/schemas/cursor"
+                },
+                "data" : {
+                  "$ref" : "./SocialPosts.json#/components/schemas/dataArr"
+                }
+              },
+              "required" : [ "cursor", "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cursor" : {
+                    "api" : {
+                      "after" : "QVFIUk5BQUFwYUtyYlp3UmlsaXVlaldOWC04WDk1bGtMSFozMGdMRjZAZAOC1FZAlBuZAXprRzVtVGRORzl3dXVUU2RBb3phTFJYT1dKZAkxEa0QxZA2RlVE9ha0Rn"
+                    }
+                  },
+                  "data" : [ {
+                    "attachments" : [ {
+                      "href" : "https://video-maa2-1.cdninstagram.com/v/t50.2886-16/104475206_910239179389370_5540860481722056563_n.mp4?_nc_cat=102&vs=18111808897137353_1651284509&_nc_vs=HBksFQAYJEdFWXFPZ2E2dWZLUzJ6c0RBSFAtQ2x0QUZfVk1ia1lMQUFBRhUAAsgBABUAGCRHRDVKS2dZQkl4UUZubWdDQUNvVURBVWo2cFJnYmtZTEFBQUYVAgLIAQAoABgAGwGIB3VzZV9vaWwBMRUAABgAFpLCsdmDpqxAFQIoAkMzLBdAPeZmZmZmZhgSZGFzaF9iYXNlbGluZV8xX3YxEQB16gcA&_nc_sid=59939d&efg=eyJ2ZW5jb2RlX3RhZyI6InZ0c192b2RfdXJsZ2VuLjY0MC5mZWVkIn0%3D&_nc_ohc=Z8NSlH17HngAX88VvMj&_nc_ht=video-maa2-1.cdninstagram.com&oh=cb84f29231dcfb9af8ddf4b2bfaac868&oe=5F4EEEE1&_nc_rid=16caf49637",
+                      "id" : "17842398365251870",
+                      "type" : "VIDEO"
+                    } ],
+                    "replies" : {
+                      "count" : "8",
+                      "canComment" : "true"
+                    },
+                    "author" : {
+                      "name" : "senthil",
+                      "id" : "17841432637041822",
+                      "href" : "https://scontent-maa2-1.xx.fbcdn.net/v/t51.2885-15/92366120_524672075084909_6887993989245435904_n.jpg?_nc_cat=108&_nc_sid=86c713&_nc_ohc=8AkIFve42_MAX-HvqBR&_nc_ht=scontent-maa2-1.xx&oh=7c483849a34a97a1cd74671b1809713d&oe=5F5246C2",
+                      "username" : "senthil_sandbox_mode"
+                    },
+                    "createdTime" : "2020-06-17T07:54:29+0000",
+                    "id" : "17842398365251870",
+                    "likes" : {
+                      "count" : 0
+                    }
+                  }, {
+                    "attachments" : [ {
+                      "href" : "https://scontent-maa2-1.cdninstagram.com/v/t51.29350-15/116154462_161233662193785_1520572576788967175_n.jpg?_nc_cat=111&_nc_sid=8ae9d6&_nc_ohc=_8kDjDgfF4sAX_hS4vK&_nc_ht=scontent-maa2-1.cdninstagram.com&oh=a2121777dc98477f4b64b0975fd4faf8&oe=5F523A13",
+                      "id" : "17865584842960784",
+                      "type" : "IMAGE"
+                    }, {
+                      "href" : "https://scontent-maa2-2.cdninstagram.com/v/t51.29350-15/116264433_1200677313613371_2741215233563951050_n.jpg?_nc_cat=107&_nc_sid=8ae9d6&_nc_ohc=LWhR5qNdJKAAX-fvrY5&_nc_ht=scontent-maa2-2.cdninstagram.com&oh=4667d47eb8751ce4f6c69c62486254c8&oe=5F5232B3",
+                      "id" : "17863166810008390",
+                      "type" : "IMAGE"
+                    }, {
+                      "href" : "https://scontent-maa2-1.cdninstagram.com/v/t51.29350-15/116106007_198434758289311_3357203664577406720_n.jpg?_nc_cat=111&_nc_sid=8ae9d6&_nc_ohc=sz81ztWio3MAX8xQKr6&_nc_ht=scontent-maa2-1.cdninstagram.com&oh=29be5488863a91bec52c2b40a4d97646&oe=5F4FC0CA",
+                      "id" : "17877363262761857",
+                      "type" : "IMAGE"
+                    }, {
+                      "href" : "https://scontent-maa2-1.cdninstagram.com/v/t51.29350-15/116789403_1312524542415995_2766329963556922883_n.jpg?_nc_cat=100&_nc_sid=8ae9d6&_nc_ohc=UxQtrGxFiyYAX-7v-KZ&_nc_ht=scontent-maa2-1.cdninstagram.com&oh=4900c2bde24ee0b93bbf5d54b26150b3&oe=5F50E964",
+                      "id" : "17897962846531073",
+                      "type" : "IMAGE"
+                    } ],
+                    "replies" : {
+                      "count" : "5",
+                      "canComment" : "true"
+                    },
+                    "ticket" : {
+                      "ticketNumber" : "102",
+                      "departmentId" : "6000000013248",
+                      "id" : "6000000018059",
+                      "encryptedTicketId" : "edbsn4827fbfd55293d608e888a948e880d8b"
+                    },
+                    "author" : {
+                      "name" : "senthil",
+                      "id" : "17841432637041822",
+                      "href" : "https://scontent-maa2-1.xx.fbcdn.net/v/t51.2885-15/92366120_524672075084909_6887993989245435904_n.jpg?_nc_cat=108&_nc_sid=86c713&_nc_ohc=8AkIFve42_MAX-HvqBR&_nc_ht=scontent-maa2-1.xx&oh=7c483849a34a97a1cd74671b1809713d&oe=5F5246C2",
+                      "username" : "senthil_sandbox_mode"
+                    },
+                    "createdTime" : "2020-07-30T10:11:30+0000",
+                    "id" : "17864986453977566",
+                    "message" : "testing",
+                    "likes" : {
+                      "count" : 0
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "convertInstagramPostToTicket" : {
+        "description" : "convertInstagramPostToTicket template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ticketNumber" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "webUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "query param department id",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "encryptedTicketId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "departmentId", "encryptedTicketId", "id", "ticketNumber", "webUrl" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "ticketNumber" : "103",
+                  "webUrl" : "https://desk.zoho.com/support/newtest123/ShowHomePage.do#Cases/dv/6000000018164",
+                  "departmentId" : "6000000013248",
+                  "id" : "6000000018164",
+                  "encryptedTicketId" : "6000000018164"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "replyInstagramConversationResponse" : {
+        "description" : "replyInstagramConversationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "author" : {
+                    "$ref" : "./SocialPosts.json#/components/schemas/authorConverstions"
+                  },
+                  "conversationId" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 500,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_]+)"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "to" : {
+                    "$ref" : "./SocialPosts.json#/components/schemas/to"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "maxLength" : 500,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_]+)"
+                  },
+                  "message" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "replacementString" : "",
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "allowInvalid" : false,
+                      "descrption" : "Message to be Replied",
+                      "secret" : false,
+                      "preserveCharsLimit" : 50,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "5,6",
+                      "xss" : "antisamyfilter_custom",
+                      "importUrl" : false,
+                      "decrypt" : false,
+                      "mask" : "partial"
+                    }
+                  }
+                },
+                "required" : [ "author", "conversationId", "createdTime", "id", "message", "to" ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./SocialPosts.json#/components/schemas/replyInstagramConversation"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "attachments" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+                    }
+                  },
+                  "required" : [ "attachments" ]
+                } ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./SocialPosts.json#/components/schemas/replyInstagramConversation"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "ticket" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+                    }
+                  },
+                  "required" : [ "ticket" ]
+                } ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./SocialPosts.json#/components/schemas/replyInstagramConversation"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "attachments" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/attachmentsArrMessages"
+                    },
+                    "ticket" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/ticketdata"
+                    }
+                  },
+                  "required" : [ "attachments", "ticket" ]
+                } ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "code" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "error" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "code", "error" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "attachments" : [ {
+                    "href" : "https://pbs.twimg.com/media/DU64CEDUMAAHvlo.jpg",
+                    "type" : "photo"
+                  }, {
+                    "href" : "https://video.twimg.com/tweet_video/DU7YHU4U0AAi5Oe.mp4",
+                    "type" : "video"
+                  } ],
+                  "author" : {
+                    "name" : "Rockstar",
+                    "href" : "Some Url"
+                  },
+                  "conversationId" : "edbsn2ebbf87285607e4be60cb6657a66fb7535b22eb15dd1507fa797b9771e7f76c0e980b8911b23034ba8431aee11908780fdfaac33d77ba234574a6dccfcdc3d96b97f242fd34eceea4e6a7a21e9236c672abaa98baa243f9cc95e31c8f15f4f064c8edc10a83f8a86e02a92c17f20f88476c6e091eab15855557f8c127e7cfbb0ed9e015742b2c73a2de5ff3fcf77568b8dae404ae526a086b4ca52e9ba4f80adcaebe8365ecb8299a2779d34d1b98a3d",
+                  "createdTime" : "2016-06-21T16:16:16.000Z",
+                  "to" : {
+                    "name" : "Rockstar Receiver",
+                    "href" : "Some Url"
+                  },
+                  "id" : "1461347693133918217",
+                  "message" : "Last Received Message's Snippet"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "replyInstagramComment" : {
+        "description" : "replyInstagramComment template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SocialPosts.json#/components/schemas/replyData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "like_count" : "0",
+                  "replies" : {
+                    "data" : [ ],
+                    "count" : "0",
+                    "canComment" : true
+                  },
+                  "author" : {
+                    "name" : "senthil",
+                    "id" : "17841432637041822",
+                    "href" : "https://scontent-maa2-1.xx.fbcdn.net/v/t51.2885-15/92366120_524672075084909_6887993989245435904_n.jpg?_nc_cat=108&_nc_sid=86c713&_nc_ohc=8AkIFve42_MAX-HvqBR&_nc_ht=scontent-maa2-1.xx&oh=7c483849a34a97a1cd74671b1809713d&oe=5F5246C2",
+                    "username" : "senthil_sandbox_mode"
+                  },
+                  "createdTime" : "2020-08-05T17:57:12+0000",
+                  "id" : "17864214274989294",
+                  "message" : "Instagram comments",
+                  "likes" : {
+                    "canLike" : false,
+                    "count" : "0"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "convertInstagramConversationToTicket" : {
+        "description" : "convertInstagramConversationToTicket template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ticketNumber" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "webUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "query param department id",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "encryptedTicketId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "departmentId", "encryptedTicketId", "id", "ticketNumber", "webUrl" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "ticketNumber" : "232",
+                  "id" : "1892000000042034"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getInstagramConvoMesssagesResponse" : {
+        "description" : "getInstagramConvoMesssagesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./SocialPosts.json#/components/schemas/dataArrConvoMessages"
+                  }
+                },
+                "required" : [ "data" ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./SocialPosts.json#/components/schemas/getInstagramConvoMesssages"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "cursor" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/cusrsoroffset"
+                    }
+                  },
+                  "required" : [ "cursor" ]
+                } ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cursor" : "",
+                  "data" : [ {
+                    "attachments" : [ {
+                      "href" : "https://pbs.twimg.com/media/DU64CEDUMAAHvlo.jpg",
+                      "type" : "photo"
+                    }, {
+                      "href" : "https://video.twimg.com/tweet_video/DU7YHU4U0AAi5Oe.mp4",
+                      "type" : "video"
+                    } ],
+                    "author" : {
+                      "name" : "Rockstar",
+                      "href" : "Some Url"
+                    },
+                    "conversationId" : "edbsn2ebbf87285607e4be60cb6657a66fb7535b22eb15dd1507fa797b9771e7f76c0e980b8911b23034ba8431aee11908780fdfaac33d77ba234574a6dccfcdc3d96b97f242fd34eceea4e6a7a21e9236c672abaa98baa243f9cc95e31c8f15f4f064c8edc10a83f8a86e02a92c17f20f88476c6e091eab15855557f8c127e7cfbb0ed9e015742b2c73a2de5ff3fcf77568b8dae404ae526a086b4ca52e9ba4f80adcaebe8365ecb8299a2779d34d1b98a3d",
+                    "createdTime" : "2016-06-21T16:16:16.000Z",
+                    "to" : {
+                      "name" : "Rockstar Receiver",
+                      "href" : "Some Url"
+                    },
+                    "id" : "aWdfZAG06MTpJR01lc3NhZA2VUaHJlYWQ6MTc4NDE0MzQwNDk3NTAwMzM6MzQwMjgyMzY2ODQxNzEwMzAwOTQ5MTI4NTI0MTQwMDk1Mjg0ODgx",
+                    "message" : "Last Received Message's Snippet"
+                  }, {
+                    "attachments" : [ {
+                      "href" : "https://pbs.twimg.com/media/DU64CEDUMAAHvlo.jpg",
+                      "type" : "photo"
+                    }, {
+                      "href" : "https://video.twimg.com/tweet_video/DU7YHU4U0AAi5Oe.mp4",
+                      "type" : "video"
+                    } ],
+                    "author" : {
+                      "name" : "Rockstar",
+                      "href" : "Some Url"
+                    },
+                    "conversationId" : "edbsn2ebbf87285607e4be60cb6657a66fb7535b22eb15dd1507fa797b9771e7f76c0e980b8911b23034ba8431aee11908780fdfaac33d77ba234574a6dccfcdc3d96b97f242fd34eceea4e6a7a21e9236c672abaa98baa243f9cc95e31c8f15f4f064c8edc10a83f8a86e02a92c17f20f88476c6e091eab15855557f8c127e7cfbb0ed9e015742b2c73a2de5ff3fcf77568b8dae404ae526a086b4ca52e9ba4f80adcaebe8365ecb8299a2779d34d1b98a3d",
+                    "createdTime" : "2016-06-21T16:16:16.000Z",
+                    "to" : {
+                      "name" : "Rockstar Receiver",
+                      "href" : "Some Url",
+                      "id" : "1892000000042034"
+                    },
+                    "id" : "aWdfZAG06MTpJR01lc3NhZA2VUaHJlYWQ6MTc4NDE0MzQwNDk3NTAwMzM6MzQwMjgyMzY2ODQxNzEwMzAwOTQ5MTI4NTI0MTQwMDk1Mjg0ODgx",
+                    "message" : "Last Received Message's Snippet"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getInstagramCommentsResponse" : {
+        "description" : "getInstagramCommentsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./SocialPosts.json#/components/schemas/dataArr2"
+                  }
+                },
+                "required" : [ "data" ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./SocialPosts.json#/components/schemas/getInstagramComments"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "cursor" : {
+                      "$ref" : "./SocialPosts.json#/components/schemas/commentscursor"
+                    }
+                  },
+                  "required" : [ "cursor" ]
+                } ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cursor" : {
+                    "api" : {
+                      "after" : "QVFIUk5BQUFwYUtyYlp3UmlsaXVlaldOWC04WDk1bGtMSFozMGdMRjZAZAOC1FZAlBuZAXprRzVtVGRORzl3dXVUU2RBb3phTFJYT1dKZAkxEa0QxZA2RlVE9ha0Rn"
+                    }
+                  },
+                  "data" : [ {
+                    "like_count" : "0",
+                    "replies" : {
+                      "data" : [ {
+                        "like_count" : "0",
+                        "author" : {
+                          "id" : "17841432637041822",
+                          "username" : "senthil_sandbox_mode"
+                        },
+                        "createdTime" : "2020-07-31T09:52:02+0000",
+                        "id" : "17905830556493490",
+                        "message" : "ok",
+                        "likes" : {
+                          "canLike" : false,
+                          "count" : "0"
+                        }
+                      }, {
+                        "like_count" : "0",
+                        "author" : {
+                          "id" : "17841439562482882",
+                          "username" : "nivetha_test_insta"
+                        },
+                        "createdTime" : "2020-07-30T10:17:23+0000",
+                        "id" : "17856275930090988",
+                        "message" : "@senthil_sandbox_mode test here",
+                        "likes" : {
+                          "canLike" : false,
+                          "count" : "0"
+                        }
+                      }, {
+                        "like_count" : "0",
+                        "author" : {
+                          "id" : "17841432637041822",
+                          "username" : "senthil_sandbox_mode"
+                        },
+                        "createdTime" : "2020-07-30T10:16:55+0000",
+                        "id" : "17881632997696821",
+                        "message" : "1",
+                        "likes" : {
+                          "canLike" : false,
+                          "count" : "0"
+                        }
+                      } ],
+                      "count" : 3,
+                      "canComment" : true
+                    },
+                    "author" : {
+                      "name" : "senthil",
+                      "id" : "17841432637041822",
+                      "href" : "https://scontent-maa2-1.xx.fbcdn.net/v/t51.2885-15/92366120_524672075084909_6887993989245435904_n.jpg?_nc_cat=108&_nc_sid=86c713&_nc_ohc=8AkIFve42_MAX-HvqBR&_nc_ht=scontent-maa2-1.xx&oh=7c483849a34a97a1cd74671b1809713d&oe=5F5246C2",
+                      "username" : "senthil_sandbox_mode"
+                    },
+                    "createdTime" : "2020-07-30T10:16:48+0000",
+                    "id" : "17864907316972188",
+                    "totalCount" : false,
+                    "message" : "hi there!",
+                    "likes" : {
+                      "canLike" : false,
+                      "count" : "0"
+                    }
+                  }, {
+                    "like_count" : "0",
+                    "replies" : {
+                      "data" : [ ],
+                      "count" : "0",
+                      "canComment" : true
+                    },
+                    "author" : {
+                      "name" : "nivetha_test_insta",
+                      "id" : "17841439562482882",
+                      "username" : "nivetha_test_insta"
+                    },
+                    "createdTime" : "2020-07-30T10:17:15+0000",
+                    "id" : "17893665574568524",
+                    "message" : "ok nivetha",
+                    "likes" : {
+                      "canLike" : false,
+                      "count" : "0"
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getInstagramConversations" : {
+        "description" : "getInstagramConversations template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SocialPosts.json#/components/schemas/dataArrConverstions"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cursor" : "",
+                  "data" : [ {
+                    "attachments" : [ {
+                      "href" : "https://pbs.twimg.com/media/DU64CEDUMAAHvlo.jpg",
+                      "type" : "photo"
+                    }, {
+                      "href" : "https://video.twimg.com/tweet_video/DU7YHU4U0AAi5Oe.mp4",
+                      "type" : "video"
+                    } ],
+                    "ticket" : {
+                      "ticketNumber" : "232",
+                      "id" : "1892000000042034"
+                    },
+                    "author" : {
+                      "name" : "Rockstar",
+                      "href" : "Some Url"
+                    },
+                    "conversationId" : "edbsn2ebbf87285607e4be60cb6657a66fb7535b22eb15dd1507fa797b9771e7f76c0e980b8911b23034ba8431aee11908780fdfaac33d77ba234574a6dccfcdc3d96b97f242fd34eceea4e6a7a21e9236c672abaa98baa243f9cc95e31c8f15f4f064c8edc10a83f8a86e02a92c17f20f88476c6e091eab15855557f8c127e7cfbb0ed9e015742b2c73a2de5ff3fcf77568b8dae404ae526a086b4ca52e9ba4f80adcaebe8365ecb8299a2779d34d1b98a3d",
+                    "createdTime" : "2016-06-21T16:16:16.000Z",
+                    "to" : {
+                      "name" : "Rockstar Receiver",
+                      "href" : "Some Url",
+                      "id" : "1892000000042034"
+                    },
+                    "id" : "m_mid.1463111263480:46ab4bb9fcaffff886",
+                    "message" : "Last Received Message's Snippet"
+                  }, {
+                    "attachments" : [ {
+                      "href" : "https://pbs.twimg.com/media/DU64CEDUMAAHvlo.jpg",
+                      "type" : "photo"
+                    }, {
+                      "href" : "https://video.twimg.com/tweet_video/DU7YHU4U0AAi5Oe.mp4",
+                      "type" : "video"
+                    } ],
+                    "ticket" : {
+                      "ticketNumber" : "232",
+                      "id" : "1892000000042034"
+                    },
+                    "author" : {
+                      "name" : "Rockstar",
+                      "href" : "Some Url"
+                    },
+                    "conversationId" : "edbsn2ebbf87285607e4be60cb6657a66fb7535b22eb15dd1507fa797b9771e7f76c0e980b8911b23034ba8431aee11908780fdfaac33d77ba234574a6dccfcdc3d96b97f242fd34eceea4e6a7a21e9236c672abaa98baa243f9cc95e31c8f15f4f064c8edc10a83f8a86e02a92c17f20f88476c6e091eab15855557f8c127e7cfbb0ed9e015742b2c73a2de5ff3fcf77568b8dae404ae526a086b4ca52e9ba4f80adcaebe8365ecb8299a2779d34d1b98a3d",
+                    "createdTime" : "2016-06-21T16:16:16.000Z",
+                    "to" : {
+                      "name" : "Rockstar Receiver",
+                      "href" : "Some Url"
+                    },
+                    "id" : "m_mid.1463111263480:46ab4bb9fcaffff886",
+                    "message" : "Last Received Message's Snippet"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "cursor" : {
+        "name" : "cursor",
+        "in" : "query",
+        "description" : "Cursor for Pagination",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Cursor for Pagination",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "\\{(.*)\\}",
+          "x-custom-parameters-attributes" : {
+            "cursor" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Cursor for Pagination",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            },
+            "type" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Type of Instagram Posts to be Fetched. Supported Types are posts and mentions",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            },
+            "portalname" : {
+              "removeExif" : false,
+              "trim" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "allowInvalid" : false,
+              "secret" : false,
+              "importUrl" : false,
+              "decrypt" : false,
+              "preserveCharsLimit" : 10
+            },
+            "orgId" : {
+              "removeExif" : false,
+              "trim" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "allowInvalid" : false,
+              "secret" : false,
+              "importUrl" : false,
+              "decrypt" : false,
+              "preserveCharsLimit" : 10
+            }
+          }
+        }
+      },
+      "conversationId" : {
+        "name" : "conversationId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 500,
+          "minLength" : 0,
+          "pattern" : "([0-9a-zA-Z_]+)"
+        }
+      },
+      "brandId" : {
+        "name" : "brandId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "query param department id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "query param department id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "postId" : {
+        "name" : "postId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "type" : {
+        "name" : "type",
+        "in" : "query",
+        "description" : "Type of Instagram Posts to be Fetched. Supported Types are posts and mentions",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Type of Instagram Posts to be Fetched. Supported Types are posts and mentions",
+          "enum" : [ "posts" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "message" : {
+        "name" : "message",
+        "in" : "query",
+        "description" : "Message to be Replied",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Message to be Replied",
+          "maxLength" : 65535,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : {
+            "preserveCharsLimit" : 50,
+            "preserveChars" : "5,6",
+            "xss" : "antisamyfilter_custom",
+            "mask" : "partial"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SocialPosts"
+}

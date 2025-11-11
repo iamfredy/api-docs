@@ -1,0 +1,485 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ProductAttachment",
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/api/v1/products/{productId}/attachments" : {
+      "get" : {
+        "tags" : [ "ProductAttachment" ],
+        "summary" : "List all product attachments",
+        "description" : "This API lists all attachments in a product.",
+        "operationId" : "getProductAttachments",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "description" : "",
+              "enum" : [ "creator" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : { }
+            },
+            "uniqueItems" : true,
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "",
+            "maximum" : 100,
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "-?(createdTime)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "#/components/parameters/productId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getProductAttachmentsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.products.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ]
+      },
+      "post" : {
+        "tags" : [ "ProductAttachment" ],
+        "summary" : "Create an product attachment",
+        "description" : "This API attaches a file to a product.",
+        "operationId" : "createProductAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/productId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : ""
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/attachmentJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.products.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ]
+      }
+    },
+    "/api/v1/products/{productId}/attachments/{attachmentId}/content" : {
+      "get" : {
+        "tags" : [ "ProductAttachment" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "viewProductAttachment",
+        "parameters" : [ {
+          "name" : "inline",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "#/components/parameters/productId"
+        }, {
+          "$ref" : "#/components/parameters/attachmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.products.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/products/{productId}/attachments/{attachmentId}" : {
+      "delete" : {
+        "tags" : [ "ProductAttachment" ],
+        "summary" : "Delete an product attachment",
+        "description" : "This API deletes an attachment from a product.",
+        "operationId" : "deleteProductAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/productId"
+        }, {
+          "$ref" : "#/components/parameters/attachmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.products.DELETE" ]
+        } ],
+        "x-audience" : [ "external-public" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "attachmentJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "previewurl" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 16000000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "size" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "creatorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+            "x-custom-parameters-attributes" : { }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 16000000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "createdTime", "creatorId", "href", "id", "name", "previewurl", "size" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ProductAttachment.json#/components/schemas/attachmentJson"
+        }
+      }
+    },
+    "responses" : {
+      "getProductAttachmentsResponse" : {
+        "description" : "getProductAttachmentsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "creator" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "description" : "",
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "description" : "",
+                              "maxLength" : 40,
+                              "minLength" : 0,
+                              "x-custom-parameters-attributes" : { }
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "description" : "",
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "x-custom-parameters-attributes" : { }
+                            },
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "description" : "",
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                              "x-custom-parameters-attributes" : { }
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "description" : "",
+                              "pattern" : "([0-9]+)",
+                              "x-custom-parameters-attributes" : { }
+                            },
+                            "email" : {
+                              "type" : [ "string", "null" ],
+                              "description" : "",
+                              "maxLength" : 255,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'\\&\\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$",
+                              "x-custom-parameters-attributes" : { }
+                            }
+                          },
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                          "x-custom-parameters-attributes" : { }
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./ProductAttachment.json#/components/schemas/data"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "attachmentJson" : {
+        "description" : "attachmentJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "previewurl" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 16000000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "size" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "creatorId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "href" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 16000000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "createdTime", "creatorId", "href", "id", "name", "previewurl", "size" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      }
+    },
+    "parameters" : {
+      "productId" : {
+        "name" : "productId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "attachmentId" : {
+        "name" : "attachmentId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : { }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ProductAttachment"
+}

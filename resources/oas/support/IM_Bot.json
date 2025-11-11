@@ -1,0 +1,1007 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_Bot",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/bots/{id}/associate" : {
+      "patch" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "associateBotToIMChannels",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/associateToIMChannels"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.associateWithChannels"
+        }
+      }
+    },
+    "/api/v1/im/bots/{id}" : {
+      "get" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "getIMBot",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMBot"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.getIMBot"
+        }
+      }
+    },
+    "/api/v1/im/bots" : {
+      "get" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "getIMBotsList",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department Id",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department Id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of records for pagination",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Number of records for pagination",
+            "maximum" : 20,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "From index for pagination",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "From index for pagination",
+            "maximum" : 500,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Bot type",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Bot type",
+            "enum" : [ "zia", "gc" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMBotsList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.getIMBots"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "createIMBot",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createIMBot"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMBot"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.addIMBot"
+        }
+      }
+    },
+    "/api/v1/im/bots/{id}/activation" : {
+      "delete" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "deActivateIMBot",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.deActivateIMBot"
+        }
+      },
+      "patch" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "activateIMBot",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.activateIMBot"
+        }
+      }
+    },
+    "/api/v1/im/bots/{id}/preference" : {
+      "get" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "getIMBotPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMBotPreference"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.getIMBotPreference"
+        }
+      },
+      "patch" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "saveIMBotPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/saveIMBotPreference"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMBotPreference"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.saveIMBotPreference"
+        }
+      }
+    },
+    "/api/v1/im/bots/{id}/dissociate" : {
+      "patch" : {
+        "tags" : [ "IM_Bot" ],
+        "operationId" : "dissociateBotFromIMChannels",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/dissociateBotFromIMChannels_associateToIMChannels"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBotService.dissociateFromChannels"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getIMBotPreference" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "autoCloseInterval" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          },
+          "botId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "autoClose" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "autoClose", "autoCloseInterval", "botId", "id", "modifiedBy", "modifiedTime" ]
+      },
+      "getIMBot_listView" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "deskBotId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "associatedChannels" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "createdBy" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "zia", "gc" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "enabled", "disabled" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "associatedChannels", "createdBy", "createdTime", "departmentId", "description", "deskBotId", "id", "name", "status", "type" ]
+      },
+      "listOfIMBots" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_Bot.json#/components/schemas/getIMBot_listView"
+        }
+      }
+    },
+    "responses" : {
+      "getIMBot" : {
+        "description" : "getIMBot template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./IM_Bot.json#/components/schemas/getIMBot_listView"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "creator" : {
+                    "$ref" : "./IM_Channel.json#/components/schemas/updater"
+                  },
+                  "preference" : {
+                    "$ref" : "./IM_Bot.json#/components/schemas/getIMBotPreference"
+                  }
+                },
+                "required" : [ "creator", "preference" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIMBotsList" : {
+        "description" : "getIMBotsList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Bot.json#/components/schemas/listOfIMBots"
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIMBotPreference" : {
+        "description" : "getIMBotPreference template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "autoCloseInterval" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9]+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Time in minutes for idle time of the session",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9]+"
+                },
+                "botId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "autoClose" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Specify whether Conversation has to be closed automatically after idle time",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "autoClose", "autoCloseInterval", "botId", "id", "modifiedBy", "modifiedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "associateToIMChannels" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "channelIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "channelIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "createIMBot" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "deskBotId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Desk Bot id",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "deskBotId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "dissociateBotFromIMChannels_associateToIMChannels" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "channelIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "channelIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "saveIMBotPreference" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "autoCloseInterval" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Time in minutes for idle time of the session",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9]+"
+                },
+                "autoClose" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "Specify whether Conversation has to be closed automatically after idle time"
+                }
+              },
+              "required" : [ "autoClose", "autoCloseInterval" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_Bot"
+}

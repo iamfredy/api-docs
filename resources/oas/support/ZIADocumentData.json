@@ -1,0 +1,989 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ZIADocumentData",
+    "version" : "1.0.0",
+    "x-clan-group" : "zia",
+    "x-module-group" : "zia"
+  },
+  "paths" : {
+    "/api/v1/documentData/{documentMetaId}" : {
+      "get" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "getDocumentData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/documentMetaId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/documentDataJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentDataService.getDocumentData"
+        }
+      },
+      "delete" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "deleteDocumentData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/documentMetaId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentDataService.deleteDocumentData"
+        }
+      }
+    },
+    "/api/v1/document/user/filter" : {
+      "get" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "getUserFilterDocumentIds",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/source"
+        }, {
+          "$ref" : "#/components/parameters/fetcherType"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "#/components/parameters/documentIds"
+        }, {
+          "name" : "zuid",
+          "in" : "query",
+          "description" : "zuid of the user",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "zuid of the user",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/UserFilterResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentFilterService.getFilteredList"
+        }
+      }
+    },
+    "/api/v1/documentData" : {
+      "get" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "getDocumentDataList",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/documentMetaIds"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dataList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentDataService.getDocumentDataList"
+        }
+      },
+      "post" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "storeDocumentDataList",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/dataList"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dataList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentDataService.storeDocumentDataList"
+        }
+      },
+      "delete" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "deleteDocumentDataList",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/documentMetaIds"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentDataService.deleteDocumentDataList"
+        }
+      }
+    },
+    "/api/v1/document/meta" : {
+      "get" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "getDocumentMetaList",
+        "parameters" : [ {
+          "name" : "languages",
+          "in" : "query",
+          "description" : "Languages of articles",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Languages of articles",
+            "items" : { },
+            "maxItems" : 20,
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "number of documents to fetch",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "number of documents to fetch",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from offset",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "from offset",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/source"
+        }, {
+          "$ref" : "#/components/parameters/fetcherType"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/documentMetaResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentService.getMetaList"
+        }
+      }
+    },
+    "/api/v1/document/details" : {
+      "get" : {
+        "tags" : [ "ZIADocumentData" ],
+        "operationId" : "getDocumentDetailsList",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/source"
+        }, {
+          "$ref" : "#/components/parameters/fetcherType"
+        }, {
+          "$ref" : "#/components/parameters/documentIds"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/documentDetailsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.DocumentService.getDetailsList"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "documentDatasArr" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "content" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100000,
+            "minLength" : 1
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "content", "order" ]
+      },
+      "documentValues" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ZIADocumentData.json#/components/schemas/documentDatasArr"
+        }
+      },
+      "UserFilterArray" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "documentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "documentId" ]
+      },
+      "documentDataJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "documentMetaId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "values" : {
+            "$ref" : "./ZIADocumentData.json#/components/schemas/documentValues"
+          }
+        },
+        "required" : [ "documentMetaId", "values" ]
+      },
+      "dataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ZIADocumentData.json#/components/schemas/documentDataJson"
+        }
+      },
+      "documentMeta" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "documentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "permission" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PRIVATE", "PUBLIC" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "KBARTICLES", "TICKETS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "documentTitle" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "documentId", "documentTitle", "language", "permission", "type" ]
+      },
+      "documentMetaArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ZIADocumentData.json#/components/schemas/documentMeta"
+        }
+      },
+      "documentDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "permission" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PRIVATE", "PUBLIC" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "documentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "documentTitle" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "content" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100000,
+            "minLength" : 1
+          }
+        },
+        "required" : [ "content", "documentId", "documentTitle", "language", "permission" ]
+      },
+      "documentDetailsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ZIADocumentData.json#/components/schemas/documentDetails"
+        }
+      }
+    },
+    "responses" : {
+      "documentDataJson" : {
+        "description" : "documentDataJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "documentMetaId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "values" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/documentValues"
+                }
+              },
+              "required" : [ "documentMetaId", "values" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "UserFilterResponse" : {
+        "description" : "UserFilterResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "documentIds" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/UserFilterArray"
+                }
+              },
+              "required" : [ "documentIds" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "dataList" : {
+        "description" : "dataList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/dataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "documentMetaResponse" : {
+        "description" : "documentMetaResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/documentMetaArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "documentDetailsResponse" : {
+        "description" : "documentDetailsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/documentDetailsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "documentMetaId" : {
+        "name" : "documentMetaId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "documentMetaIds" : {
+        "name" : "documentMetaIds",
+        "in" : "query",
+        "description" : "document IDs",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "document IDs",
+          "items" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ ]
+          },
+          "maxItems" : 100,
+          "uniqueItems" : false
+        }
+      },
+      "source" : {
+        "name" : "source",
+        "in" : "query",
+        "description" : "Types of Source",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Types of Source",
+          "enum" : [ "KBARTICLES", "TICKETS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "fetcherType" : {
+        "name" : "fetcherType",
+        "in" : "query",
+        "description" : "Types of Document",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Types of Document",
+          "enum" : [ "TICKET_REPLY_ASSISTANT", "ASAP" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "categoryId" : {
+        "name" : "categoryId",
+        "in" : "query",
+        "description" : "Category Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Category Id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "documentIds" : {
+        "name" : "documentIds",
+        "in" : "query",
+        "description" : "document IDs",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "document IDs",
+          "items" : { },
+          "uniqueItems" : false
+        }
+      }
+    },
+    "requestBodies" : {
+      "dataList" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ZIADocumentData.json#/components/schemas/dataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ZIADocumentData"
+}

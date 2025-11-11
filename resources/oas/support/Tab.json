@@ -1,0 +1,606 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Tab",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "setup"
+  },
+  "paths" : {
+    "/api/v1/tabs" : {
+      "get" : {
+        "tags" : [ "Tab" ],
+        "summary" : "Get Tabs",
+        "description" : "This API help us to fetch all tabs information of an organization.",
+        "operationId" : "getTabs",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTabsResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "92a6fe75b67dda2612126ef0f8050e1f",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.TabService.getTabs"
+        }
+      }
+    },
+    "/api/v1/reorderTabs" : {
+      "post" : {
+        "tags" : [ "Tab" ],
+        "summary" : "Reordering tabs",
+        "description" : "This API help us to performing a tab reordering operation in the organization. This API accepts array of valid tab id as input and performing reordering operation. <br/ > <br/ >_Note:_ <br/ >This API performing reordering operation only for the given tab ids. In case if your organization contains many tabs, but, you give only a small set of data to this API, this API automatically mark or move the other tabs into the unselected state.",
+        "operationId" : "reorderTabs",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/reorderTabsPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTabsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "a352e27a25d8082d6049b6c4a782ad2e",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.TabService.reorderTabs"
+        }
+      }
+    },
+    "/api/v1/tabs/{tabId}" : {
+      "patch" : {
+        "tags" : [ "Tab" ],
+        "summary" : "Rename a tab",
+        "description" : "This API help us to rename a particular tab in an organization.",
+        "operationId" : "renameTab",
+        "parameters" : [ {
+          "name" : "tabId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/renameTabPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/tabResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "72d73526d90dd83677ea0a731a2761cc",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.TabService.renameTab"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "tabResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "pluralName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "tabLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+          },
+          "sanitizedName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "modifier" : {
+            "$ref" : "./Module.json#/components/schemas/modifierJson"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "tabType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "WEBTAB", "MODULE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "singularName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+          },
+          "isCustomModule" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isSelected" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "singularI18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "isDeptSpecific" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiName", "i18NLabel", "id", "isCustomModule", "isDeptSpecific", "isSelected", "modifier", "pluralName", "sanitizedName", "singularI18NLabel", "singularName", "tabLabel", "tabType" ]
+      },
+      "arrayOfTabResponses" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Tab.json#/components/schemas/tabResponse"
+        }
+      },
+      "long_array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "responses" : {
+      "getTabsResponse" : {
+        "description" : "getTabsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Tab.json#/components/schemas/arrayOfTabResponses"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "pluralName" : "Tickets",
+                    "apiName" : "tickets",
+                    "tabLabel" : "Tickets",
+                    "sanitizedName" : "tickets",
+                    "modifier" : {
+                      "firstName" : "",
+                      "lastName" : "Kyle",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000000329/photo?orgId=3981311",
+                      "id" : "1000000000329",
+                      "email" : "kyle@zylker.com"
+                    },
+                    "i18NLabel" : "Tickets",
+                    "tabType" : "MODULE",
+                    "singularName" : "Ticket",
+                    "isCustomModule" : false,
+                    "singularI18NLabel" : "Ticket",
+                    "isSelected" : true,
+                    "isDeptSpecific" : true,
+                    "id" : "1000000002706"
+                  }, {
+                    "pluralName" : "Articles",
+                    "apiName" : "kbCategory",
+                    "tabLabel" : "Knowledge Base",
+                    "sanitizedName" : "knowledge-base",
+                    "modifier" : {
+                      "firstName" : "",
+                      "lastName" : "Kyle",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000000329/photo?orgId=3981311",
+                      "id" : "1000000000329",
+                      "email" : "kyle@zylker.com"
+                    },
+                    "i18NLabel" : "Articles",
+                    "tabType" : "WEBTAB",
+                    "singularName" : "Article",
+                    "isCustomModule" : false,
+                    "singularI18NLabel" : "Article",
+                    "isSelected" : true,
+                    "isDeptSpecific" : true,
+                    "id" : "1000000002708"
+                  }, {
+                    "pluralName" : "Customers",
+                    "apiName" : "customers",
+                    "tabLabel" : "Customers",
+                    "sanitizedName" : "customers",
+                    "modifier" : {
+                      "firstName" : "",
+                      "lastName" : "Kyle",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000000329/photo?orgId=3981311",
+                      "id" : "1000000000329",
+                      "email" : "kyle@zylker.com"
+                    },
+                    "i18NLabel" : "Customers",
+                    "tabType" : "WEBTAB",
+                    "singularName" : "Customer",
+                    "isCustomModule" : false,
+                    "singularI18NLabel" : "Customer",
+                    "isSelected" : true,
+                    "isDeptSpecific" : false,
+                    "id" : "1000000002704"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "tabResponse" : {
+        "description" : "tabResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "pluralName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "pluralName for module",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "apiName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "tabLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "tabLabel for module",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "sanitizedName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "modifier" : {
+                  "$ref" : "./Module.json#/components/schemas/modifierJson"
+                },
+                "i18NLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "tabType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "WEBTAB", "MODULE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "singularName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "singularName for module",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "isCustomModule" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isSelected" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "singularI18NLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "isDeptSpecific" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "apiName", "i18NLabel", "id", "isCustomModule", "isDeptSpecific", "isSelected", "modifier", "pluralName", "sanitizedName", "singularI18NLabel", "singularName", "tabLabel", "tabType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "pluralName" : "Tickets",
+                  "apiName" : "tickets",
+                  "tabLabel" : "Tickets",
+                  "sanitizedName" : "tickets",
+                  "modifier" : {
+                    "firstName" : "",
+                    "lastName" : "Kyle",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000000329/photo?orgId=3981311",
+                    "id" : "1000000000329",
+                    "email" : "kyle@zylker.com"
+                  },
+                  "i18NLabel" : "Tickets",
+                  "tabType" : "MODULE",
+                  "singularName" : "Ticket",
+                  "isCustomModule" : false,
+                  "singularI18NLabel" : "Ticket",
+                  "isSelected" : true,
+                  "isDeptSpecific" : true,
+                  "id" : "1000000002706"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "reorderTabsPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tabIds" : {
+                  "$ref" : "./Tab.json#/components/schemas/long_array"
+                }
+              },
+              "required" : [ "tabIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "tabIds" : [ "1000000002704", "1000000002706", "1000000002680" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "renameTabPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "pluralName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+                },
+                "tabLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+                },
+                "singularName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\s\\P{InBasicLatin}.$@,\\?\\:]+"
+                }
+              },
+              "required" : [ "pluralName", "singularName" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "pluralName" : "Tickets",
+                  "singularName" : "Ticket"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Tab"
+}

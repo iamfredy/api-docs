@@ -1,0 +1,477 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DataChips",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/dataChips" : {
+      "get" : {
+        "tags" : [ "DataChips" ],
+        "summary" : "Get Data Chips of a module",
+        "description" : "This API provides references of all fields of a module as data chips to be used as input.",
+        "operationId" : "getDataChips",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Name of the module for which you want to fetch the dataChips",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the module for which you want to fetch the dataChips",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "description" : "Name of the module for which you want to fetch the dataChips"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department Id for the dataChips to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department Id for the dataChips to be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "description" : "Department Id for the dataChips to be fetched"
+            }
+          }
+        }, {
+          "name" : "dataType",
+          "in" : "query",
+          "description" : "Data type of field for which data needs to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Data type of field for which data needs to be fetched",
+            "enum" : [ "TEXT", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "BOOLEAN", "DYNAMICPICKLIST", "ARRAY", "OBJECT", "LOOKUP", "STRING", "EMAIL", "DATE", "DATETIME", "PERCENT", "CURRENCY", "MULTI_LINE_TEXT", "PHONE" ]
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Comma separated data chip types",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Comma separated data chip types",
+            "enum" : [ "dotWalks" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "description" : "Comma separated data chip types",
+              "split" : ","
+            }
+          }
+        }, {
+          "name" : "layoutId",
+          "in" : "query",
+          "description" : "Layout Id for the dataChips to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Layout Id for the dataChips to be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "description" : "Layout Id for the dataChips to be fetched"
+            }
+          }
+        }, {
+          "name" : "isDependentModulesRequired",
+          "in" : "query",
+          "description" : "Boolean to decide whether datachips from dependent modules need to be included",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Boolean to decide whether datachips from dependent modules need to be included",
+            "x-custom-parameters-attributes" : {
+              "description" : "Boolean to decide whether datachips from dependent modules need to be included"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/DataChipsRespFinal"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "64ceba20caf31b9f5b0178503ae6f184",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.genericactions.restapi.GenericActionService.getDataChips"
+        }
+      }
+    },
+    "/api/v1/dataChips/supportedDatatypes" : {
+      "get" : {
+        "tags" : [ "DataChips" ],
+        "summary" : "Get compatible data types for other types.",
+        "description" : "This API allows clients to query which field types are compatible with a given field type or retrieve all fields with their corresponding supported field types.",
+        "operationId" : "getActionSupportedDataTypes",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/dataType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getDataTypeOuterJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "1748609b3b21c586a832195a183059b5",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.genericactions.restapi.GenericActionService.getAllSupportedDatatypes"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "DataChipsRespObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "expression" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "field" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "description" : "Name of the module for which you want to fetch the dataChips",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "dataType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TEXT", "NUMBER", "PERCENT", "DECIMAL", "CURRENCY", "DATE", "DATETIME", "EMAIL", "PHONE", "PICKLIST", "URL", "TEXTAREA", "BOOLEAN", "MULTISELECT", "AUTONUMBER", "LOOKUP", "FAX", "MULTILOOKUP", "PRIMARYIDENTIFIER", "EXPRESSION", "COLLECTION", "RICHPLAINTEXT", "FILEUPLOAD", "LARGETEXT", "LONG", "WATCHFIELDS", "ARRAY", "STRING", "MULTIPICKLIST" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "description" : "Data type of field for which data needs to be fetched",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "uiType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula", "Hidden", "MultiLookup", "PrimaryIdentifier", "Expression", "Collection", "RichPlainText", "FileUpload", "LargeText", "Long", "Watchfields", null ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "lookUpModule" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isSpecialType" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "dataType", "displayName", "expression", "field", "isSpecialType", "lookUpModule", "module", "uiType" ]
+      },
+      "DataChipsRespList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataChips.json#/components/schemas/DataChipsRespObject"
+        }
+      },
+      "getDataTypeInnerJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "dataType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "MultiLookup", "PrimaryIdentifier", "Expression", "Collection", "RichPlainText", "FileUpload", "LargeText", "Long", "Watchfields", "Formula" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "description" : "dataType for which supported data types need to be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "supportedDataTypes" : {
+            "type" : [ "array", "null" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "description" : "dataType for which supported data types need to be listed",
+              "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "MultiLookup", "PrimaryIdentifier", "Expression", "Collection", "RichPlainText", "FileUpload", "LargeText", "Long", "Watchfields", "Formula" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            }
+          }
+        },
+        "required" : [ "dataType", "supportedDataTypes" ]
+      },
+      "getDataTypeInnerList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataChips.json#/components/schemas/getDataTypeInnerJson"
+        }
+      }
+    },
+    "responses" : {
+      "DataChipsRespFinal" : {
+        "description" : "DataChipsRespFinal template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DataChips.json#/components/schemas/DataChipsRespList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "expression" : "tickets.$isResponseOverdue",
+                    "field" : "isResponseOverdue",
+                    "displayName" : "Is Response Overdue",
+                    "module" : "tickets",
+                    "dataType" : "BOOLEAN",
+                    "uiType" : "Picklist",
+                    "lookUpModule" : null,
+                    "isSpecialType" : false
+                  }, {
+                    "expression" : "tickets.$id",
+                    "field" : "id",
+                    "displayName" : "Ticket Id",
+                    "module" : "tickets",
+                    "dataType" : "LOOKUP",
+                    "uiType" : "Picklist",
+                    "lookUpModule" : null,
+                    "isSpecialType" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getDataTypeOuterJson" : {
+        "description" : "getDataTypeOuterJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DataChips.json#/components/schemas/getDataTypeInnerList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "dataType" : "ARRAY",
+                    "supportedDataTypes" : [ "ARRAY", "NUMBER", "DECIMAL", "LOOKUP", "STRING", "BOOLEAN" ]
+                  }, {
+                    "dataType" : "OBJECT",
+                    "supportedDataTypes" : [ "OBJECT" ]
+                  }, {
+                    "dataType" : "EMAIL",
+                    "supportedDataTypes" : [ "EMAIL" ]
+                  }, {
+                    "dataType" : "PICKLIST",
+                    "supportedDataTypes" : [ "PICKLIST", "NUMBER", "DECIMAL", "LOOKUP", "STRING", "BOOLEAN" ]
+                  }, {
+                    "dataType" : "LOOKUP",
+                    "supportedDataTypes" : [ "LOOKUP" ]
+                  }, {
+                    "dataType" : "URL",
+                    "supportedDataTypes" : [ "URL" ]
+                  }, {
+                    "dataType" : "STRING",
+                    "supportedDataTypes" : [ "STRING", "TEXT", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "BOOLEAN", "ARRAY", "LOOKUP", "EMAIL" ]
+                  }, {
+                    "dataType" : "DECIMAL",
+                    "supportedDataTypes" : [ "DECIMAL" ]
+                  }, {
+                    "dataType" : "TEXT",
+                    "supportedDataTypes" : [ "TEXT", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "BOOLEAN", "ARRAY", "OBJECT", "LOOKUP", "STRING", "EMAIL" ]
+                  }, {
+                    "dataType" : "NUMBER",
+                    "supportedDataTypes" : [ "NUMBER", "DECIMAL" ]
+                  }, {
+                    "dataType" : "MULTIPICKLIST",
+                    "supportedDataTypes" : [ "MULTIPICKLIST", "NUMBER", "DECIMAL", "LOOKUP", "STRING", "BOOLEAN", "PICKLIST" ]
+                  }, {
+                    "dataType" : "BOOLEAN",
+                    "supportedDataTypes" : [ "BOOLEAN" ]
+                  }, {
+                    "dataType" : "DYNAMICPICKLIST",
+                    "supportedDataTypes" : [ "DYNAMICPICKLIST" ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "dataType" : {
+        "name" : "dataType",
+        "in" : "query",
+        "description" : "dataType for which supported data types need to be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "dataType for which supported data types need to be listed",
+          "enum" : [ "Text", "Number", "Decimal", "Percent", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Collection", "Long", "Watchfields", "FileUpload", "MultiLookup", "PrimaryIdentifier", "LargeText", "RichPlainText", "Expression" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : {
+            "description" : "Data type of field for which data needs to be fetched"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DataChips"
+}

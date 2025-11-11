@@ -1,0 +1,544 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ArticleAttachment",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/articles/{articleId}/translations/{locale}/dissociateAttachments" : {
+      "post" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Dissociate attachments from translation",
+        "description" : "This API removes the file attachments from a translation.",
+        "operationId" : "removeAttachmentsFromArticleTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./FAQTranslation.json#/components/requestBodies/dissociateAttachmentsFromFAQRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "42d57f75a4e1a874a6301445612b83e2",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.dissociateAttachmentsFromArticle"
+        }
+      }
+    },
+    "/api/v1/articleAttachments" : {
+      "post" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Upload attachments",
+        "description" : "This API uploads files to your portal gallery.",
+        "operationId" : "uploadArticleAttachments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/attachmentType"
+        }, {
+          "name" : "workspaceId",
+          "in" : "query",
+          "description" : "Workspace id to which the attachment should be uploaded",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Workspace id to which the attachement should be uploaded",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([a-zA-Z0-9]{37}|-1)$"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/uploadArticleAttachmentResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d68e995a7de87c9a6c8e5db6428b7fda",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategories.rest.support.ArticleAttachmentService.uploadArticleAttachments"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/attachments" : {
+      "get" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Get attachments",
+        "description" : "This API fetches the files attached to an article translation.",
+        "operationId" : "getArticleTranslationAttachments",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of attachments to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "integer" ],
+            "format" : "int32",
+            "description" : "Number of attachments to fetch",
+            "maximum" : 30,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number starting from which the article attachments must be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number starting from which the article attachments must be fetched.",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./FAQTranslation.json#/components/responses/articleAttachments"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "36652bf5aa321b11570009dedfffc0d9",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.getTranslationAttachments"
+        }
+      },
+      "post" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Upload and associate attachments",
+        "description" : "This API uploads the files to the gallery section and attaches them to an article translation",
+        "operationId" : "addArticleTranslationAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/attachmentType"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "./FAQ.json#/components/responses/attachments"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "97cb3f32a73c55ab879cf8727d2025ee",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.uploadAndAssociateArticleAttachments"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/attachments/convertAsTicketUploads" : {
+      "post" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Convert article translation attachments as ticket uploads",
+        "description" : "Clone article translation attachments as ticket uploads",
+        "operationId" : "convertArticleTranslationAttachmentsAsTicketUploads",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./Upload.json#/components/responses/uploadListReponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "3e6f64cc608dba9b6c6926bbe0f03374",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.support.restapi.AttachmentService.convertArticleTranslationAttachmentsAsTicketUploads"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/associateAttachments" : {
+      "post" : {
+        "tags" : [ "ArticleAttachment" ],
+        "summary" : "Attach files to translation",
+        "description" : "This API attaches the files selected from the gallery to an article translation.",
+        "operationId" : "associateAttachmentsToArticleTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./FAQTranslation.json#/components/requestBodies/associateAttachmentsWithFAQRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./FAQTranslation.json#/components/responses/articleAttachments"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "fc22b2f98b7370502858c73bd8018eff",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.associateAttachmentsWithArticle"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "uploadArticleAttachmentResponse" : {
+        "description" : "uploadArticleAttachmentResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "resourceId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([a-zA-Z0-9]{37}|-1)$"
+                },
+                "extension" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                },
+                "filesize" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "url" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                }
+              },
+              "required" : [ "extension", "filesize", "name", "resourceId", "url" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "resourceId" : "96b17694d63cd0f03eadbe4ae534f4ba993bb0",
+                  "extension" : "png",
+                  "name" : "Screen Shot 2018-12-28 at 7.21.58 PM.png",
+                  "filesize" : "62",
+                  "url" : "https://desk.zoho.com/galleryDocuments/edbsnf8e40a0174a649fa9b698be5f73211329e2a7513daad01207c771fbf50e1b3e33f3f5c1d654f5a4c7805862493f6bb8a?inline=true"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "attachmentType" : {
+        "name" : "attachmentType",
+        "in" : "query",
+        "description" : "Attachment type. Allowed values @file@, @blob@",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "string",
+          "description" : "Attachment type. Allowed values @file@, @blob@",
+          "enum" : [ "file" ]
+        }
+      },
+      "articleId" : {
+        "name" : "articleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "locale" : {
+        "name" : "locale",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ArticleAttachment"
+}

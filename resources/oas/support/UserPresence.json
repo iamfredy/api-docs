@@ -1,0 +1,761 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "UserPresence",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "setup"
+  },
+  "paths" : {
+    "/api/v1/myChannelPreferences/markAll" : {
+      "post" : {
+        "tags" : [ "UserPresence" ],
+        "summary" : "Update overall online preference of an agent",
+        "description" : "This API updates overall online preference of an agent. If the overall status is to be updated, specify the status as ONLINE / OFFLINE.",
+        "operationId" : "updateUserOverallChannelPreference",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/agentPreferenceJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "92287733be57be66685a1c5793462043",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.UserPresenceService.updateUserOverallChannelPreference"
+        }
+      }
+    },
+    "/api/v1/myChannelPreferences" : {
+      "get" : {
+        "tags" : [ "UserPresence" ],
+        "summary" : "Get mail phone and chat preference of current agent",
+        "description" : "This API fetches online preference of current agent in available channels. Possible values for channel preference: Mail = ONLINE, OFFLINE :: Phone = ONLINE, OFFLINE, BUSY, ONCALL (AFTERCALL - will be exposed in future, as of now this status is considered as BUSY). PhoneMode = WEB, PHONE :: Chat = ONLINE, OFFLINE :: notificationVolume = 0 to 100 (notificationVolume wll be fetched only in cookie based authentication)",
+        "operationId" : "getUserPresence",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAgentChannelPreferenceJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "6f62af9d6db6276f5bda5d06d28ad86a",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.UserPresenceService.getUserPresence"
+        }
+      },
+      "post" : {
+        "tags" : [ "UserPresence" ],
+        "summary" : "Update mail phone chat online preference of an agent",
+        "description" : "This API updates mail phone online preference of an agent. Overall status cannot be updated via this REST url. Possible values for channel preference: Mail = ONLINE, OFFLINE :: Phone = ONLINE, OFFLINE, BUSY: PhoneMode=WEB , PHONE :: Chat = ONLINE, OFFLINE :: notificationVolume = 0 to 100",
+        "operationId" : "updateUserChannelPreference",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/agentChannelPreferenceJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "39246bb92a14431839c152d7b2da1f23",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.UserPresenceService.updateUserChannelPreference"
+        }
+      }
+    },
+    "/api/v1/agentChannelPreferences" : {
+      "get" : {
+        "tags": [ "UserPresence", "getUserChannelPreference" ],
+        "summary": "Get mail phone and chat, im preference of provided agent",
+        "description": "This API fetches channel preference of provided agentId. Possible values for channel preference: Mail = ONLINE, OFFLINE :: Phone = ONLINE, OFFLINE, BUSY, ONCALL (AFTERCALL - will be exposed in future, as of now this status is considered as BUSY). PhoneMode = WEB, PHONE :: Chat = ONLINE, OFFLINE :: notificationVolume = 0 to 100 :: imStatus = ONLINE, OFFLINE :: imNotification = ENABLED, DISABLED",
+        "operationId": "getUserChannelPreference",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/agentIds"
+          },
+          {
+            "$ref": "../common/Common.json#/components/parameters/orgId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getAgentChannelPreferenceJSONData"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security": [
+          {
+            "org-oauth": ["accessAll.ALL"]
+          },
+          {
+            "iam-oauth2-schema": ["settings.READ"]
+          }
+        ],
+        "x-audience": ["company-internal"],
+        "x-custom-url-attribute": {
+          "security": {
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "APPSERVER",
+                  "rules": [
+                    {
+                      "duration": 60000,
+                      "lock-period": 300000,
+                      "threshold": 100,
+                      "hip": false
+                    }
+                  ],
+                  "window": "ROLLING",
+                  "key": "url.path+user.zuid"
+                }
+              ]
+            },
+            "extraparams": {
+              "disable": true,
+              "ignore": false
+            },
+            "authentication": {}
+          },
+          "clan-group": "chat",
+          "apihash": "64874d1b7b42510657b56074c392b967",
+          "module-group": "chat",
+          "apimethod": "com.zoho.support.restapi.UserPresenceService.getUserPreference"
+        }
+      },
+      "post" : {
+        "tags" : [ "UserPresence" ],
+        "summary" : "Update channel-specific agent availability",
+        "description" : "This API updates the availability status of agents in different channels.",
+        "operationId" : "updateUserChannelPreferenceForAdmin",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/agentChannelPreferenceJsonForAdmin"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "be29800b71043f8b5dafd7fd90666cfb",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.UserPresenceService.updateUserChannelPreference"
+        }
+      }
+    },
+    "/api/v1/agentChannelPreferences/markAll" : {
+      "post" : {
+        "tags" : [ "UserPresence" ],
+        "summary" : "Update overall agent availability",
+        "description" : "This API updates the overall availability of agents across all channels.",
+        "operationId" : "updateUserOverallChannelPreferenceForAdmin",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/agentPreferenceJsonForAdmin"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "20693366bf31db3abbf948588150aaab",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.UserPresenceService.updateUserOverallChannelPreference"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "agentChannelPreferenceJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "chatStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ONLINE", "OFFLINE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "phoneMode" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "WEB", "PHONE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "phoneStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ONLINE", "OFFLINE", "BUSY" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "notificationVolume" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 100,
+            "minimum" : 0,
+            "pattern" : "([0-9]+)"
+          },
+          "mailStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ONLINE", "OFFLINE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "chatStatus", "mailStatus", "notificationVolume", "phoneMode", "phoneStatus" ]
+      },
+      "agentPreferenceJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ONLINE", "OFFLINE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "status" ]
+      },
+      "agentsPreferenceJson" : {
+        "type": ["null", "object"],
+        "additionalProperties": false,
+        "properties": {
+          "chatStatus": {
+            "type": ["string", "null"],
+            "enum": ["ONLINE", "OFFLINE"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "imStatus": {
+            "type": ["string", "null"],
+            "enum": ["ONLINE", "OFFLINE"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "phoneMode": {
+            "type": ["string", "null"],
+            "enum": ["WEB", "PHONE"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "imNotification": {
+            "type": ["string", "null"],
+            "enum": ["ENABLED", "DISABLED"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "phoneStatus": {
+            "type": ["string", "null"],
+            "enum": ["ONLINE", "OFFLINE", "BUSY"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "notificationVolume": {
+            "type": ["string", "null", "integer"],
+            "format": "int32",
+            "maximum": 100,
+            "minimum": 0,
+            "pattern": "([0-9]+)"
+          },
+          "isOnline": {
+            "type": ["boolean", "null"]
+          },
+          "mailStatus": {
+            "type": ["string", "null"],
+            "enum": ["ONLINE", "OFFLINE"],
+            "maxLength": 100,
+            "minLength": 0
+          },
+          "userId": {
+            "type": [ "string", "null", "integer"],
+            "format": "int64",
+            "pattern": "([0-9]+)"
+          }
+        },
+        "required": [ "chatStatus", "imStatus", "phoneMode", "imNotification", "phoneStatus", "notificationVolume", "isOnline", "mailStatus", "userId"]
+      },
+      "data" : {
+        "type": [ "null", "array" ],
+        "items": {
+          "$ref": "#/components/schemas/agentsPreferenceJson"
+        }
+      }
+    },
+    "responses" : {
+      "getAgentChannelPreferenceJSONData" : {
+        "description": "getAgentChannelPreferenceJSONData template definitions",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": ["null", "object"],
+              "additionalProperties": false,
+              "properties": {
+                "data": {
+                  "$ref": "#/components/schemas/data"
+                }
+              },
+              "required": ["data"]
+            },
+            "examples": {
+              "Valid responses Definitions": {
+                "value": {
+                  "data": [
+                    {
+                      "chatStatus": "ONLINE",
+                      "imStatus": "ONLINE",
+                      "phoneMode": "WEB",
+                      "imNotification": "ENABLED",
+                      "phoneStatus": "OFFLINE",
+                      "notificationVolume": "75",
+                      "isOnline": true,
+                      "mailStatus": "ONLINE",
+                      "userId": 1892000000056007
+                    },
+                    {
+                      "chatStatus": "ONLINE",
+                      "imStatus": "ONLINE",
+                      "phoneMode": "WEB",
+                      "imNotification": "ENABLED",
+                      "phoneStatus": "OFFLINE",
+                      "notificationVolume": "75",
+                      "isOnline": false,
+                      "mailStatus": "ONLINE",
+                      "userId": 1892000000042001
+                    },
+                    {
+                      "chatStatus": "ONLINE",
+                      "imStatus": "ONLINE",
+                      "phoneMode": "WEB",
+                      "imNotification": "ENABLED",
+                      "phoneStatus": "OFFLINE",
+                      "notificationVolume": "75",
+                      "isOnline": false,
+                      "mailStatus": "ONLINE",
+                      "userId": 1892000000888059
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes": {
+          "disable-safe-headers": "[]"
+        }
+      },
+      "getAgentChannelPreferenceJson" : {
+        "description" : "getAgentChannelPreferenceJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./UserPresence.json#/components/schemas/agentChannelPreferenceJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "phoneStatus" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "ONCALL", "ONLINE", "OFFLINE", "BUSY" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "isOnline" : {
+                    "type" : [ "boolean", "null" ]
+                  }
+                },
+                "required" : [ "isOnline", "phoneStatus" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "chatStatus" : "ONLINE",
+                  "phoneMode" : "WEB",
+                  "phoneStatus" : "ONLINE",
+                  "notificationVolume" : "100",
+                  "isOnline" : true,
+                  "mailStatus" : "OFFLINE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "agentIds" : {
+        "name": "agentIds",
+        "in": "query",
+        "required": true,
+        "style": "simple",
+        "explode": true,
+        "schema": {
+          "type": ["null", "array"],
+          "items": {
+            "type": [ "string", "null", "integer"],
+            "format": "int64",
+            "pattern": "([0-9]+)",
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "Comma-separated array of agent IDs. Maximum number of IDs allowed is 50.", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "minItems": 1,
+          "uniqueItems": false
+        }
+      }
+    },
+    "requestBodies" : {
+      "agentPreferenceJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ONLINE", "OFFLINE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "ONLINE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "agentChannelPreferenceJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "chatStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ONLINE", "OFFLINE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "phoneMode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "WEB", "PHONE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "phoneStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ONLINE", "OFFLINE", "BUSY" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "notificationVolume" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 100,
+                  "minimum" : 0,
+                  "pattern" : "([0-9]+)"
+                },
+                "mailStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ONLINE", "OFFLINE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "chatStatus" : "ONLINE",
+                  "phoneMode" : "WEB",
+                  "phoneStatus" : "ONLINE",
+                  "notificationVolume" : "0",
+                  "mailStatus" : "OFFLINE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "agentChannelPreferenceJsonForAdmin" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./UserPresence.json#/components/schemas/agentChannelPreferenceJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "agentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "minItems" : 2,
+                    "uniqueItems" : false
+                  }
+                }
+              }, {
+                "type" : "object"
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "chatStatus" : "ONLINE",
+                  "agentIds" : [ "12345678", "87654321" ],
+                  "phoneMode" : "WEB",
+                  "phoneStatus" : "ONLINE",
+                  "notificationVolume" : "100",
+                  "mailStatus" : "OFFLINE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "agentPreferenceJsonForAdmin" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./UserPresence.json#/components/schemas/agentPreferenceJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "agentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "minItems" : 2,
+                    "uniqueItems" : false
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "status" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ "12345678", "87654321" ],
+                  "status" : "ONLINE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "UserPresence"
+}

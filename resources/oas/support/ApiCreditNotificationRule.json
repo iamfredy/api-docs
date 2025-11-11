@@ -1,0 +1,1189 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ApiCreditNotificationRule",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "security"
+  },
+  "paths" : {
+    "/api/v1/apiCredits/notificationRules" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "List all Api Credit Notification Rules",
+        "description" : "This api lists the api-credit notification rules, based on the limit specified.",
+        "operationId" : "getApiCreditNotificationRules",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of api-credit notification rules must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of api-credit notification rules must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the api-credit notification rules must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the api-credit notification rules must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort by a specific attribute: @percentage@. A @-@ prefix denotes descending order of sorting. Records wont be sorted if this parameter is empty",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort by a specific attribute: @percentage@. A @-@ prefix denotes descending order of sorting. Records wont be sorted if this parameter is empty",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^-?percentage"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/rulesResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2429b949281df570974a3de807882318",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getNotificationRules"
+        }
+      },
+      "post" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Create an Api Credit Notification Rule",
+        "description" : "This api creates a new api-credit notification rule.",
+        "operationId" : "createApiCreditNotificationRule",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/apiCreditNotificationRulePayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ruleResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c483dd52efebfeabdd28b081a59c1910",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.createNotificationRule"
+        }
+      }
+    },
+    "/api/v1/apiCredits/notificationPreference" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get feature preference of  Api Credit Notification",
+        "description" : "This api fetch the api-credit notification feature preference",
+        "operationId" : "getApiCreditNotificationConfiguration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/configurationResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "2bd4884ac3ffca50ebba933785281037",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getCreditNotificationPreference"
+        }
+      },
+      "post" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Update feature preference of  Api Credit Notification",
+        "description" : "This api fetch the api-credit notification feature preference",
+        "operationId" : "updateApiCreditNotificationConfiguration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/configurationResponse"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/configurationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "ce52c6dfe385ea22e20106881c311f8f",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.updateCreditNotificationPreference"
+        }
+      }
+    },
+    "/api/v1/apiCredits/notificationRules/{ruleId}" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get an Api Credit Notification Rule",
+        "description" : "This api fetches an api-credit notification rule.",
+        "operationId" : "getApiCreditNotificationRule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ruleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ruleResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "50c3f3c664a980c8b29e162892ad882d",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getNotificationRule"
+        }
+      },
+      "delete" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Delete an Api Credit Notification Rule",
+        "description" : "This api deletes an api-credit notification rule.",
+        "operationId" : "deleteApiCreditNotificationRule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ruleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "15d239a13fefbff43cd20c8b8bd9d0a2",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.deleteNotificationRule"
+        }
+      },
+      "patch" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Update an Api Credit Notification Rule",
+        "description" : "This api updates an api-credit notification rule.",
+        "operationId" : "updateApiCreditNotificationRule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ruleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateApiCreditNotificationRule_apiCreditNotificationRulePayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ruleResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "d03b044449c11761427ad5b021567022",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.updateNotificationRule"
+        }
+      }
+    },
+    "/api/v1/apiCredits/emailTemplate" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get email template of  Api Credit Notification",
+        "description" : "This api fetch email template for the api-credit notification rule",
+        "operationId" : "getApiCreditNotificationEmailTemplate",
+        "parameters" : [ {
+          "name" : "percentage",
+          "in" : "query",
+          "description" : "Percentage of the notification rule",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Percentage of the notification rule",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/emailTemplateResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "0afefd09af6b387b36c12c4d588917ab",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getEmailTemplate"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "recipientIdentityObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "imageUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "imageUrl", "name" ]
+      },
+      "recipientIdentityArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityObject"
+        }
+      },
+      "recipientObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "emailIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+            },
+            "maxItems" : 50,
+            "uniqueItems" : false
+          },
+          "primaryContact" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "profiles" : {
+            "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityArray"
+          },
+          "agents" : {
+            "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityArray"
+          }
+        },
+        "required" : [ "agents", "emailIds", "primaryContact", "profiles" ]
+      },
+      "ruleResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "creator" : {
+            "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityObject"
+          },
+          "percentage" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 100,
+            "minimum" : 50,
+            "pattern" : "([0-9]+)"
+          },
+          "modifier" : {
+            "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityObject"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "recipient" : {
+            "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientObject"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1500,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "notificationTypes" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "EMAIL", "IN_PRODUCT" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ]
+      },
+      "rulesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/ruleResponse"
+        }
+      }
+    },
+    "responses" : {
+      "rulesResponse" : {
+        "description" : "rulesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/rulesArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1713173586000,
+                    "creator" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "percentage" : "100",
+                    "modifier" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "name" : "Final alert notification",
+                    "recipient" : {
+                      "emailIds" : [ "adam@zylker.com" ],
+                      "primaryContact" : false,
+                      "profiles" : [ ],
+                      "agents" : [ {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      } ]
+                    },
+                    "description" : "Your api usage limit breached the threshold",
+                    "createdTime" : 1713173586000,
+                    "id" : "6000000076001",
+                    "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1713173586000,
+                    "creator" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000519/photo?orgId=20548283",
+                      "name" : "Philiph",
+                      "id" : "6000000000519"
+                    },
+                    "percentage" : "90",
+                    "modifier" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "name" : "Pre final alert notification",
+                    "recipient" : {
+                      "emailIds" : [ "adam@zylker.com" ],
+                      "primaryContact" : true,
+                      "profiles" : [ ],
+                      "agents" : [ {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      } ]
+                    },
+                    "description" : "Your api usage limit will breach the threshold soon.",
+                    "createdTime" : 1713173586000,
+                    "id" : "6000000076003",
+                    "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "ruleResponse" : {
+        "description" : "ruleResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "creator" : {
+                  "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityObject"
+                },
+                "percentage" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Criteria when the alert has to be sent",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modifier" : {
+                  "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientIdentityObject"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "name of the alert",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "recipient" : {
+                  "$ref" : "./ApiCreditNotificationRule.json#/components/schemas/recipientObject"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1500,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "description of the alert",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "notificationTypes" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1713173586000,
+                  "creator" : {
+                    "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                    "name" : "Adam",
+                    "id" : "6000000000517"
+                  },
+                  "percentage" : "100",
+                  "modifier" : {
+                    "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                    "name" : "Adam",
+                    "id" : "6000000000517"
+                  },
+                  "name" : "Final alert notification",
+                  "recipient" : {
+                    "emailIds" : [ "adam@zylker.com" ],
+                    "primaryContact" : false,
+                    "profiles" : [ ],
+                    "agents" : [ ]
+                  },
+                  "description" : "Your api usage limit breached the threshold",
+                  "createdTime" : 1713173586000,
+                  "id" : "6000000076001",
+                  "notificationTypes" : [ "EMAIL" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "configurationResponse" : {
+        "description" : "configurationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "preferenceState" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "enabled", "disabled" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "preferenceState" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "status" : "disabled"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emailTemplateResponse" : {
+        "description" : "emailTemplateResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "subject" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 200,
+                  "minLength" : 0
+                },
+                "percentage" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Percentage of the notification rule",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "fromAddress" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                },
+                "body" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "body", "fromAddress", "percentage", "subject" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "subject" : "Daily API limit exhausted as of 09-Nov, 2023 at 00:27",
+                  "percentage" : "100",
+                  "fromAddress" : "zohodeskteam@zohodesk.com",
+                  "body" : "Hello zohodesk administrator, 100% of the daily API limit for your Zoho Desk portal: zohodesk, with portal ID 631525936, has been exhausted as of 09-Nov, 2023 at 00:27. Your subsequent API requests will be denied until the limit resets for the next 24-hour period."
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "ruleId" : {
+        "name" : "ruleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "apiCreditNotificationRulePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "percentage" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "Criteria when the alert has to be sent",
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)"
+                },
+                "recipient" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 3,
+                  "minProperties" : 3,
+                  "properties" : {
+                    "emailIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      },
+                      "uniqueItems" : true
+                    },
+                    "agentIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "uniqueItems" : true
+                    },
+                    "primaryContact" : {
+                      "type" : [ "boolean", "null" ],
+                      "description" : "Is primaryContact needed to be added in recipient"
+                    },
+                    "profileIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "uniqueItems" : true
+                    }
+                  },
+                  "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ]
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "name of the alert",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "description of the alert",
+                  "maxLength" : 1500,
+                  "minLength" : 0
+                },
+                "notificationTypes" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : true
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "name", "notificationTypes", "percentage", "recipient", "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "configurationResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "preferenceState" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Feature preference status. Values allowed are: @enabled@ and @disabled@",
+                  "enum" : [ "enabled", "disabled" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "preferenceState" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateApiCreditNotificationRule_apiCreditNotificationRulePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "percentage" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "Criteria when the alert has to be sent",
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)"
+                },
+                "recipient" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 3,
+                  "minProperties" : 3,
+                  "properties" : {
+                    "emailIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      },
+                      "uniqueItems" : true
+                    },
+                    "agentIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "uniqueItems" : true
+                    },
+                    "primaryContact" : {
+                      "type" : [ "boolean", "null" ],
+                      "description" : "Is primaryContact needed to be added in recipient"
+                    },
+                    "profileIds" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "uniqueItems" : true
+                    }
+                  },
+                  "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ]
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "name of the alert",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "description of the alert",
+                  "maxLength" : 1500,
+                  "minLength" : 0
+                },
+                "notificationTypes" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : true
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ApiCreditNotificationRule"
+}

@@ -1,0 +1,118 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "PhoneMenu",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "telephony"
+  },
+  "paths" : {
+    "/api/v1/availablePhoneMenus" : {
+      "get" : {
+        "tags" : [ "PhoneMenu" ],
+        "summary" : "Get available phone menus",
+        "description" : "This API lists the available phone menus of a specified user in your Zoho Desk portal.",
+        "operationId" : "getAvailablePhoneMenus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getPhoneMenuResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "40e54a08344bc601251cce551ade2120",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.callbar.phonemenu.PhoneMenuService.getAvailablePhoneMenus"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "getPhoneMenuResponse" : {
+        "description" : "getPhoneMenuResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "Call History", "Active Calls", "Agent Status", "Dialpad" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ "Call History", "Active Calls", "Agent Status", "Dialpad" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "PhoneMenu"
+}

@@ -1,0 +1,1715 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "GoogleAnalytics",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "paths" : {
+    "/api/v1/ganalytics/reports" : {
+      "get" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "Get Google Analytics Reports of a WebProperty",
+        "description" : "to get Google Analytic Reports of a web Property",
+        "operationId" : "getReports",
+        "parameters" : [ {
+          "name" : "reportType",
+          "in" : "query",
+          "description" : "Report Type for Google Analytics(allTraffic|referral|email|pageVisits).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Report Type for Google Analytics(allTraffic|referral|email|pageVisits).",
+            "enum" : [ "allTraffic", "referral", "email", "pageVisits" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getReportsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "dd0052ee274dde3e2fa3c0e63bd62d4c",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.getReports"
+        }
+      }
+    },
+    "/api/v1/ganalytics" : {
+      "get" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "Get Google Analytics configurations",
+        "description" : "To get the Google Analytics property details",
+        "operationId" : "getGAnalyticsConfigurations",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getGAConfigResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "a8b7d00cb9c359fd6bf9ce2c7898ff94",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.getGAnalyticsConfigurations"
+        }
+      },
+      "post" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "Save Google Analytics configurations",
+        "description" : "To save the selected Google Analytics property details",
+        "operationId" : "saveGAnalyticsConfigurations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/saveGAConfigPayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/saveGAConfigResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "f86ffe00f0b9b5ffd2f97ae05af9bfec",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.saveGAnalyticsConfigurations"
+        }
+      }
+    },
+    "/api/v1/ganalytics/{helpCenterId}" : {
+      "patch" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "Update Google Analytics configurations",
+        "description" : "To update the selected Google Analytics property details",
+        "operationId" : "updateGAnalyticsConfigurations",
+        "parameters" : [ {
+          "name" : "helpCenterId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateGAConfigPayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/updateGAConfigResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "0eabc7b43ee345c934ff62618e64378f",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.updateGAnalyticsConfigurations"
+        }
+      }
+    },
+    "/api/v1/ganalytics/gaWebProperties" : {
+      "get" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "List all Google Analytics 4 web properties",
+        "description" : "To get the list of all existing web properties of authenticated google account",
+        "operationId" : "getGAWebProperties",
+        "parameters" : [ {
+          "name" : "accountId",
+          "in" : "query",
+          "description" : "Account Id of Google Analytics account",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Account Id of Google Analytics account",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/gaWebPropertiesResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "c46448a27ef88d82db6303c3f66f6298",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.getGAWebProperties"
+        }
+      }
+    },
+    "/api/v1/ganalytics/webProperties" : {
+      "get" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "List all Google Analytics web Properites",
+        "description" : "to get the list of all existing web properties of authenticated google account",
+        "operationId" : "getWebProperties",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/webPropertiesResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "85a549811d4be883437db10a90824f3c",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.getWebProperties"
+        }
+      }
+    },
+    "/api/v1/ganalytics/accounts" : {
+      "get" : {
+        "tags" : [ "GoogleAnalytics" ],
+        "summary" : "List all Google Analytics Accounts",
+        "description" : "To get the list of all existing authenticated google accounts",
+        "operationId" : "getAccounts",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/accountsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "d17d630a2f6b8d1253f86b78a4de620a",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.helpcenter.ga.restapi.support.GoogleAnalyticsService.getAccounts"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "totalCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "visits" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "sessions" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "percentNewVisits" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "avgSessionDuration" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "pageViews" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "uniquePageViews" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "exitRate" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "pageViewsPerVisit" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "bounces" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "visitBounceRate" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "avgSessionDuration", "bounces", "exitRate", "pageViews", "pageViewsPerVisit", "percentNewVisits", "sessions", "uniquePageViews", "visitBounceRate", "visits" ]
+      },
+      "emailTraffic" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "totalCount" : {
+            "$ref" : "./GoogleAnalytics.json#/components/schemas/totalCount"
+          }
+        },
+        "required" : [ "totalCount" ]
+      },
+      "totalCountWithSource" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/totalCount"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "country" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "source" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "medium" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "country", "medium", "source" ]
+        } ]
+      },
+      "totalCountWithSourceArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/totalCountWithSource"
+        }
+      },
+      "dataAndTotalCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./GoogleAnalytics.json#/components/schemas/totalCountWithSourceArray"
+          },
+          "totalCount" : {
+            "$ref" : "./GoogleAnalytics.json#/components/schemas/totalCount"
+          }
+        },
+        "required" : [ "data", "totalCount" ]
+      },
+      "profileInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "profileName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "profileId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "profileId", "profileName" ]
+      },
+      "profileInfoArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/profileInfo"
+        }
+      },
+      "totalPageCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "visits" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "avgTimeOnPage" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "percentNewVisits" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "pageViews" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "uniquePageViews" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "exitRate" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "pageViewsPerVisit" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "visitBounceRate" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "avgTimeOnPage", "exitRate", "pageViews", "pageViewsPerVisit", "percentNewVisits", "uniquePageViews", "visitBounceRate", "visits" ]
+      },
+      "totalPageCountWithPath" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/totalPageCount"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "pageTitle" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "pagePath" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 800,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "pagePath", "pageTitle" ]
+        } ]
+      },
+      "totalPageCountWithPathArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/totalPageCountWithPath"
+        }
+      },
+      "dataAndTotalPageCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./GoogleAnalytics.json#/components/schemas/totalPageCountWithPathArray"
+          },
+          "totalCount" : {
+            "$ref" : "./GoogleAnalytics.json#/components/schemas/totalPageCount"
+          }
+        },
+        "required" : [ "data", "totalCount" ]
+      },
+      "gaWebProperties" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accountId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Account Id of Google Analytics account",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "updatedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "accountId", "id", "name", "updatedTime" ]
+      },
+      "gaWebPropertiesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/gaWebProperties"
+        }
+      },
+      "webProperties" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accountId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "domain" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "webPropertyName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "trackingId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accountId", "domain", "trackingId", "webPropertyName" ]
+      },
+      "webPropertiesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/webProperties"
+        }
+      },
+      "accounts" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayName", "id" ]
+      },
+      "gaAccountsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GoogleAnalytics.json#/components/schemas/accounts"
+        }
+      }
+    },
+    "responses" : {
+      "getReportsResponse" : {
+        "description" : "getReportsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "emailTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/emailTraffic"
+                  },
+                  "referralTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/dataAndTotalCount"
+                  },
+                  "profileInfo" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/profileInfoArray"
+                  },
+                  "JSONForLocationMap" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 9000000,
+                    "minLength" : 0
+                  },
+                  "totalTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/dataAndTotalCount"
+                  }
+                },
+                "required" : [ "JSONForLocationMap", "emailTraffic", "profileInfo", "referralTraffic", "totalTraffic" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "referralTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/dataAndTotalCount"
+                  }
+                },
+                "required" : [ "referralTraffic" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "emailTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/emailTraffic"
+                  }
+                },
+                "required" : [ "emailTraffic" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "totalTraffic" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/dataAndTotalCount"
+                  }
+                },
+                "required" : [ "totalTraffic" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "pageVisit" : {
+                    "$ref" : "./GoogleAnalytics.json#/components/schemas/dataAndTotalPageCount"
+                  }
+                },
+                "required" : [ "pageVisit" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "emailTraffic" : {
+                    "data" : [ {
+                      "visits" : "2",
+                      "sessions" : "2",
+                      "percentNewVisits" : "50.0",
+                      "avgSessionDuration" : "0.0",
+                      "pageViews" : "2",
+                      "uniquePageViews" : "2",
+                      "exitRate" : "100.0",
+                      "pageViewsPerVisit" : "1.0",
+                      "bounces" : "2",
+                      "source" : "leadnurture",
+                      "medium" : "email",
+                      "visitBounceRate" : "100.0"
+                    } ],
+                    "totalCount" : {
+                      "visits" : "2",
+                      "sessions" : "2",
+                      "percentNewVisits" : "50.0",
+                      "avgSessionDuration" : "0.0",
+                      "pageViews" : "2",
+                      "uniquePageViews" : "2",
+                      "exitRate" : "100.0",
+                      "pageViewsPerVisit" : "1.0",
+                      "bounces" : "2",
+                      "visitBounceRate" : "100.0"
+                    }
+                  },
+                  "referralTraffic" : {
+                    "data" : [ {
+                      "country" : "United States",
+                      "sessions" : "34038",
+                      "percentNewVisits" : "0.7256595569657442",
+                      "avgSessionDuration" : "54.002820377225454",
+                      "exitRate" : "74.49902542651277",
+                      "pageViewsPerVisit" : "1.341471296785945",
+                      "source" : "zoho.com",
+                      "medium" : "referral",
+                      "visits" : "34038",
+                      "pageViews" : "45661",
+                      "uniquePageViews" : "40449",
+                      "bounces" : "26039",
+                      "visitBounceRate" : "76.49979434749397"
+                    }, {
+                      "country" : "India",
+                      "sessions" : "28610",
+                      "percentNewVisits" : "0.5627403005941978",
+                      "avgSessionDuration" : "45.059664452988464",
+                      "exitRate" : "76.8612805287622",
+                      "pageViewsPerVisit" : "1.300908773156239",
+                      "source" : "zoho.com",
+                      "medium" : "referral",
+                      "visits" : "28610",
+                      "pageViews" : "37219",
+                      "uniquePageViews" : "33559",
+                      "bounces" : "22604",
+                      "visitBounceRate" : "79.00734009087732"
+                    } ],
+                    "totalCount" : {
+                      "visits" : "247311",
+                      "sessions" : "247311",
+                      "percentNewVisits" : "10.326269353162617",
+                      "avgSessionDuration" : "54.589848409492504",
+                      "pageViews" : "340251",
+                      "uniquePageViews" : "296247",
+                      "exitRate" : "72.42800168111188",
+                      "pageViewsPerVisit" : "1.375802127685384",
+                      "bounces" : "185547",
+                      "pageToken" : "200",
+                      "visitBounceRate" : "75.02577726021083"
+                    }
+                  },
+                  "accountName" : "GA4 Property",
+                  "pageVisit" : {
+                    "data" : [ {
+                      "visits" : "105974",
+                      "avgTimeOnPage" : "134.72199357678124",
+                      "pageViews" : "140491",
+                      "percentNewVisits" : "41.68475286391002",
+                      "uniquePageViews" : "119866",
+                      "exitRate" : "70.07993394594672",
+                      "pageTitle" : "Zoho Desk | Customer Service Software for Context-Aware Support",
+                      "pageViewsPerVisit" : "1.3257119670862665",
+                      "pagePath" : "/desk/",
+                      "visitBounceRate" : "71.42601015343386"
+                    }, {
+                      "visits" : "91741",
+                      "avgTimeOnPage" : "314.4024666498867",
+                      "pageViews" : "118052",
+                      "percentNewVisits" : "5.996228512878647",
+                      "uniquePageViews" : "105862",
+                      "exitRate" : "86.53813573679395",
+                      "pageTitle" : "Zoho Accounts",
+                      "pageViewsPerVisit" : "1.2867965249997275",
+                      "pagePath" : "/signin?servicename=ZohoSupport&signupurl=https://www.zoho.com/desk/signup.html",
+                      "visitBounceRate" : "89.3264734415365"
+                    } ],
+                    "totalCount" : {
+                      "visits" : "519025",
+                      "avgTimeOnPage" : "137.2129981066835",
+                      "pageViews" : "743158",
+                      "percentNewVisits" : "38.270218197582004",
+                      "uniquePageViews" : "636642",
+                      "exitRate" : "69.72353120063298",
+                      "pageViewsPerVisit" : "1.4318346900438321",
+                      "pageToken" : "200",
+                      "visitBounceRate" : "75.44048937912432"
+                    }
+                  },
+                  "JSONForLocationMap" : {
+                    "canvas" : {
+                      "border" : {
+                        "show" : false
+                      },
+                      "fontFamily" : "Roboto",
+                      "shadow" : {
+                        "show" : false
+                      },
+                      "subtitle" : {
+                        "show" : false
+                      },
+                      "fontSize" : 12,
+                      "theme" : "map_theme",
+                      "title" : {
+                        "show" : false
+                      }
+                    },
+                    "metadata" : {
+                      "columns" : [ {
+                        "geo" : {
+                          "format" : {
+                            "mapBy" : "name"
+                          }
+                        },
+                        "datatype" : "geo",
+                        "dataindex" : 0,
+                        "columnname" : "Country",
+                        "joinBy" : "zc-key"
+                      }, {
+                        "datatype" : "numeric",
+                        "dataindex" : 1,
+                        "columnname" : "Data"
+                      }, {
+                        "datatype" : "ordinal",
+                        "dataindex" : 2,
+                        "columnname" : "dataForToolTip"
+                      } ],
+                      "axes" : {
+                        "geo" : [ 0 ],
+                        "clr" : [ 1 ],
+                        "tooltip" : [ "{{val(2)}}" ]
+                      }
+                    },
+                    "legend" : {
+                      "colorBand" : {
+                        "stops" : [ 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 ],
+                        "minrange" : 0
+                      },
+                      "colors" : [ "#e5e5e5", "#00b37a", "#4bd07b", "#9dde5e", "#e1e143", "#e7c832", "#e7a729", "#e78021", "#e56c1e", "#eb340a", "#ad0101" ],
+                      "fontColor" : "black"
+                    },
+                    "tooltip" : {
+                      "backgroundColor" : "green"
+                    },
+                    "map" : {
+                      "extent" : {
+                        "top" : 20,
+                        "left" : 20,
+                        "bottom" : 20,
+                        "right" : 20
+                      },
+                      "allAreas" : false,
+                      "scope" : "world",
+                      "excludeAreas" : [ "ata", "sgs", "atf", "flk" ]
+                    },
+                    "chart" : {
+                      "plot" : {
+                        "border" : {
+                          "show" : false
+                        },
+                        "plotoptions" : {
+                          "geoheatmap" : {
+                            "datalabels" : {
+                              "show" : false
+                            },
+                            "strokeColor" : "#444"
+                          }
+                        }
+                      }
+                    },
+                    "seriesdata" : {
+                      "chartdata" : [ {
+                        "seriesname" : "Heatmap",
+                        "data" : [ [ [ "ago", 0, "Angola" ], [ "bfa", 0, "Burkina Faso" ], [ "bdi", 0, "Burundi" ], [ "ben", 0, "Benin" ], [ "ben", 0, "Benin" ], [ "bwa", 0, "Botswana" ], [ "cod", 0, "Democratic Republic of the Congo" ], [ "caf", 0, "Central African Republic" ], [ "cog", 0, "Republic of the Congo" ], [ "civ", 0, "Ivory Coast" ], [ "cmr", 0, "Cameroon" ], [ "cpv", 0, "Cape Verde" ], [ "dji", 0, "Djibouti" ], [ "dza", 0, "Algeria" ], [ "egy", 0, "Egypt" ], [ "esh", 0, "Western Sahara" ], [ "eri", 0, "Eritrea" ], [ "eth", 0, "Ethiopia" ], [ "gab", 0, "Gabon" ], [ "gha", 0, "Ghana" ], [ "gmb", 0, "Gambia" ], [ "gin", 0, "Guinea" ], [ "gnq", 0, "Equatorial Guinea" ], [ "gnb", 0, "Guinea-Bissau" ], [ "ken", 0, "Kenya" ], [ "com", 0, "Comoros" ], [ "lbr", 0, "Liberia" ], [ "lso", 0, "Lesotho" ], [ "lby", 0, "Libya" ], [ "mar", 0, "Morocco" ], [ "mdg", 0, "Madagascar" ], [ "mdg", 0, "Madagascar" ], [ "mli", 0, "Mali" ], [ "mrt", 0, "Mauritania" ], [ "mus", 0, "Mauritius" ], [ "mwi", 0, "Malawi" ], [ "moz", 0, "Mozambique" ], [ "nam", 0, "Namibia" ], [ "ner", 0, "Niger" ], [ "ner", 0, "Niger" ], [ "nga", 0, "Nigeria" ], [ "reu", 0, "Reunion" ], [ "rwa", 0, "Rwanda" ], [ "sdn", 0, "Sudan" ], [ "ssd", 0, "South Sudan" ], [ "sle", 0, "Sierra Leone" ], [ "sen", 0, "Senegal" ], [ "som", 0, "Somalia" ], [ "stp", 0, "Sao Tome and Principe" ], [ "swz", 0, "Swaziland" ], [ "tcd", 0, "Chad" ], [ "tgo", 0, "Togo" ], [ "tun", 0, "Tunisia" ], [ "tza", 0, "Tanzania" ], [ "uga", 0, "Uganda" ], [ "zaf", 0, "South Africa" ], [ "zmb", 0, "Zambia" ], [ "zwe", 0, "Zimbabwe" ], [ "are", 0, "United Arab Emirates" ], [ "afg", 0, "Afghanistan" ], [ "arm", 0, "Armenia" ], [ "aze", 0, "Azerbaijan" ], [ "bgd", 0, "Bangladesh" ], [ "bhr", 0, "Bahrain" ], [ "brn", 0, "Brunei" ], [ "btn", 0, "Bhutan" ], [ "chn", 0, "China" ], [ "chn", 0, "China" ], [ "geo", 0, "Georgia" ], [ "idn", 0, "Indonesia" ], [ "idn", 0, "Indonesia" ], [ "isr", 0, "Israel" ], [ "ind", 100, "1 visits in India with the rate of 100%" ], [ "irq", 0, "Iraq" ], [ "irn", 0, "Iran" ], [ "jor", 0, "Jordan" ], [ "jpn", 0, "Japan" ], [ "kgz", 0, "Kyrgyzstan" ], [ "khm", 0, "Cambodia" ], [ "prk", 0, "North Korea" ], [ "kor", 0, "South Korea" ], [ "kwt", 0, "Kuwait" ], [ "kaz", 0, "Kazakhstan" ], [ "lao", 0, "Laos" ], [ "lbn", 0, "Lebanon" ], [ "lbn", 0, "Lebanon" ], [ "lka", 0, "Sri Lanka" ], [ "mmr", 0, "Myanmar" ], [ "mmr", 0, "Myanmar" ], [ "mng", 0, "Mongolia" ], [ "mys", 0, "Malaysia" ], [ "npl", 0, "Nepal" ], [ "omn", 0, "Oman" ], [ "phl", 0, "Philippines" ], [ "phl", 0, "Philippines" ], [ "phl", 0, "Philippines" ], [ "pak", 0, "Pakistan" ], [ "pse", 0, "Palestinian Territory" ], [ "qat", 0, "Qatar" ], [ "sau", 0, "Saudi Arabia" ], [ "syr", 0, "Syria" ], [ "tha", 0, "Thailand" ], [ "tjk", 0, "Tajikistan" ], [ "tkm", 0, "Turkmenistan" ], [ "tur", 0, "Turkey" ], [ "twn", 0, "Taiwan" ], [ "uzb", 0, "Uzbekistan" ], [ "vnm", 0, "Vietnam" ], [ "yem", 0, "Yemen" ], [ "and", 0, "Andorra" ], [ "alb", 0, "Albania" ], [ "aut", 0, "Austria" ], [ "bih", 0, "Bosnia and Herzegovina" ], [ "bel", 0, "Belgium" ], [ "bgr", 0, "Bulgaria" ], [ "blr", 0, "Belarus" ], [ "che", 0, "Switzerland" ], [ "cyp", 0, "Cyprus" ], [ "cze", 0, "Czech Republic" ], [ "deu", 0, "Germany" ], [ "dnk", 0, "Denmark" ], [ "est", 0, "Estonia" ], [ "est", 0, "Estonia" ], [ "esp", 0, "Spain" ], [ "esp", 0, "Spain" ], [ "esp", 0, "Spain" ], [ "fin", 0, "Finland" ], [ "fin", 0, "Finland" ], [ "fra", 0, "France" ], [ "gbr", 0, "United Kingdom" ], [ "gbr", 0, "United Kingdom" ], [ "grc", 0, "Greece" ], [ "hrv", 0, "Croatia" ], [ "hun", 0, "Hungary" ], [ "irl", 0, "Ireland" ], [ "isl", 0, "Iceland" ], [ "ita", 0, "Italy" ], [ "xkx", 0, "Kosovo" ], [ "ltu", 0, "Lithuania" ], [ "lux", 0, "Luxembourg" ], [ "lva", 0, "Latvia" ], [ "mda", 0, "Moldova" ], [ "mne", 0, "Montenegro" ], [ "mkd", 0, "Macedonia" ], [ "nld", 0, "Netherlands" ], [ "nor", 0, "Norway" ], [ "pol", 0, "Poland" ], [ "prt", 0, "Portugal" ], [ "rou", 0, "Romania" ], [ "srb", 0, "Serbia" ], [ "rus", 0, "Russia" ], [ "swe", 0, "Sweden" ], [ "svn", 0, "Slovenia" ], [ "sjm", 0, "Svalbard and Jan Mayen" ], [ "svk", 0, "Slovakia" ], [ "ukr", 0, "Ukraine" ], [ "bhs", 0, "Bahamas" ], [ "blz", 0, "Belize" ], [ "can", 0, "Canada" ], [ "cri", 0, "Costa Rica" ], [ "cub", 0, "Cuba" ], [ "dom", 0, "Dominican Republic" ], [ "grl", 0, "Greenland" ], [ "glp", 0, "Guadeloupe" ], [ "gtm", 0, "Guatemala" ], [ "hnd", 0, "Honduras" ], [ "hti", 0, "Haiti" ], [ "hti", 0, "Haiti" ], [ "jam", 0, "Jamaica" ], [ "jam", 0, "Jamaica" ], [ "maf", 0, "Saint Martin" ], [ "mtq", 0, "Martinique" ], [ "mex", 0, "Mexico" ], [ "nic", 0, "Nicaragua" ], [ "pan", 0, "Panama" ], [ "pri", 0, "Puerto Rico" ], [ "slv", 0, "El Salvador" ], [ "tto", 0, "Trinidad and Tobago" ], [ "usa", 0, "United States" ], [ "aus", 0, "Australia" ], [ "fji", 0, "Fiji" ], [ "ncl", 0, "New Caledonia" ], [ "nzl", 0, "New Zealand" ], [ "pyf", 0, "French Polynesia" ], [ "png", 0, "Papua New Guinea" ], [ "slb", 0, "Solomon Islands" ], [ "tls", 0, "East Timor" ], [ "vut", 0, "Vanuatu" ], [ "wsm", 0, "Samoa" ], [ "arg", 0, "Argentina" ], [ "arg", 0, "Argentina" ], [ "bol", 0, "Bolivia" ], [ "bra", 0, "Brazil" ], [ "chl", 0, "Chile" ], [ "col", 0, "Colombia" ], [ "ecu", 0, "Ecuador" ], [ "flk", 0, "Falkland Islands" ], [ "guf", 0, "French Guiana" ], [ "guy", 0, "Guyana" ], [ "per", 0, "Peru" ], [ "pry", 0, "Paraguay" ], [ "sur", 0, "Suriname" ], [ "ury", 0, "Uruguay" ], [ "ven", 0, "Venezuela" ], [ "ven", 0, "Venezuela" ], [ "ata", 0, "Antarctica" ], [ "sgs", 0, "South Georgia and the South Sandwich Islands" ], [ "atf", 0, "French Southern Territories" ], [ "tls", 0, "Timor-Leste" ], [ "tls", 0, "Timor-Leste" ], [ "lie", 0, "Liechtenstein" ], [ "tls", 0, "Liechtenstein" ], [ "lca", 0, "Saint Lucia" ], [ "lca", 0, "Saint Lucia" ], [ "grd", 0, "Grenada" ], [ "grd", 0, "Grenada" ], [ "vct", 0, "Saint Vincent and Grenadines" ], [ "vct", 0, "Saint Vincent and Grenadines" ] ] ],
+                        "type" : "geoheatmap"
+                      } ]
+                    }
+                  },
+                  "isGoogleAnalytics4" : true,
+                  "totalTraffic" : {
+                    "data" : [ {
+                      "country" : "United States",
+                      "sessions" : "40141",
+                      "percentNewVisits" : "83.24157345357615",
+                      "avgSessionDuration" : "32.86427841857452",
+                      "exitRate" : "69.47200720383742",
+                      "pageViewsPerVisit" : "1.438603921177848",
+                      "source" : "google",
+                      "medium" : "cpc",
+                      "visits" : "40141",
+                      "pageViews" : "57747",
+                      "uniquePageViews" : "50703",
+                      "bounces" : "30272",
+                      "visitBounceRate" : "75.41416506813482"
+                    }, {
+                      "country" : "United States",
+                      "sessions" : "39283",
+                      "percentNewVisits" : "60.47145075477942",
+                      "avgSessionDuration" : "71.11177863197821",
+                      "exitRate" : "71.86573447051504",
+                      "pageViewsPerVisit" : "1.3908815518163073",
+                      "source" : "(direct)",
+                      "medium" : "(none)",
+                      "visits" : "39283",
+                      "pageViews" : "54638",
+                      "uniquePageViews" : "43897",
+                      "bounces" : "32226",
+                      "visitBounceRate" : "82.03548608812973"
+                    } ],
+                    "totalCount" : {
+                      "visits" : "522554",
+                      "sessions" : "522554",
+                      "percentNewVisits" : "38.57591751283121",
+                      "avgSessionDuration" : "59.17603156802933",
+                      "pageViews" : "747187",
+                      "uniquePageViews" : "640578",
+                      "exitRate" : "69.78761675457416",
+                      "pageViewsPerVisit" : "1.4298751899325237",
+                      "bounces" : "394468",
+                      "pageToken" : "200",
+                      "visitBounceRate" : "75.4884662637737"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getGAConfigResponse" : {
+        "description" : "getGAConfigResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accountId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "propertyName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accountName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "isEnabled" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "true", "false" ]
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "Department id of HelpCenter",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "isPropertyExist" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "helpCenterId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "propertyId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "measurementId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "domainUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accountId", "accountName", "departmentId", "domainUrl", "helpCenterId", "isEnabled", "isPropertyExist", "measurementId", "propertyId", "propertyName", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "updatedTime" : "2023-01-18T06:06:09.011Z",
+                  "propertyName" : "GA4 Testing Property",
+                  "accountName" : "Zoho Desk",
+                  "isEnabled" : "true",
+                  "departmentId" : "29829000000106132",
+                  "isPropertyExist" : true,
+                  "helpCenterId" : "1000000025834",
+                  "measurementId" : "G-88JGFJD6ZQ",
+                  "domainUrl" : "https://desk.zoho.com/portal",
+                  "propertyId" : "350008575"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "updateGAConfigResponse" : {
+        "description" : "updateGAConfigResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accountId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "propertyName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accountName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "isEnabled" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "true", "false" ]
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isPropertyExist" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "helpCenterId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "propertyId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "measurementId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "domainUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accountId", "accountName", "departmentId", "domainUrl", "helpCenterId", "isEnabled", "isPropertyExist", "measurementId", "propertyId", "propertyName", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "updatedTime" : "2023-01-18T06:06:09.011Z",
+                  "propertyName" : "GA4 Testing Property",
+                  "accountName" : "Zoho Desk",
+                  "isEnabled" : "true",
+                  "departmentId" : "29829000000106132",
+                  "isPropertyExist" : true,
+                  "helpCenterId" : "1000000025834",
+                  "measurementId" : "G-88JGFJD6ZQ",
+                  "domainUrl" : "https://desk.zoho.com/portal",
+                  "propertyId" : "350008575"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "saveGAConfigResponse" : {
+        "description" : "saveGAConfigResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accountId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "propertyName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accountName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "isEnabled" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "true", "false" ]
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isPropertyExist" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "helpCenterId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "propertyId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "measurementId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "domainUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accountId", "accountName", "departmentId", "domainUrl", "helpCenterId", "isEnabled", "isPropertyExist", "measurementId", "propertyId", "propertyName", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "updatedTime" : "2023-01-18T06:06:09.011Z",
+                  "propertyName" : "GA4 Testing Property",
+                  "accountName" : "Zoho Desk",
+                  "isEnabled" : "true",
+                  "departmentId" : "29829000000106132",
+                  "helpCenterId" : "1000000025834",
+                  "measurementId" : "G-88JGFJD6ZQ",
+                  "domainUrl" : "https://desk.zoho.com/portal",
+                  "propertyId" : "350008575"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "gaWebPropertiesResponse" : {
+        "description" : "gaWebPropertiesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "nextPageToken" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "gaWebProperties" : {
+                  "$ref" : "./GoogleAnalytics.json#/components/schemas/gaWebPropertiesArray"
+                }
+              },
+              "required" : [ "gaWebProperties", "nextPageToken" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "nextPageToken" : "AIfv_2kUOG2O5_QLRPFQ0UKXy2R_iEgY87KSQZ69gCgOLIeqVGv664oiPZW4WBUyH9YCY391ZmcD-Br4umMjTbCSsBiq41vZnLnWbI63tBlSW9LSK09x42Enk_5y6sGyxLqJ58KY_FQdmOuXP0bTQV-JHPB4IMfKztzYN1is",
+                  "gaWebProperties" : [ {
+                    "accountId" : "546713453",
+                    "updatedTime" : "2021-01-07T17:01:52.048Z",
+                    "name" : "Zoho Desk Local 2",
+                    "id" : "258173896"
+                  }, {
+                    "accountId" : "546713453",
+                    "updatedTime" : "2021-01-07T17:01:52.048Z",
+                    "name" : "GATagmanagertest",
+                    "id" : "280336334"
+                  }, {
+                    "accountId" : "546713453",
+                    "updatedTime" : "2021-01-07T17:01:52.048Z",
+                    "name" : "Au - GA4",
+                    "id" : "280314257"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "webPropertiesResponse" : {
+        "description" : "webPropertiesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "webProperties" : {
+                  "$ref" : "./GoogleAnalytics.json#/components/schemas/webPropertiesArray"
+                }
+              },
+              "required" : [ "webProperties" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "webProperties" : [ {
+                    "domain" : "https://www.zoho.com/desk/",
+                    "webPropertyName" : "Zoho Desk",
+                    "trackingId" : "UA-2544340-41"
+                  }, {
+                    "domain" : "http://desk.zoho.com",
+                    "webPropertyName" : "ZSupportPortal",
+                    "trackingId" : "UA-119109116-1"
+                  }, {
+                    "domain" : "https://desk.zoho.com/support/vasantha2000/ShowHomePage.do",
+                    "webPropertyName" : "VasanthaPortal",
+                    "trackingId" : "UA-119109116-2"
+                  }, {
+                    "domain" : "http://supporttest.thandora.com",
+                    "webPropertyName" : "anithaSignUpPortal",
+                    "trackingId" : "UA-119109116-3"
+                  }, {
+                    "domain" : "https://desk.zoho.com",
+                    "webPropertyName" : "SubashSachinTestPortal",
+                    "trackingId" : "UA-119109116-4"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "accountsResponse" : {
+        "description" : "accountsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "nextPageToken" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accounts" : {
+                  "$ref" : "./GoogleAnalytics.json#/components/schemas/gaAccountsArray"
+                }
+              },
+              "required" : [ "accounts", "nextPageToken" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "nextPageToken" : "AIfv_2kUOG2O5_QLRPFQ0UKXy2R_iEgY87KSQZ69gCgOLIeqVGv664oiPZW4WBUyH9YCY391ZmcD-Br4umMjTbCSsBiq41vZnLnWbI63tBlSW9LSK09x42Enk_5y6sGyxLqJ58KY_FQdmOuXP0bTQV-JHPB4IMfKztzYN1is",
+                  "accounts" : [ {
+                    "displayName" : "Zoho Desk",
+                    "id" : "54516992"
+                  }, {
+                    "displayName" : "Demo Account",
+                    "id" : "54516996"
+                  }, {
+                    "displayName" : "QA Testing",
+                    "id" : "64516996"
+                  }, {
+                    "displayName" : "Sample - auto",
+                    "id" : "8451697"
+                  }, {
+                    "displayName" : "10 Sep ZA",
+                    "id" : "5451697"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "Department id of HelpCenter",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Department id of HelpCenter",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "updateGAConfigPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accountId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "propertyName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accountName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "propertyId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accountId", "accountName", "departmentId", "propertyId", "propertyName", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "updatedTime" : "2023-01-18T06:06:09.011Z",
+                  "propertyName" : "GA4 Testing Property",
+                  "accountName" : "Zoho Desk",
+                  "departmentId" : "29829000000106132",
+                  "propertyId" : "350008575",
+                  "gaMailId" : "gadgetstesting@solutiontest.com"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "saveGAConfigPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accountId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "propertyName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "accountName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "propertyId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accountId", "accountName", "departmentId", "propertyId", "propertyName", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accountId" : "152957347",
+                  "updatedTime" : "2023-01-18T06:06:09.011Z",
+                  "propertyName" : "GA4 Testing Property",
+                  "accountName" : "Zoho Desk",
+                  "departmentId" : "29829000000106132",
+                  "propertyId" : "350008575",
+                  "gaMailId" : "gadgetstesting@solutiontest.com"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "GoogleAnalytics"
+}

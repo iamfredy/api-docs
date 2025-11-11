@@ -1,0 +1,427 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SocialBrands",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "social"
+  },
+  "paths" : {
+    "/api/v1/socialBrands" : {
+      "get" : {
+        "tags" : [ "SocialBrands" ],
+        "summary" : "Get Brands",
+        "description" : "Get Brands. if passed with departmentID, will return brands associated to that Department else returns all brands for the portal",
+        "operationId" : "getBrands",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getBrands"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "914334148f7a4544c9347b173078bc23",
+          "module-group" : "social",
+          "apimethod" : "com.zoho.support.restapi.SocialService.getBrands"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "channels" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accountId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "hasExpired" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "accountName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "network" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accountId", "accountName", "hasExpired", "href", "network" ]
+      },
+      "channelswithId" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/channels"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "id" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "id" ]
+        } ]
+      },
+      "channelspageId" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/channels"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "pageId" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "pageName" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "pageId", "pageName" ]
+        } ]
+      },
+      "channelsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SocialBrands.json#/components/schemas/channels"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/channelswithId"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/channelspageId"
+          } ]
+        }
+      },
+      "commondata" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "brandName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "channels" : {
+            "$ref" : "./SocialBrands.json#/components/schemas/channelsArr"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "brandName", "channels", "description", "href", "id" ]
+      },
+      "facebookurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "facebookAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "facebookAuthURL" ]
+        } ]
+      },
+      "twitterurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "twitterAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "twitterAuthURL" ]
+        } ]
+      },
+      "instagramurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "instagramAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "instagramAuthURL" ]
+        } ]
+      },
+      "fbtwurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "facebookAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            },
+            "twitterAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "facebookAuthURL", "twitterAuthURL" ]
+        } ]
+      },
+      "fbigurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "facebookAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            },
+            "instagramAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "facebookAuthURL", "instagramAuthURL" ]
+        } ]
+      },
+      "twigurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "instagramAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            },
+            "twitterAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "instagramAuthURL", "twitterAuthURL" ]
+        } ]
+      },
+      "fbtwInurl" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "facebookAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            },
+            "instagramAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            },
+            "twitterAuthURL" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 5000,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "facebookAuthURL", "instagramAuthURL", "twitterAuthURL" ]
+        } ]
+      },
+      "dataArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "anyOf" : [ {
+            "$ref" : "./SocialBrands.json#/components/schemas/commondata"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/facebookurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/twitterurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/instagramurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/fbtwurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/fbigurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/twigurl"
+          }, {
+            "$ref" : "./SocialBrands.json#/components/schemas/fbtwInurl"
+          } ]
+        }
+      }
+    },
+    "responses" : {
+      "getBrands" : {
+        "description" : "getBrands template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SocialBrands.json#/components/schemas/dataArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "brandName" : "Syl",
+                    "channels" : [ {
+                      "accountId" : "1059866677397542",
+                      "accountName" : "AdolinKholin",
+                      "pageId" : "10000000011009",
+                      "pageName" : "AdolinKholin's Page",
+                      "network" : "facebook"
+                    }, {
+                      "accountId" : "1582883371969056",
+                      "accountName" : "Shallan",
+                      "network" : "twitter"
+                    } ],
+                    "departmentId" : "10000000020112",
+                    "description" : "Spern of Kaladin",
+                    "id" : "10000000010987",
+                    "logoURL" : "https://desk.zoho.com/api/v1/uploads/1892000001008043/contents"
+                  }, {
+                    "brandName" : "Pattern",
+                    "channels" : [ {
+                      "accountId" : "1059866677397542",
+                      "accountName" : "Gregorwich",
+                      "pageId" : "10000000011409",
+                      "pageName" : "AdolinKholin's Page",
+                      "network" : "facebook"
+                    }, {
+                      "accountId" : "1582883371969056",
+                      "accountName" : "Shallan",
+                      "network" : "twitter"
+                    } ],
+                    "departmentId" : "10000000020112",
+                    "description" : "Spern of Shallan",
+                    "id" : "10000000020987",
+                    "logoURL" : "https://desk.zoho.com/api/v1/uploads/1892000001008043/contents"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SocialBrands"
+}

@@ -1,0 +1,567 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AgentPresence",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/agentAvailabilityConfig" : {
+      "get" : {
+        "tags" : [ "AgentPresence" ],
+        "summary" : "Get Agent Availability Configuration",
+        "description" : "This API fetches the agent availability setting configured in your help desk portal. ",
+        "operationId" : "getConfig",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getConfig"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e407c181f5d20e367d7cd423e8586753",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.AgentPresenceService.getConfig"
+        }
+      },
+      "post" : {
+        "tags" : [ "AgentPresence" ],
+        "summary" : "Update Agent Availability Configuration",
+        "description" : "This API updates the agent availability setting configured in your help desk portal.",
+        "operationId" : "updateConfig",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/getConfig"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE", "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 5,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "1be1328b84baa013546f876206cecd78",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.AgentPresenceService.updateConfig"
+        }
+      }
+    },
+    "/api/v1/offlineAgents" : {
+      "get" : {
+        "tags" : [ "AgentPresence" ],
+        "summary" : "Get Offline Agents",
+        "description" : "This API lists the agents who are currently offline in a particular department.",
+        "operationId" : "getOfflineAgents",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Key that includes additional, channel-specific information. Values allowed are: @mailStatus@, @phoneStatus@, @phoneMode@, @chatStatus@, and @presenceStatus@.",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "chatStatus", "mailStatus", "phoneStatus", "presenceStatus", "phoneMode" ]
+            },
+            "maxItems" : 5,
+            "uniqueItems" : true
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCurrentAvailability"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "45550a4ff6791d23c0a5b44f08a5f2f7",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.AgentPresenceService.getOfflineAgents"
+        }
+      }
+    },
+    "/api/v1/agentAvailability" : {
+      "get" : {
+        "tags" : [ "AgentPresence" ],
+        "summary" : "Get Current Availability",
+        "description" : "This API lists the current availability of agents in a particular department.",
+        "operationId" : "getCurrentAvailability",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "description" : "Key that includes additional, channel-specific information. Values allowed are: @mailStatus@, @phoneStatus@, @phoneMode@, @chatStatus@, and @presenceStatus@.",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "chatStatus", "mailStatus", "phoneStatus", "presenceStatus", "phoneMode" ]
+            },
+            "maxItems" : 5,
+            "uniqueItems" : true
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the agents must be fetched. The default value is 0 and the maximum value allowed is 5999.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the agents must be fetched. The default value is 0 and the maximum value allowed is 5999.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCurrentAvailability"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c6c43816e4a354ab8d475fedb9e18ca8",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.AgentPresenceService.getCurrentAvailability"
+        }
+      }
+    },
+    "/api/v1/onlineAgents" : {
+      "get" : {
+        "tags" : [ "AgentPresence" ],
+        "summary" : "Get Online Agents",
+        "description" : "This API lists the agents who are currently online in a particular department.",
+        "operationId" : "getOnlineAgents",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Key that includes additional, channel-specific information. Values allowed are: mailStatus, phoneStatus, phoneMode, chatStatus, and presenceStatus",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "description" : "Key that includes additional, channel-specific information. Values allowed are: @mailStatus@, @phoneStatus@, @phoneMode@, @chatStatus@, and @presenceStatus@.",
+            "items" : {
+              "type" : "string",
+              "enum" : [ "chatStatus", "mailStatus", "phoneStatus", "presenceStatus", "phoneMode" ]
+            },
+            "maxItems" : 5,
+            "uniqueItems" : true
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCurrentAvailability"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "bd5de55bd178c8afa01384497ce6ae8c",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.AgentPresenceService.getOnlineAgents"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "presenceObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ONLINE", "OFFLINE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "agentId", "status" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AgentPresence.json#/components/schemas/presenceObject"
+        }
+      }
+    },
+    "responses" : {
+      "getCurrentAvailability" : {
+        "description" : "getCurrentAvailability template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "chatStatus" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "ONLINE", "OFFLINE" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "phoneMode" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "PHONE", "WEB", null ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "phoneStatus" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "ONLINE", "OFFLINE", "BUSY" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "mailStatus" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "ONLINE", "OFFLINE" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "presenceStatus" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "ONLINE", "OFFLINE" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./AgentPresence.json#/components/schemas/data"
+                  },
+                  "hasMore" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "totalAgentsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "data", "hasMore", "totalAgentsCount" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "chatStatus" : "ONLINE",
+                    "agentId" : "892000000008734",
+                    "phoneMode" : "WEB",
+                    "phoneStatus" : "ONLINE",
+                    "mailStatus" : "OFFLINE",
+                    "presenceStatus" : "ONLINE",
+                    "status" : "ONLINE"
+                  }, {
+                    "chatStatus" : "ONLINE",
+                    "agentId" : "8920000000056010",
+                    "phoneMode" : "WEB",
+                    "phoneStatus" : "ONLINE",
+                    "mailStatus" : "OFFLINE",
+                    "presenceStatus" : "ONLINE",
+                    "status" : "ONLINE"
+                  } ],
+                  "totalAgentsCount" : "2",
+                  "hasMore" : false
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getConfig" : {
+        "description" : "getConfig template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIdleTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 360,
+                  "minimum" : 1,
+                  "pattern" : "([0-9]+)"
+                },
+                "treatIdleAgentsAsOffline" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "agentIdleTime", "treatIdleAgentsAsOffline" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "agentIdleTime" : "30",
+                  "treatIdleAgentsAsOffline" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the department from which the availability details should be fetched. To include all accessible departments, pass the value of this key as @-1@.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of agents to list. The default value is 20 and the maximum value allowed is 6000.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of agents to list. The default value is 20 and the maximum value allowed is 6000.",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "getConfig" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIdleTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 360,
+                  "minimum" : 1,
+                  "pattern" : "([0-9]+)"
+                },
+                "treatIdleAgentsAsOffline" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIdleTime" : "30",
+                  "treatIdleAgentsAsOffline" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AgentPresence"
+}

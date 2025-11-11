@@ -1,0 +1,1269 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_Integration",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/integrationServices/WHATSAPP/phonenumbers" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getWhatsappPhoneNumbers",
+        "parameters" : [ {
+          "name" : "wabaId",
+          "in" : "query",
+          "description" : "WhatsApp Business Account id",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "WhatsApp Business Account id",
+            "enum" : [ "1084904261937454" ],
+            "maxLength" : 30,
+            "minLength" : 10
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getWhatsappPhoneNumbers"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppPhonenumbers"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/{number}/profile/photo" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getWhatsAppProfilePhotoAPI",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/profilePhotoResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppProfilePhoto"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "uploadWhatsAppProfilePhotoAPI",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "photo" : {
+                    "type" : "string",
+                    "format" : "binary",
+                    "description" : ""
+                  }
+                },
+                "required" : [ "photo" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/profilePhotoResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.uploadWhatsAppProfilePhoto"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/{number}/profile" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getWhatsappProfile",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getWhatsappProfileResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppProfile"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "updateProfileAboutAPI",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateWhatsappProfiePayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getWhatsappProfileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.updateWhatsAppProfile"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/templateCreditExhaustStatus" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getTemplateCreditExhaustStatus",
+        "parameters" : [ {
+          "name" : "receiverId",
+          "in" : "query",
+          "description" : "ID to which Message Has to be sent",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "ID to which Message Has to be sent",
+            "enum" : [ "+919940237416", "+14003272567" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "channelId",
+          "in" : "query",
+          "description" : "channel id",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "channel id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppTemplateCreditExhaustStatus"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/sandBoxTesters" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getSandboxTesters",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getSandboxTesters"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppSandBoxTesters"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "updateSandboxTesters",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateSandboxTesters"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSandboxTesters"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.addOrUpdateWhatsAppSandBoxTesters"
+        }
+      }
+    },
+    "/api/v1/im/account" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getIMIntegrationStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getIMIntegrationStatus"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMIntegService.getIMIntegrationStatus"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "integrateWithCurrentOrg",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/integrateWithCurrentOrg"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMIntegrationStatus"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMIntegService.integrateWithCurrentOrg"
+        }
+      },
+      "delete" : {
+        "tags" : [ "IM_Integration" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "unlinkFromCurrentOrg",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMIntegrationStatus"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/phonenumbers/{phoneNumberId}/codeVerification" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getWhatsAppPhonenumberOTP",
+        "parameters" : [ {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "WhatsApp Business Account id",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "WhatsApp Business Account id",
+            "enum" : [ "sms", "voice" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/phoneNumberId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppOTP"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "submitWhatsAppPhonenumberOTP",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/phoneNumberId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/whatsAppOtp"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.submitWhatsAppOTP"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/{integrationServiceId}/authurl" : {
+      "get" : {
+        "tags" : [ "IM_Integration" ],
+        "operationId" : "getAuthUrl",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "PARENT_ACCOUNT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "integrationServiceId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "FACEBOOKMESSENGER" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9\\-]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/authUrlResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 180,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMIntegService.getAuthenticationUrl"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "phoneNumbersResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "nameVerificationStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "APPROVED", "DECLINED", "AVAILABLE_WITHOUT_REVIEW" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "phoneNumber" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^\\+[0-9]*$"
+          },
+          "connectionMessage" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AVAILABLE", "NAME_STATUS_PENDING", "CONFIGURED_IN_CHANNEL", "OTP_VERIFICATION_PENDING", "CERTIFICATE_NOT_FOUND", "NAME_STATUS_DECLINED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "connectionStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PENDING", "CONNECTED", "DISCONNECTED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "hasCertificate" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "canConnect" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "verifiedName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "codeVerificationStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "VERIFIED", "NOT_VERIFIED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "canConnect", "codeVerificationStatus", "connectionMessage", "connectionStatus", "hasCertificate", "id", "nameVerificationStatus", "phoneNumber", "verifiedName" ]
+      },
+      "listofPhoneNumbers" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_Integration.json#/components/schemas/phoneNumbersResponse"
+        }
+      },
+      "authUrlDataJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "authUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 50
+          }
+        },
+        "required" : [ "authUrl" ]
+      }
+    },
+    "responses" : {
+      "getWhatsappPhoneNumbers" : {
+        "description" : "getWhatsappPhoneNumbers template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Integration.json#/components/schemas/listofPhoneNumbers"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "profilePhotoResponse" : {
+        "description" : "profilePhotoResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "profilePhotoLink" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "kind", "profilePhotoLink" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getWhatsappProfileResponse" : {
+        "description" : "getWhatsappProfileResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "profileAbout" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "kind", "profileAbout" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSandboxTesters" : {
+        "description" : "getSandboxTesters template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "sandBoxTesters" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "^\\+[0-9]*$",
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.license", "single.efc", "list.addOn", "single.addOn", "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "kind", "modifiedTime", "sandBoxTesters" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIMIntegrationStatus" : {
+        "description" : "getIMIntegrationStatus template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "imOrgId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "DISABLED", "NOT_CONFIGURED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "imOrgId", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "authUrlResponse" : {
+        "description" : "authUrlResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Integration.json#/components/schemas/authUrlDataJSON"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "number" : {
+        "name" : "number",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "enum" : [ "+13312040198" ],
+          "maxLength" : 30,
+          "minLength" : 1,
+          "pattern" : "(\\+[0-9]+)"
+        }
+      },
+      "phoneNumberId" : {
+        "name" : "phoneNumberId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "1033445337426897" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "updateWhatsappProfiePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "about" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 200,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "about" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "integrateWithCurrentOrg" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "IMOrgId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Org ID",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "IMOrgId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "whatsAppOtp" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "otp" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "6 digit code",
+                  "enum" : [ "112233", "906537", "541806" ],
+                  "maxLength" : 6,
+                  "minLength" : 6
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateSandboxTesters" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "sandBoxTesters" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "^\\+[0-9]*$",
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "sandBoxTesters" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_Integration"
+}

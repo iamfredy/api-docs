@@ -1,0 +1,208 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "GC_Info",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "gc"
+  },
+  "paths" : {
+    "/api/v1/zohogc/updateGCStatus" : {
+      "post" : {
+        "tags" : [ "GC_Info" ],
+        "operationId" : "updateGCStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateGCStatus"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./GC_Status.json#/components/responses/updateGCStatus"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "gc",
+          "apimethod" : "com.zoho.desk.gc.restapi.GCIntegService.createGCOrganization"
+        }
+      }
+    },
+    "/api/v1/zohogc" : {
+      "get" : {
+        "tags" : [ "GC_Info" ],
+        "operationId" : "getGCOrgId",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getGCOrgId"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "gc",
+          "apimethod" : "com.zoho.desk.gc.restapi.GCIntegService.getGCOrgId"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "getGCOrgId" : {
+        "description" : "getGCOrgId template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "licenceStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "allowed", "not_allowed" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "gcIntegrationStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "active", "disabled", "not_configured" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "gcOrgId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "gcIntegrationStatus", "gcOrgId", "licenceStatus" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "updateGCStatus" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "enabled", "disabled" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "GC_Info"
+}

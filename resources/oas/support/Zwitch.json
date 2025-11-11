@@ -1,0 +1,1543 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Zwitch",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "import"
+  },
+  "paths" : {
+    "/api/v1/zwitchServices" : {
+      "get" : {
+        "tags" : [ "Zwitch" ],
+        "summary" : "Get Zwitch Services",
+        "description" : "This API to fetch zwitch supported service details.",
+        "operationId" : "zwitchServices",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/zwitchServices"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ],
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "reports",
+          "apihash" : "b31831939d5ddfeafdd5b93465b92d04",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.ZwitchService.getZwitchServices"
+        }
+      }
+    },
+    "/api/v1/zwitch/{zwitchId}" : {
+      "get" : {
+        "tags" : [ "Zwitch" ],
+        "summary" : "Get zwitch",
+        "description" : "This API fetches a single zwitch info from your help desk portal.",
+        "operationId" : "getZwitch",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/zwitchId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/zwitchResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "4cca2d9b5101f82a42b296b7b9f80797",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.ZwitchService.getZwitchRequest"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Zwitch" ],
+        "summary" : "Update zwitch",
+        "description" : "This API update zwitch request in help desk portal.",
+        "operationId" : "updateZwitch",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/zwitchId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/zwitchUpdateRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/zwitchResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "Zwitch_DOSRateLimiter"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "218f4ab9b1f82d1f0a28d25720378cb0",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.ZwitchService.updateZwitch"
+        }
+      }
+    },
+    "/api/v1/zwitch" : {
+      "get" : {
+        "tags" : [ "Zwitch" ],
+        "summary" : "Get zwitch list",
+        "description" : "This API fetches a list zwitch info from your help desk portal.",
+        "operationId" : "listOfZwitch",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of Zwitch requests to be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The number of Zwitch requests to be fetched.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting position of the index.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting position of the index.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/zwitchResponses"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "40a46edc6e0df74e2f7e133539de51e4",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.ZwitchService.getZwitchRequests"
+        }
+      },
+      "post" : {
+        "tags" : [ "Zwitch" ],
+        "summary" : "Post zwitch",
+        "description" : "This API add a zwitch import entry in your help desk portal.",
+        "operationId" : "addZwitch",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/zwitchRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/zwitchResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "Zwitch_DOSRateLimiter"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "e73c55cea0bb37ab41a0e452390fa709",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.ZwitchService.addZwitchEntry"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "zwitchService" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "templates" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 5,
+              "minProperties" : 5,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fileInputs" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "name" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "modules" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "displayLabel" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "apiName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "source" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "type" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "order" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            }
+                          },
+                          "required" : [ "apiName", "displayLabel", "order", "source", "type" ]
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "modules", "name" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "displayLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "source" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "type" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "order" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "apiName", "displayLabel", "order", "source", "type" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "authentications" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "auth" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "source" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "auth", "source" ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "authentications", "description", "fileInputs", "modules", "name" ]
+            },
+            "uniqueItems" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "name", "templates" ]
+      },
+      "zwitchServiceList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Zwitch.json#/components/schemas/zwitchService"
+        }
+      },
+      "zwitchResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "dataUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 3000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+          },
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "templateName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "serviceUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 3000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "sourceConnection" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "authType" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "NONE", "BASIC", "BEARER", "CUSTOM" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "authDetails" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 5,
+                "minProperties" : 5,
+                "properties" : {
+                  "password" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "clientId" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "authToken" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "clientSecret" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "userName" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "authToken", "clientId", "clientSecret", "password", "userName" ]
+              }
+            },
+            "required" : [ "authDetails", "authType" ]
+          },
+          "comment" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65000,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "serviceName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modules" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "apiName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "order" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "apiName", "order" ]
+            },
+            "uniqueItems" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "waiting_for_authentication", "submitted", "setup_in_progress", "import_in_progress", "completed", "file_validation_failed", "cancel" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter by status. The allowed values are Waiting for Authentication, Submitted in Queue, Import in Progress, Completed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "comment", "createdBy", "createdTime", "dataUrl", "id", "modifiedTime", "modules", "serviceName", "serviceUrl", "sourceConnection", "status", "templateName" ]
+      },
+      "zwitchList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Zwitch.json#/components/schemas/zwitchResponse"
+        }
+      }
+    },
+    "responses" : {
+      "zwitchServices" : {
+        "description" : "zwitchServices template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Zwitch.json#/components/schemas/zwitchServiceList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "templates" : [ {
+                      "name" : "xml",
+                      "fileInputs" : [ {
+                        "name" : "Companies",
+                        "modules" : [ {
+                          "displayLabel" : "Accounts",
+                          "apiName" : "accounts",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "4"
+                        } ]
+                      }, {
+                        "name" : "Tickets",
+                        "modules" : [ {
+                          "displayLabel" : "Threads",
+                          "apiName" : "threads",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "7"
+                        }, {
+                          "displayLabel" : "Attachments",
+                          "apiName" : "attachments",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "22"
+                        }, {
+                          "displayLabel" : "Cases-Comments",
+                          "apiName" : "ticketComments",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "8"
+                        }, {
+                          "displayLabel" : "Cases",
+                          "apiName" : "tickets",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "6"
+                        } ]
+                      }, {
+                        "name" : "Users",
+                        "modules" : [ {
+                          "displayLabel" : "Agents",
+                          "apiName" : "agents",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "1"
+                        }, {
+                          "displayLabel" : "Contacts",
+                          "apiName" : "contacts",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "5"
+                        } ]
+                      }, {
+                        "name" : "Solutions",
+                        "modules" : [ {
+                          "displayLabel" : "Solutions-Sections",
+                          "apiName" : "kbSections",
+                          "source" : "api",
+                          "type" : "entity",
+                          "order" : "20"
+                        }, {
+                          "displayLabel" : "Solutions-RootCategories",
+                          "apiName" : "kbRootCategories",
+                          "source" : "api",
+                          "type" : "entity",
+                          "order" : "19"
+                        }, {
+                          "displayLabel" : "Solutions-Articles",
+                          "apiName" : "articles",
+                          "source" : "api",
+                          "type" : "entity",
+                          "order" : "21"
+                        } ]
+                      } ],
+                      "description" : "",
+                      "modules" : [ {
+                        "displayLabel" : "KBRootCategories",
+                        "apiName" : "kbRootCategories",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "19"
+                      }, {
+                        "displayLabel" : "TicketComments",
+                        "apiName" : "ticketComments",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "8"
+                      }, {
+                        "displayLabel" : "KBSections",
+                        "apiName" : "kbSections",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "20"
+                      }, {
+                        "displayLabel" : "Tickets",
+                        "apiName" : "tickets",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "6"
+                      }, {
+                        "displayLabel" : "Articles",
+                        "apiName" : "articles",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "21"
+                      }, {
+                        "displayLabel" : "Accounts",
+                        "apiName" : "accounts",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "4"
+                      }, {
+                        "displayLabel" : "Contacts",
+                        "apiName" : "contacts",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "5"
+                      }, {
+                        "displayLabel" : "EndUsers",
+                        "apiName" : "endUsers",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "2"
+                      }, {
+                        "displayLabel" : "Threads",
+                        "apiName" : "threads",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "7"
+                      } ],
+                      "authentications" : [ {
+                        "auth" : "none",
+                        "source" : "backup"
+                      }, {
+                        "auth" : "token",
+                        "source" : "api"
+                      } ]
+                    } ],
+                    "name" : "Freshdesk"
+                  }, {
+                    "templates" : [ {
+                      "name" : "json",
+                      "fileInputs" : [ {
+                        "name" : "Tickets",
+                        "modules" : [ {
+                          "displayLabel" : "Threads",
+                          "apiName" : "threads",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "7"
+                        }, {
+                          "displayLabel" : "Cases-Comments",
+                          "apiName" : "ticketComments",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "8"
+                        }, {
+                          "displayLabel" : "Attachments",
+                          "apiName" : "attachments",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "22"
+                        }, {
+                          "displayLabel" : "Cases",
+                          "apiName" : "tickets",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "6"
+                        } ]
+                      }, {
+                        "name" : "Users",
+                        "modules" : [ {
+                          "displayLabel" : "Agents",
+                          "apiName" : "agents",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "1"
+                        }, {
+                          "displayLabel" : "Contacts",
+                          "apiName" : "contacts",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "5"
+                        } ]
+                      }, {
+                        "name" : "Organizations",
+                        "modules" : [ {
+                          "displayLabel" : "Accounts",
+                          "apiName" : "accounts",
+                          "source" : "backup",
+                          "type" : "entity",
+                          "order" : "4"
+                        } ]
+                      } ],
+                      "description" : "",
+                      "modules" : [ {
+                        "displayLabel" : "Accounts",
+                        "apiName" : "accounts",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "4"
+                      }, {
+                        "displayLabel" : "KbSections",
+                        "apiName" : "kbSections",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "20"
+                      }, {
+                        "displayLabel" : "Articles",
+                        "apiName" : "articles",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "21"
+                      }, {
+                        "displayLabel" : "EndUsers",
+                        "apiName" : "endUsers",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "2"
+                      }, {
+                        "displayLabel" : "Contacts",
+                        "apiName" : "contacts",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "5"
+                      }, {
+                        "displayLabel" : "Tickets",
+                        "apiName" : "tickets",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "6"
+                      }, {
+                        "displayLabel" : "KBRootCategories",
+                        "apiName" : "kbRootCategories",
+                        "source" : "api",
+                        "type" : "entity",
+                        "order" : "19"
+                      }, {
+                        "displayLabel" : "TicketComments",
+                        "apiName" : "ticketComments",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "8"
+                      }, {
+                        "displayLabel" : "Threads",
+                        "apiName" : "threads",
+                        "source" : "backup",
+                        "type" : "entity",
+                        "order" : "7"
+                      } ],
+                      "authentications" : [ {
+                        "auth" : "none",
+                        "source" : "backup"
+                      }, {
+                        "auth" : "token",
+                        "source" : "api"
+                      } ]
+                    } ],
+                    "name" : "Zendesk"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "zwitchResponse" : {
+        "description" : "zwitchResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "dataUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The migration file link shared by the source service",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "templateName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "serviceUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The source service url",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "sourceConnection" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "authType" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "NONE", "BASIC", "BEARER", "CUSTOM" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "authDetails" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "password" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientId" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "authToken" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientSecret" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "userName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "authToken", "clientId", "clientSecret", "password", "userName" ]
+                    }
+                  },
+                  "required" : [ "authDetails", "authType" ]
+                },
+                "comment" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Additional comment special case requirements",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "serviceName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "order" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int32",
+                        "pattern" : "([0-9]+)"
+                      }
+                    },
+                    "required" : [ "apiName", "order" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "waiting_for_authentication", "submitted", "setup_in_progress", "import_in_progress", "completed", "file_validation_failed", "cancel" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Status of zwitch request, Allowed values @waiting_for_authentication@, @submitted@, @in_progress@, @completed@ , @file_validation_failed@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : true,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "comment", "createdBy", "createdTime", "dataUrl", "id", "modifiedTime", "modules", "serviceName", "serviceUrl", "sourceConnection", "status", "templateName" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "dataUrl" : "https://download.zoho.com/downlodUrl",
+                  "modifiedTime" : 1668165473000,
+                  "templateName" : "xml",
+                  "createdBy" : "4000000000349",
+                  "serviceUrl" : "https://desk.zoho.com/service",
+                  "createdTime" : 1668165473000,
+                  "fileInfo" : [ {
+                    "sizeInBytes" : "23782344",
+                    "name" : "FreshdeskXmlBackup.zip",
+                    "downloadUrl" : "https://download.zoho.com/downlodUrl",
+                    "createdTime" : 1668165473000,
+                    "id" : "189200005676645"
+                  }, {
+                    "sizeInBytes" : "78234344",
+                    "name" : "FreshdeskXmlBackup2.zip",
+                    "downloadUrl" : "https://download.zoho.com/downlodUrl",
+                    "createdTime" : 1668165473000,
+                    "id" : "1892000056734545"
+                  } ],
+                  "comment" : "",
+                  "id" : "4000000262013",
+                  "serviceName" : "Freshdesk",
+                  "modules" : [ {
+                    "displayLabel" : "Accounts",
+                    "apiName" : "accounts",
+                    "order" : "2"
+                  } ],
+                  "status" : "submitted"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "zwitchResponses" : {
+        "description" : "zwitchResponses template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Zwitch.json#/components/schemas/zwitchList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "dataUrl" : "https://download.zoho.com/downlodUrl",
+                    "modifiedTime" : 1668165473000,
+                    "templateName" : "xml",
+                    "createdBy" : "1892000000042343",
+                    "serviceUrl" : "https://desk.zoho.com/service",
+                    "createdTime" : 1668165473000,
+                    "fileInfo" : [ {
+                      "sizeInBytes" : "784",
+                      "name" : "FreshdeskData.zip",
+                      "downloadUrl" : "https://download.zoho.com/downlodUrl",
+                      "createdTime" : 1668165473000,
+                      "id" : "1892000000042324"
+                    } ],
+                    "comment" : "",
+                    "id" : "1892000000042032",
+                    "serviceName" : "Freshdesk",
+                    "modules" : [ {
+                      "displayLabel" : "Accounts",
+                      "apiName" : "accounts",
+                      "order" : "2"
+                    }, {
+                      "displayLabel" : "Contacts",
+                      "apiName" : "contacts",
+                      "order" : "3"
+                    } ],
+                    "status" : "submitted"
+                  }, {
+                    "dataUrl" : "https://download.zoho.com/downlodUrl",
+                    "modifiedTime" : 1667301473000,
+                    "templateName" : "json",
+                    "createdBy" : "1892000000042343",
+                    "serviceUrl" : "https://desk.zoho.com/service",
+                    "createdTime" : 1667301473000,
+                    "fileInfo" : [ {
+                      "sizeInBytes" : "8783424",
+                      "name" : "FreshdeskData.zip",
+                      "downloadUrl" : "https://download.zoho.com/downlodUrl",
+                      "createdTime" : 1667301473000,
+                      "id" : "1892000000042328"
+                    }, {
+                      "sizeInBytes" : "87383",
+                      "name" : "FreshdeskResidualData.zip",
+                      "downloadUrl" : "https://download.zoho.com/downlodUrl",
+                      "createdTime" : 1669893473000,
+                      "id" : "1892000000042366"
+                    } ],
+                    "comment" : "",
+                    "id" : "1892000000042035",
+                    "serviceName" : "Zendesk",
+                    "modules" : [ {
+                      "displayLabel" : "Accounts",
+                      "apiName" : "accounts",
+                      "order" : "2"
+                    }, {
+                      "displayLabel" : "Contacts",
+                      "apiName" : "contacts",
+                      "order" : "3"
+                    } ],
+                    "status" : "completed"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "zwitchId" : {
+        "name" : "zwitchId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "zwitchRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "dataUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                },
+                "templateName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "serviceUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                },
+                "files" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "fileName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "fileId" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)",
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "required" : [ "fileId", "fileName" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "sourceConnection" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "authType" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "NONE", "BASIC", "BEARER", "CUSTOM" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "authDetails" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "password" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientId" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "authToken" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientSecret" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "userName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "authToken", "clientId", "clientSecret", "password", "userName" ]
+                    }
+                  },
+                  "required" : [ "authDetails", "authType" ]
+                },
+                "comment" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 0
+                },
+                "serviceName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 1,
+                    "minProperties" : 1,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      }
+                    },
+                    "required" : [ "apiName" ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "modules", "serviceName", "templateName" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "templateName" : "xml",
+                  "serviceUrl" : "https://desk.zoho.com/service",
+                  "files" : [ {
+                    "fileName" : "FreshdeskXmlBackup.zip",
+                    "fileId" : "189200005676645"
+                  }, {
+                    "fileName" : "FreshdeskXmlBackup2.zip",
+                    "fileId" : "1892000056734545"
+                  } ],
+                  "sourceConnection" : {
+                    "authType" : "NONE",
+                    "authDetails" : { }
+                  },
+                  "comment" : "All data imported to Freshdesk department",
+                  "serviceName" : "Freshdesk",
+                  "modules" : [ {
+                    "apiName" : "accounts"
+                  }, {
+                    "apiName" : "contacts"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "zwitchUpdateRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "dataUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                },
+                "serviceUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 3000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                },
+                "files" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "fileName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "fileId" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)",
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "required" : [ "fileId", "fileName" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "sourceConnection" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "authType" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "NONE", "BASIC", "BEARER", "CUSTOM" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "authDetails" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "password" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientId" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "authToken" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "clientSecret" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "userName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "authToken", "clientId", "clientSecret", "password", "userName" ]
+                    }
+                  },
+                  "required" : [ "authDetails", "authType" ]
+                },
+                "comment" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 0
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 1,
+                    "minProperties" : 1,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      }
+                    },
+                    "required" : [ "apiName" ]
+                  },
+                  "uniqueItems" : false
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "dataUrl" : "https://download.zoho.com/downlodUrl",
+                  "files" : [ {
+                    "fileName" : "FreshdeskXmlBackup.zip",
+                    "fileId" : "189200005676645"
+                  }, {
+                    "fileName" : "FreshdeskXmlBackup2.zip",
+                    "fileId" : "1892000056734545"
+                  } ],
+                  "sourceConnection" : {
+                    "authType" : "NONE",
+                    "authDetails" : { }
+                  },
+                  "comment" : "Residual migration data is uploaded now",
+                  "modules" : [ {
+                    "apiName" : "accounts"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Zwitch"
+}

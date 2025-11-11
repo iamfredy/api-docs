@@ -1,0 +1,359 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AgentSignatures",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/agents/{agentId}/signatures" : {
+      "get" : {
+        "tags" : [ "AgentSignatures" ],
+        "summary" : "Get signatures of agent",
+        "description" : "This API fetches the different signatures configured by an agent.",
+        "operationId" : "getSignatures",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/commonSignaturesResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2cd18bfc50ac03592320bf0918a1e9e4",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.signature.AgentSignaturesService.getSignatures"
+        }
+      },
+      "patch" : {
+        "tags" : [ "AgentSignatures" ],
+        "summary" : "Update signatures of agent",
+        "description" : "This API updates the existing signatures of an agent.",
+        "operationId" : "updateSignatures",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/agentSignatureJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/commonSignaturesResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e556de080f0ffd72b67c177c42280711",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.signature.AgentSignaturesService.updateSignatures"
+        }
+      }
+    },
+    "/api/v1/agents/{agentId}/updateCustomizedSignature" : {
+      "post" : {
+        "tags" : [ "AgentSignatures" ],
+        "summary" : "Update customized signatures of agent",
+        "description" : "This API updates the customized signatures of an agent.",
+        "operationId" : "updateCustomSignature",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/customSignatureJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/commonSignaturesResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "8fdec482164e940f42586ce868c25260",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.signature.AgentSignaturesService.updateCustomSignature"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "customSignatureJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "signature" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "departmentId", "signature" ]
+      },
+      "customSignatureList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AgentSignatures.json#/components/schemas/customSignatureJson"
+        }
+      }
+    },
+    "responses" : {
+      "commonSignaturesResponse" : {
+        "description" : "commonSignaturesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "customizedSignatures" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "signature" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "departmentId" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      }
+                    },
+                    "required" : [ "departmentId", "signature" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "defaultSignature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "agentId", "customizedSignatures", "defaultSignature", "id", "isActive" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "customizedSignatures" : [ {
+                    "signature" : "<div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div>Bonnie Runolfsson<br /></div><div><b>Manager</b><br /></div><div>Sales &amp; Marketing<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div><div><div><br /></div></div><div><br /></div></div><div><br /></div></div><div><br /></div></div>",
+                    "departmentId" : 4000000015063
+                  } ],
+                  "agentId" : 4000000012902,
+                  "defaultSignature" : "<div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div>Bonnie Runolfsson<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div></div><div><br /></div></div>",
+                  "id" : "4000000012902",
+                  "isActive" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "agentId" : {
+        "name" : "agentId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "agentSignatureJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "customizedSignatures" : {
+                  "$ref" : "./AgentSignatures.json#/components/schemas/customSignatureList"
+                },
+                "defaultSignature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_custom"
+                  }
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "customizedSignatures" : [ {
+                    "signature" : "<div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div>Bonnie Runolfsson<br /></div><div><b>Manager</b><br /></div><div><b>Sales &amp; Marketing</b><br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div><div><div><br /></div></div><div><br /></div></div><div><br /></div></div><div><br /></div></div>",
+                    "departmentId" : 4000000015063
+                  } ],
+                  "defaultSignature" : "<div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div>Bonnie Runolfsson<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div></div><div><br /></div></div>"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "customSignatureJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "signature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_custom"
+                  }
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "departmentId", "signature" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "signature" : "<div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div style=\"font-size: 13px; font-family: Arial, Helvetica, Verdana, sans-serif\"><div>Bonnie Runolfsson<br /></div><div><b>Manager</b><br /></div><div>Sales &amp; Marketing<br /></div><div><b>@Surface Sureve Inc.</b><br /></div></div></div></div><div><div><br /></div></div><div><br /></div></div><div><br /></div></div><div><br /></div></div>",
+                  "departmentId" : 4000000015063
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AgentSignatures"
+}

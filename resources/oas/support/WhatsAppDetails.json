@@ -1,0 +1,132 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "WhatsAppDetails",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/integrationServices/WHATSAPP/details" : {
+      "get" : {
+        "tags" : [ "WhatsAppDetails" ],
+        "operationId" : "getWhatsAppDetails",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getWhatsAppDetails"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppDetails"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "WAJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "numberStatus" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "wabaStatus" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "numberStatus", "wabaStatus" ]
+      }
+    },
+    "responses" : {
+      "getWhatsAppDetails" : {
+        "description" : "getWhatsAppDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./WhatsAppDetails.json#/components/schemas/WAJson"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.license", "single.efc", "list.addOn", "single.addOn", "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "WhatsAppDetails"
+}

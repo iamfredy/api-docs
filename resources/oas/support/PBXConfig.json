@@ -1,0 +1,219 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "PBXConfig",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "telephony"
+  },
+  "paths" : {
+    "/api/v1/pbx/{pbxName}/configuration" : {
+      "get" : {
+        "tags" : [ "PBXConfig" ],
+        "summary" : "Get Type1 PBX Configuration",
+        "description" : "This API fetches the configuration details of a currently enabled PBX in your Zoho Desk portal.",
+        "operationId" : "getPBXConfig",
+        "parameters" : [ {
+          "name" : "pbxName",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9.\\-\\s]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPBXConfigType1Response"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "fce4695c11eb3bd9bb82d70b202d7bc3",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBXConfig.PBXConfigService.getPBXConfig"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "pbxPreferenceResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "missedCallDepartment" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "departmentId" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "enabled" : {
+                "type" : [ "boolean", "null" ]
+              }
+            },
+            "required" : [ "departmentId", "enabled" ]
+          },
+          "createTicketOnMissedCall" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "callDirection" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "All", "Inbound", "Outbound" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "enabled" : {
+                "type" : [ "boolean", "null" ]
+              }
+            },
+            "required" : [ "callDirection", "enabled" ]
+          }
+        },
+        "required" : [ "createTicketOnMissedCall", "missedCallDepartment" ]
+      },
+      "allPbGroupJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "groupIdentifyMemberId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "pbxDialCode" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9():.; ])+"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "groupIdentifyMemberId", "id", "name", "pbxDialCode" ]
+      },
+      "listOfPbGroupJson" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./PBXConfig.json#/components/schemas/allPbGroupJson"
+        }
+      }
+    },
+    "responses" : {
+      "getPBXConfigType1Response" : {
+        "description" : "getPBXConfigType1Response template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "preferences" : {
+                  "$ref" : "./PBXConfig.json#/components/schemas/pbxPreferenceResponse"
+                },
+                "phoneBridgeGroup" : {
+                  "$ref" : "./PBXConfig.json#/components/schemas/listOfPbGroupJson"
+                }
+              },
+              "required" : [ "phoneBridgeGroup", "preferences" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "preferences" : {
+                    "missedCallDepartment" : {
+                      "departmentId" : "",
+                      "enabled" : false
+                    },
+                    "createTicketOnMissedCall" : {
+                      "callDirection" : "All",
+                      "enabled" : false
+                    }
+                  },
+                  "phoneBridgeGroup" : [ {
+                    "groupIdentifyMemberId" : "6401113",
+                    "pbxDialCode" : "ISD:100",
+                    "name" : "Marketing Support",
+                    "id" : "5000000017023"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "PBXConfig"
+}

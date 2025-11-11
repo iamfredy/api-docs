@@ -1,0 +1,3779 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "FieldPrediction",
+    "version" : "1.0.0",
+    "x-clan-group" : "zia",
+    "x-module-group" : "zia"
+  },
+  "paths" : {
+    "/api/v1/ziapipeline/predictions/entry/predictors" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getEntryForPredictors",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/threadId"
+        }, {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "status of predictor",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "status of predictor",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/predictorsEntriesSimplifiedJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 120,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getEntryForPredictors"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/entry/{entryId}/predict" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "predictEntry",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "#/components/parameters/entryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Inference.json#/components/responses/inferenceUnannotatedData"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.predictEntry"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/([0-9]+)/fieldValuesCount" : {
+      "post" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "fieldValuesCount",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/fieldValuesCountJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getPredictionFieldValueCount"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/entries" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getDatasetEntries",
+        "parameters" : [ {
+          "name" : "entryStatus",
+          "in" : "query",
+          "description" : "dataset entry status filter",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "dataset entry status filter",
+            "enum" : [ "ANNOTATED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "dataSource",
+          "in" : "query",
+          "description" : "data source filter",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "data source filter",
+            "enum" : [ "DATASET" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/versionStatus"
+        }, {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./DatasetEntry.json#/components/responses/datasetEntryList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getEntries"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/entry/{entryId}" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getEntryById",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "#/components/parameters/entryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/predictorEntry"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getEntryById"
+        }
+      },
+      "delete" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "deleteEntry",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "#/components/parameters/entryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.deleteEntry"
+        }
+      },
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "updateDatasetEntry",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "#/components/parameters/entryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/predictorEntry"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.updateEntry"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/([0-9]+)/entries/import" : {
+      "post" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "importEntries",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/importEntriesJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionImportService.importEntries"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/columns" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getDatasetFeatures",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/versionStatus"
+        }, {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./FieldDetails.json#/components/responses/fieldDetails"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/ziapipeline/predictions" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getFieldPredictions",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetails"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getPredictionDetails"
+        }
+      },
+      "post" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "addFieldPrediction",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addFieldPrediction"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetail"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.addFieldPrediction"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/allowedInputFields" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getAllowedInputFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllowedInputFields"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getAllowedInputFields"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/publish" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "publishDataset",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetail"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.publish"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getFieldPrediction",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetail"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getPredictionDetail"
+        }
+      },
+      "delete" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "deletePredictor",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.deletePredictor"
+        }
+      },
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "updateFieldPrediction",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateFieldPrediction_addFieldPrediction"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetail"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.updateFieldPrediction"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/entry/{entryId}/skip" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "skipEntry",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "#/components/parameters/entryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.skipEntry"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/stats" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getPredictorStats",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "allowed values : data,model.To use both,split them with a comma",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "allowed values : data,model.To use both,split them with a comma",
+            "enum" : [ "DATA", "MODEL" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/statsApiResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getPredictorStats"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictionId}/entries/updateMany" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "updateManyEntries",
+        "parameters" : [ {
+          "name" : "predictionId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateManyEntries"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.updateManyEntries"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/entry" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getEntryForAnnotation",
+        "parameters" : [ {
+          "name" : "fromEntryId",
+          "in" : "query",
+          "description" : "The next entry Id to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "The next entry Id to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/predictorEntry"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getEntryForAnnotation"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/inference" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getInferenceByPredictor",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/getInferenceByPredictor_predictorEntry"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./Inference.json#/components/responses/inferenceData"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getInferenceByPredictor"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/([0-9]+)/entries/deleteMany" : {
+      "post" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "DeleteManyEntries",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/EntryIdsListArray"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.deleteManyEntries"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/inference" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getInference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Filter for manual and autoUpdate fields",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Filter for manual and autoUpdate fields",
+            "enum" : [ "SAVE_FIELD", "MANUAL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Inference.json#/components/responses/getAllInference"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 120,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getInference"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/fieldValuesCount" : {
+      "post" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "FieldValuesCountWithoutPredictionId",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/fieldValuesCountWithoutPredictionIdJSON"
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getFieldValueCount"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/discard" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "discardEntries",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.discardEntries"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictorFields" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getAllowedPredictorFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllowedPredictorFields"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getAllowedPredictorFields"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/publish/retry" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "retryPublish",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionDetail"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.retryPublish"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/count" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getPredictionCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "name" : "groupBy",
+          "in" : "query",
+          "description" : "Key that groups the inference count according to a particular attribute.This value can be @action",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that groups the inference count according to a particular attribute.This value can be @action",
+            "enum" : [ "action" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getPredictionCountResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 120,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionService.getPredictionCount"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/{predictorId}/inference/insights" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "getInferenceInsights",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/threadId"
+        }, {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "$ref" : "#/components/parameters/predictorId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Inference.json#/components/responses/getAllInference"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.getInferenceInsights"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/entry" : {
+      "patch" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "addEntry",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/predictorsEntryFeaturesJSON"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/predictorsEntriesJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionAnnotationService.addEntry"
+        }
+      }
+    },
+    "/api/v1/ziapipeline/predictions/([0-9]+)/entries/import/details" : {
+      "get" : {
+        "tags" : [ "FieldPrediction" ],
+        "operationId" : "importEntriesStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/entriesStatus"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziapipeline.restapi.ZIAFieldPredictionImportService.getImportEntriesDetails"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "fieldDetailJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "dataType" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 1,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "value" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiName", "dataType", "displayLabel", "fieldId", "i18NLabel", "name", "value" ]
+      },
+      "fieldsDetailsJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldDetailJSON"
+        }
+      },
+      "predictorEntrySimplifiedData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "entryStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ANNOTATED", "UNANNOTATED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "predictorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fields" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldsDetailsJSONArr"
+          },
+          "dataSource" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "DATASET", "FEEDBACK" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "dataSource", "entryStatus", "fields", "id", "predictorId" ]
+      },
+      "predictorEntrySimplifiedJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "entry" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntrySimplifiedData"
+          }
+        },
+        "required" : [ "entry" ]
+      },
+      "predictorEntrySimplifiedJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntrySimplifiedJSON"
+        }
+      },
+      "fieldConditionsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "fieldName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "value" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "oneOf" : [ {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+              }, {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+                },
+                "uniqueItems" : false
+              } ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "condition", "fieldName", "value" ]
+      },
+      "fieldConditionsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldConditionsJson"
+        }
+      },
+      "criteriaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldConditionsArr"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      },
+      "fieldValuesJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          },
+          "fieldValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          }
+        },
+        "required" : [ "count", "fieldValue" ]
+      },
+      "fieldValues" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldValuesJSON"
+        }
+      },
+      "userInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "name of the predictor",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "status of the field",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "status", "zuid" ]
+      },
+      "getPredictionDetail" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "creator" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/userInfo"
+          },
+          "modes" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "CREATE_TICKET", "CUSTOMER_REPLY", "OUTGOING", "FORWARD" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "criteria" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+          },
+          "modelStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TRAINED", "IN_PROGRESS", "FAILED", "NOT_TRAINED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "The Department of the predictor",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "datasetStatus" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "DRAFT", "PUBLISHED" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "modifier" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/userInfo"
+          },
+          "accuracy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ENGLISH", "JAPANESE", "CHINESE", "SPANISH", "GERMAN", "FRENCH", "TURKISH", "RUSSIAN", "PORTUGUESE", "ITALIAN", "DUTCH", "DANISH", "SWEDISH", "POLISH" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "layoutId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "layout Id",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "ruleGroupId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 1,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "name of the predictor",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SAVE_FIELD", "MANUAL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "moduleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fields" : {
+            "$ref" : "./FieldDetails.json#/components/schemas/fieldDetails"
+          },
+          "predictionAccuracy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "status of the field",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "accuracy", "action", "createdTime", "creator", "criteria", "datasetStatus", "departmentId", "fields", "id", "language", "layoutId", "modelStatus", "modes", "modifiedTime", "modifier", "module", "moduleId", "name", "predictionAccuracy", "ruleGroupId", "status" ]
+      },
+      "allowedInputFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "fieldId", "i18NLabel", "type" ]
+      },
+      "allowedInputFieldsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/allowedInputFieldsJson"
+        }
+      },
+      "fieldValueStatsCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "score" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 100,
+            "pattern" : "([0-9]+)"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        },
+        "required" : [ "count", "score", "value" ]
+      },
+      "fieldValueStatsCountArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldValueStatsCount"
+        }
+      },
+      "fieldsStatsApiStatsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "stats" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldValueStatsCountArr"
+          }
+        },
+        "required" : [ "apiName", "stats" ]
+      },
+      "fieldsStatsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldsStatsApiStatsJson"
+        }
+      },
+      "draftcountentries" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "unAnnotatedEntriesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "fieldsStats" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldsStatsArr"
+          },
+          "skippedEntriesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          },
+          "annotatedEntriesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "annotatedEntriesCount", "fieldsStats", "skippedEntriesCount", "unAnnotatedEntriesCount" ]
+      },
+      "publishedStatsCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldsStats" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldsStatsArr"
+          },
+          "publishedEntriesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "fieldsStats", "publishedEntriesCount" ]
+      },
+      "datamodelJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "draft" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/draftcountentries"
+          },
+          "published" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/publishedStatsCount"
+          }
+        },
+        "required" : [ "draft", "published" ]
+      },
+      "EntryIdArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "ids" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ids" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/EntryIdArr"
+          }
+        },
+        "required" : [ "ids" ]
+      },
+      "fieldObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "value" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        },
+        "required" : [ "apiName", "value" ]
+      },
+      "fieldObjectArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/fieldObject"
+        }
+      },
+      "fields" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fields" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldObjectArr"
+          }
+        },
+        "required" : [ "fields" ]
+      },
+      "picklistValue" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "PicklistValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+          }
+        },
+        "required" : [ "PicklistValue" ]
+      },
+      "PicklistArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/picklistValue"
+        }
+      },
+      "allowedPredictorFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "allowedValues" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            },
+            "uniqueItems" : false
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "allowedValues", "apiName", "displayLabel", "fieldId", "i18NLabel", "type" ]
+      },
+      "allowedPredictorFieldsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/allowedPredictorFieldsJson"
+        }
+      },
+      "inferenceCountJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 10000,
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        },
+        "required" : [ "count", "value" ]
+      },
+      "inferenceCountJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/inferenceCountJSON"
+        }
+      },
+      "getPredictionCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "totalInferenceCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "totalInferenceCount" ]
+      },
+      "predictorEntryData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "threadId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Thread id",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "entryStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ANNOTATED", "UNANNOTATED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "predictorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fields" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldsDetailsJSONArr"
+          },
+          "dataSource" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "DATASET", "FEEDBACK" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ticketId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "dataSource", "entryStatus", "fields", "id", "predictorId", "threadId", "ticketId" ]
+      },
+      "predictorEntryJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "entry" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntryData"
+          },
+          "predictorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "entry", "predictorId" ]
+      },
+      "predictorsEntryJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntryJSON"
+        }
+      },
+      "predictorEntryFeatures" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "predictorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fields" : {
+            "$ref" : "./FieldPrediction.json#/components/schemas/fieldObjectArr"
+          }
+        },
+        "required" : [ "fields", "predictorId" ]
+      }
+    },
+    "responses" : {
+      "predictorsEntriesSimplifiedJSON" : {
+        "description" : "predictorsEntriesSimplifiedJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntrySimplifiedJSONArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getPredictionDetails" : {
+        "description" : "getPredictionDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./FieldPrediction.json#/components/schemas/getPredictionDetail"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllowedInputFields" : {
+        "description" : "getAllowedInputFields template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/allowedInputFieldsArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getPredictionDetail" : {
+        "description" : "getPredictionDetail template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "creator" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/userInfo"
+                },
+                "modes" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "CREATE_TICKET", "CUSTOMER_REPLY", "OUTGOING", "FORWARD" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                },
+                "criteria" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+                },
+                "modelStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "TRAINED", "IN_PROGRESS", "FAILED", "NOT_TRAINED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "datasetStatus" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "DRAFT", "PUBLISHED" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                },
+                "modifier" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/userInfo"
+                },
+                "accuracy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ENGLISH", "JAPANESE", "CHINESE", "SPANISH", "GERMAN", "FRENCH", "TURKISH", "RUSSIAN", "PORTUGUESE", "ITALIAN", "DUTCH", "DANISH", "SWEDISH", "POLISH" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "layoutId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "ruleGroupId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 1,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "SAVE_FIELD", "MANUAL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "moduleId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fields" : {
+                  "$ref" : "./FieldDetails.json#/components/schemas/fieldDetails"
+                },
+                "predictionAccuracy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accuracy", "action", "createdTime", "creator", "criteria", "datasetStatus", "departmentId", "fields", "id", "language", "layoutId", "modelStatus", "modes", "modifiedTime", "modifier", "module", "moduleId", "name", "predictionAccuracy", "ruleGroupId", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "statsApiResponse" : {
+        "description" : "statsApiResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/datamodelJson"
+                },
+                "model" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/datamodelJson"
+                }
+              },
+              "required" : [ "data", "model" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "predictorEntry" : {
+        "description" : "predictorEntry template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "entryStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ANNOTATED", "UNANNOTATED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "predictorId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fields" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/fieldsDetailsJSONArr"
+                },
+                "dataSource" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "DATASET", "FEEDBACK" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "dataSource", "entryStatus", "fields", "id", "predictorId", "threadId", "ticketId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllowedPredictorFields" : {
+        "description" : "getAllowedPredictorFields template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/allowedPredictorFieldsArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getPredictionCountResponse" : {
+        "description" : "getPredictionCountResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "totalInferenceCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "totalInferenceCount" ]
+              }, {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/getPredictionCount"
+                }, {
+                  "type" : [ "null", "object" ],
+                  "properties" : {
+                    "inferenceCount" : {
+                      "$ref" : "./FieldPrediction.json#/components/schemas/inferenceCountJSONArr"
+                    },
+                    "groupedBy" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "action" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "totalInferenceCount" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    }
+                  },
+                  "required" : [ "groupedBy", "inferenceCount", "totalInferenceCount" ]
+                } ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "predictorsEntriesJSON" : {
+        "description" : "predictorsEntriesJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/predictorsEntryJSONArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "entriesStatus" : {
+        "description" : "entriesStatus template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "importEntriesStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "IN_PROGRESS", "NOT_INITIATED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "importEntriesStatus" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "threadId" : {
+        "name" : "threadId",
+        "in" : "query",
+        "description" : "Thread Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Thread Id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "caseId" : {
+        "name" : "caseId",
+        "in" : "query",
+        "description" : "Ticket Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Ticket Id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "The Department of the predictor",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "The Department of the predictor",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of entries to fetch",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Number of entries to fetch",
+          "maximum" : 20,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number starting from which the entries must be fetched.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Index number starting from which the entries must be fetched.",
+          "maximum" : 10,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "predictorId" : {
+        "name" : "predictorId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "versionStatus" : {
+        "name" : "versionStatus",
+        "in" : "query",
+        "description" : "dataset version status filter",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "dataset version status filter",
+          "enum" : [ "PUBLISHED" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "entryId" : {
+        "name" : "entryId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "fieldValuesCountJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "criteria" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "predictorEntry" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "entryStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ANNOTATED", "UNANNOTATED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "predictorId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fields" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/fieldsDetailsJSONArr"
+                },
+                "dataSource" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "DATASET", "FEEDBACK" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "importEntriesJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "unannotatedCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "criteria" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+                },
+                "fieldValues" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/fieldValues"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addFieldPrediction" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "mode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "INCOMING", "NEW_INCOMING" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "criteria" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "The Department of the predictor",
+                  "pattern" : "([0-9]+)"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Module of the predictor",
+                  "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "save or show the field",
+                  "enum" : [ "SAVE_FIELD", "MANUAL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of the dataset",
+                  "enum" : [ "ENGLISH", "JAPANESE", "CHINESE", "SPANISH", "GERMAN", "FRENCH", "TURKISH", "RUSSIAN", "PORTUGUESE", "ITALIAN", "DUTCH", "DANISH", "SWEDISH", "POLISH" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fields" : {
+                  "$ref" : "./FieldDetails.json#/components/schemas/fieldDetails"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Enable Disable Status",
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "action", "criteria", "departmentId", "fields", "language", "mode", "module" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateManyEntries" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/ids"
+                },
+                "fields" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/fields"
+                }
+              },
+              "required" : [ "fields", "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "getInferenceByPredictor_predictorEntry" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "entryStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ANNOTATED", "UNANNOTATED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "predictorId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fields" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/fieldsDetailsJSONArr"
+                },
+                "dataSource" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "DATASET", "FEEDBACK" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "EntryIdsListArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "entryIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateFieldPrediction_addFieldPrediction" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "mode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "INCOMING", "NEW_INCOMING" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "criteria" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/criteriaJson"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "The Department of the predictor",
+                  "pattern" : "([0-9]+)"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Module of the predictor",
+                  "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "save or show the field",
+                  "enum" : [ "SAVE_FIELD", "MANUAL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of the dataset",
+                  "enum" : [ "ENGLISH", "JAPANESE", "CHINESE", "SPANISH", "GERMAN", "FRENCH", "TURKISH", "RUSSIAN", "PORTUGUESE", "ITALIAN", "DUTCH", "DANISH", "SWEDISH", "POLISH" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fields" : {
+                  "$ref" : "./FieldDetails.json#/components/schemas/fieldDetails"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Enable Disable Status",
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "action", "criteria", "departmentId", "fields", "language", "mode", "module", "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "fieldValuesCountWithoutPredictionIdJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fieldName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "field name",
+                  "maxLength" : 50,
+                  "minLength" : 1,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ModuleId",
+                  "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "DepartmentId",
+                  "pattern" : "([0-9]+)"
+                },
+                "fieldValues" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/PicklistArray"
+                },
+                "layoutId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "LayoutId",
+                  "pattern" : "([0-9]+)"
+                },
+                "userId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "UserId",
+                  "pattern" : "([0-9]+)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "predictorsEntryFeaturesJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Thread id",
+                  "pattern" : "([0-9]+)"
+                },
+                "data" : {
+                  "$ref" : "./FieldPrediction.json#/components/schemas/predictorEntryFeatures"
+                },
+                "caseId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Ticket id",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "caseId", "threadId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "FieldPrediction"
+}

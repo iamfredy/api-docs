@@ -1,0 +1,898 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RatelimitAdminTool",
+    "version": "1.0.0",
+    "x-clan-group": "admin",
+    "x-module-group": "security"
+  },
+  "x-entity": "RatelimitAdminTool",
+  "paths": {
+    "/api/admin/ratelimit/featureDetails": {
+      "get": {
+        "tags": ["RatelimitLicenseDetails"],
+        "summary": "Get feature details related to ratelimit",
+        "description": "This API retrieves the feature details related to ratelimit.",
+        "operationId": "getRatelimitLicenseDetails",
+        "x-audience": ["company-internal"],
+        "parameters": [
+          {
+            "name": "zgid",
+            "in": "query",
+            "required": true,
+            "description": "Org ID of the portal whose ratelimit details has to be retrieved",
+            "schema": {
+              "type": ["string", "null", "integer"],
+              "pattern": "^[0-9]+$",
+              "format": "int64",
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ratelimitFeatureDetailsResponse"
+          },
+          "401": {
+            "$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "x-custom-url-attributes": {
+          "is-admin-api": true,
+          "security": {
+            "ip-validation": "trusted",
+            "authentication": {
+              "roles": [
+                "SupportAdmin",
+                "SupportGuest",
+                "DebugToolAdmin",
+                "DebugToolUser"
+              ],
+              "allow-access-for": "devops"
+            },
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "SERVICE",
+                  "window": "SLIDING",
+                  "key": "url.path+user.zuid",
+                  "rules": [
+                    {
+                      "duration": "1m",
+                      "threshold": 60,
+                      "lock-period": "1m",
+                      "hip": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "extraparams": {
+            "disable": true
+          },
+          "clan-group": "admin",
+          "apimethod": "com.zoho.desk.security.ratelimit.admin.RatelimitAdminToolService.getRatelimitLicenseDetails",
+          "module-group": "security"
+        }
+      },
+      "put": {
+        "tags": ["RatelimitLicenseDetails"],
+        "summary": "Update feature details related to ratelimit",
+        "description": "This API updates the API feature details related to ratelimit.",
+        "operationId": "updateRatelimitLicenseDetails",
+        "x-audience": ["company-internal"],
+        "parameters": [
+          {
+            "name": "zgid",
+            "in": "query",
+            "required": true,
+            "description": "Org ID of the portal whose ratelimit details has to be retrieved",
+            "schema": {
+              "type": ["string", "null", "integer"],
+              "pattern": "^[0-9]+$",
+              "format": "int64",
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1
+              }
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RatelimitLicenseDetailsUpdate"
+              },
+              "examples": {
+                "default": {
+                  "value": {
+                    "APICRDT01": 5,
+                    "APICRDT02": 3,
+                    "APICRDT03": 2,
+                    "APICRDT04": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ratelimitFeatureDetailsResponse"
+          },
+          "401": {
+            "$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "x-custom-url-attributes": {
+          "is-admin-api": true,
+          "security": {
+            "ip-validation": "trusted",
+            "authentication": {
+              "roles": [
+                "SupportAdmin",
+                "SupportGuest",
+                "DebugToolAdmin",
+                "DebugToolUser"
+              ],
+              "allow-access-for": "devops"
+            },
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "SERVICE",
+                  "window": "SLIDING",
+                  "key": "url.path+user.zuid",
+                  "rules": [
+                    {
+                      "duration": "1m",
+                      "threshold": 60,
+                      "lock-period": "1m",
+                      "hip": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "extraparams": {
+            "disable": true
+          },
+          "clan-group": "admin",
+          "apimethod": "com.zoho.desk.security.ratelimit.admin.RatelimitAdminToolService.updateRatelimitLicenseDetails",
+          "module-group": "security"
+        },
+        "x-custom-request-body-attributes": {
+          "non-empty": true,
+          "max-len": 4500
+        }
+      }
+    },
+    "/api/admin/ratelimit/policies": {
+      "get": {
+        "tags": ["RatelimitPolicyDetails"],
+        "summary": "Get configured ratelimit policies",
+        "description": "This API fetches the configured ratelimit policies.",
+        "operationId": "getRatelimitPolicyDetails",
+        "x-audience": ["company-internal"],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ratelimitPolicyDetailsResponse"
+          },
+          "401": {
+            "$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-custom-url-attributes": {
+          "is-admin-api": true,
+          "security": {
+            "ip-validation": "trusted",
+            "authentication": {
+              "roles": [
+                "SupportAdmin",
+                "SupportGuest",
+                "DebugToolAdmin",
+                "DebugToolUser"
+              ],
+              "allow-access-for": "devops"
+            },
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "SERVICE",
+                  "window": "SLIDING",
+                  "key": "url.path+user.zuid",
+                  "rules": [
+                    {
+                      "duration": "1m",
+                      "threshold": 60,
+                      "lock-period": "1m",
+                      "hip": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "clan-group": "admin",
+          "apimethod": "com.zoho.desk.security.ratelimit.admin.RatelimitAdminToolService.getRatelimitPolicyDetails",
+          "module-group": "security"
+        }
+      }
+    },
+    "/api/admin/ratelimit/auditlog/org": {
+      "get": {
+        "tags": ["RatelimitAuditLog"],
+        "summary": "Get ratelimit audit logs for an org",
+        "description": "Fetch ratelimit audit logs for a specific organization.",
+        "operationId": "getRatelimitAuditLogOrg",
+        "x-audience": ["company-internal"],
+        "parameters": [
+          {
+            "name": "zgid",
+            "in": "query",
+            "required": true,
+            "description": "Org ID of the portal whose ratelimit details has to be retrieved",
+            "schema": {
+              "type": ["string", "null", "integer"],
+              "pattern": "^[0-9]+$",
+              "format": "int64",
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1
+              }
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "Index number, starting from which audit log must be fetched",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1,
+                "default": 1
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of audit logs to fetch",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1,
+                "default": 10
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ratelimitOrgAuditLogResponse"
+          },
+          "401": {
+            "$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "x-custom-url-attributes": {
+          "is-admin-api": true,
+          "security": {
+            "ip-validation": "trusted",
+            "authentication": {
+              "roles": [
+                "SupportAdmin",
+                "SupportGuest",
+                "DebugToolAdmin",
+                "DebugToolUser"
+              ],
+              "allow-access-for": "devops"
+            },
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "SERVICE",
+                  "window": "SLIDING",
+                  "key": "url.path+user.zuid",
+                  "rules": [
+                    {
+                      "duration": "1m",
+                      "threshold": 60,
+                      "lock-period": "1m",
+                      "hip": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "clan-group": "admin",
+          "apimethod": "com.zoho.desk.security.ratelimit.admin.RatelimitAdminToolService.getOrgSpecificAuditLog",
+          "module-group": "security"
+        }
+      }
+    },
+    "/api/admin/ratelimit/auditlog/service": {
+      "get": {
+        "tags": ["RatelimitAuditLog"],
+        "summary": "Get ratelimit audit logs for service features",
+        "description": "Fetch ratelimit audit logs for service-level features.",
+        "operationId": "getRatelimitAuditLogService",
+        "x-audience": ["company-internal"],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "Index number, starting from which audit log must be fetched",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1,
+                "default": 1
+              }
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "description": "Number of audit logs to fetch",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "x-custom-parameters-attributes": {
+                "min-occurrences": 1,
+                "default": 10
+              }
+            }
+          },
+          {
+            "name": "features",
+            "in": "query",
+            "required": true,
+            "description": "Comma-separated list of feature codes",
+            "schema": {
+              "type": "string",
+              "pattern": "^(APICRDT0[1-4](,APICRDT0[1-4])*)$",
+              "x-custom-parameters-attributes": {
+                "split": ",",
+                "min-occurrences": 1,
+                "max-occurrences": 4
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/ratelimitServiceAuditLogResponse"
+          },
+          "401": {
+            "$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "x-custom-url-attributes": {
+          "is-admin-api": true,
+          "security": {
+            "ip-validation": "trusted",
+            "authentication": {
+              "roles": [
+                "SupportAdmin",
+                "SupportGuest",
+                "DebugToolAdmin",
+                "DebugToolUser"
+              ],
+              "allow-access-for": "devops"
+            },
+            "throttle": {
+              "inline": [
+                {
+                  "scope": "SERVICE",
+                  "window": "SLIDING",
+                  "key": "url.path+user.zuid",
+                  "rules": [
+                    {
+                      "duration": "1m",
+                      "threshold": 60,
+                      "lock-period": "1m",
+                      "hip": false
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          "clan-group": "admin",
+          "apimethod": "com.zoho.desk.security.ratelimit.admin.RatelimitAdminToolService.getServiceSpecificAuditLog",
+          "module-group": "security"
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RatelimitLicenseDetailsUpdate": {
+        "type": "object",
+        "properties": {
+          "APICRDT01": {
+            "type": ["integer", "null"],
+            "format": "int64"
+          },
+          "APICRDT02": {
+            "type": ["integer", "null"],
+            "format": "int64"
+          },
+          "APICRDT03": {
+            "type": ["integer", "null"],
+            "format": "int64"
+          },
+          "APICRDT04": {
+            "type": ["integer", "null"],
+            "format": "int64"
+          }
+        },
+        "required": ["APICRDT01", "APICRDT02", "APICRDT03", "APICRDT04"]
+      },
+      "RatelimitLicenseDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "APICRDT01": {
+            "$ref": "#/components/schemas/RatelimitCreditField"
+          },
+          "APICRDT02": {
+            "$ref": "#/components/schemas/RatelimitCreditField"
+          },
+          "APICRDT03": {
+            "$ref": "#/components/schemas/RatelimitCreditField"
+          },
+          "APICRDT04": {
+            "$ref": "#/components/schemas/RatelimitCreditField"
+          }
+        },
+        "required": ["APICRDT01", "APICRDT02", "APICRDT03", "APICRDT04"]
+      },
+      "RatelimitCreditField": {
+        "type": "object",
+        "properties": {
+          "baseLimit": {
+            "type": ["integer", "null"],
+            "format": "int64",
+            "description": "Base limit for this API credit type"
+          },
+          "maxValue": {
+            "type": ["integer", "null"],
+            "format": "int64",
+            "description": "Maximum value for this API credit type"
+          },
+          "freeValue": {
+            "type": ["integer", "null"],
+            "format": "int64",
+            "description": "Free value for this API credit type"
+          },
+          "description": {
+            "type": ["string", "null"],
+            "description": "Description for this API credit type"
+          },
+          "addOnValue": {
+            "type": ["integer", "null"],
+            "format": "int64",
+            "description": "Addon value for this API credit type"
+          }
+        },
+        "required": [
+          "baseLimit",
+          "maxValue",
+          "freeValue",
+          "description",
+          "addOnValue"
+        ]
+      },
+      "RatelimitPoliciesResponse": {
+        "type": "object",
+        "patternProperties": {
+          "^[A-Za-z0-9_]+_Policy$": {
+            "$ref": "#/components/schemas/RatelimitPolicy"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RatelimitPolicy": {
+        "type": "object",
+        "properties": {
+          "dynamic-credit-handler": {
+            "type": ["string", "null"]
+          },
+          "criterias": {
+            "$ref": "#/components/schemas/RatelimitCriterias"
+          },
+          "name": {
+            "type": ["string", "null"]
+          },
+          "description": {
+            "type": ["string", "null"]
+          },
+          "credit": {
+            "type": ["integer", "null"]
+          }
+        },
+        "required": [
+          "dynamic-credit-handler",
+          "criterias",
+          "name",
+          "description",
+          "credit"
+        ],
+        "additionalProperties": true
+      },
+      "RatelimitCriterias": {
+        "type": "object",
+        "patternProperties": {
+          "^[0-9]+$": {
+            "$ref": "#/components/schemas/RatelimitCriteria"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RatelimitCriteria": {
+        "type": "object",
+        "properties": {
+          "expression": {
+            "type": ["string", "null"]
+          },
+          "rules": {
+            "$ref": "#/components/schemas/RatelimitRules"
+          }
+        },
+        "required": ["expression", "rules"],
+        "additionalProperties": true
+      },
+      "RatelimitRules": {
+        "type": "object",
+        "patternProperties": {
+          "^[0-9]+$": {
+            "$ref": "#/components/schemas/RatelimitRule"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RatelimitRule": {
+        "type": "object",
+        "properties": {
+          "description": {
+            "type": ["string", "null"]
+          },
+          "value": {
+            "type": ["string", "null"]
+          },
+          "throttles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RatelimitThrottle"
+            }
+          }
+        },
+        "required": ["description", "value", "throttles"],
+        "additionalProperties": true
+      },
+      "RatelimitThrottle": {
+        "type": "object",
+        "properties": {
+          "throttle": {
+            "$ref": "#/components/schemas/Throttle"
+          },
+          "creditBasedThrottle": {
+            "type": ["boolean", "null"]
+          },
+          "source": {
+            "type": ["string", "null"]
+          }
+        },
+        "required": ["throttle"],
+        "additionalProperties": true
+      },
+      "Throttle": {
+        "type": "object",
+        "properties": {
+          "duration": {
+            "type": ["string", "null"]
+          },
+          "lockPeriod": {
+            "type": ["string", "null"]
+          },
+          "threshold": {
+            "type": ["integer", "null"]
+          }
+        },
+        "required": ["duration"],
+        "additionalProperties": true
+      },
+      "RatelimitOrgAuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RatelimitOrgAuditLogEntry"
+            }
+          }
+        }
+      },
+      "RatelimitOrgAuditLogEntry": {
+        "type": "object",
+        "properties": {
+          "features": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/RatelimitAuditFeature"
+            }
+          },
+          "updatedTime": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RatelimitAuditFeature": {
+        "type": "object",
+        "properties": {
+          "currentTotal": {
+            "type": "integer"
+          },
+          "oldLimit": {
+            "type": "integer"
+          },
+          "newLimit": {
+            "type": "integer"
+          }
+        }
+      },
+      "RatelimitServiceAuditLogResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RatelimitServiceAuditLogEntry"
+            }
+          }
+        }
+      },
+      "RatelimitServiceAuditLogEntry": {
+        "type": "object",
+        "properties": {
+          "zgid": {
+            "type": "string"
+          },
+          "featureCode": {
+            "type": "string"
+          },
+          "freeValue": {
+            "type": "string"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "responses": {
+      "ratelimitFeatureDetailsResponse": {
+        "description": "Ratelimit License Details Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RatelimitLicenseDetailsResponse"
+            },
+            "examples": {
+              "default": {
+                "value": {
+                  "APICRDT04": {
+                    "baseLimit": 50,
+                    "maxValue": 51,
+                    "freeValue": 1,
+                    "description": "Maximum concurrent API requests allowed when the source is Deluge",
+                    "addOnValue": 0
+                  },
+                  "APICRDT03": {
+                    "baseLimit": 25,
+                    "maxValue": 27,
+                    "freeValue": 2,
+                    "description": "Maximum number of API requests allowed concurrently",
+                    "addOnValue": 0
+                  },
+                  "APICRDT02": {
+                    "baseLimit": 1000,
+                    "maxValue": 1003,
+                    "freeValue": 3,
+                    "description": "API usage credits determined by the total agent count",
+                    "addOnValue": 0
+                  },
+                  "APICRDT01": {
+                    "baseLimit": 100000,
+                    "maxValue": 100005,
+                    "freeValue": 5,
+                    "description": "API usage credits allocated",
+                    "addOnValue": 0
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ratelimitPolicyDetailsResponse": {
+        "description": "Ratelimit Policy Details Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RatelimitPoliciesResponse"
+            },
+            "examples": {
+              "default": {
+                "value": {
+                  "AddManyRecords_Policy": {
+                    "dynamic-credit-handler": "",
+                    "criterias": {
+                      "1": {
+                        "expression": "request.client",
+                        "rules": {
+                          "1": {
+                            "description": "This rule applies for API calls originating from the Desk Web App, Desk and Radar Mobile Apps",
+                            "throttles": [
+                              {
+                                "throttle": {
+                                  "duration": "1m",
+                                  "lockPeriod": "2m",
+                                  "threshold": 30
+                                }
+                              }
+                            ],
+                            "value": "WEB_AND_MOBILE"
+                          }
+                        }
+                      }
+                    },
+                    "name": "AddManyRecords_Policy",
+                    "description": "This policy is intended for APIs that create many records.",
+                    "credit": 3
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ratelimitOrgAuditLogResponse": {
+        "description": "Ratelimit Audit Log Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RatelimitOrgAuditLogResponse"
+            },
+            "examples": {
+              "default": {
+                "value": {
+                  "data": [
+                    {
+                      "features": {
+                        "APICRDT03": {
+                          "currentTotal": 1,
+                          "oldLimit": -23,
+                          "newLimit": -24
+                        }
+                      },
+                      "updatedTime": 1757351292567,
+                      "updatedBy": "65424803",
+                      "id": 128063000035642000
+                    },
+                    {
+                      "features": {
+                        "APICRDT03": {
+                          "currentTotal": 2,
+                          "oldLimit": -20,
+                          "newLimit": -23
+                        }
+                      },
+                      "updatedTime": 1757350441727,
+                      "updatedBy": "65424803",
+                      "id": 128063000035638350
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "ratelimitServiceAuditLogResponse": {
+        "description": "Ratelimit Service Audit Log Response",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/RatelimitServiceAuditLogResponse"
+            },
+            "examples": {
+              "default": {
+                "value": {
+                  "data": [
+                    {
+                      "zgid": "68077037",
+                      "featureCode": "APICRDT02",
+                      "freeValue": "40000",
+                      "id": 2000004390001
+                    },
+                    {
+                      "zgid": "68077037",
+                      "featureCode": "APICRDT01",
+                      "freeValue": "100000",
+                      "id": 2000004312001
+                    },
+                    {
+                      "zgid": "72009187",
+                      "featureCode": "APICRDT01",
+                      "freeValue": "995002",
+                      "id": 2000004294001
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "cookie-auth": {
+        "$ref": "../common/Common.json#/components/securitySchemes/cookie-auth"
+      }
+    }
+  }
+}

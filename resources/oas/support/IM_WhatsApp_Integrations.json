@@ -1,0 +1,193 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_WhatsApp_Integrations",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/integrationServices/WHATSAPP/templateLanguages" : {
+      "post" : {
+        "tags" : [ "IM_WhatsApp_Integrations" ],
+        "operationId" : "getTemplateLanguage",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTemplateLanguages"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getTemplateSupportedLanguages"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/WHATSAPP/templateSync" : {
+      "post" : {
+        "tags" : [ "IM_WhatsApp_Integrations" ],
+        "operationId" : "syncwhatsAppTemplate",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "description" : "The type of sync",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The type of sync",
+            "maxLength" : 30,
+            "minLength" : 0,
+            "pattern" : "STATUS"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.syncWhatsAppTemplate"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "templateLanguageJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "code" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 10,
+            "minLength" : 1
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 25,
+            "minLength" : 2
+          }
+        },
+        "required" : [ "code", "language" ]
+      },
+      "templateLanguageList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_WhatsApp_Integrations.json#/components/schemas/templateLanguageJSON"
+        }
+      }
+    },
+    "responses" : {
+      "getTemplateLanguages" : {
+        "description" : "getTemplateLanguages template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_WhatsApp_Integrations.json#/components/schemas/templateLanguageList"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 15,
+                  "minLength" : 1
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_WhatsApp_Integrations"
+}

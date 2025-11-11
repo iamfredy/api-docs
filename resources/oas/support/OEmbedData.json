@@ -1,0 +1,233 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "OEmbedData",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "common"
+  },
+  "paths" : {
+    "/api/services/oembed" : {
+      "get" : {
+        "tags" : [ "OEmbedData" ],
+        "operationId" : "resolveOEmbedURL",
+        "parameters" : [ {
+          "name" : "format",
+          "in" : "query",
+          "description" : "Response type",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Response type",
+            "enum" : [ "json" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "url",
+          "in" : "query",
+          "description" : "The url to be accessed",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The url to be accessed",
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/OEmbedSupportDataResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ", "Desk.deskOembed.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "adff39abb322fef5e720662de22a2eb4",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.OEmbedService.resolveOEmbedUrl"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "styleData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "short" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "short" ]
+      },
+      "oEmbedFieldsData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "label" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "label", "value" ]
+      },
+      "oEmbedFields" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./OEmbedData.json#/components/schemas/oEmbedFieldsData"
+        }
+      },
+      "fieldsData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./OEmbedData.json#/components/schemas/oEmbedFields"
+          },
+          "styles" : {
+            "$ref" : "./OEmbedData.json#/components/schemas/styleData"
+          }
+        },
+        "required" : [ "data", "styles" ]
+      }
+    },
+    "responses" : {
+      "OEmbedSupportDataResponse" : {
+        "description" : "OEmbedSupportDataResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "faviconlink" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "provider_url" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "provider_name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "title" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fields" : {
+                  "$ref" : "./OEmbedData.json#/components/schemas/fieldsData"
+                },
+                "version" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "url" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The url to be accessed",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "faviconlink", "fields", "provider_name", "provider_url", "title", "type", "url", "version" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "OEmbedData"
+}

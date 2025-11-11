@@ -1,0 +1,285 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CallTimer",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "timeEntry"
+  },
+  "paths" : {
+    "/api/v1/calls/{callId}/activeTimer" : {
+      "get" : {
+        "tags" : [ "CallTimer" ],
+        "summary" : "List call timers",
+        "description" : "This API fetches the details of timers currently active in a call.",
+        "operationId" : "getActiveTimerForEntity",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to the timers. Value supported is @owner@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Secondary information related to the timers. Value supported is @owner@.",
+            "enum" : [ "owner" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of timers to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of timers to fetch",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the timers must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the timers must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "callId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getActiveTimerForEntity"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.activities.calls.READ", "Desk.tasks.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "deprecatedScopes" : [ "tasks" ]
+            }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "acb70a30e11a9eb798072bde0392bcb0",
+          "module-group" : "timeEntry",
+          "apimethod" : "com.zoho.support.timer.TimerService.getActiveTimerForEntity"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "callTimerJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "hours" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "seconds" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "minutes" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "state" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "RUNNING", "PAUSED", "INIT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "hours", "minutes", "seconds", "state" ]
+      },
+      "activeTimerJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "timer" : {
+            "$ref" : "./CallTimer.json#/components/schemas/callTimerJson"
+          },
+          "userId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "timer", "userId" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CallTimer.json#/components/schemas/activeTimerJson"
+        }
+      }
+    },
+    "responses" : {
+      "getActiveTimerForEntity" : {
+        "description" : "getActiveTimerForEntity template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "owner" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./CallTimer.json#/components/schemas/data"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "owner" : {
+                      "firstName" : "Sam",
+                      "lastName" : "Jones",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20",
+                      "name" : "Sam Jones",
+                      "id" : "7000000020001"
+                    },
+                    "timer" : {
+                      "hours" : 93,
+                      "seconds" : 9,
+                      "minutes" : 6,
+                      "state" : "Running"
+                    },
+                    "userId" : "7000000020001"
+                  }, {
+                    "owner" : {
+                      "firstName" : "Robert",
+                      "lastName" : "Downey",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&fs=thumb&ID=56934690&nps=404&exp=20",
+                      "name" : "Robert Downey",
+                      "id" : "7000000030001"
+                    },
+                    "timer" : {
+                      "hours" : 19,
+                      "seconds" : 24,
+                      "minutes" : 9,
+                      "state" : "Paused"
+                    },
+                    "userId" : "7000000030001"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CallTimer"
+}

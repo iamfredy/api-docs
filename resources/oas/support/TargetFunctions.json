@@ -1,0 +1,130 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "TargetFunctions",
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/api/v1/scripts" : {
+      "post" : {
+        "tags" : [ "TargetFunctions" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "addScript",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scriptJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scriptResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "scriptResponse" : {
+        "description" : "scriptResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "scriptUrl" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 2048,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 200,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z][a-zA-Z0-9\\_]*$",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "id", "name", "scriptUrl" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "scriptJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 200,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z][a-zA-Z0-9\\_]*$",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "script" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 200000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "name", "script" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "TargetFunctions"
+}

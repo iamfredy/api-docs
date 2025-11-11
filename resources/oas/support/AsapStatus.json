@@ -1,0 +1,199 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AsapStatus",
+    "version" : "1.0.0",
+    "x-clan-group" : "zia",
+    "x-module-group" : "zia"
+  },
+  "paths" : {
+    "/api/v1/ziadesk/bot/category/status" : {
+      "get" : {
+        "tags" : [ "AsapStatus" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "CheckAsapBotStatus",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/botType"
+        }, {
+          "name" : "categoryId",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/AsapStatusCheck"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/ziadesk/bot/departmentId" : {
+      "get" : {
+        "tags" : [ "AsapStatus" ],
+        "operationId" : "getAsapId",
+        "parameters" : [ {
+          "name" : "asapId",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/botType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/asapDepId"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.KbBotService.getBotDepartmentId"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "AsapStatusCheck" : {
+        "description" : "AsapStatusCheck template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "asapDepId" : {
+        "description" : "asapDepId template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "departmentId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "botType" : {
+        "name" : "botType",
+        "in" : "query",
+        "description" : "",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "enum" : [ "ASAP" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : { }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AsapStatus"
+}

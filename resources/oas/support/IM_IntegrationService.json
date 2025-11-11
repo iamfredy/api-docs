@@ -1,0 +1,454 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_IntegrationService",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/integrationServices/{id}" : {
+      "get" : {
+        "tags" : [ "IM_IntegrationService" ],
+        "operationId" : "getIntegrationService",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getIntegrationService"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getIntegrationService"
+        }
+      }
+    },
+    "/api/v1/im/integrationServices/{id}/configParams/{configParamName}/computeOptions" : {
+      "post" : {
+        "tags" : [ "IM_IntegrationService" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getIntegrationConfigParamsComputedOptions",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "name" : "configParamName",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9_]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./IM_Channel.json#/components/requestBodies/getIntegrationConfigParamsComputedOptions_getConfigParamsComputedOptions_input"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./IM_Channel.json#/components/responses/getConfigParamsComputedOptions"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/im/integrationServices" : {
+      "get" : {
+        "tags" : [ "IM_IntegrationService" ],
+        "operationId" : "getAvailableIntegrations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAvailableIntegrations"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getAvailableIntegrations"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "configParams" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isInternal" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isRequired" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isDeprecated" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isSecured" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "defaultValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(null|^$|NULL|[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+)"
+          },
+          "parentParams" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "minItems" : 0,
+            "uniqueItems" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "options" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "label" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "value" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "label", "value" ]
+            },
+            "uniqueItems" : false
+          },
+          "index" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          },
+          "label" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "STRING", "NUMBER", "URL", "EMAIL", "PHONE", "OPTIONS", "PASSWORD", "DATE", "TIME", "DATETIME", "SYSTEM_DEFINED", "OPTIONS_COMPUTED", "BOOLEAN" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "maxLen" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          }
+        },
+        "required" : [ "defaultValue", "index", "isDeprecated", "isInternal", "isRequired", "isSecured", "label", "maxLen", "name", "options", "parentParams", "type" ]
+      },
+      "listofConfigParams" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_IntegrationService.json#/components/schemas/configParams"
+        }
+      },
+      "getIntegrationService_listView" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "channelAlias" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(null|^$|NULL|[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+)"
+          },
+          "provider" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "domain" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 500,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              }
+            },
+            "required" : [ "domain", "name" ]
+          },
+          "kind" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "single.integrationService", "list.integrationService" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "domain" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TELEGRAM", "TWILIO", "IM_TALK", "LINE", "WECHAT", "WHATSAPP", "FACEBOOKMESSENGER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "label" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "logoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "channelAlias", "domain", "id", "kind", "label", "logoURL", "provider" ]
+      },
+      "listOfIntegrationService" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_IntegrationService.json#/components/schemas/getIntegrationService_listView"
+        }
+      }
+    },
+    "responses" : {
+      "getIntegrationService" : {
+        "description" : "getIntegrationService template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./IM_IntegrationService.json#/components/schemas/getIntegrationService_listView"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "configParams" : {
+                    "$ref" : "./IM_IntegrationService.json#/components/schemas/listofConfigParams"
+                  },
+                  "pricingParams" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "name" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 500,
+                          "minLength" : 0
+                        },
+                        "isVariable" : {
+                          "type" : [ "boolean", "null" ]
+                        },
+                        "label" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 500,
+                          "minLength" : 0
+                        },
+                        "type" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "COSTS", "POINTS" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "value" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 500,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "isVariable", "label", "name", "type", "value" ]
+                    },
+                    "minItems" : 0,
+                    "uniqueItems" : false
+                  }
+                },
+                "required" : [ "configParams", "pricingParams" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAvailableIntegrations" : {
+        "description" : "getAvailableIntegrations template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_IntegrationService.json#/components/schemas/listOfIntegrationService"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.integrationService", "list.integrationService" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "enum" : [ "TWILIO", "IM_TALK", "LINE", "WECHAT", "TELEGRAM", "WHATSAPP" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z0-9_\\\\-]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_IntegrationService"
+}

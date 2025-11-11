@@ -1,0 +1,550 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "PBX",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "telephony"
+  },
+  "paths" : {
+    "/api/v1/pbx/{pbxName}" : {
+      "get" : {
+        "tags" : [ "PBX" ],
+        "summary" : "Get PBX",
+        "description" : "This API fetches the details of a specified PBX.",
+        "operationId" : "getPBX",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/pbxName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/pbxInfoJson"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "3fbfc7e3f4e698c68675264561f8fb45",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBX.PBXService.getPBX"
+        }
+      }
+    },
+    "/api/v1/pbx/{pbxName}/enable" : {
+      "post" : {
+        "tags" : [ "PBX" ],
+        "summary" : "Enable PBX",
+        "description" : "This API enables a specified PBX in Zoho Desk portal.",
+        "operationId" : "enablePBX",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/pbxName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/pbxInfoJson"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.WRITE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "628ae4d609072f3633329c4a00448cb5",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBX.PBXService.enablePBX"
+        }
+      }
+    },
+    "/api/v1/pbx" : {
+      "get" : {
+        "tags" : [ "PBX" ],
+        "summary" : " List PBXs",
+        "description" : "This API lists all the available PBX in your Zoho Desk portal.",
+        "operationId" : "getPBXList",
+        "parameters" : [ {
+          "name" : "isEnabled",
+          "in" : "query",
+          "description" : "Key that filters PBXs based on their enabled status",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that filters PBXs based on their enabled status"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getListOfPbxInfoJson"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "0dfb18fda4eb542b049ae06d5b4dc2a8",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBX.PBXService.getPBXList"
+        }
+      }
+    },
+    "/api/v1/pbx/{pbxName}/disable" : {
+      "post" : {
+        "tags" : [ "PBX" ],
+        "summary" : "Disable PBX",
+        "description" : "This API disables a specified PBX in Zoho Desk portal.",
+        "operationId" : "disablePBX",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/pbxName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "7e47b69703f88c718d76745b94da040f",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBX.PBXService.disablePBX"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "allPbxInfoJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "website" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9.\\-\\s]+)"
+          },
+          "integType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "type1", "type2", "type3", "type4", "type5", "ringcentral" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "shortLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "isBeta" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "state" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "disabled", "partial", "enabled" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "telephonyType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "hosted", "onpremise" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "displayName", "integType", "isBeta", "logoUrl", "name", "shortLabel", "state", "telephonyType", "website" ]
+      },
+      "listOfPbxInfoJson" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./PBX.json#/components/schemas/allPbxInfoJson"
+        }
+      }
+    },
+    "responses" : {
+      "pbxInfoJson" : {
+        "description" : "pbxInfoJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./PBX.json#/components/schemas/allPbxInfoJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "helpLink" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  },
+                  "signUpUrl" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  },
+                  "enableUrl" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  },
+                  "contact" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "phone" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "[0-9a-zA-Z_\\+\\-\\.\\(\\)\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "phone" ]
+                  },
+                  "description" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "top" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 1000,
+                        "minLength" : 0
+                      },
+                      "body" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "body", "top" ]
+                  },
+                  "screenShots" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 4,
+                    "minProperties" : 4,
+                    "properties" : {
+                      "url3" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "url4" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "url1" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "url2" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "url1", "url2", "url3", "url4" ]
+                  }
+                },
+                "required" : [ "contact", "description", "enableUrl", "helpLink", "screenShots", "signUpUrl" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : "200"
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getListOfPbxInfoJson" : {
+        "description" : "getListOfPbxInfoJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./PBX.json#/components/schemas/listOfPbxInfoJson"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "website" : "http://www.asterisk.org/",
+                    "displayName" : "Asterisk 1.4",
+                    "name" : "Asterisk1.4",
+                    "integType" : "type1",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "onpremise",
+                    "logoUrl" : null
+                  }, {
+                    "website" : null,
+                    "displayName" : "Elastix 1.6",
+                    "name" : "Elastix1.6",
+                    "integType" : "type1",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "onpremise",
+                    "logoUrl" : null
+                  }, {
+                    "website" : "http://www.twilio.com",
+                    "displayName" : "Twilio",
+                    "name" : "twilio",
+                    "integType" : "type3",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "hosted",
+                    "logoUrl" : null
+                  }, {
+                    "website" : "https://aws.amazon.com/connect/",
+                    "displayName" : "Amazon Connect",
+                    "name" : "awslily",
+                    "integType" : "type5",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "hosted",
+                    "logoUrl" : null
+                  }, {
+                    "website" : "http://www.ringcentral.com",
+                    "displayName" : "RingCentral",
+                    "name" : "ringcentral",
+                    "integType" : "type5",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "hosted",
+                    "logoUrl" : null
+                  }, {
+                    "website" : null,
+                    "displayName" : "Test PBX N.L",
+                    "name" : "Test PBX N.L",
+                    "integType" : "type4",
+                    "shortLabel" : null,
+                    "isBeta" : false,
+                    "state" : "disabled",
+                    "telephonyType" : "hosted",
+                    "logoUrl" : "https://desk.zoho.com/public/providerlogo/testpbxn.l.png"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "pbxName" : {
+        "name" : "pbxName",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z0-9.\\-\\s]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "PBX"
+}

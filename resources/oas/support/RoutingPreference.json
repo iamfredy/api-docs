@@ -1,0 +1,615 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "RoutingPreference",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/routingPreferences" : {
+      "get" : {
+        "tags" : [ "RoutingPreference" ],
+        "summary" : "Get Routing Preferences",
+        "description" : "This API is used to Get the Routing Preferences for a Department",
+        "operationId" : "getRoutingPreference",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department Id",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department Id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getRoutingPreferenceResponseJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "be832cc455143f8916204aa26538f80c",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.RoutingPreferencesService.getRoutingPreference"
+        }
+      },
+      "patch" : {
+        "tags" : [ "RoutingPreference" ],
+        "summary" : "Update Routing Preferences",
+        "description" : "This API is used to Update the Routing Preferences for a Department",
+        "operationId" : "updateRoutingPreference",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateRoutingPreferenceJsonPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/updateRoutingPreferenceJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "163a525284b25ee35c48ec7a43b3daf4",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.RoutingPreferencesService.updateRoutingPreference"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "actorJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "zuid" ]
+      },
+      "actorArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./RoutingPreference.json#/components/schemas/actorJSON"
+        }
+      },
+      "customThresholdVsAgentsJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "customThreshold" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "agents" : {
+            "$ref" : "./RoutingPreference.json#/components/schemas/actorArray"
+          }
+        },
+        "required" : [ "agents", "customThreshold" ]
+      },
+      "customThresholdVsAgentsList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./RoutingPreference.json#/components/schemas/customThresholdVsAgentsJSON"
+        }
+      },
+      "schedulerInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "INACTIVE", "ACTIVE", null ],
+            "minLength" : 0
+          },
+          "intervalInMinutes" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "nextExecutionTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "updateRoutingPreferenceJson" : {
+        "description" : "updateRoutingPreferenceJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "assignBacklog" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Will bulk-assign tickets that were created when agents were unavailable.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "assignToOfflineAgents" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Will include mail-channel offline agents also while assigning tickets.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "thresholdLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Threshold Per Agent, Range 1-500,thresholdEnabled has to be True to Update this limit",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "backLogLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Max. number of backlog tickets that can be bulk-assigned to an agent. Range 1-50",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "isThresholdEnabled" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Used to enable/disable ticket threshold for Round Robin",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "department Id",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "assignBacklogsBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Assign Backlogs Based on Due Date or Created Time, Allowed values @DUEDATE@ and @CREATEDTIME@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "freshTicketAssignMode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "IMMEDIATE", "MOVE_TO_BACKLOG" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Fresh Ticket Assignment Mode, allowed values are @IMMEDIATE@,@MOVE_TO_BACKLOG@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "assignBacklog", "assignBacklogsBy", "assignToOfflineAgents", "backLogLimit", "departmentId", "freshTicketAssignMode", "isThresholdEnabled", "thresholdLimit" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "assignBacklog" : true,
+                  "assignToOfflineAgents" : true,
+                  "thresholdLimit" : "40",
+                  "backLogLimit" : "22",
+                  "isThresholdEnabled" : true,
+                  "departmentId" : "1000000013248",
+                  "assignBacklogsBy" : "DUEDATE",
+                  "freshTicketAssignMode" : "IMMEDIATE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getRoutingPreferenceResponseJson" : {
+        "description" : "getRoutingPreferenceResponseJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "assignBacklog" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "assignToOfflineAgents" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "thresholdLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "backLogLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isThresholdEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isImmediateAssignmentEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Department Id",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "assignBacklogsBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "freshTicketAssignMode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "IMMEDIATE", "MOVE_TO_BACKLOG" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "customThresholdVsAgents" : {
+                  "$ref" : "./RoutingPreference.json#/components/schemas/customThresholdVsAgentsList"
+                },
+                "schedulerInfo" : {
+                  "$ref" : "./RoutingPreference.json#/components/schemas/schedulerInfo"
+                },
+                "isCustomThresholdEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "assignBacklog", "assignBacklogsBy", "assignToOfflineAgents", "backLogLimit", "customThresholdVsAgents", "departmentId", "freshTicketAssignMode", "isCustomThresholdEnabled", "isImmediateAssignmentEnabled", "isThresholdEnabled", "thresholdLimit" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "assignBacklog" : true,
+                  "assignToOfflineAgents" : true,
+                  "thresholdLimit" : "40",
+                  "backLogLimit" : "5",
+                  "isThresholdEnabled" : true,
+                  "departmentId" : "1000000013248",
+                  "assignBacklogsBy" : "DUEDATE",
+                  "freshTicketAssignMode" : "IMMEDIATE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "updateRoutingPreferenceJsonPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "assignBacklog" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "assignToOfflineAgents" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "thresholdLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "backLogLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isThresholdEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isImmediateAssignmentEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "assignBacklogsBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "DUEDATE", "CREATEDTIME" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "freshTicketAssignMode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "IMMEDIATE", "MOVE_TO_BACKLOG" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "customThresholdVsAgents" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "agentIds" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)",
+                          "x-custom-parameters-attributes" : [ ]
+                        },
+                        "uniqueItems" : false,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "customThreshold" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int32",
+                        "pattern" : "([0-9]+)",
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "required" : [ "agentIds", "customThreshold" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "maxItems" : 1,
+                  "uniqueItems" : true
+                },
+                "isCustomThresholdEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "departmentId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "assignBacklog" : true,
+                  "isThresholdEnabled" : "true",
+                  "backLogLimit" : "22",
+                  "departmentId" : "1000000013248"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "RoutingPreference"
+}

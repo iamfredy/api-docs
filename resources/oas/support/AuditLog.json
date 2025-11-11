@@ -1,0 +1,1122 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AuditLog",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "common"
+  },
+  "paths" : {
+    "/api/v1/fetchAuditLogs/{historyId}" : {
+      "get" : {
+        "tags" : [ "AuditLog" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getAuditLogDetails",
+        "parameters" : [ {
+          "name" : "historyId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/entityHistoryDetails"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/fetchAuditLogs" : {
+      "post" : {
+        "tags" : [ "AuditLog" ],
+        "summary" : "List Audit Logs",
+        "description" : "The audit log list all changes that transpired in the help desk for the specified filter. In request payload, either sortBy or cursor can be given. startTime & endTime attribute will be considered only when duration value is ${CUSTOM}",
+        "operationId" : "fetchAuditLogs",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/getAuditLogRequestJson"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/entityHistoryList"
+          },
+          "201" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "5fced0e4d01b4f158053008ffb7ec85f",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.AuditLogService.getAuditList"
+        }
+      }
+    },
+    "/api/v1/exportAuditLogs/{exportId}/download" : {
+      "get" : {
+        "tags" : [ "AuditLog" ],
+        "operationId" : "downloadExportZipFile",
+        "parameters" : [ {
+          "name" : "exportId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.exports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 5,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "b173edba924eeb4d13d6d15303f93f7c",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.AuditLogService.downloadExportZipFile"
+        }
+      }
+    },
+    "/api/v1/auditLogEvents" : {
+      "get" : {
+        "tags" : [ "AuditLog" ],
+        "summary" : "List Events",
+        "description" : "This API is used to list the events used in auditlog.",
+        "operationId" : "getAuditLogEvents",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/auditLogEvents"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "5a026b8891348ce8cccddd55264a8a76",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.AuditLogService.getAuditLogEvents"
+        }
+      }
+    },
+    "/api/v1/exportAuditLogs" : {
+      "post" : {
+        "tags" : [ "AuditLog" ],
+        "summary" : "Export Auditlog",
+        "description" : "This API is used to export audit log entries from a specified period.",
+        "operationId" : "exportAuditLogs",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/exportAuditLogRequestJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/exportResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 3600000,
+                  "lock-period" : 3600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 21600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "dc089298f033c05ff5e84329be43937b",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.AuditLogService.exportAuditLog"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "module" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "displayLabel", "id" ]
+      },
+      "primaryActor" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+",
+            "x-custom-parameters-attributes" : { }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "DESK_ADMIN", "AGENT", "PORTAL_USER", "WORKFLOW", "SUPERVISE_RULE", "CUSTOM_FUNCTION", "BLUEPRINT", "BLUEPRINT_TRANSITION", "ALERT", "ASSIGNMENT_RULE", "FIELD_UPDATE", "MACRO", "ROUND_ROBIN", "NOTIFICATION_RULE", "SLA" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "type", "url" ]
+      },
+      "department" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "id", "name" ]
+      },
+      "singleStateObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldValue" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "lookupName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "fieldValue", "lookupName" ]
+      },
+      "oldStatesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/singleStateObject"
+        }
+      },
+      "newStatesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/singleStateObject"
+        }
+      },
+      "singleChangeData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "newStates" : {
+            "$ref" : "./AuditLog.json#/components/schemas/newStatesArray"
+          },
+          "oldStates" : {
+            "$ref" : "./AuditLog.json#/components/schemas/oldStatesArray"
+          },
+          "fieldType" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "fieldId", "fieldName", "fieldType", "newStates", "oldStates" ]
+      },
+      "changeDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/singleChangeData"
+        }
+      },
+      "singleEntityHistoryDetail" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "subEvent" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "setupModule" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "module" : {
+            "$ref" : "./AuditLog.json#/components/schemas/module"
+          },
+          "ipAddress" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9\\.\\-\\,\\*\\ ]+",
+            "x-custom-parameters-attributes" : { }
+          },
+          "moduleName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "entityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "entityName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+            "x-custom-parameters-attributes" : { }
+          },
+          "primaryActor" : {
+            "$ref" : "./AuditLog.json#/components/schemas/primaryActor"
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$",
+            "x-custom-parameters-attributes" : { }
+          },
+          "department" : {
+            "$ref" : "./AuditLog.json#/components/schemas/department"
+          },
+          "event" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "ADD", "UPDATE", "DELETE", "RESTORE", "NOTIFICATION", "ASSOCIATE", "SPLIT", "MERGE", "ACTIVATE", "ARCHIVE", "DEACTIVATE", "DISASSOCIATE", "EXECUTION" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "changeData" : {
+            "$ref" : "./AuditLog.json#/components/schemas/changeDataArray"
+          },
+          "moduleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "hasChangeData": {
+            "type": [ "boolean", "null" ],
+       		"source": "system",
+            "entity": "AuditLog"
+   		  }
+        },
+        "required" : [ "changeData", "department", "entityId", "entityName", "event", "eventTime", "id", "ipAddress", "module", "moduleId", "moduleName", "primaryActor", "setupModule", "subEvent" ]
+      },
+      "entityHistoryDetailsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/singleEntityHistoryDetail"
+        }
+      },
+      "moduleSpecificProperties" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "relatedModuleName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "relatedModuleId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "relatedModuleId", "relatedModuleName" ]
+      },
+      "channel" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "apiName", "displayLabel" ]
+      },
+      "eventSpecificProperties" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "channel" : {
+            "$ref" : "./AuditLog.json#/components/schemas/channel"
+          }
+        },
+        "required" : [ "channel" ]
+      },
+      "singleEntityHistory" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "departmentName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "subEvent" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "module" : {
+            "$ref" : "./AuditLog.json#/components/schemas/module"
+          },
+          "moduleName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ipAddress" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9\\.\\-\\,\\*\\ ]+"
+          },
+          "entityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "eventSpecificProperties" : {
+            "$ref" : "./AuditLog.json#/components/schemas/eventSpecificProperties"
+          },
+          "entityName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "primaryActor" : {
+            "$ref" : "./AuditLog.json#/components/schemas/primaryActor"
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$"
+          },
+          "department" : {
+            "$ref" : "./AuditLog.json#/components/schemas/department"
+          },
+          "event" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ADD", "UPDATE", "DELETE", "RESTORE", "NOTIFICATION", "ASSOCIATE", "SPLIT", "MERGE", "ACTIVATE", "ARCHIVE", "DEACTIVATE", "DISASSOCIATE", "EXECUTION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "moduleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "moduleSpecificProperties" : {
+            "$ref" : "./AuditLog.json#/components/schemas/moduleSpecificProperties"
+          }
+        },
+        "required" : [ "department", "departmentId", "departmentName", "entityId", "entityName", "event", "eventSpecificProperties", "eventTime", "id", "ipAddress", "module", "moduleId", "moduleName", "moduleSpecificProperties", "primaryActor", "subEvent" ]
+      },
+      "entityHistoryArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/singleEntityHistory"
+        }
+      },
+      "cursor" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "next" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "previous" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "next", "previous" ]
+      },
+      "filterResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "duration" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "${TODAY}", "${CURRENT_MONTH}", "${CURRENT_WEEK}", "${LAST7DAYS}", "${LAST30DAYS}", "${CUSTOM}" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actorTypes" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "DESK_ADMIN", "AGENT", "PORTAL_USER", "WORKFLOW", "SUPERVISE_RULE", "CUSTOM_FUNCTION", "BLUEPRINT", "BLUEPRINT_TRANSITION", "ALERT", "ASSIGNMENT_RULE", "FIELD_UPDATE", "MACRO", "ROUND_ROBIN", "NOTIFICATION_RULE", "SLA" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "startTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "departmentIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "maxItems" : 6,
+            "uniqueItems" : false
+          },
+          "endTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "events" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "ADD", "UPDATE", "DELETE", "RESTORE", "NOTIFICATION", "ASSOCIATE", "SPLIT", "MERGE", "ACTIVATE", "ARCHIVE", "DEACTIVATE", "DISASSOCIATE", "EXECUTION" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "modules" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "tickets", "contacts", "contracts", "category", "timeEntry", "social", "community", "tasks", "products", "accounts", "chat", "reports", "dashboards", "assignment_rules", "notification_rules", "workflow", "skills", "blueprint", "macros", "escalate", "supervise", "support_contract", "schedules", "alerts", "field_updates", "custom_functions", "directAssignmentRules", "roundRobinRules", "email_templates", "email_template_folders", "business_hour", "holiday_list" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "actorTypes", "departmentIds", "duration", "endTime", "entityId", "events", "fieldId", "modules", "startTime" ]
+      },
+      "auditLogEventsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "apiName", "displayLabel" ]
+      },
+      "listOfAuditLogEvents" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AuditLog.json#/components/schemas/auditLogEventsJson"
+        }
+      }
+    },
+    "responses" : {
+      "entityHistoryDetails" : {
+        "description" : "entityHistoryDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/entityHistoryDetailsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "entityHistoryList" : {
+        "description" : "entityHistoryList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "cursor" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/cursor"
+                },
+                "data" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/entityHistoryArray"
+                }
+              },
+              "required" : [ "cursor", "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cursor" : {
+                    "next" : "MTY2MzMwNzEyOTc1Ml85ZDFmMjJkNS05MDE3LTQ4MGYtYjQ2MC0xZmQ4NjY1ODFhOWQ=",
+                    "previous" : null
+                  },
+                  "data" : [ {
+                    "departmentName" : "Desk",
+                    "subEvent" : "UPDATE",
+                    "departmentId" : "6000000019772",
+                    "module" : {
+                      "displayLabel" : "Workflow",
+                      "id" : "null"
+                    },
+                    "moduleName" : "Workflow",
+                    "ipAddress" : "127.0.0.1",
+                    "entityId" : "6000000074013",
+                    "eventSpecificProperties" : {
+                      "channel" : {
+                        "displayLabel" : "Mail",
+                        "apiName" : "mail"
+                      }
+                    },
+                    "entityName" : "Assign priority",
+                    "eventTime" : "2022-09-16T11:15:29.752Z",
+                    "id" : "9d1f22d5-9017-480f-b460-1fd866581a9d",
+                    "primaryActor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/6000000000347/photo?orgId=5576810&fileSize=THUMBNAIL",
+                      "name" : "Sugan",
+                      "id" : "6000000000347",
+                      "type" : "AGENT",
+                      "url" : "https://desk.zoho.com/api/v1/agents/6000000000347"
+                    },
+                    "department" : {
+                      "name" : "Desk",
+                      "id" : "6000000019772"
+                    },
+                    "moduleSpecificProperties" : {
+                      "relatedModuleName" : "Tickets",
+                      "relatedModuleId" : "600007658890"
+                    },
+                    "event" : "UPDATE",
+                    "moduleId" : null
+                  }, {
+                    "departmentName" : null,
+                    "subEvent" : "ADD",
+                    "departmentId" : null,
+                    "module" : {
+                      "displayLabel" : "Tickets",
+                      "id" : "6000000038009"
+                    },
+                    "moduleName" : "Tickets",
+                    "ipAddress" : "127.0.0.1",
+                    "entityId" : "6000000078003",
+                    "entityName" : "My Laptop charging time is longer",
+                    "eventTime" : "2022-09-16T11:15:30.249Z",
+                    "id" : "232b9549-dcdf-4854-8e5f-14ae9f24c827",
+                    "primaryActor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/6000000000347/photo?orgId=5576810&fileSize=THUMBNAIL",
+                      "name" : "Sugan",
+                      "id" : "6000000000347",
+                      "type" : "AGENT",
+                      "url" : "desk.zoho.com/api/v1/agents/6000000000347"
+                    },
+                    "department" : {
+                      "name" : "Desk",
+                      "id" : "6000000019772"
+                    },
+                    "moduleSpecificProperties" : null,
+                    "event" : "UPDATE",
+                    "moduleId" : "6000000038009"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "auditLogEvents" : {
+        "description" : "auditLogEvents template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/listOfAuditLogEvents"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "ADD",
+                    "apiName" : "ADD"
+                  }, {
+                    "displayLabel" : "UPDATE",
+                    "apiName" : "UPDATE"
+                  }, {
+                    "displayLabel" : "DELETE",
+                    "apiName" : "DELETE"
+                  }, {
+                    "displayLabel" : "RESTORE",
+                    "apiName" : "RESTORE"
+                  }, {
+                    "displayLabel" : "ARCHIVE",
+                    "apiName" : "ARCHIVE"
+                  }, {
+                    "displayLabel" : "NOTIFICATION",
+                    "apiName" : "NOTIFICATION"
+                  }, {
+                    "displayLabel" : "MERGE",
+                    "apiName" : "MERGE"
+                  }, {
+                    "displayLabel" : "SPLIT",
+                    "apiName" : "SPLIT"
+                  }, {
+                    "displayLabel" : "EXECUTION",
+                    "apiName" : "EXECUTION"
+                  }, {
+                    "displayLabel" : "ASSOCIATE",
+                    "apiName" : "ASSOCIATE"
+                  }, {
+                    "displayLabel" : "ACTIVATE",
+                    "apiName" : "ACTIVATE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "exportResponse" : {
+        "description" : "exportResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "exportId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "exportId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "exportId" : "2000000205003"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "getAuditLogRequestJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "filter" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/filterResponse"
+                },
+                "cursor" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MTY2NjA3MDkyMjE4Nl9hOWRkM2E3Yi0zOGVkLTQ5YzgtYWEzYS02YzY4OGFiMGRjM2NfTkVYVF9ERVND", "MTY2NjA3MDgzNzQyMl8wMWNhZjU2Zi00Yjg0LTQ4YjEtYWRhYS02ZjY0ODE1ZmE2ZTBfUFJFVklPVVNfREVTQw==" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "limit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "maximum" : 200,
+                  "minimum" : 1,
+                  "pattern" : "([0-9]+)"
+                },
+                "sortBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "eventTime", "-eventTime" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "filter" : {
+                    "duration" : "${LAST7DAYS}",
+                    "startTime" : "2022-09-08T08:46:33.284Z",
+                    "entityId" : "6000000074013",
+                    "departmentIds" : [ "12334", "1234" ],
+                    "endTime" : "2022-09-08T08:46:34.760Z",
+                    "actorIds" : [ "6421233", "3421233" ],
+                    "modules" : [ "workflow", "tickets", "contacts" ],
+                    "events" : [ "ADD", "DELETE" ],
+                    "fieldId" : "6000000074023"
+                  },
+                  "cursor" : "MTY2MjYwNjY2MDEyMl9jMDgwYTFhNS0yZDIwLTRjZWQtOTEzZC1mMzU3YTNlMDBhNTA=",
+                  "limit" : "20"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "exportAuditLogRequestJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "filter" : {
+                  "$ref" : "./AuditLog.json#/components/schemas/filterResponse"
+                },
+                "sortBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "eventTime", "-eventTime" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "filter" : {
+                    "duration" : "${CUSTOM}",
+                    "startTime" : "2022-09-08T08:46:33.284Z",
+                    "entityId" : "6000000074013",
+                    "departmentIds" : [ "12334", "1234" ],
+                    "endTime" : "2022-09-08T08:46:34.760Z",
+                    "actorIds" : [ "6421233", "3421233" ],
+                    "modules" : [ "workflow", "tickets", "contacts" ],
+                    "events" : [ "ADD", "DELETE" ]
+                  },
+                  "sortBy" : "-eventTime"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AuditLog"
+}

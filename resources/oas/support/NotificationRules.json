@@ -1,0 +1,441 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "NotificationRules",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/notificationRules/{notificationId}" : {
+      "patch" : {
+        "tags" : [ "NotificationRules" ],
+        "operationId" : "updateNotificationRule",
+        "parameters" : [ {
+          "name" : "notificationId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/enableNotifyJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/notificationRuleJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "15167b583e77bcfd1f18e8cb1962a03a",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.NotificationRuleService.update"
+        }
+      }
+    },
+    "/api/v1/notificationRules" : {
+      "get" : {
+        "tags" : [ "NotificationRules" ],
+        "summary" : "Get all Notification rules",
+        "description" : "This API is used to fetch all the notification rules and its enabled status",
+        "operationId" : "getNotificationRules",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "To get notification rules for this departmentId",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To get notification rules for this departmentId",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/notificationListViewResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "b2c9b4654be421328781fce299feb0d0",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.NotificationRuleService.getNotificationRules"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "notificationRuleJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To get notification rules for this departmentId",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "emailTemplateId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "smsTemplateId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "notificationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isSMSNotificationEnabled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "notificationType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENT_NOTIFICATION", "CONTACT_NOTIFICATION", "TEAM_NOTIFICATION", "DEPARTMENT_NOTIFICATION", "SECONDARY_CONTACTS_NOTIFICATION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "notificationName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "isEmailNotificationEnabled" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "departmentId", "displayName", "emailTemplateId", "isEmailNotificationEnabled", "isSMSNotificationEnabled", "notificationId", "notificationName", "notificationType", "smsTemplateId" ]
+      },
+      "notificationList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./NotificationRules.json#/components/schemas/notificationRuleJson"
+        }
+      }
+    },
+    "responses" : {
+      "notificationRuleJson" : {
+        "description" : "notificationRuleJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "displayName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "emailTemplateId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "smsTemplateId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "notificationId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isSMSNotificationEnabled" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable SMS Notification Status",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "notificationType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AGENT_NOTIFICATION", "CONTACT_NOTIFICATION", "TEAM_NOTIFICATION", "DEPARTMENT_NOTIFICATION", "SECONDARY_CONTACTS_NOTIFICATION" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "notificationName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "isEmailNotificationEnabled" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable Email Notification Status",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "departmentId", "displayName", "emailTemplateId", "isEmailNotificationEnabled", "isSMSNotificationEnabled", "notificationId", "notificationName", "notificationType", "smsTemplateId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "notificationListViewResponse" : {
+        "description" : "notificationListViewResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./NotificationRules.json#/components/schemas/notificationList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "notifcationType" : "CONTACT_NOTIFICATION",
+                    "displayName" : "Receiving a new ticket",
+                    "departmentId" : "1892000000639717",
+                    "emailTemplateId" : 18920000006625,
+                    "smsTemplateId" : 18920000002346,
+                    "notificationId" : "1892000000639801",
+                    "isSMSNotificationEnabled" : false,
+                    "notificationName" : "NOTIFY_CONTACT_ON_REQ_CREATE",
+                    "isEmailNotificationEnabled" : true
+                  }, {
+                    "notifcationType" : "CONTACT_NOTIFICATION",
+                    "displayName" : "Receipt of ticket reply",
+                    "departmentId" : "1892000000639717",
+                    "emailTemplateId" : 18920000006625,
+                    "smsTemplateId" : 18920000002346,
+                    "notificationId" : "1892000000639801",
+                    "isSMSNotificationEnabled" : false,
+                    "notificationName" : "NOTIFY_CONTACT_ON_EMAIL_RECEIPT",
+                    "isEmailNotificationEnabled" : true
+                  }, {
+                    "notifcationType" : "AGENT_NOTIFICATION",
+                    "displayName" : "Assigning a ticket",
+                    "departmentId" : "1892000000639717",
+                    "emailTemplateId" : 18920000006625,
+                    "smsTemplateId" : 18920000002346,
+                    "notificationId" : "1892000000639801",
+                    "isSMSNotificationEnabled" : false,
+                    "notificationName" : "NOTIFY_SUPPORTREP_ON_REQUEST_ASSIGN",
+                    "isEmailNotificationEnabled" : true
+                  }, {
+                    "notifcationType" : "AGENT_NOTIFICATION",
+                    "displayName" : "Editing a comment",
+                    "departmentId" : "1892000000639717",
+                    "emailTemplateId" : 18920000006625,
+                    "smsTemplateId" : 18920000002346,
+                    "notificationId" : "1892000000639801",
+                    "isSMSNotificationEnabled" : false,
+                    "notificationName" : "NOTIFY_REQUEST_OWNER_ON_EDIT_COMMENT",
+                    "isEmailNotificationEnabled" : true
+                  }, {
+                    "notifcationType" : "TEAM_NOTIFICATION",
+                    "displayName" : "Assigning a ticket",
+                    "departmentId" : "1892000000639717",
+                    "emailTemplateId" : 18920000006625,
+                    "smsTemplateId" : 18920000002346,
+                    "notificationId" : "1892000000639801",
+                    "isSMSNotificationEnabled" : false,
+                    "notificationName" : "NOTIFY_TICKET_TEAM_ON_TICKET_ASSIGN",
+                    "isEmailNotificationEnabled" : true
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "enableNotifyJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isSMSNotificationEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isEmailNotificationEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "NotificationRules"
+}

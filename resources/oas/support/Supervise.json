@@ -1,0 +1,774 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Supervise",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/superviseRules" : {
+      "get" : {
+        "tags" : [ "Supervise" ],
+        "summary" : "Get All Supervise Rules",
+        "description" : "This API is used to view all Supervise Rules",
+        "operationId" : "getAllSuperviseRules",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "number of rules to be retrieved, @DEFAULT 50@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "number of rules to be retrieved, @DEFAULT 50@",
+            "maximum" : 50,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index,@DEFAULT 1@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "from index,@DEFAULT 1@",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "to get rules by status, allowed values are @ACTIVE@ and @INACTIVE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "to get rules by status, allowed values are @ACTIVE@ and @INACTIVE@",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/superviseListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e2535b05030af4e8de69bb54ff84d4f4",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SuperviseRuleService.getSuperviseRules"
+        }
+      }
+    },
+    "/api/v1/superviseSchedulerStatus" : {
+      "get" : {
+        "tags" : [ "Supervise" ],
+        "summary" : "Get Supervise rules Scheduler Status",
+        "description" : "This API is used to get Supervise rules Scheduler Status in a department",
+        "operationId" : "getExecutionStatus",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/executionStatusOutput"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e0a4d0f619bcbe8e2d2e0d76b67a69f6",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SuperviseRuleService.getTimeBasedSchedulerStatus"
+        }
+      },
+      "put" : {
+        "tags" : [ "Supervise" ],
+        "summary" : "Update Supervise rules Scheduler Status",
+        "description" : "This API is used to Update Supervise rules Status in a department",
+        "operationId" : "updateExecutionStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/executionStatusInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/executionStatusOutput"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c976ef22f060d36050aeafa3deb68326",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SuperviseRuleService.updateTimeBasedSchedulerStatus"
+        }
+      }
+    },
+    "/api/v1/superviseRules/{superviseRuleId}" : {
+      "get" : {
+        "tags" : [ "Supervise" ],
+        "summary" : "Get Supervise Rule",
+        "description" : "This API is used to view a Supervise Rule",
+        "operationId" : "getSuperviseRule",
+        "parameters" : [ {
+          "name" : "superviseRuleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/superviseJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7907a4f6a63906af92c05d5e82788fca",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SuperviseRuleService.getSuperviseRule"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "minimalSuperviseData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "automationTaskIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "automationFieldUpdateIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "department from which all the rules is going to be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "automationAlertIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "to get rules by status, allowed values are @ACTIVE@ and @INACTIVE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "automationAlertIds", "automationFieldUpdateIds", "automationTaskIds", "createdBy", "createdTime", "departmentId", "description", "id", "modifiedBy", "modifiedTime", "name", "status" ]
+      },
+      "superviseList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Supervise.json#/components/schemas/minimalSuperviseData"
+        }
+      },
+      "fieldConditionsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/automationCriteriaResponse"
+        }
+      },
+      "criteriaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "./Supervise.json#/components/schemas/fieldConditionsArr"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[andor()0-9\\s]*"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      }
+    },
+    "responses" : {
+      "superviseListResponse" : {
+        "description" : "superviseListResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Supervise.json#/components/schemas/superviseList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1531897778000,
+                    "automationTaskIds" : [ "10000000015047" ],
+                    "departmentId" : "10000000010762",
+                    "description" : "Supervise Description Updated",
+                    "businessHourId" : "1000000007892",
+                    "createdBy" : "10000000012902",
+                    "automationFieldUpdateIds" : [ "10000000013274" ],
+                    "name" : "First Supervise Rule",
+                    "createdTime" : 1530615099000,
+                    "modifiedBy" : "10000000012902",
+                    "id" : "10000000117019",
+                    "automationAlertIds" : [ "10000000023114" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1531917938000,
+                    "automationTaskIds" : [ ],
+                    "departmentId" : "10000000010762",
+                    "description" : "",
+                    "businessHourId" : null,
+                    "createdBy" : "10000000012902",
+                    "automationFieldUpdateIds" : [ "10000000029017" ],
+                    "name" : "TOP Rule",
+                    "createdTime" : 1531917938000,
+                    "modifiedBy" : "10000000012902",
+                    "id" : "10000000162007",
+                    "automationAlertIds" : [ ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1531912249000,
+                    "automationTaskIds" : [ ],
+                    "departmentId" : "10000000010762",
+                    "description" : "test rule",
+                    "businessHourId" : "1000000001657",
+                    "createdBy" : "10000000012902",
+                    "automationFieldUpdateIds" : [ ],
+                    "name" : "Second Supervise Rule",
+                    "createdTime" : 1530613883000,
+                    "modifiedBy" : "10000000012902",
+                    "id" : "10000000117007",
+                    "automationAlertIds" : [ "10000000023114" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1531910562000,
+                    "automationTaskIds" : [ "10000000015047" ],
+                    "departmentId" : "10000000010762",
+                    "description" : "Royal Description",
+                    "businessHourId" : null,
+                    "createdBy" : "10000000012902",
+                    "automationFieldUpdateIds" : [ "10000000013274" ],
+                    "name" : "ACTIVE First",
+                    "createdTime" : 1531837037000,
+                    "modifiedBy" : "10000000012902",
+                    "id" : "10000000160009",
+                    "automationAlertIds" : [ "10000000023114" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1531912105000,
+                    "automationTaskIds" : [ ],
+                    "departmentId" : "10000000010762",
+                    "description" : "Description Updated",
+                    "businessHourId" : "1000000001532",
+                    "createdBy" : "10000000012902",
+                    "automationFieldUpdateIds" : [ ],
+                    "name" : "Last Supervise Rule",
+                    "createdTime" : 1528971060000,
+                    "modifiedBy" : "10000000012902",
+                    "id" : "10000000023466",
+                    "automationAlertIds" : [ "10000000023114" ],
+                    "status" : "INACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "executionStatusOutput" : {
+        "description" : "executionStatusOutput template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To enable/disable time based scheduler,allowed values are @ACTIVE@ and @INACTIVE@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : "204"
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "superviseJson" : {
+        "description" : "superviseJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "criteria" : {
+                  "$ref" : "./Supervise.json#/components/schemas/criteriaJson"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0
+                },
+                "businessHourId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "automationAlertIds", "automationFieldUpdateIds", "automationTaskIds", "businessHourId", "createdBy", "createdTime", "criteria", "departmentId", "description", "id", "modifiedBy", "modifiedTime", "name", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "automationTaskIds" : [ "10000000015047" ],
+                  "modifiedTime" : 1531980066551,
+                  "criteria" : {
+                    "fieldConditions" : [ {
+                      "condition" : "is open",
+                      "fieldName" : "Status",
+                      "fieldModule" : "tickets",
+                      "value" : [ "${OPEN}" ]
+                    } ],
+                    "pattern" : "(1)"
+                  },
+                  "departmentId" : "10000000010762",
+                  "description" : "My New Rule Description",
+                  "businessHourId" : "10000000010123",
+                  "automationFieldUpdateIds" : [ "10000000013274" ],
+                  "createdBy" : "10000000012902",
+                  "name" : "First Supervise Rule",
+                  "createdTime" : 1531980066551,
+                  "modifiedBy" : "10000000012902",
+                  "id" : "10000000364003",
+                  "automationAlertIds" : [ "10000000023114" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "department from which all the rules is going to be listed",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "department from which all the rules is going to be listed",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "executionStatusInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "departmentId", "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "departmentId" : "10000000010762",
+                  "status" : "INACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Supervise"
+}

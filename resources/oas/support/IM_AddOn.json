@@ -1,0 +1,841 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_AddOn",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/subscription/addOns" : {
+      "get" : {
+        "tags" : [ "IM_AddOn" ],
+        "operationId" : "getAddOnPackageDetails",
+        "parameters" : [ {
+          "name" : "subscription",
+          "in" : "query",
+          "description" : "set this param to get subscription details",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "set this param to get subscription details"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAddOnPackageDetails"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMAddOnService.getAddOns"
+        }
+      },
+      "post" : {
+        "tags" : [ "IM_AddOn" ],
+        "operationId" : "buyCreditAddOnPackage",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/creditsPostPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/addOnPackage"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMAddOnService.buyAddOnPackage"
+        }
+      },
+      "patch" : {
+        "tags" : [ "IM_AddOn" ],
+        "operationId" : "modifyCreditAddOnPackage",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/creditsPatchPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/addOnPackage"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 86400000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMAddOnService.modifyAddOnPackage"
+        }
+      }
+    },
+    "/api/v1/im/subscription/statement" : {
+      "get" : {
+        "tags" : [ "IM_AddOn" ],
+        "operationId" : "getIMPaymentStatement",
+        "parameters" : [ {
+          "name" : "transactionType",
+          "in" : "query",
+          "description" : "Optional Param - To Filter out Particular transaction Types",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Optional Param - To Filter out Particular transaction Types",
+            "enum" : [ "CREDIT", "DEBIT", "CREDIT_RENEWAL", "UNSUCCESSFUL_DEBIT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "duration",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CUSTOM_IN_DATE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "end date for metrics. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "end date for metrics. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of statement Entries to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of statement Entries to fetch",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the statement entry must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the statement entry must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "start date for metrics. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "start date for metrics. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+          }
+        }, {
+          "name" : "channelId",
+          "in" : "query",
+          "description" : "To filter out transactions for particular channelId",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To filter out transactions for particular channelId",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/StatementResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMAddOnService.getPaymentStatement"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "addOnSubscriptionInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "package count and renenwal package count",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "available" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "renewalCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "set renewal package count for auto-renewal",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "renewalThreshold" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "set threshold for auto renewal",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PURCHASED", "PURCHASE_MODIFIED", "RENEWAL_SUCCESS", "RENEWAL_FAILURE", "LICENSE_CANCELLED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "available", "count", "renewalCount", "renewalThreshold", "status" ]
+      },
+      "addOnPackage" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "cost" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "subscriptionInfo" : {
+            "$ref" : "./IM_AddOn.json#/components/schemas/addOnSubscriptionInfo"
+          },
+          "kind" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "single.addOn", "list.addOn", "single.statement" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "MESSAGE", "CHANNEL", "CONVERSATION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "IM_CREDITS", "TWILIO_PHONENUMBER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CREDIT", "COUNT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "cost", "kind", "module", "name", "subscriptionInfo", "type" ]
+      },
+      "addOnPackagesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_AddOn.json#/components/schemas/addOnPackage"
+        }
+      },
+      "DebitDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "deductionReason" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "messageType" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "conversationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "messageId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "integrationService" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "botId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "channelId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To filter out transactions for particular channelId",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "agentId", "botId", "channelId", "contactId", "conversationId", "deductionReason", "integrationService", "messageId", "messageType" ]
+      },
+      "StatementEntry" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "transactionType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CREDIT", "DEBIT", "CREDIT_RENEWAL", "UNSUCCESSFUL_DEBIT" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Optional Param - To Filter out Particular transaction Types",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "debitDetails" : {
+            "$ref" : "./IM_AddOn.json#/components/schemas/DebitDetails"
+          },
+          "transactionAmount" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "featureType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "IM_CREDITS", "TWILIO_PHONENUMBERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "zohoService" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "time" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "balanceAmount" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "transactionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "balanceAmount", "debitDetails", "featureType", "time", "transactionAmount", "transactionId", "transactionType", "zohoService" ]
+      },
+      "StatementEntryArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_AddOn.json#/components/schemas/StatementEntry"
+        }
+      }
+    },
+    "responses" : {
+      "addOnPackage" : {
+        "description" : "addOnPackage template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "cost" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "subscriptionInfo" : {
+                  "$ref" : "./IM_AddOn.json#/components/schemas/addOnSubscriptionInfo"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.addOn", "list.addOn", "single.statement" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MESSAGE", "CHANNEL", "CONVERSATION" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "IM_CREDITS", "TWILIO_PHONENUMBER" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "addOn name as given in GET response",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "CREDIT", "COUNT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "cost", "kind", "module", "name", "subscriptionInfo", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAddOnPackageDetails" : {
+        "description" : "getAddOnPackageDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_AddOn.json#/components/schemas/addOnPackagesArray"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.addOn", "list.addOn", "single.statement" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "StatementResponse" : {
+        "description" : "StatementResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_AddOn.json#/components/schemas/StatementEntryArray"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.addOn", "list.addOn", "single.statement" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "creditsPostPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "addOn name as given in GET response",
+                  "enum" : [ "IM_CREDITS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "count" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "package count and renenwal package count",
+                  "pattern" : "([0-9]+)"
+                },
+                "autoRenewal" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "set this to enable auto-renewal"
+                },
+                "renewalCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "set renewal package count for auto-renewal",
+                  "pattern" : "([0-9]+)"
+                },
+                "renewalThreshold" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "set threshold for auto renewal",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "autoRenewal", "count", "name", "renewalCount", "renewalThreshold" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "creditsPatchPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "addOn name as given in GET response",
+                  "enum" : [ "IM_CREDITS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "autoRenewal" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "set this to enable auto-renewal"
+                },
+                "renewalCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "set renewal package count for auto-renewal",
+                  "pattern" : "([0-9]+)"
+                },
+                "renewalThreshold" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "set threshold for auto renewal",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "autoRenewal", "name", "renewalCount", "renewalThreshold" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_AddOn"
+}

@@ -1,0 +1,132 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Training Integration",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "training"
+  },
+  "paths" : {
+    "/api/v1/tcInteg" : {
+      "get" : {
+        "tags" : [ "Training" ],
+        "summary" : "Get Trainer Central org details",
+        "description" : "Gets the Trainer Central integration organization id if present.",
+        "operationId" : "getTCIntegDetails",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/tcIntegOrgJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.desk.helpcenter.channel.asap.AsapAppService.getTCIntegDetails"
+        }
+      },
+      "post" : {
+        "tags" : [ "Training" ],
+        "summary" : "Create Trainer Central org",
+        "description" : "Creates a Trainer Central organization if it does not exist.",
+        "operationId" : "addTCInteg",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/tcIntegOrgJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "settings.WRITE", "settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.desk.helpcenter.channel.asap.AsapAppService.addTCInteg"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "tcIntegOrgJson" : {
+        "description" : "Trainer Central integration organization id",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "tcIntegOrgId" : {
+                  "type" : "string"
+                }
+              },
+              "required" : [ "tcIntegOrgId" ]
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "Training"
+}

@@ -1,0 +1,206 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "KPIWidget",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/kpiWidgets/{widgetId}/data" : {
+      "get" : {
+        "tags" : [ "KPIWidget" ],
+        "summary" : "GetKpiComponentData",
+        "description" : "To get a KPI component data",
+        "operationId" : "getWidgetData",
+        "parameters" : [ {
+          "name" : "widgetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getWidgetResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "de23e0e70cbbbb4b8836139e0279fbbd",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.dashboards.gallery.service.ReportGalleryService.getWidgetData"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "KPIMeta" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "targetValueType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CONSTANT", "PREVIOUS_PERIOD_VALUE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "previousDuration" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "widgetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "secondaryValueType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTUAL_VALUE", "PREV_PERIOD_VALUE", "PERCENT_OF_DIFF_FROM_PREVIOUS_VALUE", "DIFF_FROM_PREVIOUS_VALUE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "targetValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+          },
+          "label" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "KPI_SINGLEVALUE", "KPI_DOUBLEVALUE", "KPI_SPEEDOMETER", "KPI_DIAL", "KPI_FULLDIAL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "primaryValueType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTUAL_VALUE", "PREV_PERIOD_VALUE", "PERCENT_OF_DIFF_FROM_PREVIOUS_VALUE", "DIFF_FROM_PREVIOUS_VALUE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "label", "previousDuration", "primaryValueType", "secondaryValueType", "targetValue", "targetValueType", "type", "widgetId" ]
+      },
+      "KPIData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "primaryValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^([a-zA-Z0-9\\s\\.\\?\\_\\-\\,])*$|null|undefined)"
+          },
+          "secondaryValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^([a-zA-Z0-9\\s\\.\\?\\_\\-\\,])*$|null|undefined)"
+          }
+        },
+        "required" : [ "primaryValue", "secondaryValue" ]
+      }
+    },
+    "responses" : {
+      "getWidgetResponse" : {
+        "description" : "getWidgetResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KPIWidget.json#/components/schemas/KPIData"
+                },
+                "meta" : {
+                  "$ref" : "./KPIWidget.json#/components/schemas/KPIMeta"
+                }
+              },
+              "required" : [ "data", "meta" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "primaryValue" : "2712000.0",
+                    "secondaryValue" : "152"
+                  },
+                  "meta" : {
+                    "targetValueType" : "CONSTANT",
+                    "previousDuration" : "Last month",
+                    "widgetId" : "1000000071023",
+                    "secondaryValueType" : "PREV_PERIOD_VALUE",
+                    "targetValue" : "0.0",
+                    "label" : "Total Comments_5",
+                    "type" : "KPI_DOUBLEVALUE",
+                    "primaryValueType" : "ACTUAL_VALUE"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "KPIWidget"
+}

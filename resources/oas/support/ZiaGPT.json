@@ -1,0 +1,3229 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ZiaGPT",
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/api/v1/ziagpt/features" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAllowedFeatures",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/gptFeatures"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getAllowedFeature"
+        }
+      }
+    },
+    "/api/v1/ziagpt/status" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getOrg",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getOrg"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getOrg"
+        }
+      },
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "createOrg",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "ZiaGpt enable disable",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "ZiaGpt enable disable",
+            "enum" : [ "ACTIVE,INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getConfiguration"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.createOrg"
+        }
+      },
+      "patch" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "updateOrg",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateOrgJson"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getApiKey"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.updateOrg"
+        }
+      }
+    },
+    "/api/v1/ziagpt/authentication" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getApiKey",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getApiKey"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getApiKey"
+        }
+      },
+      "put" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "updateApiKey",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateApiKey"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/updateTokenId"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.updateApiKey"
+        }
+      },
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "addApiKey",
+        "parameters" : [ {
+          "name" : "addApiKey",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addApiKey"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/addApiKey"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.addApiKey"
+        }
+      }
+    },
+    "/api/v1/ziagpt/tickets/summary" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getSummary",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/summaryRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/summaryResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getSummary"
+        }
+      }
+    },
+    "/api/v1/ziagpt/tickets/aspects" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAspects",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/gptTicketAspectsRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/gptTicketAspectsResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getAspects"
+        }
+      }
+    },
+    "/api/v1/ziagpt/tickets/article" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getArticle",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/ArticleGenerationRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/ArticleGenerationResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getArticle"
+        }
+      }
+    },
+    "/api/v1/ziagpt/generate" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "llmGeneration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/getGenerationJSONObject"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/summaryResponseJSON"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.llmGeneration"
+        }
+      }
+    },
+    "/api/v1/ziagpt/services" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAllowedServices",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllowedServices"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getAllowedService"
+        }
+      }
+    },
+    "/api/v1/ziagpt/bot/answer" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getBotAnswer",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/botAnswerRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/ticketAnswerResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getBotAnswer"
+        }
+      }
+    },
+    "/api/v1/ziagpt/models" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAllowedGptModels",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/modelsArray"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getAllowedGptModels"
+        }
+      }
+    },
+    "/api/v1/ziagpt/tickets/tone" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getTone",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/toneRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/toneResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getTone"
+        }
+      }
+    },
+    "/api/v1/ziagpt/authentication/token" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getExistingBundledToken",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIntegratedTokenValidResposne"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getIntegratedToken"
+        }
+      }
+    },
+    "/api/v1/ziagpt/authentication/maptoken" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "mapBundledOpenAIAPIKey",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/MapTokenInputPayload"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/mapTokenResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.addMapApiKey"
+        }
+      }
+    },
+    "/api/v1/ziagpt/configuration" : {
+      "get" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAllZiaGptConfiguration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllZiaGptConfigurationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.getAllZiaGptConfiguration"
+        }
+      },
+      "patch" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "updateConfiguration",
+        "parameters" : [ {
+          "name" : "ticketSentiment",
+          "in" : "query",
+          "description" : "Enable Disable ticketSentimentStatus",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Enable Disable ticketSentimentStatus"
+          }
+        }, {
+          "name" : "ticketPrediction",
+          "in" : "query",
+          "description" : "Enable Disable ticketPrediction",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Enable Disable ticketPrediction"
+          }
+        }, {
+          "name" : "openDomainData",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ]
+          }
+        }, {
+          "name" : "integtype",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "OPENAI" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "replyAssistance",
+          "in" : "query",
+          "description" : "Enable Disable replyAssistance",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Enable Disable replyAssistance"
+          }
+        }, {
+          "name" : "ticketSummary",
+          "in" : "query",
+          "description" : "Enable Disable ticketSummaryStatus",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Enable Disable ticketSummaryStatus"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllZiaGptConfigurationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apimethod" : "com.zoho.desk.ziagpt.integ.service.ZiaGPTIntegService.updateZiaGptConfiguration"
+        }
+      }
+    },
+    "/api/v1/ziadesk/gpt/status" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "internalUpdateGPTFeatureStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/GptInternalUpdateStatusRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/GptInternalUpdateStatusResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 5000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.ZIAGptService.updateGPTFeatureStatus"
+        }
+      }
+    },
+    "/api/v1/ziagpt/tickets/answer" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getTicketAnswer",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/ticketAnswerRequestJSON"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/ticketAnswerResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getTicketAnswer"
+        }
+      }
+    },
+    "/api/v1/ziagpt/assistance" : {
+      "post" : {
+        "tags" : [ "ZiaGPT" ],
+        "operationId" : "getAssistance",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/assistanceRequestJSON"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/summaryResponseJSON"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.zia.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.ziagpt.feature.service.ZiaGPTFeatureService.getAssistance"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "summaryresultJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "text" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "language", "text" ]
+      },
+      "service" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "model" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "source" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CLOSED_DOMAIN", "OPEN_DOMAIN" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "model", "source", "type" ]
+      },
+      "toneResultJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "sentiment" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "tone" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "language", "sentiment", "tone" ]
+      },
+      "RelatedDocJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "id", "locale", "title", "type", "url" ]
+      },
+      "relatedDocJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ZiaGPT.json#/components/schemas/RelatedDocJSON"
+        }
+      },
+      "replyAssistanceResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "relatedDocuments" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/relatedDocJSONArr"
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "model" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "text" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "language", "model", "relatedDocuments", "text", "type" ]
+      },
+      "featureLanguageList" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayName", "name" ]
+      },
+      "prediction" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "predictionLanguageList" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/featureLanguageList"
+          }
+        },
+        "required" : [ "predictionLanguageList" ]
+      },
+      "toneGeneration" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "textGeneration" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "replyAssistanceJsonObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "toneGeneration" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/toneGeneration"
+          },
+          "textGeneration" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/textGeneration"
+          },
+          "languages" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/featureLanguageList"
+          }
+        },
+        "required" : [ "languages", "textGeneration", "toneGeneration" ]
+      },
+      "configuredBy" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE,INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ZiaGpt enable disable",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "status" ]
+      },
+      "includeArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "SUBJECT", "COMMENTS", "FORWARDED", "INCOMING", "OUTGOING" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "NegativeAspects" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "PositiveAspects" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "NeutralAspects" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "gptTicketAspectsJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "negative" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/NegativeAspects"
+          },
+          "neutral" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/NeutralAspects"
+          },
+          "positive" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/PositiveAspects"
+          }
+        },
+        "required" : [ "negative", "neutral", "positive" ]
+      },
+      "ArticleGenerationResultJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "text" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "language", "text", "title" ]
+      },
+      "threadIds" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "commentIds" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "serviceCompatibilityResponseJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "expiryDate" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "accessLevel" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TRIAL", "SUPPORTED", "NOT_SUPPORTED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "trailStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "NOT_ENABLED", "ON_TRAIL", "EXPIRED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accessLevel", "expiryDate", "trailStatus" ]
+      },
+      "getAllowedZOHOServiceType" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "serviceStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "NOT_CONFIGURED", "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "compatibility" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/serviceCompatibilityResponseJSON"
+          }
+        },
+        "required" : [ "compatibility", "serviceStatus", "type" ]
+      },
+      "ticketAnswerResultJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "relatedDocuments" : {
+            "$ref" : "./ZiaGPT.json#/components/schemas/relatedDocJSONArr"
+          },
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "text" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "language", "relatedDocuments", "text" ]
+      },
+      "toneActionJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "tone" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "tone", "type" ]
+      },
+      "translateActionJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "language" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "language based reply",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "language", "type" ]
+      },
+      "commonActionJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "words" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "type", "words" ]
+      },
+      "lengthActionJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "words" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "length" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SHORTER", "LONGER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "length", "type", "words" ]
+      },
+      "assistanceAPIJSONArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./ZiaGPT.json#/components/schemas/toneActionJSON"
+          }, {
+            "$ref" : "./ZiaGPT.json#/components/schemas/translateActionJSON"
+          }, {
+            "$ref" : "./ZiaGPT.json#/components/schemas/commonActionJSON"
+          }, {
+            "$ref" : "./ZiaGPT.json#/components/schemas/lengthActionJSON"
+          } ]
+        }
+      }
+    },
+    "responses" : {
+      "gptFeatures" : {
+        "description" : "gptFeatures template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "feedback" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "prediction" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/prediction"
+                },
+                "replyAssistance" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/replyAssistanceJsonObject"
+                }
+              },
+              "required" : [ "feedback", "prediction", "replyAssistance" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getConfiguration" : {
+        "description" : "getConfiguration template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "summary" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "sentiment" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "predictionType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AUTO", "MANUAL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "prediction" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "configuredTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "replyAssistance" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "LLM Integration type",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "configuredBy" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/configuredBy"
+                },
+                "orgId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ZiaGpt enable disable",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "configuredBy", "configuredTime", "orgId", "prediction", "predictionType", "replyAssistance", "sentiment", "status", "summary", "tokenId", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getApiKey" : {
+        "description" : "getApiKey template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "tokenId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "summaryResponseJSON" : {
+        "description" : "summaryResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "result" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/summaryresultJSON"
+                },
+                "service" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/service"
+                }
+              },
+              "required" : [ "result", "service" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "gptTicketAspectsResponseJSON" : {
+        "description" : "gptTicketAspectsResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "result" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/gptTicketAspectsJSON"
+                },
+                "service" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/service"
+                }
+              },
+              "required" : [ "result", "service" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getOrg" : {
+        "description" : "getOrg template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "portalId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "zia gpt prediction type",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "portalId", "status", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "ArticleGenerationResponseJSON" : {
+        "description" : "ArticleGenerationResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "result" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/ArticleGenerationResultJSON"
+                },
+                "service" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/service"
+                }
+              },
+              "required" : [ "result", "service" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllowedServices" : {
+        "description" : "getAllowedServices template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./ZiaGPT.json#/components/schemas/getAllowedZOHOServiceType"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "ticketAnswerResponseJSON" : {
+        "description" : "ticketAnswerResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "result" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/ticketAnswerResultJSON"
+                },
+                "service" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/service"
+                }
+              },
+              "required" : [ "result", "service" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "modelsArray" : {
+        "description" : "modelsArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./ZiaGPT.json#/components/schemas/featureLanguageList"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "toneResponseJSON" : {
+        "description" : "toneResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "result" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/toneResultJSON"
+                },
+                "service" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/service"
+                }
+              },
+              "required" : [ "result", "service" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "updateTokenId" : {
+        "description" : "updateTokenId template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "tokenId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIntegratedTokenValidResposne" : {
+        "description" : "getIntegratedTokenValidResposne template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "tokenId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "mapTokenResponse" : {
+        "description" : "mapTokenResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "tokenId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllZiaGptConfigurationResponse" : {
+        "description" : "getAllZiaGptConfigurationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ticketSentiment" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable Disable ticketSentimentStatus",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "ticketPrediction" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable Disable ticketPrediction",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ziaGptType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "OPENAI,ZOHO" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "zia gpt prediction type",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "service_org_id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "configuredTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "replyAssistance" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable Disable replyAssistance",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "ticketSummary" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Enable Disable ticketSummaryStatus",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "ziaGptPrediction" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AUTO_GENERATE_PREDICTIONS,PREDICTION_ON_CLICK" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "zia gpt prediction",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "configuredBy" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/configuredBy"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "configuredBy", "configuredTime", "replyAssistance", "service_org_id", "status", "ticketPrediction", "ticketSentiment", "ticketSummary", "tokenId", "ziaGptPrediction", "ziaGptType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "GptInternalUpdateStatusResponseJSON" : {
+        "description" : "GptInternalUpdateStatusResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ZiaGpt Status",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "addApiKey" : {
+        "description" : "addApiKey template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "tokenId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "type" : {
+        "name" : "type",
+        "in" : "query",
+        "description" : "zia gpt prediction type",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "zia gpt prediction type",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "summaryRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the thread, @Note:@ If a thread ID is provided, the summary will be generated only for that specific thread.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "include" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/includeArray"
+                },
+                "conversationCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "The maximum number of ticket conversations to generate the Ticket Summary. @Note:@ This is only applicable for Ticket Summary; ChatGPT: 1-5 Zia: 1-30.",
+                  "pattern" : "([0-9]+)"
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "To regenerate the response, set the value as @REGENERATE@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Set the language of the content. For example, @ENGLISH@ or @SPANISH@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the ticket",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "ticketId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "gptTicketAspectsRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the thread",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "include" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/includeArray"
+                },
+                "conversationCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Set the language of the content. For example, @ENGLISH@ or @SPANISH@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the ticket",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "ArticleGenerationRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tikcetId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "To regenerate the reply response, use the action value as @REGENERATE@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of content. Enter this input in Name language. For example @ARABIC@ , @HEBREW@, @ENGLISH@ etc",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "commentIds" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/commentIds"
+                },
+                "threadIds" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/threadIds"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "getGenerationJSONObject" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "context" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Content that the AI should analyze.",
+                  "maxLength" : 20000,
+                  "minLength" : 0
+                },
+                "prompt" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Custom instruction given by the agent.",
+                  "maxLength" : 100000,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateOrgJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "zia gpt prediction type",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ZiaGpt enable disable",
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "botAnswerRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "query" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "The user input.",
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the department",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "format" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "EMAIL", "CHAT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Set the language of the content. For example, @ENGLISH@ or @SPANISH@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "departmentId", "format", "query" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "toneRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the thread",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Set the language of the content. For example, @ENGLISH@ or @SPANISH@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the ticket",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "ticketId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateApiKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "apiKey" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ApiKey from openai to store in platformAI",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "secret" : true
+                  }
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "MapTokenInputPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "apiKey" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ApiKey from openai to store in platformAI",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "secret" : true
+                  }
+                },
+                "integtype" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "LLM Integration type",
+                  "enum" : [ "OPENAI" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "GptInternalUpdateStatusRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "service" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ZiaGpt Service Type",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ZiaGpt Status",
+                  "enum" : [ "ACTIVE,INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "ticketAnswerRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "threadId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the thread, @Note:@ If a thread ID is provided, the answer will be generated only for that specific thread.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "include" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/includeArray"
+                },
+                "conversationCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "format" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "The reply format. For example: @email@ ,@chat@.",
+                  "enum" : [ "EMAIL", "CHAT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "To regenerate the response, set the value as @REGENERATE@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Set the language of the content. For example, @ENGLISH@ or @SPANISH@.",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "ID of the ticket",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "format", "ticketId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "assistanceRequestJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "format" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "response format",
+                  "enum" : [ "EMAIL", "CHAT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of content. Enter this input in Name language. For example @ARABIC@ , @HEBREW@, @ENGLISH@ etc",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actions" : {
+                  "$ref" : "./ZiaGPT.json#/components/schemas/assistanceAPIJSONArray"
+                },
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "User content",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actions", "content", "format", "language" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addApiKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "tokenId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ZiaGPT"
+}

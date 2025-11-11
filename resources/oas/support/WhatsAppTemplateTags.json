@@ -1,0 +1,132 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "WhatsAppTemplateTags",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/integrationServices/WHATSAPP/templateTags" : {
+      "get" : {
+        "tags" : [ "WhatsAppTemplateTags" ],
+        "operationId" : "getWhatsAppTemplateTags",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getWhatsAppTemplateTags"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelService.getWhatsAppTemplateTags"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "WATJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "tags" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "ACCOUNT_UPDATE", "PAYMENT_UPDATE", "PERSONAL_FINANCE_UPDATE", "SHIPPING_UPDATE", "RESERVATION_UPDATE", "ISSUE_RESOLUTION", "APPOINTMENT_UPDATE", "TRANSPORTATION_UPDATE", "TICKET_UPDATE", "ALERT_UPDATE", "AUTO_REPLY" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : true
+          }
+        },
+        "required" : [ "tags" ]
+      }
+    },
+    "responses" : {
+      "getWhatsAppTemplateTags" : {
+        "description" : "getWhatsAppTemplateTags template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./WhatsAppTemplateTags.json#/components/schemas/WATJson"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.license", "single.efc", "list.addOn", "single.addOn", "single.json" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "WhatsAppTemplateTags"
+}

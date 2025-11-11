@@ -1,0 +1,227 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SLAMetaInfo",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/SLAsMetaInfo" : {
+      "get" : {
+        "tags" : [ "SLAMetaInfo" ],
+        "summary" : "List all available SLAs meta info",
+        "description" : "This API is used to fetch all the available SLAs meta information in a department",
+        "operationId" : "getAllSLAsMetaInfo",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department Id",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department Id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "No of available SLAs to be fetched. The default value is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "No of available SLAs to be fetched. The default value is 50",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "From index. The default value is 1",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "From index. The default value is 1",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "To get SLA by status, allowed values are @ACTIVE@ and @INACTIVE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To get SLA by status, allowed values are @ACTIVE@ and @INACTIVE@",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/slaMetaInfoResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "4544ff6e079b126590fcf3ca30047026",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SlaService.getAllSLAsMetaInfo"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "slaListViewArray" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Department Id",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isActive" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "departmentId", "id", "isActive", "name" ]
+      },
+      "slaData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SLAMetaInfo.json#/components/schemas/slaListViewArray"
+        }
+      }
+    },
+    "responses" : {
+      "slaMetaInfoResponse" : {
+        "description" : "slaMetaInfoResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SLAMetaInfo.json#/components/schemas/slaData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "departmentId" : "10000000007043",
+                    "name" : "SLA one",
+                    "id" : "10000000049003",
+                    "isActive" : true
+                  }, {
+                    "departmentId" : "10000000007043",
+                    "name" : "Second SLA",
+                    "id" : "10000000160013",
+                    "isActive" : true
+                  }, {
+                    "departmentId" : "10000000007043",
+                    "name" : "SLA three",
+                    "id" : "10000000170012",
+                    "isActive" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SLAMetaInfo"
+}

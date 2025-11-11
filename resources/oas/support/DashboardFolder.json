@@ -1,0 +1,1258 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DashboardFolder",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/dashboardFolders" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetAllDashboardFolders",
+        "description" : "To get the list of dashboard folders",
+        "operationId" : "getAllDashboardFolders",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for dashboardFolder by name.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "String to search for dashboardFolder by name.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/category"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dashboardFolderList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "18a4383cf0110626511cda04ec4cbb43",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getAllDashboarFolders"
+        }
+      },
+      "post" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "addDashboardFolder",
+        "description" : "This API is used to create dashboard folder",
+        "operationId" : "addDashboardFolder",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addDashboardFolder_commonKey"
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dashboardFolderObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c46e6e4b04a19fd7cefe9d4b1f23ce57",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.addDashboardFolder"
+        }
+      }
+    },
+    "/api/v1/dashboards/exportOverview" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "Export Ticket Overview Dashboard",
+        "description" : "To export ticket overview data",
+        "operationId" : "exportOverviewData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/fileType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c871879c05dac8cfd31dd382b4a2316d",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.exportOverviewData"
+        }
+      }
+    },
+    "/api/v1/dashboardFolders/{id}" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetDashboardFolder",
+        "description" : "To get a specific dashboard folder",
+        "operationId" : "getDashboardFolder",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/dashboardFolderObject"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ff45056338c25e7b5b3dcd5b203a4a10",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getDashboardFolder"
+        }
+      },
+      "patch" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "updateDashboardFolder",
+        "description" : "To update a dashboard folder data",
+        "operationId" : "updateDashboardFolder",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/commonKey"
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dashboardFolderObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "852f682d39fd23efebb1733bfd35c5a9",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.updateDashboardFolder"
+        }
+      }
+    },
+    "/api/v1/dashboards" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetAllDashboards",
+        "description" : "To get the list of all dashboards",
+        "operationId" : "getAllDashboards",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/category"
+        }, {
+          "name" : "folderId",
+          "in" : "query",
+          "description" : "ID of the folder for which dashboards should be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the folder for which dashboards should be listed",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "./Dashboards.json#/components/responses/dashboardList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "fe8ac549b82d9f7fb472ea41470e2eb0",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getAllDashboards"
+        }
+      }
+    },
+    "/api/v1/dashboards/search" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "ToSearchAllDashboards",
+        "description" : "To search the list of all dashboards",
+        "operationId" : "searchDashboards",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for dashboardFolder by name.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "String to search for dashboardFolder by name.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "dashboards search in which reports should be shown @ALL@ @SYSTEM@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "dashboards search in which reports should be shown @ALL@ @SYSTEM@",
+            "enum" : [ "ALL", "SYSTEM" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "./Dashboards.json#/components/responses/dashboardList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "4b937cfd0c6eb21b570eee976298aea6",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.searchDashboards"
+        }
+      }
+    },
+    "/api/v1/dashboards/exportTimeData" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "Export Ticket Time for response and resolution Dashboard",
+        "description" : "To export ticket response and resolution time data",
+        "operationId" : "exportTimeData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "name" : "metricType",
+          "in" : "query",
+          "description" : "Export Data in which time should be shown.This value can be @FIRSTRESPONSE@ @RESPONSE@ @RESOLUTION@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Export Data in which time should be shown.This value can be @FIRSTRESPONSE@ @RESPONSE@ @RESOLUTION@",
+            "enum" : [ "FIRSTRESPONSE", "RESPONSE", "RESOLUTION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "query",
+          "description" : "list of agent ids separated by commas.When agentId is not given,data for all agents is given",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "list of agent ids separated by commas.When agentId is not given,data for all agents is given",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/fileType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "8f4ec88837515e0dd676e21358b0b595",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.exportTimeData"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "folderJson" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isEditable" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "accessibility" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "teams" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "roles" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "type" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "rolesAndSubordinates" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "agents" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              }
+            },
+            "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ]
+          },
+          "isCustomizable" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "department for which dashboard folders have to be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "isSystemGenerated" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "dashboardsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ]
+      },
+      "dashboardFolderObject" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./DashboardFolder.json#/components/schemas/folderJson"
+        }, {
+          "type" : [ "object", "null" ],
+          "properties" : {
+            "isEditable" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "accessibility" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 5,
+              "minProperties" : 5,
+              "properties" : {
+                "teams" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "roles" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "rolesAndSubordinates" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "agents" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ]
+            },
+            "isCustomizable" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "departmentId" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "department for which dashboard folders have to be listed",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "isSystemGenerated" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "name" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "id" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "dashboardsCount" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int32",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ]
+        } ]
+      },
+      "dashboardFolderArr" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardFolder.json#/components/schemas/dashboardFolderObject"
+        }
+      },
+      "accessibilityFormatForRequest" : {
+        "oneOf" : [ {
+          "type" : "object",
+          "properties" : {
+            "type" : {
+              "type" : "string",
+              "enum" : [ "onlyMe", "allAgents" ]
+            }
+          },
+          "required" : [ "type" ]
+        }, {
+          "type" : "object",
+          "properties" : {
+            "type" : {
+              "type" : "string",
+              "enum" : [ "restrictedAccess" ]
+            },
+            "agents" : {
+              "type" : "array",
+              "items" : {
+                "type" : "integer",
+                "format" : "int64"
+              }
+            }
+          },
+          "required" : [ "agents", "type" ]
+        } ]
+      }
+    },
+    "responses" : {
+      "dashboardFolderList" : {
+        "description" : "dashboardFolderList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DashboardFolder.json#/components/schemas/dashboardFolderArr"
+                },
+                "totalCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "data", "totalCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : false,
+                    "departmentId" : null,
+                    "isSystemGenerated" : true,
+                    "name" : "Popular Dashboards",
+                    "id" : "4000000000209",
+                    "dashboardsCount" : "4"
+                  }, {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : false,
+                    "departmentId" : null,
+                    "isSystemGenerated" : true,
+                    "name" : "Time Based Dashboards",
+                    "id" : "4000000000213",
+                    "dashboardsCount" : "3"
+                  }, {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : true,
+                    "departmentId" : "4000000012994",
+                    "isSystemGenerated" : true,
+                    "name" : "Public Dashboards",
+                    "id" : "4000000012992",
+                    "dashboardsCount" : "5"
+                  }, {
+                    "isEditable" : true,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "restrictedAccess",
+                      "rolesAndSubordinates" : null,
+                      "agents" : [ "4000000016416" ]
+                    },
+                    "isCustomizable" : true,
+                    "departmentId" : "4000000012994",
+                    "isSystemGenerated" : false,
+                    "name" : "RequestDashboardsForReports",
+                    "id" : "4000000021031",
+                    "dashboardsCount" : "0"
+                  } ],
+                  "totalCount" : "4"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "dashboardFolderObject" : {
+        "description" : "dashboardFolderObject template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./DashboardFolder.json#/components/schemas/folderJson"
+              }, {
+                "type" : [ "object", "null" ],
+                "properties" : {
+                  "isEditable" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "accessibility" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "teams" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "roles" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "type" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "rolesAndSubordinates" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "agents" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ]
+                  },
+                  "isCustomizable" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "departmentId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "isSystemGenerated" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "dashboardsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isEditable" : true,
+                  "accessibility" : {
+                    "teams" : null,
+                    "roles" : null,
+                    "type" : "restrictedAccess",
+                    "rolesAndSubordinates" : null,
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "isCustomizable" : true,
+                  "departmentId" : "4000000012994",
+                  "isSystemGenerated" : false,
+                  "name" : "RequestDashboards",
+                  "id" : "4000000027059",
+                  "dashboardsCount" : "0"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "duration" : {
+        "name" : "duration",
+        "in" : "query",
+        "description" : "Duration for export data",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Duration for export data",
+          "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "searchStr" : {
+        "name" : "searchStr",
+        "in" : "query",
+        "description" : "String to search for dashboardFolder by name.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "String to search for dashboardFolder by name.",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "department for which dashboard folders have to be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "department for which dashboard folders have to be listed",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+          "maximum" : 50,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which dashboards folder must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which dashboards folder must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "category" : {
+        "name" : "category",
+        "in" : "query",
+        "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+          "enum" : [ "ALL", "CUSTOMIZABLE" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "fileType" : {
+        "name" : "fileType",
+        "in" : "query",
+        "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+          "enum" : [ "CSV", "XLS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "commonKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accessibility" : {
+                  "$ref" : "#/components/schemas/accessibilityFormatForRequest"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accessibility", "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accessibility" : {
+                    "type" : "restrictedAccess",
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "departmentId" : 4000000012994,
+                  "name" : "RequestDashboardsForTickets"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addDashboardFolder_commonKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accessibility" : {
+                  "$ref" : "#/components/schemas/accessibilityFormatForRequest"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accessibility", "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accessibility" : {
+                    "type" : "restrictedAccess",
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "departmentId" : 4000000012994,
+                  "name" : "RequestDashboards"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DashboardFolder"
+}

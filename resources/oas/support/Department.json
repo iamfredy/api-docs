@@ -1,0 +1,1972 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Department",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/departments/{departmentId}/associateAgents" : {
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Associate agents to department",
+        "description" : "This API associates agents to a department.",
+        "operationId" : "associateAgentsToDepartment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/associateAgents_agentIdsArray"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7d8a5f3bed513ecff04f22b4d4040f67",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.associateAgents"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Get department",
+        "description" : "This API fetches the details of a department from your help desk",
+        "operationId" : "getDepartment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getDepartmentResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "8ff8f45c432d0e23134b63518927ae8c",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartment"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Department" ],
+        "summary" : "Update department",
+        "description" : "This API updates the details of an existing department.",
+        "operationId" : "updateDepartment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateDepartmentJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getDepartmentResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "5e3f519e53eb6695f16cd98331d9c754",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.updateDepartment"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/logo" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Get department logo",
+        "description" : "This API fetches the logo set for a department.",
+        "operationId" : "getDepartmentLogo",
+        "parameters" : [ {
+          "name" : "fileSize",
+          "in" : "query",
+          "description" : "Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Size of the image file to download. Values allowed are @THUMBNAIL@ (image with reduced dimensions and size) and @ACTUAL@ (image with actual dimensions and size). The default value is @ACTUAL@.",
+            "enum" : [ "THUMBNAIL", "ACTUAL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "10bb761f1c551a5747038dce9fc34772",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartmentsLogoStream"
+        }
+      },
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Upload department logo",
+        "description" : "This API updates the logo set for a department.",
+        "operationId" : "updateDepartmentLogo",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "departmentLogo" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "departmentLogo" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "9bad8032c0917a07252ac2bea63a9845",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.uploadDepartmentLogo"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Department" ],
+        "summary" : "Delete department logo",
+        "description" : "This API removes the logo set for a department.",
+        "operationId" : "deleteDepartmentLogo",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE", "Desk.basic.DELETE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2b5f4120e0e3632f54a1ae222ec4ff3f",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.deleteDepartmentLogo"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/enable" : {
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Enable department",
+        "description" : "This API enables a department in your help desk portal.",
+        "operationId" : "enableDepartment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "a72c42afa5da9baee56292a852324ce1",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.enableDepartment"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/disable" : {
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Disable department",
+        "description" : "This API disables a department in your help desk portal.",
+        "operationId" : "disableDepartment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/disableTransfer"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "726da229d7b7f6901dfcb6115b606b31",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.disableDepartment"
+        }
+      }
+    },
+    "/api/v1/departmentsByIds" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Get department details by department IDs",
+        "description" : "This API fetches the details of the departments whose IDs are passed in the API request.",
+        "operationId" : "getDepartmentsByIds",
+        "parameters" : [ {
+          "name" : "departmentIds",
+          "in" : "query",
+          "description" : "Comma-separated array of department IDs. Maximum number of IDs allowed is 50.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Comma-separated array of department IDs. Maximum number of IDs allowed is 50.",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Comma-separated array of department IDs. Maximum number of IDs allowed is 50.", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/departmentListViewArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy,IscSignatureCalls_OrgPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "system-auth" : "optional",
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "automation",
+          "apihash" : "cde556d0e6a0149ef387c419e403c24e",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartmentsByIds"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/agents" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "List agents in department",
+        "description" : "This API lists the agents in a department.",
+        "operationId" : "getAgentsInDepartment",
+        "parameters" : [ {
+          "name" : "fieldName",
+          "in" : "query",
+          "description" : "Name of the field that must be used for searching and listing agents. Values allowed are: @firstName@, @lastName@, @name@, and @emailId@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the field that must be used for searching and listing agents. Values allowed are: @firstName@, @lastName@, @name@, and @emailId@.",
+            "enum" : [ "firstName", "lastName", "emailId", "name" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/searchStr"
+        }, {
+          "name" : "isLightAgent",
+          "in" : "query",
+          "description" : "Key that denotes if the agents must be light or non light.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that denotes if the agents must be light or non light."
+          }
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "To sort the available list of agents in either ascending or descending order. Values allowed are: @asc@ or @desc@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To sort the available list of agents in either ascending or descending order. Values allowed are: @asc@ or @desc@",
+            "enum" : [ "asc", "desc" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "isConfirmed",
+          "in" : "query",
+          "description" : "Key that denotes if the agents must be confirmed or unconfirmed.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that denotes if the agents must be confirmed or unconfirmed."
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Key that filters agents, based on their activation status: @ACTIVE@ or @DISABLED@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that filters agents, based on their activation status: @ACTIVE@ or @DISABLED@",
+            "enum" : [ "ACTIVE", "DISABLED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "./Agent.json#/components/responses/agentListArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "efa77c0515bb75d402f46bc4bfba09e8",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getAgentsByDepartment"
+        }
+      }
+    },
+    "/api/v1/departments/count" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Get department count",
+        "description" : "This API returns the number of departments configured in your help desk portal.",
+        "operationId" : "getDepartmentsCount",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/deptCountResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "041792329fe117b1f6038294e0f3e71c",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartmentsCount"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/dissociateAgents" : {
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Dissociate agents from department",
+        "description" : "This API dissociates agents from a department.",
+        "operationId" : "dissociateAgents",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/dissociateAgents_agentIdsArray"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0f4ef46f55df0ef6721a2cf9d4008c57",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.dissociateAgents"
+        }
+      }
+    },
+    "/api/v1/departments/{departmentId}/associableAgents" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Get associable agents in a department",
+        "description" : "This API lists the associable agents in a department in your helpdesk.",
+        "operationId" : "getAssociableAgents",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAssociableAgentsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "4bd1bf2d8ddd5daf334c9b6f966250d1",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getAssociableAgents"
+        }
+      }
+    },
+    "/api/v1/departments" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "List departments",
+        "description" : "This API lists a particular number of departments, based on the limit specified.",
+        "operationId" : "getDepartments",
+        "parameters" : [ {
+          "name" : "chatStatus",
+          "in" : "query",
+          "description" : "Key that filters departments based on their chat status. Values allowed are @AVAILABLE@, @DISABLED@, @NOT_CREATED@, and @${UNAVAILABLE}@. @${UNAVAILABLE}@ refers to departments which are not available for chat.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that filters departments based on their chat status. Values allowed are @AVAILABLE@, @DISABLED@, @NOT_CREATED@, and @${UNAVAILABLE}@. @${UNAVAILABLE}@ refers to departments which are not available for chat.",
+            "enum" : [ "AVAILABLE", "DISABLED", "NOT_CREATED", "${UNAVAILABLE}" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/searchStr"
+        }, {
+          "name" : "isEnabled",
+          "in" : "query",
+          "description" : "Key that filters departments based on their enabled status",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that filters departments based on their enabled status"
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/departmentListViewArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy,IscSignatureCalls_OrgPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ],
+              "system-auth" : "optional",
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "automation",
+          "apihash" : "374e115e7ddcf792c3dfec9ba7a8c0b7",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartments"
+        }
+      },
+      "post" : {
+        "tags" : [ "Department" ],
+        "summary" : "Add department",
+        "description" : "This API adds a department to your help desk portal.",
+        "operationId" : "addDepartment",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addDepartmentJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getDepartmentResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE", "Desk.basic.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "81073236b6aa36731498232baaa44032",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.addDepartment"
+        }
+      }
+    },
+    "/api/v1/departments/checkExists" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "Check for duplicate departments",
+        "description" : "This API checks if multiple departments have the same name.",
+        "operationId" : "checkDepartmentNameExist",
+        "parameters" : [ {
+          "name" : "departmentName",
+          "in" : "query",
+          "description" : "Name of the department for which you want to check duplicate entries",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the department for which you want to check duplicate entries",
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/checkNameResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "b3331d1b09d1c90a84a6a7e5534b6a12",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.checkDepartmentNameExist"
+        }
+      }
+    },
+    "/api/v1/departments/sync" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "List sync departments",
+        "description" : "This API lists departments, based on the last fetched time specified.",
+        "operationId" : "getSyncDepartments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "name" : "lastFetchedTime",
+          "in" : "query",
+          "description" : "Key that filters departments after a specific time. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that filters departments after a specific time. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "name" : "bulkUpdateOffset",
+          "in" : "query",
+          "description" : "Number of bulk record already fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of bulk record already fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/departmentSyncArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0fc282f9e4ced308543421e15370a9a1",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getDepartmentsForSync"
+        }
+      }
+    },
+    "/api/v1/myDepartments" : {
+      "get" : {
+        "tags" : [ "Department" ],
+        "summary" : "List my departments",
+        "description" : "This API lists departments, that is assocaited with user",
+        "operationId" : "getMyDepartments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/departmentListViewArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "5258f4c84a07e7d186836e32b06e14da",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.DepartmentService.getMyDepartments"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "agentData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Agent.json#/components/schemas/agentIdsResponse"
+        }
+      },
+      "deptAgentsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "roleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "profileId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "emailId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "emailId", "firstName", "id", "lastName", "photoURL", "profileId", "roleId", "zuid" ]
+      },
+      "commonDepartmentResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isAssignToTeamEnabled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "chatStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AVAILABLE", "DISABLED", "NOT_CREATED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "hasLogo" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "sanitizedName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isVisibleInCustomerPortal" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "creatorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isDefault" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isEnabled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "nameInCustomerPortal" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "chatStatus", "createdTime", "creatorId", "description", "hasLogo", "id", "isAssignToTeamEnabled", "isDefault", "isEnabled", "isVisibleInCustomerPortal", "name", "nameInCustomerPortal", "sanitizedName" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/commonDepartmentResponse"
+        }
+      },
+      "updateDepartmentJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isAssignToTeamEnabled" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that denotes if the assign to team functionality is enabled or not"
+          },
+          "nameInCustomerPortal" : {
+            "type" : [ "string", "null" ],
+            "description" : "Display name of the department in the help center",
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "isAssignToTeamEnabled", "nameInCustomerPortal" ]
+      },
+      "departmentObjectWithPrimaryDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name" ]
+      }
+    },
+    "responses" : {
+      "deptCountResponse" : {
+        "description" : "deptCountResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "count" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "count" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "count" : 5
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getDepartmentResponse" : {
+        "description" : "getDepartmentResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "#/components/schemas/commonDepartmentResponse"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "associatedAgentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "uniqueItems" : false
+                  }
+                },
+                "required" : [ "associatedAgentIds" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isAssignToTeamEnabled" : false,
+                  "chatStatus" : "NOT_CREATED",
+                  "hasLogo" : false,
+                  "isVisibleInCustomerPortal" : true,
+                  "creatorId" : "1892000000042001",
+                  "description" : "With the most advanced technology, the zPhone is the world’s largest selling smartphone.",
+                  "associatedAgentIds" : [ "1892000000042001", "1892000000056007" ],
+                  "isDefault" : false,
+                  "isEnabled" : true,
+                  "name" : "zPhone",
+                  "createdTime" : 1564146662000,
+                  "id" : "1892000000082085",
+                  "nameInCustomerPortal" : "zPhone"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "departmentListViewArray" : {
+        "description" : "departmentListViewArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/data"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isAssignToTeamEnabled" : true,
+                    "chatStatus" : "AVAILABLE",
+                    "isDefault" : true,
+                    "hasLogo" : true,
+                    "isVisibleInCustomerPortal" : true,
+                    "isEnabled" : true,
+                    "name" : "Zylker",
+                    "creatorId" : "1892000000042001",
+                    "description" : "Zylker Inc. is a multinational technology company that designs, develops, and sells consumer electronics.",
+                    "createdTime" : 1564146662000,
+                    "id" : "1892000000082069",
+                    "nameInCustomerPortal" : "ZylCares"
+                  }, {
+                    "isAssignToTeamEnabled" : true,
+                    "chatStatus" : "AVAILABLE",
+                    "isDefault" : false,
+                    "hasLogo" : true,
+                    "isVisibleInCustomerPortal" : true,
+                    "isEnabled" : true,
+                    "name" : "zPad",
+                    "creatorId" : "1892000000042001",
+                    "description" : "zPad is the most advanced tablet that brings you the never-experienced-before processing power.",
+                    "createdTime" : 1566904321000,
+                    "id" : "1892000000082085",
+                    "nameInCustomerPortal" : "zPad"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAssociableAgentsResponse" : {
+        "description" : "getAssociableAgentsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/agentData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "firstName" : "",
+                    "lastName" : "case",
+                    "photoURL" : null,
+                    "roleId" : "1892000000056099",
+                    "profileId" : "1892000000056091",
+                    "emailId" : "case@zylker.com",
+                    "id" : "1892000000056007",
+                    "zuid" : "10687231"
+                  }, {
+                    "firstName" : "",
+                    "lastName" : "jade",
+                    "photoURL" : "https://contacts.zoho.com/file?t=user&ID=10657727",
+                    "roleId" : "1892000000056899",
+                    "profileId" : "1892000000056091",
+                    "emailId" : "jade@zylker.com",
+                    "id" : "1892000000042001",
+                    "zuid" : "10657727"
+                  }, {
+                    "firstName" : "Steve",
+                    "lastName" : "Waugh",
+                    "photoURL" : "https://contacts.zoho.com/file?t=user&ID=10657828",
+                    "roleId" : "1892000000056004",
+                    "profileId" : "18920000000232043",
+                    "emailId" : "stephen@zylker.com",
+                    "id" : "1892000000888059",
+                    "zuid" : null
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "checkNameResponse" : {
+        "description" : "checkNameResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isDepartmentNameExist" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "isDepartmentNameExist" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isDepartmentNameExist" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "departmentSyncArray" : {
+        "description" : "departmentSyncArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/data"
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "lastFetchedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that filters departments after a specific time. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "bulkUpdateOffset" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9]+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Number of bulk record already fetched",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "bulkUpdateOffset", "data", "hasMore", "lastFetchedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isAssignToTeamEnabled" : true,
+                    "chatStatus" : "AVAILABLE",
+                    "isDefault" : true,
+                    "hasLogo" : true,
+                    "isVisibleInCustomerPortal" : true,
+                    "isEnabled" : true,
+                    "name" : "Zylker",
+                    "creatorId" : "1892000000042001",
+                    "description" : "Zylker Inc. is a multinational technology company that designs, develops, and sells consumer electronics.",
+                    "createdTime" : 1564146662000,
+                    "id" : "1892000000082069",
+                    "nameInCustomerPortal" : "ZylCares"
+                  }, {
+                    "isAssignToTeamEnabled" : true,
+                    "chatStatus" : "DISABLED",
+                    "isDefault" : false,
+                    "hasLogo" : true,
+                    "isVisibleInCustomerPortal" : true,
+                    "isEnabled" : true,
+                    "name" : "zPad",
+                    "creatorId" : "1892000000042001",
+                    "description" : "zPad is the most advanced tablet that brings you the never-experienced-before processing power.",
+                    "createdTime" : 1501074662000,
+                    "id" : "1892000000082085",
+                    "nameInCustomerPortal" : "zPad"
+                  } ],
+                  "lastFetchedTime" : 1538551094000,
+                  "hasmore" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "searchStr" : {
+        "name" : "searchStr",
+        "in" : "query",
+        "description" : "String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "String to search for agents by first name, last name, or email ID. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for agents whose first name, last name, or email ID start with the string, 2) *string* - Searches for agents whose first name, last name, or email ID contain the string, 3) string - Searches for agents whose first name, last name, or email ID is an exact match for the string",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of agents to fetch; default value is 10 and maximum value is 200",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of agents to fetch; default value is 10 and maximum value is 200",
+          "maximum" : 200,
+          "minimum" : 0,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the agents must be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which the agents must be listed",
+          "minimum" : 0,
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "agentIdsArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "agentIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ 1892000000056007, 1892000000056008 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "reInviteAgents_agentIdsArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "agentIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ 1892000000056007, 1892000000056008 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "associateAgents_agentIdsArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "agentIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ "1892000000042001", "1892000000056007" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "disableTransfer" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "emailNewDepartment" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "agentNewDepartment" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "agentNewDepartment" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "emailNewDepartment" : "1892000000082069",
+                  "agentNewDepartment" : "1892000000082069"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "dissociateAgents_agentIdsArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "agentIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ "1892000000056007" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateDepartmentJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isAssignToTeamEnabled" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "Key that denotes if the assign to team functionality is enabled or not"
+                },
+                "nameInCustomerPortal" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Display name of the department in the help center",
+                  "maxLength" : 200,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "isAssignToTeamEnabled" : true,
+                  "nameInCustomerPortal" : "zPhone Support"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addDepartmentJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "#/components/schemas/updateDepartmentJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "isVisibleInCustomerPortal" : {
+                    "type" : [ "boolean", "null" ],
+                    "description" : "Key that denotes if the department is visible in the help center or not"
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "Name of the department",
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                  },
+                  "description" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "A short description of the department",
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "associatedAgentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "uniqueItems" : false
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "associatedAgentIds", "name" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "isAssignToTeamEnabled" : false,
+                  "isVisibleInCustomerPortal" : true,
+                  "name" : "zPhone",
+                  "description" : "With the most advanced technology, the zPhone is the world’s largest selling smartphone.",
+                  "associatedAgentIds" : [ "1892000000042001", "1892000000056007" ],
+                  "nameInCustomerPortal" : "zPhone"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Department"
+}

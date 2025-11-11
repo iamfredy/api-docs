@@ -1,0 +1,539 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "InteractiveTours",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/interactiveTours/{tourName}" : {
+      "get" : {
+        "tags" : [ "InteractiveTours" ],
+        "summary" : "Get tour by name",
+        "description" : "This API fetches the given tour details.",
+        "operationId" : "getTourByName",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/tourName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTourByNameResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "4cfddc8a6434f5f14001ea2ee093bef5",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.InteractiveTourService.getTourByName"
+        }
+      },
+      "patch" : {
+        "tags" : [ "InteractiveTours" ],
+        "summary" : "Update tour step",
+        "description" : "This API updates the given step for tour",
+        "operationId" : "completeCurrentStep",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/tourName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/tourInputJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/completeCurrentStepResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "fc995a8e34af380e94630021f8329d6b",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.InteractiveTourService.completeCurrentStep"
+        }
+      }
+    },
+    "/api/v1/interactiveTours/{tourName}/retakeTour" : {
+      "post" : {
+        "tags" : [ "InteractiveTours" ],
+        "summary" : "Retake Tour",
+        "description" : "This API restarts the tour for currentUser",
+        "operationId" : "retakeTour",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/tourName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "./errors.json#/components/responses/commonErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "cae473b4dc220ecbb136e71f7ffea2a3",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.InteractiveTourService.retakeTour"
+        }
+      }
+    },
+    "/api/v1/interactiveTours/{tourName}/skipTour" : {
+      "post" : {
+        "tags" : [ "InteractiveTours" ],
+        "summary" : "Skip Tour",
+        "description" : "This API skips the tour for currentUser",
+        "operationId" : "skipTour",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/tourName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "./errors.json#/components/responses/commonErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "269cabb659773c9c2153e1aad1b406cd",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.InteractiveTourService.skipTour"
+        }
+      }
+    },
+    "/api/v1/interactiveTours" : {
+      "get" : {
+        "tags" : [ "InteractiveTours" ],
+        "summary" : "Get All tours",
+        "description" : "This API fetches details of all tours that is available",
+        "operationId" : "getAllTours",
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Filter to get the tours based on the status. Allowed status are NOT_STARTED, IN_PROGRESS, COMPLETED",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Filter to get the tours based on the status. Allowed status are NOT_STARTED, IN_PROGRESS, COMPLETED",
+            "enum" : [ "NOT_STARTED", "COMPLETED", "IN_PROGRESS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/tourCommonResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "b435dd14c5e60b95c2a485e7d3607113",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.InteractiveTourService.getTourList"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "toursResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "currentStep" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 30,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9]+)"
+          },
+          "steps" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "NOT_STARTED", "COMPLETED", "IN_PROGRESS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "currentStep", "name", "status", "steps" ]
+      },
+      "tourResponseArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./InteractiveTours.json#/components/schemas/toursResponse"
+        }
+      }
+    },
+    "responses" : {
+      "getTourByNameResponse" : {
+        "description" : "getTourByNameResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./InteractiveTours.json#/components/schemas/toursResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "currentStep" : "AgentView",
+                  "name" : "agentTour",
+                  "steps" : [ "Start", "AgentView", "Add Agent", "Delete Agent", "Deactivate Agent", "End" ],
+                  "status" : "IN_PROGRESS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "completeCurrentStepResponse" : {
+        "description" : "completeCurrentStepResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "currentStep" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 30,
+                    "minLength" : 0,
+                    "pattern" : "([a-zA-Z0-9]+)"
+                  },
+                  "steps" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uniqueItems" : false
+                  },
+                  "status" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "NOT_STARTED", "COMPLETED", "IN_PROGRESS" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "currentStep", "name", "status", "steps" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "errorCode" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "message" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "errorCode", "message" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "currentStep" : "AgentView",
+                  "name" : "agentTour",
+                  "steps" : [ "Start", "AgentView", "Add Agent", "Delete Agent", "Deactivate Agent", "End" ],
+                  "status" : "IN_PROGRESS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "tourCommonResponse" : {
+        "description" : "tourCommonResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./InteractiveTours.json#/components/schemas/tourResponseArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "currentStep" : "AgentView",
+                    "name" : "agentTour",
+                    "steps" : [ "Start", "AgentView", "Add Agent", "Delete Agent", "Deactivate Agent", "End" ],
+                    "status" : "IN_PROGRESS"
+                  }, {
+                    "currentStep" : null,
+                    "name" : "ticketTour",
+                    "steps" : [ "See List", "Click first record", "Check subject", "Check Contact", "See Description", "Click on Reply", "Use snippet to draft response", "Send Reply", "Done" ],
+                    "status" : "NOT_STARTED"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "tourName" : {
+        "name" : "tourName",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "maxLength" : 30,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "tourInputJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "currentStep" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                }
+              },
+              "required" : [ "currentStep" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "currentStep" : "AgentView"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "InteractiveTours"
+}

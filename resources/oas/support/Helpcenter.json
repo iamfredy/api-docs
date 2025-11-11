@@ -1,0 +1,1212 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Helpcenter",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/v1/helpCenters/{helpcenterId}/autoTranslateSettings/{installationId}/supportedLanguages" : {
+      "get" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Supported Lannguages",
+        "description" : "This API fetchs the list of supported languages for the helpcenter auto-translate setting",
+        "operationId" : "getSupportedLocaleForTheTranslateSetting",
+        "parameters" : [ {
+          "name" : "sourceLanguge",
+          "in" : "query",
+          "description" : "Source language as a filter",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Source language as a filter",
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./HelpcenterTranslationApp.json#/components/responses/supportedLocaleData"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "46fe359a60b229f88235e6bb05a68400",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.getSupportedLocaleForTheApp"
+        }
+      }
+    },
+    "/api/v1/helpCenters/{helpcenterId}/sitemaps" : {
+      "get" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "GET HelpCenter sitemaps",
+        "description" : "This API will get the sitemaps detail for the given Helpcenter in",
+        "operationId" : "getSiteMaps",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSiteMapDatawrapper"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "f63d3993a27c80e068c21dd86462bee7",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.sitemap.rest.SiteMapService.getSiteMapDetails"
+        }
+      },
+      "post" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Update Helpcenter sitemaps",
+        "description" : "This API will generate sitemaps for the given Helpcenter",
+        "operationId" : "createSiteMaps",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 10800000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "6e6ae6f721a00dc3096c03f8c988c2b4",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.sitemap.rest.SiteMapService.recreateSiteMaps"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Delete HelpCenter sitemaps",
+        "description" : "This API will delete the sitemaps for the given Helpcenter",
+        "operationId" : "deleteSiteMaps",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "e562a7f97c02a444f2622c8a2671f8fe",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.sitemap.rest.SiteMapService.deleteSiteMaps"
+        }
+      }
+    },
+    "/api/v1/helpCenters/{helpcenterId}/autoTranslateSettings/{installationId}" : {
+      "patch" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Update Auto-translate setting",
+        "description" : "This API updates the auto translate settinng preference for the helpcenter",
+        "operationId" : "updateAutoTranslatePreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/requestBodies/autoTranslateSettingInputForHelpcenter"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/responses/autoTranslateSetting"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "ead2c87de5d442893d3a455ad33e6a76",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.updateAutoTranslatePreference"
+        }
+      }
+    },
+    "/api/v1/helpCenters" : {
+      "get" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "List help centers",
+        "description" : "This API lists the help centers configured in your Zoho Desk portal.",
+        "operationId" : "getAllHelpCenters",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/helpcenterListViewResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "1b268d4542d9d610845f17e2e1755342",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.getHelpCenterList"
+        }
+      },
+      "post" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Add HelpCenter",
+        "description" : "This API will add new Helpcenter in Organisation",
+        "operationId" : "addHelpCenter",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createHelpcenterJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/helpcenterDetailResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "17506e5a88fadfa2de5a2f6d8511c9ca",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.addHelpCenter"
+        }
+      }
+    },
+    "/api/v1/helpCenters/{helpcenterId}/sitemaps/download" : {
+      "get" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Download HelpCenter sitemaps",
+        "description" : "This API will download the sitemaps for the given Helpcenter in zip format",
+        "operationId" : "downloadSiteMaps",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "5bc021a052f899e7edd9e902e7aa2e3a",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.sitemap.rest.SiteMapService.download"
+        }
+      }
+    },
+    "/api/v1/helpCenters/{helpcenterId}" : {
+      "get" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Get details of help center",
+        "description" : "This API fetches the details of a particular help center.",
+        "operationId" : "getHelpCenter",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/helpcenterDetailResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "b9cb1238e940a0da5a83c4566568f373",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.getHelpCenter"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Helpcenter" ],
+        "summary" : "Update HelpCenter",
+        "description" : "This API will update existing Helpcenter in Organisation",
+        "operationId" : "updateHelpCenter",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpcenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateHelpcenterJson"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/helpcenterDetailResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "635297b26e1eafedf07ccb1d9efd3ac7",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.updateHelpCenter"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getSiteMapResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "generatedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "isGenerated" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "downloadUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "downloadUrl", "generatedTime", "isGenerated", "url" ]
+      },
+      "helpcenterLocaleObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[0-9a-zA-Z\\!\\$\\|\\%&amp;\\#\\-\\*\\+\\,\\^\\_\\`\\~\\s\\.\\P{InBasicLatin}]+$"
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "DEFAULT", "OTHER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACCESIBLE_IN_HELPCENTER", "DISABLED_IN_HELPCENTER", "DISABLED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "locale", "name", "status", "type" ]
+      },
+      "helpcenterLocaleList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Helpcenter.json#/components/schemas/helpcenterLocaleObj"
+        }
+      },
+      "helpcenterDefaultResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isDefault" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "locales" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+            },
+            "uniqueItems" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "^[0-9a-zA-Z\\!\\$\\|\\%&amp;\\#\\-\\*\\+\\,\\^\\_\\`\\~\\s\\.\\P{InBasicLatin}]+$"
+          },
+          "isEncodedPermalinkAllowed" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "isMultilingualEnabled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "helpCenterLocales" : {
+            "$ref" : "./Helpcenter.json#/components/schemas/helpcenterLocaleList"
+          },
+          "primaryLocale" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z]{2,4}([-_][a-zA-Z]{2})?"
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "DISABLED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "departmentIds", "helpCenterLocales", "id", "isDefault", "isEncodedPermalinkAllowed", "isMultilingualEnabled", "locales", "logoUrl", "name", "primaryLocale", "status", "url" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Helpcenter.json#/components/schemas/helpcenterDefaultResponse"
+        }
+      },
+      "helpcenterDomain" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+([a-zA-Z]{2,22})|([a-zA-Z]{2,22}:([0-9]{3,6})?)$"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PRIMARY" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "name", "type" ]
+      },
+      "helpcenterDomainsList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Helpcenter.json#/components/schemas/helpcenterDomain"
+        }
+      },
+      "updateHelpcenterCommonJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "favIconId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "FavIconId to be associated with helpCenter",
+            "pattern" : "([0-9]+)"
+          },
+          "logoLinkBackUrl" : {
+            "type" : [ "string", "null" ],
+            "description" : "Logo linkback url will be invoked while clicking the helpCenter Logo",
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "((^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)|[*]|^$)"
+          },
+          "helpCenterLocales" : {
+            "$ref" : "./Helpcenter.json#/components/schemas/helpcenterLocaleList"
+          },
+          "logoId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "LogoId to be associated with helpCenter",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "description" : "status of the HelpCenter to be Updated (ACTIVE|DISABLED)",
+            "enum" : [ "ACTIVE", "DISABLED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "favIconId", "helpCenterLocales", "logoId", "logoLinkBackUrl", "status" ]
+      }
+    },
+    "responses" : {
+      "getSiteMapDatawrapper" : {
+        "description" : "getSiteMapDatawrapper template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Helpcenter.json#/components/schemas/getSiteMapResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "generatedTime" : 1628748759000,
+                  "isGenerated" : true,
+                  "downloadUrl" : "https://desk.zoho.com/api/v1/helpCenters/2000000073511/sitemaps/download?orgId=15458538",
+                  "url" : "https://support.osamabilden.com/portal/sitemapindex.xml"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "helpcenterListViewResponse" : {
+        "description" : "helpcenterListViewResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Helpcenter.json#/components/schemas/data"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isDefault" : true,
+                    "name" : "Zoho Cares",
+                    "id" : "24073000002579275",
+                    "departmentIds" : [ "24073000000102043" ],
+                    "isMultilingualEnabled" : true,
+                    "helpCenterLocales" : [ {
+                      "name" : "ZohoCorp Portal",
+                      "locale" : "en",
+                      "type" : "DEFAULT",
+                      "status" : "ACCESIBLE_IN_HELPCENTER"
+                    } ],
+                    "primaryLocale" : "en",
+                    "logoUrl" : "https://static.zohocdn.com/desk/app/images/portalLogo.de847024ebc0131731a3.png",
+                    "url" : "https://help.zoho.com/portal/",
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "helpcenterDetailResponse" : {
+        "description" : "helpcenterDetailResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Helpcenter.json#/components/schemas/helpcenterDefaultResponse"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "translateMode" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "MANUAL", "AUTO" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "siteMapUpdatedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "domains" : {
+                    "$ref" : "./Helpcenter.json#/components/schemas/helpcenterDomainsList"
+                  },
+                  "favIconUrl" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  },
+                  "logoLinkBackUrl" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "pattern" : "((^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)|[*]|^$)",
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Logo linkback url will be invoked while clicking the helpCenter Logo",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "autoTranslateSettings" : {
+                    "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/schemas/autoTranslateSettingsList"
+                  },
+                  "activeThemeId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "activeThemeId", "autoTranslateSettings", "domains", "favIconUrl", "logoLinkBackUrl", "siteMapUpdatedTime", "translateMode" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "translateMode" : "AUTO",
+                  "domains" : [ {
+                    "name" : "partners.zoho.com",
+                    "type" : "PRIMARY"
+                  } ],
+                  "logoLinkBackUrl" : "https://zoho.com/desk",
+                  "departmentIds" : [ "24073000002579221" ],
+                  "isMultilingualEnabled" : true,
+                  "logoUrl" : "https://desk.zoho.com/api/v1/helpCenter/24073000002579275/logo/24073000002572232?orgId=2389290",
+                  "url" : "https://partners.zoho.com/portal/",
+                  "locales" : [ "en" ],
+                  "isDefault" : false,
+                  "siteMapUpdatedTime" : 1577350089000,
+                  "name" : "Zoho Cares",
+                  "favIconUrl" : "https://desk.zoho.com/api/v1/helpCenter/24073000002579275/favIcon/2407300000257912?orgId=2389290",
+                  "id" : "24073000002579275",
+                  "helpCenterLocales" : [ {
+                    "name" : "Zoho Cares",
+                    "locale" : "en",
+                    "type" : "DEFAULT",
+                    "status" : "ACCESIBLE_IN_HELPCENTER"
+                  } ],
+                  "primaryLocale" : "en",
+                  "autoTranslateSettings" : [ {
+                    "languages" : [ "ar", "cs", "de" ],
+                    "installationId" : "24073000002579275",
+                    "uuId" : "50c9bb96b17694d63cd0f03eadbe4ae5",
+                    "status" : "ACTIVE"
+                  } ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "helpcenterId" : {
+        "name" : "helpcenterId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "installationId" : {
+        "name" : "installationId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "updateHelpcenterJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Helpcenter.json#/components/schemas/updateHelpcenterCommonJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "translateMode" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "Translate Mode. Allowed values : @MANUAL@, @AUTO@",
+                    "enum" : [ "MANUAL", "AUTO" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "isEncodedPermalinkAllowed" : {
+                    "type" : [ "boolean", "null" ],
+                    "description" : "Status of other language permalink setting",
+                    "x-audience" : [ "company-internal" ]
+                  }
+                }
+              }, {
+                "type" : "object"
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "favIconId" : "40000001932212",
+                  "translateMode" : "AUTO",
+                  "domains" : [ {
+                    "name" : "partners.zoho.com",
+                    "type" : "SECONDARY"
+                  } ],
+                  "logoLinkBackUrl" : "https://zoho.com/desk",
+                  "helpCenterLocales" : [ {
+                    "name" : "Zoho Corp.",
+                    "locale" : "es",
+                    "type" : "DEFAULT",
+                    "status" : "ACCESIBLE_IN_HELPCENTER"
+                  } ],
+                  "logoId" : "400000019002232",
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "createHelpcenterJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Helpcenter.json#/components/schemas/updateHelpcenterCommonJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "domains" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "x-custom-parameters-attributes" : [ ]
+                    },
+                    "uniqueItems" : false
+                  },
+                  "departmentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "uniqueItems" : false
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "departmentIds", "domains", "helpCenterLocales" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "favIconId" : "2407300000257912",
+                  "domains" : [ {
+                    "name" : "partners.zoho.com",
+                    "type" : "PRIMARY"
+                  } ],
+                  "logoLinkBackUrl" : "https://zoho.com/desk",
+                  "departmentIds" : [ "24073000002579221" ],
+                  "isMultilingualEnabled" : true,
+                  "helpCenterLocales" : [ {
+                    "name" : "Zoho Cares",
+                    "locale" : "en",
+                    "type" : "DEFAULT",
+                    "status" : "ACCESIBLE_IN_HELPCENTER"
+                  } ],
+                  "logoId" : "24073000002572232",
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Helpcenter"
+}

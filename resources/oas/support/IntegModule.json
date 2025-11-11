@@ -1,0 +1,938 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IntegModule",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "paths" : {
+    "/api/v1/integModuleMapping" : {
+      "post" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Create Mapping",
+        "description" : "To identify the Desk Entity created via installated Extension",
+        "operationId" : "createMapping",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/mappingPayloadJSON"
+        },
+        "responses" : {
+          "201" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "64f6f64811fe64938beb0d1a230f9e12",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.integModuleMapping"
+        }
+      }
+    },
+    "/api/v1/integModule/{installationId}/preference" : {
+      "patch" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Update Framework Preference",
+        "description" : "This API allows authorized users to modify the preferences of the meeting framework while integrating a specific meeting application.",
+        "operationId" : "updateFrameworkPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/preferenceResponse"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/updateFrameworkPreferenceResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.PATCH" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "48ec74ece70eea1a1676b1dca7acfadf",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.preference"
+        }
+      }
+    },
+    "/api/v1/integModule/{installationId}/userPresence" : {
+      "get" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Get user presence",
+        "description" : "This API invokes the userPresence custom function to verify whether the meeting host is present in the meeting org.  The custom function communicates with the meeting org and returns the value as true if the host is present, or false otherwise. Note: If the userPresence custom function is not available, by default, the value will be returned as true.",
+        "operationId" : "getUserPresence",
+        "parameters" : [ {
+          "name" : "emailId",
+          "in" : "query",
+          "description" : "Email Id of the meeting host",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Email Id of the meeting host",
+            "maxLength" : 500,
+            "minLength" : 5,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/userPresenceValidResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/licenseErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "823a66fc199fd2cf96d218f93dc3f2e2",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.isUserPresent"
+        }
+      }
+    },
+    "/api/v1/integModule/{installationId}" : {
+      "get" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Installed Extensions Detail",
+        "description" : "To fetch the Installed Extension information created via Extension FrameWork",
+        "operationId" : "getIntegModuleMetaInfo",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIntegModuleMetaInfo"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "3c5254ba56d98a2f45073002b58e8f08",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.frameworkInfo"
+        }
+      }
+    },
+    "/api/v1/customIntegrations/extensions" : {
+      "get" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Get the extensions associated with custom integrations.",
+        "description" : "This API fetches the list of extensions that are accessible to the current user profile in the specified department and that are associated with the custom integrations.",
+        "operationId" : "getInstalledExtensions",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Id of the department",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Id of the department",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/integModuleAPPResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "3454481199b4c84686ae8b875040aec9",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.getInstalledExtensions"
+        }
+      }
+    },
+    "/api/v1/integModule/channelIdField" : {
+      "get" : {
+        "tags" : [ "IntegModule" ],
+        "summary" : "Get Channel Id Field JSON",
+        "description" : "Returns the JSON structure for the Channel Id field as generated by ChannelIdFieldGenerator.",
+        "operationId" : "getChannelIdField",
+        "parameters" : [ {
+          "name" : "service",
+          "in" : "query",
+          "description" : "The service name for which the channel id field is generated.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Specifies the service name where the integration takes place. The allowed values are cliq, msteams, googlechat, and slack.",
+            "enum" : [ "slack", "cliq", "msteams", "googlechat" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "The department id for which the channel id field is generated.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64",
+            "description" : "Specifies the Department ID. This ID is used to fetch the existing channel mappings. If no channel mappings are found, the defaultValue attribute in the payload will be empty."
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Channel Id field JSON structure.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "fields" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "name" : {
+                            "type" : "string",
+                            "example" : "Channel Id"
+                          },
+                          "apiName" : {
+                            "type" : "string",
+                            "example" : "channelId"
+                          },
+                          "type" : {
+                            "type" : "string",
+                            "example" : "TEXT"
+                          },
+                          "uiType" : {
+                            "type" : "string",
+                            "example" : "Text"
+                          },
+                          "length" : {
+                            "type" : "integer",
+                            "example" : 500
+                          },
+                          "isMandatory" : {
+                            "type" : "boolean",
+                            "example" : true
+                          },
+                          "isEncrypted" : {
+                            "type" : "boolean",
+                            "example" : false
+                          },
+                          "defaultValue" : {
+                            "type" : "string",
+                            "example" : "abc123"
+                          },
+                          "isReadOnly" : {
+                            "type" : "boolean",
+                            "example" : false
+                          },
+                          "tooltips" : {
+                            "type" : "object",
+                            "properties" : {
+                              "INFO" : {
+                                "type" : "string",
+                                "example" : "The Spaces linked to the Desk department in Google Chat integration will be prepopulated, and notifications will be posted there. If no Space is linked with the Desk department, configure it in Google Chat integration before setting up chat notifications."
+                              }
+                            }
+                          }
+                        },
+                        "required" : [ "apiName", "defaultValue", "isEncrypted", "isMandatory", "isReadOnly", "length", "name", "type", "uiType" ]
+                      }
+                    }
+                  },
+                  "required" : [ "fields" ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.FrameworkService.getChannelIdField"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "replyTemplateResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayName", "value" ]
+      },
+      "waitingMessageResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayName", "value" ]
+      },
+      "validity" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayName", "value" ]
+      },
+      "meetingEndPointsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "eventCreator" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "changesListener" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "changesListener", "eventCreator" ]
+      },
+      "preferenceResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "replyTemplate" : {
+            "$ref" : "./IntegModule.json#/components/schemas/replyTemplateResponse"
+          },
+          "waitingMessage" : {
+            "$ref" : "./IntegModule.json#/components/schemas/waitingMessageResponse"
+          },
+          "validity" : {
+            "$ref" : "./IntegModule.json#/components/schemas/validity"
+          }
+        },
+        "required" : [ "replyTemplate", "validity", "waitingMessage" ]
+      },
+      "getIntegModuleMetaInfoResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "logoFileId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "preference" : {
+            "$ref" : "./IntegModule.json#/components/schemas/preferenceResponse"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "logo" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "resourceName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "meetingEndPoints" : {
+            "$ref" : "./IntegModule.json#/components/schemas/meetingEndPointsResponse"
+          }
+        },
+        "required" : [ "logo", "logoFileId", "meetingEndPoints", "name", "preference", "resourceName" ]
+      },
+      "integModuleAppConfig" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "installedTime" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "visibility" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "maxItems" : 25,
+            "uniqueItems" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "logo" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$|^$)"
+          },
+          "integType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "meeting", "dataSync" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "installedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "installationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "installationId", "installedBy", "installedTime", "integType", "logo", "name", "visibility" ]
+      },
+      "integModuleConfigArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IntegModule.json#/components/schemas/integModuleAppConfig"
+        }
+      }
+    },
+    "responses" : {
+      "updateFrameworkPreferenceResponse" : {
+        "description" : "updateFrameworkPreferenceResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "status" : {
+                    "type" : [ "boolean", "null" ]
+                  }
+                },
+                "required" : [ "status" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "replyTemplate" : {
+                    "$ref" : "./IntegModule.json#/components/schemas/replyTemplateResponse"
+                  },
+                  "waitingMessage" : {
+                    "$ref" : "./IntegModule.json#/components/schemas/waitingMessageResponse"
+                  },
+                  "validity" : {
+                    "$ref" : "./IntegModule.json#/components/schemas/validity"
+                  }
+                },
+                "required" : [ "replyTemplate", "validity", "waitingMessage" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : 200
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "userPresenceValidResponse" : {
+        "description" : "userPresenceValidResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isUserPresent" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "isUserPresent" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isUserPresent" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIntegModuleMetaInfo" : {
+        "description" : "getIntegModuleMetaInfo template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "meeting" : {
+                  "$ref" : "./IntegModule.json#/components/schemas/getIntegModuleMetaInfoResponse"
+                }
+              },
+              "required" : [ "meeting" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "installedTime" : "1665386895169",
+                  "name" : "Zoho Meeting",
+                  "logo" : "",
+                  "installationId" : "32442000006405003",
+                  "installationBy" : "32442000000112033"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "integModuleAPPResponseJSON" : {
+        "description" : "integModuleAPPResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IntegModule.json#/components/schemas/integModuleConfigArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "installedTime" : "1722487976551",
+                    "visibility" : [ "contacts.detail.lefttab", "contacts.detail.subtab" ],
+                    "name" : "DataSync App New",
+                    "logo" : "",
+                    "integType" : "dataSync",
+                    "installedBy" : "132893000000190001",
+                    "installationId" : "132893000180104001"
+                  }, {
+                    "installedTime" : "1723525441201",
+                    "visibility" : [ ],
+                    "name" : "ZohoMeeting",
+                    "logo" : "https://desk.zoho.com/api/v1/integModule/132893000180217001/logo?orgId=68979782",
+                    "integType" : "meeting",
+                    "installedBy" : "132893000000190001",
+                    "installationId" : "132893000180217001"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "installationId" : {
+        "name" : "installationId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "mappingPayloadJSON" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "entityId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "installationId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "entityId", "installationId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "entityId" : "4000001366451",
+                  "installationId" : "32442000002623003"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "preferenceResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "replyTemplate" : {
+                  "$ref" : "./IntegModule.json#/components/schemas/replyTemplateResponse"
+                },
+                "waitingMessage" : {
+                  "$ref" : "./IntegModule.json#/components/schemas/waitingMessageResponse"
+                },
+                "validity" : {
+                  "$ref" : "./IntegModule.json#/components/schemas/validity"
+                }
+              },
+              "required" : [ "replyTemplate", "validity", "waitingMessage" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "replyTemplate" : {
+                    "displayName" : "Agent Response",
+                    "value" : "<html>Reply Editor For Agent<input/></html>"
+                  },
+                  "waitingMessage" : {
+                    "displayName" : "waitingMessage",
+                    "value" : "Desk Agent is waving"
+                  },
+                  "validity" : {
+                    "displayName" : "Session Validity",
+                    "value" : "24"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IntegModule"
+}

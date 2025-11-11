@@ -1,0 +1,129 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CommunityInitPermissions",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "community"
+  },
+  "paths" : {
+    "/api/v1/communityInitPermissions" : {
+      "get" : {
+        "tags" : [ "CommunityInitPermissions" ],
+        "summary" : "Community Init Permissions",
+        "description" : "to get init permissions of community module",
+        "operationId" : "getCommunityInitPermissions",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department id for which the permissions to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "department id for which the permissions to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getCommunityInitPermissions"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 1800000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "1416703d6ebfbad3d69baa470e5e6220",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.CommunityRestService.getCommunityInitPreferences"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "getCommunityInitPermissions" : {
+        "description" : "getCommunityInitPermissions template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "hasCategoriesWithoutDepMapping" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isModerator" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "hasCategories" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "hasCategories", "hasCategoriesWithoutDepMapping", "isModerator" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "hasCategoriesWithoutDepMapping" : false,
+                  "isModerator" : false,
+                  "hasCategories" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CommunityInitPermissions"
+}

@@ -1,0 +1,104 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "WmsDomain",
+    "version" : "1.0.0",
+    "x-clan-group" : "chat",
+    "x-module-group" : "wms"
+  },
+  "paths" : {
+    "/api/v1/wmsDomain" : {
+      "get" : {
+        "tags" : [ "WmsDomain" ],
+        "summary" : "Get WmsDomain",
+        "description" : "To get wms domain to register wms",
+        "operationId" : "getWmsDomain",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/wmsDomain"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.feeds.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "chat",
+          "module-group" : "wms",
+          "apimethod" : "com.zoho.support.restapi.FeedService.getWmsDomain"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "wmsDomain" : {
+        "description" : "wmsDomain template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "wmsDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "wmsDomain" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "wmsDomain" : "wms9.zoho.com"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "WmsDomain"
+}

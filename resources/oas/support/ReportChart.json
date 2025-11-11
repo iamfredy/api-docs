@@ -1,0 +1,254 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ReportChart",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/reports/{reportId}/chart" : {
+      "delete" : {
+        "tags" : [ "ReportChart" ],
+        "summary" : "DeleteReportChart",
+        "description" : "To delete report chart",
+        "operationId" : "deleteChart",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/reportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "43e3e5dc9677dc530db392d79cb39c23",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.reportsnew.service.ReportCustomizationService.deleteReportChart"
+        }
+      }
+    },
+    "/api/v1/reports/{reportId}/chartConfig" : {
+      "get" : {
+        "tags" : [ "ReportChart" ],
+        "summary" : "GetChartConfig",
+        "description" : "To get the list of group and data columns available to create chart",
+        "operationId" : "getChartConfig",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/reportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/reportChartConfig"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "548328cb8de0c1069267575d999c1de2",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.reportsnew.service.ReportCustomizationService.getReportChartMeta"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "groupObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayLabel", "fieldId" ]
+      },
+      "groupsArr" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./ReportChart.json#/components/schemas/groupObject"
+        }
+      },
+      "dataFieldsObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "aggregateFun" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "MIN", "MAX", "AVERAGE", "SUM" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "aggregateFun", "displayLabel", "fieldId" ]
+      },
+      "dataFieldsArr" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./ReportChart.json#/components/schemas/dataFieldsObject"
+        }
+      }
+    },
+    "responses" : {
+      "reportChartConfig" : {
+        "description" : "reportChartConfig template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "groupFields" : {
+                  "$ref" : "./ReportChart.json#/components/schemas/groupsArr"
+                },
+                "dataFields" : {
+                  "$ref" : "./ReportChart.json#/components/schemas/dataFieldsArr"
+                }
+              },
+              "required" : [ "dataFields", "groupFields" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "groupFields" : [ {
+                    "displayLabel" : "Channel",
+                    "fieldId" : "5000000000616"
+                  }, {
+                    "displayLabel" : "Ticket Owner",
+                    "fieldId" : "5000000000574"
+                  }, {
+                    "displayLabel" : "Created Time (Ticket)",
+                    "fieldId" : "5000000000580"
+                  } ],
+                  "dataFields" : [ {
+                    "displayLabel" : "Sum of Number of Threads",
+                    "aggregateFunction" : "SUM",
+                    "fieldId" : "5000000000600"
+                  }, {
+                    "displayLabel" : "Avg of Number of Threads",
+                    "aggregateFunction" : "AVERAGE",
+                    "fieldId" : "5000000000600"
+                  }, {
+                    "displayLabel" : "Avg of Number of Comments",
+                    "aggregateFunction" : "AVERAGE",
+                    "fieldId" : "5000000000602"
+                  }, {
+                    "displayLabel" : "Min of Number of Comments",
+                    "aggregateFunction" : "MIN",
+                    "fieldId" : "5000000000602"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "reportId" : {
+        "name" : "reportId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ReportChart"
+}

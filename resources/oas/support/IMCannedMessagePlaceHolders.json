@@ -1,0 +1,169 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IMCannedMessagePlaceHolders",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/cannedMessages/placeholders" : {
+      "get" : {
+        "tags" : [ "IMCannedMessagePlaceHolders" ],
+        "operationId" : "fetchPlaceHolders",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCannedMessagesPlaceHolders"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 45,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMCannedMessageService.fetchPlaceHolders"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "cannedMessageSupportedPlaceHolders" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 250,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18nFieldLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "placeHolder" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "fieldLabel", "i18nFieldLabel", "placeHolder" ]
+      },
+      "listOfcannedMessageSupportedPlaceHolders" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IMCannedMessagePlaceHolders.json#/components/schemas/cannedMessageSupportedPlaceHolders"
+        }
+      },
+      "cannedMessagePlaceHolders" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "supportedPlaceHolders" : {
+            "$ref" : "./IMCannedMessagePlaceHolders.json#/components/schemas/listOfcannedMessageSupportedPlaceHolders"
+          },
+          "i18nModule" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "i18nModule", "module", "supportedPlaceHolders" ]
+      },
+      "listofSupportedPlaceHolders" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IMCannedMessagePlaceHolders.json#/components/schemas/cannedMessagePlaceHolders"
+        }
+      }
+    },
+    "responses" : {
+      "getCannedMessagesPlaceHolders" : {
+        "description" : "getCannedMessagesPlaceHolders template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IMCannedMessagePlaceHolders.json#/components/schemas/listofSupportedPlaceHolders"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IMCannedMessagePlaceHolders"
+}

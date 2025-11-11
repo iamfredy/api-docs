@@ -1,0 +1,354 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AEAdminTool",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/admin/aeAdminTool/ruleGroup" : {
+      "get" : {
+        "tags" : [ "AE RuleGroup" ],
+        "summary" : "Get rule group action tree",
+        "description" : "This API fetches the rule group action tree with all associated rules, clusters, and nodes",
+        "operationId" : "getRuleGroupActionTree",
+        "parameters" : [ {
+          "name" : "rulegroupId",
+          "in" : "query",
+          "description" : "The ID of the rule group to retrieve",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 20,
+            "minLength" : 1,
+            "pattern" : "^[0-9]+$",
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "required" : true,
+                "format" : "numeric"
+              },
+              "security" : {
+                "sanitize" : true
+              }
+            }
+          }
+        }, {
+          "name" : "zgId",
+          "in" : "query",
+          "description" : "ZGID",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 20,
+            "minLength" : 1,
+            "pattern" : "^[0-9]+$",
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "required" : true,
+                "format" : "numeric"
+              },
+              "security" : {
+                "sanitize" : true
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ruleGroupActionTreeJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attributes" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.automationengine.restapi.RuleGroupService.getRuleGroupActionTree"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "DeptProperty" : {
+        "type" : "object",
+        "properties" : {
+          "isAsync" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Indicates if the department property is asynchronous"
+          },
+          "deptId" : {
+            "type" : [ "string", "null" ],
+            "description" : "Department ID"
+          },
+          "order" : {
+            "type" : [ "integer", "null" ],
+            "format" : "int32",
+            "description" : "Order of the department property"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "description" : "Status of the department property",
+            "enum" : [ "ACTIVE", "INACTIVE" ]
+          }
+        },
+        "required" : [ "isAsync", "order", "status" ]
+      },
+      "ActionNode" : {
+        "type" : "object",
+        "properties" : {
+          "executionType" : {
+            "type" : [ "string", "null" ],
+            "description" : "Execution type of the node",
+            "enum" : [ "SYNC", "ASYNC" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the node",
+            "maxLength" : 255
+          },
+          "nodePptyType" : {
+            "type" : [ "string", "null" ],
+            "description" : "Node property type"
+          },
+          "nodePptyId" : {
+            "type" : [ "string", "null" ],
+            "description" : "Node property ID",
+            "pattern" : "^[0-9]+$"
+          },
+          "actionId" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action ID",
+            "pattern" : "^[0-9]+$"
+          },
+          "nodeType" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of the node",
+            "enum" : [ "ROOT", "SUCCESS", "FAILURE", "DEFAULT" ]
+          },
+          "nodeId" : {
+            "type" : [ "string", "null" ],
+            "description" : "Node ID",
+            "pattern" : "^[0-9]+$"
+          },
+          "actionName" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the action",
+            "maxLength" : 255
+          },
+          "childNodes" : {
+            "type" : [ "array", "null" ],
+            "description" : "Child nodes of the current node",
+            "items" : {
+              "$ref" : "#/components/schemas/ActionNode"
+            }
+          }
+        }
+      },
+      "ActionCluster" : {
+        "type" : "object",
+        "properties" : {
+          "clusterType" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of the cluster",
+            "enum" : [ "TREE" ]
+          },
+          "nodes" : {
+            "type" : [ "array", "null" ],
+            "description" : "Nodes in the cluster",
+            "items" : {
+              "$ref" : "#/components/schemas/ActionNode"
+            }
+          },
+          "clusterName" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the cluster",
+            "maxLength" : 255
+          },
+          "clusterId" : {
+            "type" : [ "string", "null" ],
+            "description" : "Cluster ID",
+            "pattern" : "^[0-9]+$"
+          }
+        },
+        "required" : [ "clusterId", "clusterName", "clusterType", "nodes" ]
+      },
+      "Rule" : {
+        "type" : "object",
+        "properties" : {
+          "rulename" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the rule",
+            "maxLength" : 255
+          },
+          "ruleid" : {
+            "type" : [ "string", "null" ],
+            "description" : "Rule ID",
+            "pattern" : "^[0-9]+$"
+          },
+          "clusters" : {
+            "type" : [ "array", "null" ],
+            "description" : "Clusters associated with the rule",
+            "items" : {
+              "$ref" : "#/components/schemas/ActionCluster"
+            }
+          }
+        },
+        "required" : [ "clusters", "ruleid", "rulename" ]
+      },
+      "RuleGroupActionTree" : {
+        "type" : "object",
+        "properties" : {
+          "deptProperties" : {
+            "type" : [ "array", "null" ],
+            "description" : "Department properties of the rule group",
+            "items" : {
+              "$ref" : "#/components/schemas/DeptProperty"
+            }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "Name of the rule group",
+            "maxLength" : 255
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "description" : "Description of the rule group",
+            "maxLength" : 1000
+          },
+          "rules" : {
+            "type" : [ "array", "null" ],
+            "description" : "Rules in the rule group",
+            "items" : {
+              "$ref" : "#/components/schemas/Rule"
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "description" : "Rule group ID",
+            "pattern" : "^[0-9]+$"
+          }
+        },
+        "required" : [ "id", "name", "rules" ]
+      },
+      "ErrorResponse" : {
+        "type" : "object",
+        "properties" : {
+          "error" : {
+            "type" : [ "string", "null" ],
+            "description" : "Error message"
+          },
+          "code" : {
+            "type" : [ "integer", "null" ],
+            "format" : "int32",
+            "description" : "Error code"
+          },
+          "details" : {
+            "type" : [ "string", "null" ],
+            "description" : "Error details"
+          }
+        },
+        "required" : [ "code", "error" ]
+      }
+    },
+    "responses" : {
+      "ruleGroupActionTreeJson" : {
+        "description" : "Rule Group Action Tree JSON",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/RuleGroupActionTree"
+            },
+            "examples" : {
+              "default" : {
+                "value" : {
+                  "deptProperties" : [ {
+                    "isAsync" : false,
+                    "deptId" : "null",
+                    "order" : 0,
+                    "status" : "ACTIVE"
+                  } ],
+                  "name" : "Sample Rule Group2",
+                  "description" : "Sample Description",
+                  "rules" : [ {
+                    "rulename" : "Sample Rule 1",
+                    "ruleid" : "5000000066120",
+                    "clusters" : [ {
+                      "clusterType" : "TREE",
+                      "nodes" : [ {
+                        "childNodes" : [ {
+                          "executionType" : "SYNC",
+                          "name" : "Child Node 1",
+                          "nodePptyType" : "ACTION_MAPPING",
+                          "nodePptyId" : "5000000056019",
+                          "actionId" : "5000000055002",
+                          "nodeType" : "DEFAULT",
+                          "nodeId" : "5000000066100",
+                          "actionName" : "aroraDemoAction"
+                        } ],
+                        "executionType" : "SYNC",
+                        "name" : "node 2",
+                        "nodePptyType" : "ACTION_MAPPING",
+                        "nodePptyId" : "5000000056019",
+                        "actionId" : "5000000055002",
+                        "nodeType" : "ROOT",
+                        "nodeId" : "5000000066098",
+                        "actionName" : "aroraDemoAction"
+                      } ],
+                      "clusterName" : "Sample Action Cluster",
+                      "clusterId" : "5000000066096"
+                    } ]
+                  } ],
+                  "id" : "5000000066116"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "headers" : {
+            "cache-control" : "no-cache",
+            "content-security-policy" : "default-src 'self'"
+          },
+          "security" : {
+            "sanitize" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AEAdminTool"
+}

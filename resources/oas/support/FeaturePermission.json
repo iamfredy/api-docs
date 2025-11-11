@@ -1,0 +1,492 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "FeaturePermission",
+    "version" : "1.0.0"
+  },
+  "paths" : {
+    "/api/v1/{module}/featurePermissions" : {
+      "get" : {
+        "tags" : [ "FeaturePermission" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "listFeaturePermission",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feature"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/listResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ],
+         "security": [
+          {
+            "oAuth2": [
+              "activities.events.READ",
+              "events.READ"
+            ]
+          }
+        ]
+
+      },
+      "patch" : {
+        "tags" : [ "FeaturePermission" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "updateFeaturePermission",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/singleFeaturePermissionWithDep"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/listResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ],
+         "security": [
+          {
+            "oAuth2": [
+              "activities.events.READ",
+              "events.READ"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/{module}/featurePermissions/{feature}/delete" : {
+      "post" : {
+        "tags" : [ "FeaturePermission" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "deleteFeaturePermission",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feature"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteFeaturePermission"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ],
+         "security": [
+          {
+            "oAuth2": [
+              "activities.events.READ",
+              "events.READ"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/v1/{module}/featurePermissions/{feature}" : {
+      "get" : {
+        "tags" : [ "FeaturePermission" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getFeaturePermission",
+        "parameters" : [ {
+          "name" : "permission",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        }, 
+        {
+						"name": "feature",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": [
+								"string",
+								"null"
+							],
+							"description": "",
+							"maxLength": 100,
+							"minLength": 0,
+							"x-custom-parameters-attributes": {
+							}
+						}
+					},
+         {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/singleFeaturePermissionWithDep"
+          }
+        },
+        "x-audience" : [ "company-internal" ],
+        "security": [
+          {
+            "oAuth2": [
+              "activities.events.READ",
+              "events.READ"
+            ]
+          }
+        ]
+
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "singleFeaturePermission" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "feature" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "permissions" : {
+            "type" : [ "null", "array" ],
+            "description" : "",
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "description" : "",
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "value" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "name", "value" ],
+              "x-custom-parameters-attributes" : { }
+            },
+            "uniqueItems" : false,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "feature", "permissions" ]
+      },
+      "listFeaturePermission" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FeaturePermission.json#/components/schemas/singleFeaturePermission"
+        }
+      }
+    },
+    "responses" : {
+      "listResponse" : {
+        "description" : "listResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./FeaturePermission.json#/components/schemas/listFeaturePermission"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "singleFeaturePermissionWithDep" : {
+        "description" : "singleFeaturePermissionWithDep template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "feature" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "permissions" : {
+                  "type" : [ "null", "array" ],
+                  "description" : "",
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "description" : "",
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "properties" : {
+                      "name" : {
+                        "type" : [ "string", "null" ],
+                        "description" : "",
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : { }
+                      },
+                      "departmentIds" : {
+                        "type" : [ "null", "array" ],
+                        "description" : "",
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "description" : "",
+                          "pattern" : "([0-9]+)",
+                          "x-custom-parameters-attributes" : { }
+                        },
+                        "uniqueItems" : true,
+                        "x-custom-parameters-attributes" : { }
+                      },
+                      "value" : {
+                        "type" : [ "boolean", "null" ],
+                        "description" : "",
+                        "x-custom-parameters-attributes" : { }
+                      }
+                    },
+                    "required" : [ "departmentIds", "name", "value" ],
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "uniqueItems" : false,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "feature", "permissions" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      }
+    },
+    "parameters" : {
+      "feature" : {
+        "name" : "feature",
+        "in" : "query",
+        "description" : "",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "module" : {
+        "name" : "module",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "enum" : [ "tickets", "contacts", "marketplace" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : { }
+        }
+      }
+    },
+    "requestBodies" : {
+      "deleteFeaturePermission" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentIds" : {
+                  "type" : [ "null", "array" ],
+                  "description" : "",
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "uniqueItems" : false,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "departmentIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      },
+      "singleFeaturePermissionWithDep" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "feature" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "permissions" : {
+                  "type" : [ "null", "array" ],
+                  "description" : "",
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "description" : "",
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "properties" : {
+                      "name" : {
+                        "type" : [ "string", "null" ],
+                        "description" : "",
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : { }
+                      },
+                      "departmentIds" : {
+                        "type" : [ "null", "array" ],
+                        "description" : "",
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "description" : "",
+                          "pattern" : "([0-9]+)",
+                          "x-custom-parameters-attributes" : { }
+                        },
+                        "uniqueItems" : true,
+                        "x-custom-parameters-attributes" : { }
+                      },
+                      "value" : {
+                        "type" : [ "boolean", "null" ],
+                        "description" : "",
+                        "x-custom-parameters-attributes" : { }
+                      }
+                    },
+                    "required" : [ "departmentIds", "name", "value" ],
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "uniqueItems" : false,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "feature", "permissions" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "FeaturePermission"
+}

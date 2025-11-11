@@ -1,0 +1,323 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_Broadcast",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/broadcast" : {
+      "post" : {
+        "tags" : [ "IM_Broadcast" ],
+        "operationId" : "createBroadcast",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassAction.json#/components/responses/massActionLogKeys"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.CREATE", "Desk.InstantMessages.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.MassActionService.createIMBroadcast"
+        }
+      }
+    },
+    "/api/v1/im/broadcast/validate" : {
+      "post" : {
+        "tags" : [ "IM_Broadcast" ],
+        "operationId" : "validateBroadcast",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/validateRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/validateResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.CREATE", "Desk.InstantMessages.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMBroadcastService.validateBroadcast"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "validateResponse" : {
+        "description" : "validateResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "inValidContactIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "oneOf" : [ {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "maxItems" : 50,
+                      "minItems" : 1,
+                      "uniqueItems" : false
+                    }, {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "mobile" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "maxItems" : 1,
+                      "minItems" : 1,
+                      "uniqueItems" : false
+                    }, {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "Contacts", "Tickets" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    } ]
+                  },
+                  "maxItems" : 50,
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "inValidContactIds" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "createRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "Contacts", "Tickets" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 50,
+                  "minItems" : 1,
+                  "uniqueItems" : false
+                },
+                "language" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "en" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fields" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "mobile" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "maxItems" : 1,
+                  "minItems" : 1,
+                  "uniqueItems" : false
+                },
+                "templateId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "skipOngoingConversations" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "channelId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "channelId", "departmentId", "fields", "ids", "language", "module", "name", "skipOngoingConversations", "templateId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "validateRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "Contacts", "Tickets" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 50,
+                  "minItems" : 1,
+                  "uniqueItems" : false
+                },
+                "fields" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "mobile" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "maxItems" : 1,
+                  "minItems" : 1,
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "fields", "ids", "module" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_Broadcast"
+}

@@ -1,0 +1,1888 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "GenericAction",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/actions/{id}" : {
+      "get" : {
+        "tags" : [ "GenericAction" ],
+        "summary" : "Get an Action",
+        "description" : "This API gets a GenericAction in your helpdesk",
+        "operationId" : "getAction",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getActionResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2d8a1895e52efecba29d866890b3540e",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.genericactions.restapi.GenericActionService.getAction"
+        }
+      }
+    },
+    "/api/v1/actions" : {
+      "get" : {
+        "tags" : [ "GenericAction" ],
+        "summary" : "List Generic Actions",
+        "description" : "This API gets a list of generic actions in your helpdesk. If both actionAPINames and actionIds are provided, priority will be given to actionAPINames. If only one is present, it will be considered accordingly.",
+        "operationId" : "getActions",
+        "parameters" : [ {
+          "name" : "actionIds",
+          "in" : "query",
+          "description" : "Comma-separated array of ActionID. Maximum number of ids allowed is 50.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Comma-separated array of ActionID. Maximum number of ids allowed is 50.",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Comma-separated array of ActionID. Maximum number of ids allowed is 50.", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "maxItems" : 50,
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of actions",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of actions",
+            "maximum" : 200,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "from index",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Essential fields for list view",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Essential fields for list view",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "inputParams", "outputParams", "preRequisite" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "maxItems" : 3,
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "actionAPINames",
+          "in" : "query",
+          "description" : "Comma-separated array of Action's API names. Maximum number of API names allowed is 50.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Comma-separated array of Action's API names. Maximum number of API names allowed is 50.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 200,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Comma-separated array of Action's API names. Maximum number of API names allowed is 50.", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "maxItems" : 50,
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getActionsFinalJsonResp"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "327a68cb210f8558b51b0145843685a2",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.genericactions.restapi.GenericActionService.getActions"
+        }
+      }
+    },
+    "/api/v1/actions/{id}/execute" : {
+      "post" : {
+        "tags" : [ "GenericAction" ],
+        "summary" : "Execute Action",
+        "description" : "This API executes an action with the given input values.",
+        "operationId" : "executeAction",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/executeActionPayloadJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/executeActionRespFinal"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "oAuth2" : [ "settings.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ResourseIntensiveQuery_Policy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "d49a6ddcb23635968d344802c941ea5f",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.genericactions.restapi.GenericActionService.executeAction"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "outputParamRespJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "jsonPointerPath" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "origin" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "STATIC", "DYNAMIC" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "length" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "actionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "STRING", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "ARRAY", "OBJECT", "LOOKUP", "BOOLEAN", "TEXT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "actionId", "apiName", "id", "jsonPointerPath", "length", "name", "order", "origin", "type" ]
+      },
+      "outputParamsRespList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GenericAction.json#/components/schemas/outputParamRespJson"
+        }
+      },
+      "inputParamRespJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "picklistValues" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            },
+            "uniqueItems" : false
+          },
+          "placeHolderFilters" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "textAreaDimensions": {
+            "type": ["object", "null"],
+            "properties": {
+              "rows": {
+                "type": "string",
+                "pattern": "^[0-9]+$"
+              }
+            }
+          },
+          "isFullSizeField" : {
+            "type" : [ "boolean", "null" ]
+          },
+           "isRowBreakNeeded" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isHidden" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isReadOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "defaultValue" : {
+            "type" : [ "string", "null" ],
+            "minLength" : 0
+          },
+          "tooltips" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "description" : "Map of tooltip types",
+            "properties" : {
+              "INFO" : {
+                "type" : "string",
+                "description" : "Tooltip text for INFO type"
+              },
+              "PLACEHOLDER" : {
+                "type" : "string",
+                "description" : "Tooltip text for PLACEHOLDER type"
+              }
+            }
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "placeHolderContext" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "origin" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "STATIC", "DYNAMIC" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "length" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "STRING", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "ARRAY", "OBJECT", "LOOKUP", "BOOLEAN", "TEXT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "version" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 9999,
+            "pattern" : "([0-9]+)"
+          },
+          "isEncrypted" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "uiType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula", "Hidden", "MultiLookup", "PrimaryIdentifier", "Expression", "Collection", "RichPlainText", "FileUpload", "LargeText", "Long", "Watchfields", null ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "targetTemplateName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "actionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "hooks" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            },
+            "uniqueItems" : false
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "picklistValues", "apiName", "placeHolderContext", "origin", "length", "type", "version", "targetTemplateName", "isEncrypted", "name", "actionId", "id", "hooks", "isMandatory", "order", "uiType", "placeHolderFilters", "isHidden", "isReadOnly", "defaultValue", "tooltips","isRowBreakNeeded","isFullSizeField","textAreaDimensions" ]
+      },
+      "inputParamsRespList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GenericAction.json#/components/schemas/inputParamRespJson"
+        }
+      },
+      "paramDependencyRespJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "paramDependencyId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "paramDependencyMapping" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "patternProperties" : {
+              "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "id" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false
+                    },
+                    "text" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false
+                    }
+                  },
+                  "required" : [ "id", "text" ]
+                },
+                "uniqueItems" : false
+              }
+            }
+          },
+          "childAPIName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "actionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "childId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "parentAPIName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "parentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "actionId", "childAPIName", "childId", "paramDependencyId", "paramDependencyMapping", "parentAPIName", "parentId" ]
+      },
+      "paramDependencyRespArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GenericAction.json#/components/schemas/paramDependencyRespJson"
+        }
+      },
+      "preRequisiteRespJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "preRequestScriptUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+          },
+          "targetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "postRequestScriptUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+          },
+          "inputParamsScriptUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 2000,
+            "minLength" : 0,
+            "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+          },
+          "outputParamsScriptUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 2000,
+            "minLength" : 0,
+            "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+          },
+          "actionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "actionId", "id", "inputParamsScriptUrl", "outputParamsScriptUrl", "postRequestScriptUrl", "preRequestScriptUrl", "targetId" ]
+      },
+      "getActionsBasicJsonResp" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "creatorType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SYSTEM", "USER_DEFINED", "EXTENSION_DEFINED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "paramDependencies" : {
+            "$ref" : "./GenericAction.json#/components/schemas/paramDependencyRespArray"
+          },
+          "executionType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SYNC", "ASYNC", "SCHEDULED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "inputParams" : {
+            "$ref" : "./GenericAction.json#/components/schemas/inputParamsRespList"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "RESOLVER_ACTION", "INBUILT_FUNCTION", "CUSTOM_ACTION", "SCHEDULE_ACTION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "outputParams" : {
+            "$ref" : "./GenericAction.json#/components/schemas/outputParamsRespList"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiName", "createdBy", "createdTime", "creatorType", "executionType", "id", "inputParams", "modifiedBy", "modifiedTime", "name", "outputParams", "paramDependencies", "type" ]
+      },
+      "getActionsBasicJsonRespList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./GenericAction.json#/components/schemas/getActionsBasicJsonResp"
+        }
+      },
+      "executeActionRespJson" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SUCCESS", "FAILURE", "OFFLOADED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actionResult" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "patternProperties" : {
+              "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                "x-custom-parameters-attributes" : {
+                  "actionParamMappings" : [ {
+                    "picklistValues" : [ {
+                      "prompt" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Prompt",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      },
+                      "value" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "value",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    } ],
+                    "apiName" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The API name for the given input parameter.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "placeHolderContext" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Supports placeholders for the input field with a suggestion button in the UI. The placeholder value is set specific based on the provided module name.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "origin" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Determines whether the input parameter is STATIC or DYNAMIC.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "length" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Indicates the maximum length of the input's value.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "type" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The datatype of the input parameter.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "version" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The version of the parameter. Only needed if the param is dynamic.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "isEncrypted" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The boolean value that determines to store the input as an encrypted value or not.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "name" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Display name of the input parameter.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "uiType" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The type for the input parameter to be rendered in UI.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "targetTemplateName" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "This parameter is used for CustomActions.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "id" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Unique ID of the input parameter.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "value" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The actual value assigned to the input parameter.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "hooks" : [ {
+                      "targetResponseInfo" : {
+                        "responsePaths" : { },
+                        "responsePathsPayload" : { },
+                        "targetAPIName" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "target API Name",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "responseType" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Response Type",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "targetResponseInfoId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "TargetResponseInfo ID",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "target" : { }
+                      },
+                      "payload" : { },
+                      "eventProperty" : {
+                        "debounce" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Debounce Time in Milliseconds",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "eventPropertyId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Event Property ID",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "triggerCharacter" : [ { } ],
+                        "triggerType" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Trigger Type",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "id" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "ParamHook ID",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      },
+                      "paramId" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Param ID",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      },
+                      "event" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Event",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      },
+                      "valueUrl" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "ValueURL",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    } ],
+                    "isMandatory" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The boolean value that indicates the input parameter is mandatory or not.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    },
+                    "order" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "The order of the parameter in which it will be rendered in the UI.",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  } ],
+                  "moduleId" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the module to which the entities belong. It could be a system or custom module.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "entityIds" : [ { } ],
+                  "executionType" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Specifies the type of action execution. The allowed values are SYNC and ASYNC.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required" : [ "actionResult", "message", "status" ]
+      }
+    },
+    "responses" : {
+      "getActionResponse" : {
+        "description" : "getActionResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "apiName" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0
+                  },
+                  "creatorType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "SYSTEM", "USER_DEFINED", "EXTENSION_DEFINED" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "paramDependencies" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/paramDependencyRespArray"
+                  },
+                  "executionType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "SYNC", "ASYNC", "SCHEDULED" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "inputParams" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/inputParamsRespList"
+                  },
+                  "type" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "RESOLVER_ACTION", "INBUILT_FUNCTION", "CUSTOM_ACTION", "SCHEDULE_ACTION" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "createdBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "outputParams" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/outputParamsRespList"
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "apiName", "createdBy", "createdTime", "creatorType", "executionType", "id", "inputParams", "modifiedBy", "modifiedTime", "name", "outputParams", "paramDependencies", "type" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "apiName" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0
+                  },
+                  "creatorType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "SYSTEM", "USER_DEFINED", "EXTENSION_DEFINED" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "preRequisite" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/preRequisiteRespJson"
+                  },
+                  "executionType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "SYNC", "ASYNC", "SCHEDULED" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "inputParams" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/inputParamsRespList"
+                  },
+                  "type" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "RESOLVER_ACTION", "INBUILT_FUNCTION", "CUSTOM_ACTION", "SCHEDULE_ACTION" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "createdBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "outputParams" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/outputParamsRespList"
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 200,
+                    "minLength" : 0
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "apiName", "createdBy", "createdTime", "creatorType", "executionType", "id", "inputParams", "modifiedBy", "modifiedTime", "name", "outputParams", "preRequisite", "type" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1706026777000,
+                  "apiName" : "assignTicket",
+                  "creatorType" : "SYSTEM",
+                  "createdBy" : "1000000000517",
+                  "preRequisite" : {
+                    "preRequestScriptUrl" : "https://desk.zoho.com/api/v1/preRequestScript/assignTickets?orgId=19562073",
+                    "targetId" : "1000000046195",
+                    "postRequestScriptUrl" : null,
+                    "actionId" : "1000000046197",
+                    "inputParamsScriptUrl" : null,
+                    "outputParamsScriptUrl" : null,
+                    "targetAPIName" : null,
+                    "preRequisiteDO" : null,
+                    "id" : "1000000046198"
+                  },
+                  "outputParams" : [ {
+                    "jsonPointerPath" : "/id",
+                    "apiName" : "ticketId",
+                    "origin" : "STATIC",
+                    "length" : "30",
+                    "name" : "Ticket Id",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046202",
+                    "type" : "TEXT",
+                    "version" : "1",
+                    "order" : "1"
+                  }, {
+                    "jsonPointerPath" : "/assigneeId",
+                    "apiName" : "assigneeId",
+                    "origin" : "STATIC",
+                    "length" : "30",
+                    "name" : "Assignee Id",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046203",
+                    "type" : "PICKLIST",
+                    "version" : "1",
+                    "order" : "2"
+                  }, {
+                    "jsonPointerPath" : "/teamId",
+                    "apiName" : "teamId",
+                    "origin" : "STATIC",
+                    "length" : "30",
+                    "name" : "Team Id",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046204",
+                    "type" : "PICKLIST",
+                    "version" : "1",
+                    "order" : "3"
+                  }, {
+                    "jsonPointerPath" : "/modifiedTime",
+                    "apiName" : "modifiedTime",
+                    "origin" : "STATIC",
+                    "length" : "30",
+                    "name" : "Modified Time",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046205",
+                    "type" : "TEXT",
+                    "version" : "1",
+                    "order" : "4"
+                  }, {
+                    "jsonPointerPath" : "/ticketNumber",
+                    "apiName" : "ticketNumber",
+                    "origin" : "STATIC",
+                    "length" : "30",
+                    "name" : "Ticket Number",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046206",
+                    "type" : "TEXT",
+                    "version" : "1",
+                    "order" : "5"
+                  } ],
+                  "name" : "Assign Ticket",
+                  "inputParams" : [ {
+                    "picklistValues" : [ ],
+                    "apiName" : "ticketId",
+                    "placeHolderContext" : "tickets",
+                    "origin" : "STATIC",
+                    "length" : "200",
+                    "type" : "LOOKUP",
+                    "version" : "1",
+                    "targetTemplateKey" : "ticketId",
+                    "isEncrypted" : false,
+                    "name" : "Record ID",
+                    "uiType" : "LookUp",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046199",
+                    "hooks" : [ ],
+                    "isMandatory" : true,
+                    "order" : "1",
+                    "placeHolderFilters" : [ "PrimaryIdentifier" ]
+                  }, {
+                    "picklistValues" : [ {
+                      "prompt" : "Agent",
+                      "value" : "AGENT"
+                    }, {
+                      "prompt" : "Team",
+                      "value" : "TEAM"
+                    }, {
+                      "prompt" : "Agent in a Team",
+                      "value" : "TEAM_WITH_AGENT"
+                    } ],
+                    "apiName" : "type",
+                    "placeHolderContext" : null,
+                    "origin" : "STATIC",
+                    "length" : "200",
+                    "type" : "PICKLIST",
+                    "version" : "1",
+                    "targetTemplateKey" : "type",
+                    "isEncrypted" : false,
+                    "name" : "Assignee",
+                    "actionId" : "1000000046197",
+                    "id" : "1000000046200",
+                    "hooks" : [ {
+                      "payload" : { },
+                      "id" : "1000000046201",
+                      "paramId" : "1000000046200",
+                      "event" : "AFTER_SELECTION",
+                      "valueUrl" : "https://desk.zoho.com/api/v1/defaults/listAssignFields?orgId=19562073&event=${EVENT}&fieldValue=${FIELD_VALUE}"
+                    } ],
+                    "isMandatory" : true,
+                    "order" : "2"
+                  } ],
+                  "createdTime" : 1706026777000,
+                  "modifiedBy" : "1000000000517",
+                  "id" : "1000000046197",
+                  "type" : "CUSTOM_ACTION"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getActionsFinalJsonResp" : {
+        "description" : "getActionsFinalJsonResp template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "actions" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "preRequisite" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 7,
+                          "minProperties" : 7,
+                          "properties" : {
+                            "preRequestScriptUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+                            },
+                            "targetId" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "postRequestScriptUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+                            },
+                            "inputParamsScriptUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 2000,
+                              "minLength" : 0,
+                              "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+                            },
+                            "outputParamsScriptUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 2000,
+                              "minLength" : 0,
+                              "pattern" : "^(https?\\://[0-9a-zA-Z][-.\\w]*/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'/\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)$"
+                            },
+                            "actionId" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "actionId", "id", "inputParamsScriptUrl", "outputParamsScriptUrl", "postRequestScriptUrl", "preRequestScriptUrl", "targetId" ]
+                        },
+                        "outputParams" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "null", "object" ],
+                            "additionalProperties" : false,
+                            "maxProperties" : 9,
+                            "minProperties" : 9,
+                            "properties" : {
+                              "jsonPointerPath" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 200,
+                                "minLength" : 0
+                              },
+                              "apiName" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "origin" : {
+                                "type" : [ "string", "null" ],
+                                "enum" : [ "STATIC", "DYNAMIC" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "length" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int32",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "actionId" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int64",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "id" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int64",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "type" : {
+                                "type" : [ "string", "null" ],
+                                "enum" : [ "STRING", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "ARRAY", "OBJECT", "LOOKUP", "BOOLEAN", "TEXT" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "order" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int32",
+                                "pattern" : "([0-9]+)"
+                              }
+                            },
+                            "required" : [ "actionId", "apiName", "id", "jsonPointerPath", "length", "name", "order", "origin", "type" ]
+                          },
+                          "uniqueItems" : false
+                        },
+                        "inputParams" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "null", "object" ],
+                            "additionalProperties" : false,
+                            "maxProperties" : 16,
+                            "minProperties" : 16,
+                            "properties" : {
+                              "picklistValues" : {
+                                "type" : [ "null", "array" ],
+                                "items" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                },
+                                "uniqueItems" : false
+                              },
+                              "placeHolderFilters" : {
+                                "type" : [ "null", "array" ],
+                                "items" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                }
+                              },
+                              "textAreaDimensions": {
+                                "type": ["object", "null"],
+                                "properties": {
+                                  "rows": {
+                                    "type": "string",
+                                    "pattern": "^[0-9]+$"
+                                  }
+                                }
+                              },
+                              "isFullSizeField" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "isRowBreakNeeded" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "isHidden" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "isReadOnly" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "defaultValue" : {
+                                "type" : [ "string", "null" ],
+                                "minLength" : 0
+                              },
+                              "tooltips" : {
+                                "type" : "object",
+                                "additionalProperties" : {
+                                  "type" : "string"
+                                },
+                                "description" : "Map of tooltip types",
+                                "properties" : {
+                                  "INFO" : {
+                                    "type" : "string",
+                                    "description" : "Tooltip text for INFO type"
+                                  },
+                                  "PLACEHOLDER" : {
+                                    "type" : "string",
+                                    "description" : "Tooltip text for PLACEHOLDER type"
+                                  }
+                                }
+                              },
+                              "apiName" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "placeHolderContext" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "origin" : {
+                                "type" : [ "string", "null" ],
+                                "enum" : [ "STATIC", "DYNAMIC" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "length" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int32",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "type" : {
+                                "type" : [ "string", "null" ],
+                                "enum" : [ "STRING", "NUMBER", "DECIMAL", "PICKLIST", "URL", "MULTIPICKLIST", "ARRAY", "OBJECT", "LOOKUP", "BOOLEAN", "TEXT" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "version" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int32",
+                                "maximum" : 9999,
+                                "pattern" : "([0-9]+)"
+                              },
+                              "isEncrypted" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "name" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "uiType" : {
+                                "type" : [ "string", "null" ],
+                                "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula", "Hidden", "MultiLookup", "PrimaryIdentifier", "Expression", "Collection", "RichPlainText", "FileUpload", "LargeText", "Long", "Watchfields", null ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "targetTemplateName" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 200,
+                                "minLength" : 0
+                              },
+                              "actionId" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int64",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "id" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int64",
+                                "pattern" : "([0-9]+)"
+                              },
+                              "hooks" : {
+                                "type" : [ "null", "array" ],
+                                "items" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                },
+                                "uniqueItems" : false
+                              },
+                              "isMandatory" : {
+                                "type" : [ "boolean", "null" ]
+                              },
+                              "order" : {
+                                "type" : [ "string", "null", "integer" ],
+                                "format" : "int32",
+                                "pattern" : "([0-9]+)"
+                              }
+                            },
+                            "required" : [ "actionId", "apiName", "hooks", "id", "isEncrypted", "isMandatory", "length", "name", "order", "origin", "picklistValues", "placeHolderContext", "targetTemplateName", "type", "uiType", "version", "placeHolderFilters", "isHidden", "isReadOnly", "defaultValue", "tooltips","isRowBreakNeeded","isFullSizeField","textAreaDimensions" ]
+                          },
+                          "uniqueItems" : false
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "actions" : {
+                    "$ref" : "./GenericAction.json#/components/schemas/getActionsBasicJsonRespList"
+                  }
+                },
+                "required" : [ "actions" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "actions" : [ {
+                    "modifiedTime" : 1706026775000,
+                    "apiName" : "layoutMove",
+                    "creatorType" : "SYSTEM",
+                    "createdBy" : "1000000000517",
+                    "outputParams" : [ ],
+                    "name" : "Layout Move",
+                    "inputParams" : [ ],
+                    "createdTime" : 1706026775000,
+                    "modifiedBy" : "1000000000517",
+                    "id" : "1000000045698",
+                    "type" : "RESOLVER_ACTION"
+                  }, {
+                    "modifiedTime" : 1706026775000,
+                    "apiName" : "automationAction",
+                    "creatorType" : "SYSTEM",
+                    "createdBy" : "1000000000517",
+                    "outputParams" : [ ],
+                    "name" : "Automation Action",
+                    "inputParams" : [ ],
+                    "createdTime" : 1706026775000,
+                    "modifiedBy" : "1000000000517",
+                    "id" : "1000000045706",
+                    "type" : "RESOLVER_ACTION"
+                  }, {
+                    "modifiedTime" : 1706026775000,
+                    "apiName" : "validationAction",
+                    "creatorType" : "SYSTEM",
+                    "createdBy" : "1000000000517",
+                    "outputParams" : [ ],
+                    "name" : "Validation Action",
+                    "inputParams" : [ ],
+                    "createdTime" : 1706026775000,
+                    "modifiedBy" : "1000000000517",
+                    "id" : "1000000045710",
+                    "type" : "RESOLVER_ACTION"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "executeActionRespFinal" : {
+        "description" : "executeActionRespFinal template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/executeActionRespJson"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "message" : "Action Execution completed for Action ID - 1000009638757",
+                    "status" : "SUCCESS",
+                    "actionResult" : {
+                      "executionResult" : {
+                        "executionStatus" : "true",
+                        "skippedFieldUpdates" : [ {
+                          "skippedFields" : [ {
+                            "displayLabel" : "Subject",
+                            "apiName" : "subject",
+                            "fieldId" : "1000000002157"
+                          } ],
+                          "name" : "My Action"
+                        } ]
+                      },
+                      "entityId" : 1000000048371
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "executeActionPayloadJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "executionType" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Specifies the type of action execution. The allowed values are SYNC and ASYNC.",
+                  "enum" : [ "SYNC", "ASYNC" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actionParamMappings" : {
+                  "$ref" : "./GenericActionMapping.json#/components/schemas/inputParamPayloadJsonArray"
+                },
+                "moduleId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the module to which the entities belong. It could be a system or custom module.",
+                  "pattern" : "([0-9]+)"
+                },
+                "entityIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 50,
+                  "minItems" : 2,
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "actionParamMappings", "entityIds", "moduleId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "executionType" : "SYNC",
+                  "actionParamMappings" : [ {
+                    "apiName" : "staticParam1",
+                    "value" : "My Action"
+                  }, {
+                    "apiName" : "staticParam2",
+                    "value" : "1000000026140"
+                  }, {
+                    "apiName" : "staticParam3",
+                    "value" : {
+                      "subject" : "hello ${tickets.$createdBy}"
+                    }
+                  }, {
+                    "picklistValues" : [ ],
+                    "apiName" : "dyamicParam1",
+                    "placeHolderContext" : null,
+                    "origin" : "STATIC",
+                    "length" : "100",
+                    "type" : "TEXT",
+                    "isEncrypted" : false,
+                    "name" : "Dynamic Param",
+                    "uiType" : null,
+                    "targetTemplateName" : null,
+                    "hooks" : [ ],
+                    "value" : "Some value",
+                    "isMandatory" : true,
+                    "order" : "1"
+                  } ],
+                  "moduleId" : "1000000000581",
+                  "entityIds" : [ "1000000048371" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "GenericAction"
+}

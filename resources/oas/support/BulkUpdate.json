@@ -1,0 +1,743 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "BulkUpdate",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "paths" : {
+    "/api/v1/bulkUpdate" : {
+      "get" : {
+        "tags" : [ "BulkUpdate" ],
+        "summary" : "Get Active BulkUpdate Details",
+        "description" : "This API returns the bulk update in Progress, Queued, Success and Failed state",
+        "operationId" : "getBulkUpdate",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Additional information related to the agent, department and view. Values allowed are: @creator@, @departments@ and @views@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Additional information related to the agent, department and view. Values allowed are: @creator@, @departments@ and @views@.",
+            "enum" : [ "creator", "departments", "views" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of updates to be fetched. Default is 20",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of updates to be fetched. Default is 20",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the update must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the update must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status of the update. Values allowed are @In Progress@, @Queued@, @Success@ and @Failed@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Status of the update. Values allowed are @In Progress@, @Queued@, @Success@ and @Failed@",
+            "enum" : [ "In Progress", "Queued", "Success", "Failed" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getBulkUpdateResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "f83a1927834cfeb24a2f42d32bf20904",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.bulkupdate.BulkUpdateService.get"
+        }
+      },
+      "post" : {
+        "tags" : [ "BulkUpdate" ],
+        "summary" : "Bulk Update on View",
+        "description" : "This API updates all the records in the view with given operation.",
+        "operationId" : "createBulkUpdate",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "name" : "fieldConditions",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "\\{(.*)\\}",
+            "x-custom-parameters-attributes" : {
+              "cvId" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Custom view ID",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              },
+              "fieldConditions" : {
+                "fieldValue" : {
+                  "removeExif" : false,
+                  "filterMatchedContent" : false,
+                  "antivirus" : false,
+                  "replacementString" : "",
+                  "allowInvalid" : false,
+                  "descrption" : "value to be updated in the field",
+                  "secret" : false,
+                  "preserveCharsLimit" : 10,
+                  "trim" : false,
+                  "internalParam" : false,
+                  "preserveChars" : "0,5",
+                  "importUrl" : false,
+                  "decrypt" : false
+                },
+                "fieldName" : {
+                  "removeExif" : false,
+                  "filterMatchedContent" : false,
+                  "antivirus" : false,
+                  "replacementString" : "",
+                  "allowInvalid" : false,
+                  "descrption" : "Name of the field to be updated based on the operation given",
+                  "secret" : false,
+                  "preserveCharsLimit" : 10,
+                  "trim" : false,
+                  "internalParam" : false,
+                  "preserveChars" : "0,5",
+                  "importUrl" : false,
+                  "decrypt" : false
+                }
+              },
+              "operation" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Action to be done in the given view. Supported operations are @FIELD_UPDATE@ @ASSIGNEE_CHANGE@ @CLOSE@ @MOVE@ @DELETE@ @REVOKE_BLUEPRINT@",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              },
+              "module" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Module. Supported modules: @tickets@ @contacts@ @accounts@",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              },
+              "departmentId" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Department ID",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            }
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "contacts", "accounts" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "operation",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Field_Update", "Assignee_Change", "Close", "Move", "Delete", "Revoke_Blueprint" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "BulkUpdate_DOSRateLimiter"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "f456b81ad286b55f92c40733be1a5e90",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.bulkaction.businesslogic.BulkActionService.bulkAction"
+        }
+      },
+      "delete" : {
+        "tags" : [ "BulkUpdate" ],
+        "summary" : "Delete Queued BulkUpdate",
+        "description" : "This API deletes the triggered bulk update in queued state",
+        "operationId" : "deleteBulkUpdate",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "4fae409534a79dde738fb803a4750a69",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.bulkupdate.BulkUpdateService.delete"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "bulkUpdatejson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "cvId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Custom view Id",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "canDiscard" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "createdBy" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "contacts", "accounts" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "operation" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Field_Update", "Move", "Delete", "Close", "Assignee_Change", "Revoke_Blueprint" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "updatedRecordsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "In Progress", "Queue", "Success", "Failed" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Status of the update. Values allowed are @In Progress@, @Queued@, @Success@ and @Failed@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "canDiscard", "createdBy", "createdTime", "cvId", "departmentId", "module", "operation", "status", "updatedRecordsCount" ]
+      },
+      "bulkUpdatejsonWithFieldConditions" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "fieldConditions" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 1,
+              "minProperties" : 1,
+              "properties" : {
+                "fieldValue" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "fieldValue" ]
+            }
+          },
+          "required" : [ "fieldConditions" ]
+        } ]
+      },
+      "bulkUpdatejsonWithFieldConditionsAndFailureReason" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "fieldConditions" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 1,
+              "minProperties" : 1,
+              "properties" : {
+                "fieldValue" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "fieldValue" ]
+            },
+            "failureReason" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "failureReason", "fieldConditions" ]
+        } ]
+      },
+      "bulkUpdatejsonWithFailureReason" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "failureReason" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "failureReason" ]
+        } ]
+      },
+      "getBulkUpdateData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejson"
+          }, {
+            "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejsonWithFieldConditions"
+          }, {
+            "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejsonWithFieldConditionsAndFailureReason"
+          }, {
+            "$ref" : "./BulkUpdate.json#/components/schemas/bulkUpdatejsonWithFailureReason"
+          } ]
+        }
+      }
+    },
+    "responses" : {
+      "getBulkUpdateResponse" : {
+        "description" : "getBulkUpdateResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "creator" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 4,
+                          "minProperties" : 4,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            }
+                          },
+                          "required" : [ "firstName", "lastName", "name", "photoURL" ]
+                        },
+                        "updatedView" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 2,
+                          "minProperties" : 2,
+                          "properties" : {
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0,
+                              "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "id", "name" ]
+                        },
+                        "department" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 2,
+                          "minProperties" : 2,
+                          "properties" : {
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "id", "name" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./BulkUpdate.json#/components/schemas/getBulkUpdateData"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "cvId" : "11000000014252",
+                    "fieldConditions" : {
+                      "fieldName" : "Channel",
+                      "fieldValue" : "Email"
+                    },
+                    "creator" : {
+                      "firstName" : "Janaki",
+                      "lastName" : "V",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&fs=thumb&ID=15073702&nps=404&exp=20",
+                      "name" : "Janaki V"
+                    },
+                    "canDiscard" : true,
+                    "module" : "tickets",
+                    "departmentId" : "11000000013058",
+                    "updatedView" : {
+                      "name" : "Closed Cases",
+                      "id" : "11000000014252"
+                    },
+                    "createdBy" : "11000000016500",
+                    "createdTime" : 1587620774000,
+                    "department" : {
+                      "name" : "API department",
+                      "id" : "11000000013058"
+                    },
+                    "operation" : "Field_Update",
+                    "status" : "Success",
+                    "updatedRecordsCount" : 23252
+                  }, {
+                    "cvId" : "11000000014096",
+                    "fieldConditions" : {
+                      "fieldName" : "Classification",
+                      "fieldValue" : "Problem"
+                    },
+                    "creator" : {
+                      "firstName" : "Janaki",
+                      "lastName" : "V",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&fs=thumb&ID=15073702&nps=404&exp=20",
+                      "name" : "Janaki V"
+                    },
+                    "canDiscard" : true,
+                    "module" : "tickets",
+                    "departmentId" : "11000000013058",
+                    "updatedView" : {
+                      "name" : "All Cases",
+                      "id" : "11000000014096"
+                    },
+                    "createdBy" : "11000000016500",
+                    "failureReason" : "Scheduler disabled",
+                    "createdTime" : 1587620741000,
+                    "department" : {
+                      "name" : "API department",
+                      "id" : "11000000013058"
+                    },
+                    "operation" : "Field_Update",
+                    "status" : "Failed",
+                    "updatedRecordsCount" : 0
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "cvId" : {
+        "name" : "cvId",
+        "in" : "query",
+        "description" : "Custom view Id",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Custom view Id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "Department Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Department Id",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "BulkUpdate"
+}

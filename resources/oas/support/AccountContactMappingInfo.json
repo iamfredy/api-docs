@@ -1,0 +1,227 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AccountContactMappingInfo",
+    "version" : "1.0.0",
+    "x-clan-group" : "contacts",
+    "x-module-group" : "contacts"
+  },
+  "paths" : {
+    "/api/v1/accountContactMapping/{mappingId}" : {
+      "patch" : {
+        "tags" : [ "AccountContactMappingInfo" ],
+        "summary" : "Update association info",
+        "description" : "This API updates the details of an account-contact mapping.",
+        "operationId" : "updateAccountContactMappingInfo",
+        "parameters" : [ {
+          "name" : "mappingId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateMappingInfo"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/mappingResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.contacts.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "contacts",
+          "apihash" : "47e7c3c0b6a83441f951705c910ecb8f",
+          "module-group" : "contacts",
+          "apimethod" : "com.zoho.support.core.account.contact.mapping.AccountContactMappingService.updateAccountContactMapping"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "mappingInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "mappingId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "accountId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "mappingType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PRIMARY", "SECONDARY" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Type of mapping connection between the contact and the account. Value allowed is @PRIMARY@, which sets the account as the primary account of the contact.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "isAccountTicketsViewable" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that specifies whether the contact can access all tickets related to the account",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "accountId", "contactId", "isAccountTicketsViewable", "mappingId", "mappingType" ]
+      }
+    },
+    "responses" : {
+      "mappingResponse" : {
+        "description" : "mappingResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./AccountContactMappingInfo.json#/components/schemas/mappingInfo"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "mappingId" : "4000000023057",
+                  "accountId" : "4000000022101",
+                  "contactId" : "4000000020714",
+                  "mappingType" : "PRIMARY",
+                  "isAccountTicketsViewable" : false
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "updateMappingInfo" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "mappingType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "PRIMARY" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isAccountTicketsViewable" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "mappingType" : "PRIMARY",
+                  "isAccountTicketsViewable" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AccountContactMappingInfo"
+}

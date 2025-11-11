@@ -1,0 +1,502 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_ChannelPreference",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/channels/{id}/preferences" : {
+      "patch" : {
+        "tags" : [ "IM_ChannelPreference" ],
+        "operationId" : "updateChannelPreference",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateIMChannelPreference"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMChannelPreference"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelPreferenceService.updateChannelPreference"
+        }
+      }
+    },
+    "/api/v1/im/channels/preferences" : {
+      "get" : {
+        "tags" : [ "IM_ChannelPreference" ],
+        "operationId" : "getChannelPreferences",
+        "parameters" : [ {
+          "name" : "actor",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ENDUSER", "AGENT", "BOT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "channelIds",
+          "in" : "query",
+          "description" : "Filter channel preferences by channelId",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter channel preferences by channelId",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter channel preferences by channelId", false, 10, false, false, "0,5", false, false ]
+            },
+            "maxItems" : 3,
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "isActive",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ]
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SESSION_AUTOCLOSE_EXPIRY" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMChannelPreferences"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMChannelPreferenceService.getChannelPreferences"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getIMChannelPreference" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "actor" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT", "BOT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "lastModifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "kind" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "list.channel.preferences", "single.channel.preferences" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "lastModifiedBy" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9]+"
+          },
+          "valueType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "EXPIRY_IN_SECONDS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isActive" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "allowInvalid" : false,
+              "importUrl" : false,
+              "secret" : false,
+              "decrypt" : false,
+              "preserveCharsLimit" : 10
+            }
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SESSION_AUTOCLOSE_EXPIRY" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "allowInvalid" : false,
+              "importUrl" : false,
+              "secret" : false,
+              "decrypt" : false,
+              "preserveCharsLimit" : 10
+            }
+          },
+          "value" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "channelId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "actor", "channelId", "id", "isActive", "kind", "lastModifiedBy", "lastModifiedTime", "type", "value", "valueType" ]
+      },
+      "listOfChannelPreference" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_ChannelPreference.json#/components/schemas/getIMChannelPreference"
+        }
+      }
+    },
+    "responses" : {
+      "getIMChannelPreference" : {
+        "description" : "getIMChannelPreference template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "actor" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "END_USER", "AGENT", "BOT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "lastModifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "list.channel.preferences", "single.channel.preferences" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "lastModifiedBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9]+"
+                },
+                "valueType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "EXPIRY_IN_SECONDS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Preference activate/deactivate",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "SESSION_AUTOCLOSE_EXPIRY" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "IM Channel preference type",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "value" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "IM Channel preference value",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "channelId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "actor", "channelId", "id", "isActive", "kind", "lastModifiedBy", "lastModifiedTime", "type", "value", "valueType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIMChannelPreferences" : {
+        "description" : "getIMChannelPreferences template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_ChannelPreference.json#/components/schemas/listOfChannelPreference"
+                },
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "list.channel.preferences", "single.channel.preferences" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "data", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "updateIMChannelPreference" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "actor" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "IM Channel preference actor",
+                  "enum" : [ "ENDUSER", "AGENT", "BOT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "IM Channel preference type",
+                  "enum" : [ "SESSION_AUTOCLOSE_EXPIRY" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "value" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "IM Channel preference value",
+                  "enum" : [ "300", "600", "900" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actor", "type", "value" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_ChannelPreference"
+}

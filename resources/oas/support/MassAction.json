@@ -1,0 +1,1151 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "MassAction",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "paths" : {
+    "/api/v1/tickets/massAction" : {
+      "post" : {
+        "tags" : [ "MassAction" ],
+        "summary" : "Create ticket mass action",
+        "description" : "This API allows you to create a mass action in the tickets module for a specific department. You can use it to either reply to or add a comment to multiple tickets at once.",
+        "operationId" : "createticketMassReply",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "discriminator" : {
+                  "propertyName" : "actionType",
+                  "mapping" : {
+                    "MASS_REPLY" : "#/components/schemas/MassReply",
+                    "MASS_COMMENT" : "#/components/schemas/MassComment"
+                  }
+                },
+                "oneOf": [
+                  { "$ref": "#/components/schemas/MassReply" },
+                  { "$ref": "#/components/schemas/MassComment" }
+                ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "202" : {
+            "$ref" : "#/components/responses/massActionLogKeys"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "8847f3277e9bdd62f71e83ff87a2790d",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.MassActionService.ticketMassAction"
+        }
+      }
+    },
+    "/api/v1/massActionLogs" : {
+      "get" : {
+        "tags" : [ "MassAction" ],
+        "summary" : "List mass action logs",
+        "description" : "This API lists a particular number of mass action logs, based on the limit specified.",
+        "operationId" : "getMassActionLogs",
+        "parameters" : [ {
+          "name" : "actionType",
+          "in" : "query",
+          "description" : "Type of the mass action performed. Values allowed are: @MASS_REPLY@, @MASS_UPDATE@, @IM_BROADCAST@, @MASS_COMMENT@. You can pass multiple values by separating them using commas in the API request",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of the mass action performed. Values allowed are: @MASS_REPLY@, @MASS_UPDATE@, @IM_BROADCAST@, @MASS_COMMENT@. You can pass multiple values by separating them using commas in the API request",
+            "enum" : [ "MASS_REPLY", "MASS_UPDATE", "IM_BROADCAST", "MASS_COMMENT" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(MASS_REPLY|MASS_UPDATE|IM_BROADCAST|MASS_COMMENT)",
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department from which the mass action logs must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department from which the mass action logs must be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Departments"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of requests to list. The default value is @10@ and the maximum value supported is @100@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of requests to list. The default value is @10@ and the maximum value supported is @100@.",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the requests must be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the requests must be fetched.",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Processing status of the mass action log. Values allowed are: @QUEUED@, @INPROGRESS@, @COMPLETED@, and @FAILED@. You can pass multiple values by separating them using commas in the API request.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Processing status of the mass action log. Values allowed are: @QUEUED@, @INPROGRESS@, @COMPLETED@, and @FAILED@. You can pass multiple values by separating them using commas in the API request.",
+            "enum" : [ "QUEUED", "INPROGRESS", "COMPLETED", "FAILED" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(FAILED|QUEUED|INPROGRESS|COMPLETED)",
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/massActionLogList"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "e7cd8eeceb5f78af965b877a232cd5b1",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.MassActionService.getMassActionLogs"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "massActionLogListKeys" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "actionType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "MASS_REPLY", "MASS_COMMENT" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Type of the mass action performed. Values allowed are: @MASS_REPLY@, @MASS_UPDATE@, @IM_BROADCAST@, @MASS_COMMENT@. You can pass multiple values by separating them using commas in the API request",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false,
+              "entity" : "Include"
+            }
+          },
+          "completedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "completedRecordsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the department from which the mass action logs must be fetched",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false,
+              "entity" : "Departments"
+            }
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "moduleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdById" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "totalRecordsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "QUEUED", "INPROGRESS", "COMPLETED", "FAILED" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Processing status of the mass action log. Values allowed are: @QUEUED@, @INPROGRESS@, @COMPLETED@, and @FAILED@. You can pass multiple values by separating them using commas in the API request.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false,
+              "entity" : "Include"
+            }
+          }
+        },
+        "required" : [ "actionType", "completedRecordsCount", "completedTime", "createdById", "createdTime", "departmentId", "id", "moduleId", "status", "totalRecordsCount" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./MassAction.json#/components/schemas/massActionLogListKeys"
+        }
+      },
+      "MassActionBase": {
+        "type": "object",
+        "properties": {
+          "departmentId": {
+            "type": [ "string", "integer", "null" ],
+            "format": "int64",
+            "pattern": "([0-9]+)"
+          },
+          "ids": {
+            "type": [ "array", "null" ],
+            "items": {
+              "type": [ "string", "integer", "null" ],
+              "format": "int64",
+              "pattern": "([0-9]+)"
+            },
+            "uniqueItems": false
+          }
+        },
+        "required": [ "actionType", "departmentId", "ids" ],
+        "additionalProperties": false
+      },
+      "MassComment": {
+        "allOf": [
+          { "$ref": "#/components/schemas/MassActionBase" },
+          {
+            "type": "object",
+            "properties": {
+              "actionType": {
+                "type": "string",
+                "enum": ["MASS_COMMENT"]
+              },
+              "comment": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [ "isPublic", "attachmentIds", "contentType", "content" ],
+                "properties": {
+                  "isPublic": { "type": [ "boolean", "null" ] },
+                  "attachmentIds": {
+                    "type": [ "array", "null" ],
+                    "items": {
+                      "type": [ "string", "integer", "null" ],
+                      "format": "int64",
+                      "pattern": "([0-9]+)"
+                    },
+                    "uniqueItems": false
+                  },
+                  "contentType": {
+                    "type": [ "string", "null" ],
+                    "enum": [ "plainText", "html" ],
+                    "maxLength": 100,
+                    "minLength": 0
+                  },
+                  "content": {
+                    "type": [ "string", "null" ],
+                    "maxLength": 100,
+                    "minLength": 0
+                  }
+                }
+              }
+            },
+            "required": [ "actionType", "comment" ]
+          }
+        ]
+      },
+      "MassReply": {
+        "allOf": [
+          { "$ref": "#/components/schemas/MassActionBase" },
+          {
+            "type": "object",
+            "properties": {
+              "actionType": {
+                "type": "string",
+                "enum": ["MASS_REPLY"]
+              },
+              "reply": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [ "attachmentIds", "contentType", "content" ],
+                "properties": {
+                  "attachmentIds": {
+                    "type": [ "array", "null" ],
+                    "items": {
+                      "type": [ "string", "integer", "null" ],
+                      "format": "int64",
+                      "pattern": "([0-9]+)"
+                    },
+                    "uniqueItems": false
+                  },
+                  "contentType": {
+                    "type": [ "string", "null" ],
+                    "enum": [ "plainText", "html" ],
+                    "maxLength": 100,
+                    "minLength": 0
+                  },
+                  "content": {
+                    "type": [ "string", "null" ],
+                    "maxLength": 100,
+                    "minLength": 0
+                  }
+                }
+              }
+            },
+            "required": [ "actionType", "reply" ]
+          }
+        ]
+      }
+    },
+    "responses" : {
+      "massActionLogKeys" : {
+        "description" : "massActionLogKeys template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "actionType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MASS_REPLY", "MASS_COMMENT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "completedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "completedRecordsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fieldsUpdated" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 1,
+                  "minProperties" : 1,
+                  "properties" : {
+                    "cf" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "patternProperties" : {
+                        "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                          "x-custom-parameters-attributes" : {
+                            "module" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "departmentId" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "name" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "ids" : [ { } ],
+                            "language" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "fields" : [ { } ],
+                            "templateId" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "skipOngoingConversations" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            },
+                            "channelId" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "allowInvalid" : false,
+                              "importUrl" : false,
+                              "secret" : false,
+                              "decrypt" : false,
+                              "preserveCharsLimit" : 10
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "required" : [ "cf" ]
+                },
+                "moduleId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "createdById" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalRecordsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "QUEUED", "INPROGRESS", "COMPLETED", "FAILED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actionType", "completedRecordsCount", "completedTime", "createdById", "createdTime", "departmentId", "fieldsUpdated", "id", "moduleId", "status", "totalRecordsCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "massActionLogList" : {
+        "description" : "massActionLogList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "createdBy" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "email" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                        },
+                        "module" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 7,
+                          "minProperties" : 7,
+                          "properties" : {
+                            "displayLabel" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "apiKey" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "isEnabled" : {
+                              "type" : [ "boolean", "null" ]
+                            },
+                            "nameField" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "pluralLabel" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "singularLabel" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            }
+                          },
+                          "required" : [ "apiKey", "displayLabel", "id", "isEnabled", "nameField", "pluralLabel", "singularLabel" ]
+                        },
+                        "department" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 2,
+                          "minProperties" : 2,
+                          "properties" : {
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "id", "name" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./MassAction.json#/components/schemas/data"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "completedTime" : null,
+                    "module" : {
+                      "moduleAPIName" : "tickets",
+                      "moduleName" : "Cases",
+                      "moduleId" : "4000000000395"
+                    },
+                    "departmentId" : "4000000020772",
+                    "totalRecordsCount" : "2",
+                    "actionType" : "MASS_REPLY",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000000349/photo?orgId=15962615",
+                      "firstName" : "John",
+                      "lastName" : "David",
+                      "id" : "4000000000349",
+                      "email" : "john@zylker.com"
+                    },
+                    "completedRecordsCount" : "0",
+                    "createdTime" : 1661832792919,
+                    "id" : "4000000056043",
+                    "department" : {
+                      "name" : "Support Department",
+                      "id" : "4000000020772"
+                    },
+                    "moduleId" : "4000000000395",
+                    "createdById" : "4000000000349",
+                    "status" : "QUEUED"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "createMassComment": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "actionType": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "enum": [
+                    "MASS_COMMENT"
+                  ],
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                "departmentId": {
+                  "type": [
+                    "string",
+                    "null",
+                    "integer"
+                  ],
+                  "format": "int64",
+                  "pattern": "([0-9]+)",
+                  "x-custom-parameters-attributes": {
+                    "removeExif": false,
+                    "filterMatchedContent": false,
+                    "antivirus": false,
+                    "replacementString": "",
+                    "allowInvalid": false,
+                    "descrption": "Specifies the ID of the department where the mass action on the tickets will be performed.",
+                    "secret": false,
+                    "preserveCharsLimit": 10,
+                    "trim": false,
+                    "internalParam": false,
+                    "preserveChars": "0,5",
+                    "importUrl": false,
+                    "decrypt": false,
+                    "entity": "Departments"
+                  }
+                },
+                "ids": {
+                  "type": [
+                    "null",
+                    "array"
+                  ],
+                  "items": {
+                    "type": [
+                      "string",
+                      "null",
+                      "integer"
+                    ],
+                    "format": "int64",
+                    "pattern": "([0-9]+)",
+                    "x-custom-parameters-attributes": [
+                      {}
+                    ]
+                  },
+                  "uniqueItems": false
+                },
+                "comment": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "additionalProperties": false,
+                  "maxProperties": 4,
+                  "minProperties": 4,
+                  "properties": {
+                    "isPublic": {
+                      "type": [
+                        "boolean",
+                        "null"
+                      ]
+                    },
+                    "attachmentIds": {
+                      "type": [
+                        "null",
+                        "array"
+                      ],
+                      "items": {
+                        "type": [
+                          "string",
+                          "null",
+                          "integer"
+                        ],
+                        "format": "int64",
+                        "pattern": "([0-9]+)"
+                      },
+                      "uniqueItems": false
+                    },
+                    "contentType": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "plainText",
+                        "html"
+                      ],
+                      "maxLength": 100,
+                      "minLength": 0
+                    },
+                    "content": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 100,
+                      "minLength": 0
+                    }
+                  },
+                  "required": [
+                    "attachmentIds",
+                    "content",
+                    "contentType",
+                    "isPublic"
+                  ]
+                }
+              },
+              "required": [
+                "actionType",
+                "comment",
+                "departmentId",
+                "ids"
+              ]
+            },
+            "examples": {
+              "Valid requestBody Definitions": {
+                "value": {
+                  "actionType": "MASS_REPLY",
+                  "departmentId": "4000000020772",
+                  "ids": [
+                    "4000000038259",
+                    "4000000038252"
+                  ],
+                  "reply": {
+                    "attachmentIds": [
+                      "40000000382435",
+                      "4000000018354",
+                      "4000000068221"
+                    ],
+                    "contentType": "plainText",
+                    "content": "We have identified the root cause and fixed it."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes": {
+          "non-empty": false,
+          "allow-invalid": false
+        }
+      },
+      "createMassReply": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "actionType": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "enum": [
+                    "MASS_REPLY"
+                  ],
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "description": "Specifies the ID of the department where the mass action on the tickets will be performed.",
+                  "x-custom-parameters-attributes" : {
+                    "entity" : "Departments"
+                  }
+                },
+                "ids": {
+                  "type": [
+                    "null",
+                    "array"
+                  ],
+                  "items": {
+                    "type": [
+                      "string",
+                      "null",
+                      "integer"
+                    ],
+                    "format": "int64",
+                    "pattern": "([0-9]+)",
+                    "x-custom-parameters-attributes": [
+                      {}
+                    ]
+                  },
+                  "uniqueItems": false
+                },
+                "reply": {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "additionalProperties": false,
+                  "maxProperties": 3,
+                  "minProperties": 3,
+                  "properties": {
+                    "attachmentIds": {
+                      "type": [
+                        "null",
+                        "array"
+                      ],
+                      "items": {
+                        "type": [
+                          "string",
+                          "null",
+                          "integer"
+                        ],
+                        "format": "int64",
+                        "pattern": "([0-9]+)"
+                      },
+                      "uniqueItems": false
+                    },
+                    "contentType": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "enum": [
+                        "plainText",
+                        "html"
+                      ],
+                      "maxLength": 100,
+                      "minLength": 0
+                    },
+                    "content": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "maxLength": 100,
+                      "minLength": 0
+                    }
+                  },
+                  "required": [
+                    "attachmentIds",
+                    "content",
+                    "contentType"
+                  ]
+                }
+              },
+              "required": [
+                "actionType",
+                "departmentId",
+                "ids",
+                "reply"
+              ]
+            },
+            "examples": {
+              "Valid requestBody Definitions": {
+                "value": {
+                  "actionType": "MASS_REPLY",
+                  "departmentId": "4000000020772",
+                  "ids": [
+                    "4000000038259",
+                    "4000000038252"
+                  ],
+                  "reply": {
+                    "attachmentIds": [
+                      "40000000382435",
+                      "4000000018354",
+                      "4000000068221"
+                    ],
+                    "contentType": "plainText",
+                    "content": "We have identified the root cause and fixed it."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes": {
+          "non-empty": false,
+          "allow-invalid": false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "MassAction"
+}

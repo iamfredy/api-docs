@@ -1,0 +1,565 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Saml",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/v1/helpCenters/{helpCenterId}/samlConfig" : {
+      "get" : {
+        "tags" : [ "Saml" ],
+        "summary" : "Get SAML Configuration",
+        "description" : "This API fetches configuration details of SAML that have mapped with given help center.",
+        "operationId" : "getsaml",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/samlResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d189c85aca02e45e514c12adb9ac6555",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.support.cp.saml.service.CPSAMLConfigService.getSAMLConfig"
+        }
+      },
+      "post" : {
+        "tags" : [ "Saml" ],
+        "summary" : "Create SAML Configuration",
+        "description" : "This API Configures SAML for the given help center.",
+        "operationId" : "addsaml",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/samlRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/samlResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "67af708ec43d2ffb64c160df967c6a71",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.support.cp.saml.service.CPSAMLConfigService.doSAMLConfig"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Saml" ],
+        "summary" : "Delete SAML Configuration",
+        "description" : "This API deletes the SAML Configuration that have mapped with given help center.",
+        "operationId" : "deletesaml",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "0bc81ef5a5deace69ab7a86842226c6b",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.support.cp.saml.service.CPSAMLConfigService.deleteSAMLConfig"
+        }
+      }
+    },
+    "/api/v1/helpCenters/([0-9]+)/samlSignupConfig/disable" : {
+      "post" : {
+        "tags" : [ "Saml" ],
+        "summary" : "Disallow New User To Register",
+        "description" : "This API disallow new user to register via SAML",
+        "operationId" : "disableRegister",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "fa2866174a7821e2b17af446198d95b9",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.support.cp.saml.service.CPSAMLConfigService.updateSignupConfigDisable"
+        }
+      }
+    },
+    "/api/v1/helpCenters/([0-9]+)/samlSignupConfig/enable" : {
+      "post" : {
+        "tags" : [ "Saml" ],
+        "summary" : "Allow New User To Register",
+        "description" : "This API allows new user to register via SAML",
+        "operationId" : "enableRegister",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "4d2ab56b98194b19fe6101d2577f23c1",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.support.cp.saml.service.CPSAMLConfigService.updateSignupConfigEnable"
+        }
+      }
+    },
+    "/api/web/helpCenter/{helpCenterId}/samlConfigMetaData": {
+      "get": {
+        "tags": [ "Saml" ],
+        "operationId": "getSamlConfigMetaData",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/helpCenterId"
+          },
+          {
+            "$ref": "../common/Common.json#/components/parameters/orgId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/samlConfigMetaDataResponse"
+          },
+          "204": {
+            "$ref": "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403": {
+            "$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "500": {
+            "$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "org-oauth": [ "accessAll.ALL" ]
+          },
+          {
+            "iam-oauth2-schema": [ "settings.READ" ]
+          }
+        ],
+        "x-audience": [ "external-public" ],
+        "x-custom-url-attribute": {
+          "security": {
+            "throttle": {
+              "policy": "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams": {
+              "disable": true,
+              "ignore": false
+            },
+            "authentication": {}
+          },
+          "clan-group": "helpCenter",
+          "module-group": "helpCenter",
+          "apimethod": "com.zoho.support.cp.saml.service.CPSAMLConfigService.getSAMLConfigMetaData"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "samlResponse" : {
+        "description" : "samlResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isSignupEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "samlLogoutURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  }
+                },
+                "samlLoginURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  }
+                },
+                "helpCenterId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "issuer" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  }
+                },
+                "algorithm" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "RSA" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  }
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ENABLED", "DISABLED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "algorithm", "helpCenterId", "isSignupEnabled", "issuer", "samlLoginURL", "samlLogoutURL", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isSignupEnabled" : "false",
+                  "samlLogoutURL" : "https://zylker.onelogin.com/trust/saml2/http-post/sso/9032",
+                  "samlLoginURL" : "https://zylker.onelogin.com/trust/saml2/http-post/sso/9032",
+                  "issuer" : "zoho.com",
+                  "algorithm" : "RSA",
+                  "status" : "ENABLED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "samlConfigMetaDataResponse": {
+        "description": "samlConfigMetaDataResponse template definitions",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": [ "object", "null" ],
+              "additionalProperties": false,
+              "properties": {
+                "responseURL": {
+                  "type": [ "string", "null" ],
+                  "maxLength": 1000,
+                  "minLength": 0,
+                  "pattern": "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "redirectURL": {
+                  "type": [ "string", "null" ],
+                  "maxLength": 1000,
+                  "minLength": 0,
+                  "pattern": "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "requestURL": {
+                  "type": [ "string", "null" ],
+                  "maxLength": 1000,
+                  "minLength": 0,
+                  "pattern": "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "issuer": {
+                  "type": [ "string", "null" ],
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                "relayStateValue": {
+                  "type": [ "string", "null" ],
+                  "maxLength": 100,
+                  "minLength": 0
+                },
+                "algorithm": {
+                  "type": [ "string", "null" ],
+                  "enum": [ "RSA" ],
+                  "maxLength": 100,
+                  "minLength": 0
+                }
+              },
+              "required": [ "requestURL", "responseURL", "relayStateValue", "redirectURL", "issuer", "algorithm" ]
+            },
+            "examples": {
+              "Valid responses Definitions": {
+                "value": null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes": {
+          "disable-safe-headers": "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "helpCenterId" : {
+        "name" : "helpCenterId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "samlRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "samlLogoutURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "samlLoginURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "algorithm" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "RSA" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "algorithm", "samlLoginURL", "samlLogoutURL" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "samlLogoutURL" : "https://zylker.onelogin.com/trust/saml2/http-post/sso/9032",
+                  "samlLoginURL" : "https://zylker.onelogin.com/trust/saml2/http-post/sso/9032",
+                  "issuer" : "zoho.com",
+                  "algorithm" : "RSA"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Saml"
+}

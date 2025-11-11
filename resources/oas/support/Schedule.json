@@ -1,0 +1,2077 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Schedule",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/schedulers/{schedulerId}/run" : {
+      "post" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Run schedule",
+        "description" : "This API is to run a schedule.",
+        "operationId" : "runSchedule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ff995d910af299184f7101c3f33e7c1f",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.runSchedule"
+        }
+      }
+    },
+    "/api/v1/schedulers/{schedulerId}" : {
+      "get" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Get schedule",
+        "description" : "This API returns details of requested schedule.",
+        "operationId" : "getSchedule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInfo"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c8f10c3065e7a2e7e83f404432264f0b",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.getSchedule"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Delete schedule",
+        "description" : "This API is to delete schedule.",
+        "operationId" : "deleteSchedule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "0ec4a0c1b85efa2328afdf68e316e4a2",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.deleteSchedule"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Update schedule",
+        "description" : "This API is to update schedule.",
+        "operationId" : "updateSchedule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/commonJson"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInfo"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "9b6868c7eb923066d9d32d2ecd279d58",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.updateSchedule"
+        }
+      }
+    },
+    "/api/v1/schedulers/{schedulerId}/instances/{instanceId}/logs" : {
+      "get" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Get schedule action logs",
+        "description" : "This API returns log details of actions performed in particular scheduler.",
+        "operationId" : "getInstanceActionLogs",
+        "parameters" : [ {
+          "name" : "instanceId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/actionLogs"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "9caa59911060717f7e71c2c6593cbbdd",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.getScheduleInstanceLogList"
+        }
+      }
+    },
+    "/api/v1/schedulers" : {
+      "get" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Get all schedules",
+        "description" : "This API returns details of schedules in requested department.",
+        "operationId" : "getAllSchedules",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/status"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInfoList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "4962493830d8f05b9b85cf888064b712",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.getAllSchedule"
+        }
+      },
+      "post" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Create schedule",
+        "description" : "This API is to create schedule.",
+        "operationId" : "addSchedule",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addScheduleJson"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInfo"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ef02bd6e90ce183d7dfef8b84b012302",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.createSchedule"
+        }
+      }
+    },
+    "/api/v1/schedulers/{schedulerId}/instances" : {
+      "get" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Get schedule history",
+        "description" : "This API returns details of a particular schedule's history.",
+        "operationId" : "getScheduleInstance",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/status"
+        }, {
+          "$ref" : "#/components/parameters/schedulerId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInstanceInfo"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "8302d130b2c5e196bac9b55d078df598",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.getScheduleInstanceList"
+        }
+      }
+    },
+    "/api/v1/schedulers/instances" : {
+      "get" : {
+        "tags" : [ "Schedule" ],
+        "summary" : "Get all schedule history",
+        "description" : "This API returns history of all schedules in requested department.",
+        "operationId" : "getScheduleInstanceList",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/type"
+        }, {
+          "$ref" : "#/components/parameters/status"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/scheduleInstanceList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "9a4c77a331bd8bc30b28c025721ad25b",
+          "module-group" : "reports",
+          "apimethod" : "com.adventnet.support.schedulernew.service.DeskSchedulerService.getScheduleInstances"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "actionStatusListObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "responseMessage" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "responseCode" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "eventTime", "id", "responseCode", "responseMessage", "type" ]
+      },
+      "actionStatusListArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Schedule.json#/components/schemas/actionStatusListObj"
+        }
+      },
+      "scheduleInfo" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "lastExecutedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+          },
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "nextExecutionTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the department from which the scheduler must be fetched",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "notificationType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "MAIL", "CALLBACKURL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Scheduler type",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "frequency" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "repeatsOn" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 7,
+                "minProperties" : 7,
+                "properties" : {
+                  "islastDateOfMonth" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "dates" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "maximum" : 31,
+                      "minimum" : 1,
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "repetitionType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "daysOfWeek" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uniqueItems" : false
+                  },
+                  "skipFrequency" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "maximum" : 10,
+                    "minimum" : 1,
+                    "pattern" : "([0-9]+)"
+                  },
+                  "monthsOfYear" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uniqueItems" : false
+                  },
+                  "weeksOfMonth" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "FIRST", "SECOND", "THIRD", "FOURTH", "LAST" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "dates", "daysOfWeek", "islastDateOfMonth", "monthsOfYear", "repetitionType", "skipFrequency", "weeksOfMonth" ]
+              },
+              "type" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "NONE", "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "repeatsOn", "type" ]
+          },
+          "endsAfter" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "createdBy" : {
+            "type" : [ "null", "integer" ],
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "startTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "notifyTo" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "callBackUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "mailTo" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 5,
+                "minProperties" : 5,
+                "properties" : {
+                  "emailIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "agentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "roleIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "roleAndSubIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "teamIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  }
+                },
+                "required" : [ "agentIds", "emailIds", "roleAndSubIds", "roleIds", "teamIds" ]
+              }
+            },
+            "required" : [ "callBackUrl", "mailTo" ]
+          },
+          "modifiedBy" : {
+            "type" : [ "null", "integer" ],
+            "format" : "int64"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "actions" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE", "COMPLETED", "DISABLED", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To get scheduler list based on status @ACTIVE@|@INACTIVE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "actions", "createdBy", "createdTime", "departmentId", "description", "endsAfter", "frequency", "id", "lastExecutedTime", "modifiedBy", "modifiedTime", "name", "nextExecutionTime", "notificationType", "notifyTo", "startTime", "status", "type" ]
+      },
+      "scheduleList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Schedule.json#/components/schemas/scheduleInfo"
+        }
+      },
+      "instanceJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "instanceId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "executedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "responseMessage" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "responseCode" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "executedTime", "instanceId", "responseCode", "responseMessage", "status" ]
+      },
+      "instanceJSONList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Schedule.json#/components/schemas/instanceJson"
+        }
+      },
+      "commonJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "endsAfter" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "startTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "notifyTo" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "callBackUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "mailTo" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 5,
+                "minProperties" : 5,
+                "properties" : {
+                  "emailIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "agentIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "roleIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "roleAndSubIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "teamIds" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  }
+                },
+                "required" : [ "agentIds", "emailIds", "roleAndSubIds", "roleIds", "teamIds" ]
+              }
+            },
+            "required" : [ "callBackUrl", "mailTo" ]
+          },
+          "notificationType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "MAIL", "CALLBACKURL" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status_addUpdate" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actions" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "frequency" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "repeatsOn" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 7,
+                "minProperties" : 7,
+                "properties" : {
+                  "islastDateOfMonth" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "dates" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "maximum" : 31,
+                      "minimum" : 1,
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "repetitionType" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "daysOfWeek" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uniqueItems" : false
+                  },
+                  "skipFrequency" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "maximum" : 10,
+                    "minimum" : 1,
+                    "pattern" : "([0-9]+)"
+                  },
+                  "monthsOfYear" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uniqueItems" : false
+                  },
+                  "weeksOfMonth" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "FIRST", "SECOND", "THIRD", "FOURTH", "LAST" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "dates", "daysOfWeek", "islastDateOfMonth", "monthsOfYear", "repetitionType", "skipFrequency", "weeksOfMonth" ]
+              },
+              "type" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "NONE", "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "repeatsOn", "type" ]
+          }
+        },
+        "required" : [ "actions", "description", "endsAfter", "frequency", "name", "notificationType", "notifyTo", "startTime", "status_addUpdate" ]
+      },
+      "scheduleInstance" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./Schedule.json#/components/schemas/instanceJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "id" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "schedulerName" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "required" : [ "id", "schedulerName" ]
+        } ]
+      },
+      "instanceList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Schedule.json#/components/schemas/scheduleInstance"
+        }
+      }
+    },
+    "responses" : {
+      "scheduleInfo" : {
+        "description" : "scheduleInfo template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "lastExecutedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+                },
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "nextExecutionTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "notificationType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MAIL", "CALLBACKURL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "frequency" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "repeatsOn" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 7,
+                      "minProperties" : 7,
+                      "properties" : {
+                        "islastDateOfMonth" : {
+                          "type" : [ "boolean", "null" ]
+                        },
+                        "dates" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int32",
+                            "maximum" : 31,
+                            "minimum" : 1,
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "repetitionType" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "daysOfWeek" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "enum" : [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "uniqueItems" : false
+                        },
+                        "skipFrequency" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "maximum" : 10,
+                          "minimum" : 1,
+                          "pattern" : "([0-9]+)"
+                        },
+                        "monthsOfYear" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "enum" : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "uniqueItems" : false
+                        },
+                        "weeksOfMonth" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "FIRST", "SECOND", "THIRD", "FOURTH", "LAST" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "dates", "daysOfWeek", "islastDateOfMonth", "monthsOfYear", "repetitionType", "skipFrequency", "weeksOfMonth" ]
+                    },
+                    "type" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "NONE", "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "repeatsOn", "type" ]
+                },
+                "endsAfter" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "createdBy" : {
+                  "type" : [ "null", "integer" ],
+                  "format" : "int64"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "startTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "notifyTo" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "callBackUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "mailTo" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "emailIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "agentIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "roleIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "roleAndSubIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "teamIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        }
+                      },
+                      "required" : [ "agentIds", "emailIds", "roleAndSubIds", "roleIds", "teamIds" ]
+                    }
+                  },
+                  "required" : [ "callBackUrl", "mailTo" ]
+                },
+                "modifiedBy" : {
+                  "type" : [ "null", "integer" ],
+                  "format" : "int64"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "actions" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE", "COMPLETED", "DISABLED", "DELETED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actions", "createdBy", "createdTime", "departmentId", "description", "endsAfter", "frequency", "id", "lastExecutedTime", "modifiedBy", "modifiedTime", "name", "nextExecutionTime", "notificationType", "notifyTo", "startTime", "status", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "lastExecutedTime" : 1571646600000,
+                  "modifiedTime" : 1571646514000,
+                  "creator" : {
+                    "photoURL" : null,
+                    "firstName" : "",
+                    "lastName" : "Priyanka",
+                    "id" : "1000000016086",
+                    "email" : "user@zylker.com"
+                  },
+                  "nextExecutionTime" : 1576053001000,
+                  "departmentId" : "1000000012806",
+                  "modifier" : {
+                    "photoURL" : null,
+                    "firstName" : "",
+                    "lastName" : "Priyanka",
+                    "id" : "1000000016086",
+                    "email" : "user@zylker.com"
+                  },
+                  "description" : "MONTHLY - date new schedule created through API.",
+                  "notificationType" : "",
+                  "type" : "SCHEDULE",
+                  "frequency" : {
+                    "repeatsOn" : {
+                      "dates" : [ "11" ],
+                      "repetitionType" : "MONTHLY",
+                      "daysOfWeek" : null,
+                      "skipFrequency" : "2",
+                      "monthsOfYear" : null,
+                      "weeksOfMonth" : null
+                    },
+                    "type" : "CUSTOM"
+                  },
+                  "endsAfter" : {
+                    "type" : "NONE",
+                    "value" : "0"
+                  },
+                  "createdBy" : "1000000016086",
+                  "name" : "MONTHLY - date new schedule",
+                  "createdTime" : 1571644063000,
+                  "startTime" : 1571646600000,
+                  "modifiedBy" : "1000000016086",
+                  "notifyTo" : {
+                    "callBackUrl" : null,
+                    "mailTo" : null
+                  },
+                  "id" : "1000000128003",
+                  "actions" : [ {
+                    "name" : "Sample CF",
+                    "id" : "1000000099001",
+                    "type" : "CUSTOMFUNCTIONS",
+                    "params" : [ ],
+                    "url" : "/api/v1/customFunctions/1000000099001"
+                  } ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "actionLogs" : {
+        "description" : "actionLogs template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "actionLogList" : {
+                  "$ref" : "./Schedule.json#/components/schemas/actionStatusListArr"
+                }
+              },
+              "required" : [ "actionLogList" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "actionLogList" : [ {
+                    "eventTime" : 1569223599221,
+                    "id" : "1234567890",
+                    "type" : "CUSTOMFUNCTIONS",
+                    "responseMessage" : "Success",
+                    "responseCode" : "200"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "scheduleInfoList" : {
+        "description" : "scheduleInfoList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "schedulers" : {
+                  "$ref" : "./Schedule.json#/components/schemas/scheduleList"
+                }
+              },
+              "required" : [ "schedulers" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "schedulers" : [ {
+                    "lastExecutedTime" : 1571646600000,
+                    "modifiedTime" : 1571646514000,
+                    "nextExecutionTime" : 1576053001000,
+                    "departmentId" : "1000000012806",
+                    "description" : "MONTHLY - date new schedule created through API.",
+                    "notificationType" : "",
+                    "type" : "SCHEDULE",
+                    "frequency" : {
+                      "repeatsOn" : {
+                        "dates" : [ "11" ],
+                        "repetitionType" : "MONTHLY",
+                        "daysOfWeek" : null,
+                        "skipFrequency" : "2",
+                        "monthsOfYear" : null,
+                        "weeksOfMonth" : null
+                      },
+                      "type" : "CUSTOM"
+                    },
+                    "endsAfter" : {
+                      "type" : "NONE",
+                      "value" : "0"
+                    },
+                    "createdBy" : "1000000016086",
+                    "name" : "MONTHLY - date new schedule",
+                    "createdTime" : 1571644063000,
+                    "startTime" : 1571646600000,
+                    "modifiedBy" : "1000000016086",
+                    "notifyTo" : {
+                      "callBackUrl" : null,
+                      "mailTo" : null
+                    },
+                    "id" : "1000000128003",
+                    "actions" : [ {
+                      "name" : "Sample CF",
+                      "id" : "1000000099001",
+                      "type" : "CUSTOMFUNCTIONS",
+                      "params" : [ ],
+                      "url" : "/api/v1/customFunctions/1000000099001"
+                    } ],
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "scheduleInstanceInfo" : {
+        "description" : "scheduleInstanceInfo template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "instanceList" : {
+                  "$ref" : "./Schedule.json#/components/schemas/instanceJSONList"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "id", "instanceList", "name" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "instanceList" : [ {
+                    "instanceId" : "1000000085065",
+                    "executedTime" : 1569223599221,
+                    "responseMessage" : "FAILURE",
+                    "responseCode" : "101",
+                    "status" : "FAILURE"
+                  } ],
+                  "name" : "Sample schedule update",
+                  "id" : "1000000085001"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "scheduleInstanceList" : {
+        "description" : "scheduleInstanceList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "scheduleInstances" : {
+                  "$ref" : "./Schedule.json#/components/schemas/instanceList"
+                }
+              },
+              "required" : [ "scheduleInstances" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "schedulerInstances" : [ {
+                    "instanceId" : "1000000083037",
+                    "executedTime" : 1568963444199,
+                    "id" : "1000000075049",
+                    "responseMessage" : "Scheduler completed successfully",
+                    "schedulerName" : "Sample schedule 4",
+                    "responseCode" : "200",
+                    "status" : "SUCCESS"
+                  }, {
+                    "instanceId" : "1000000084005",
+                    "executedTime" : 1568983908752,
+                    "id" : "1000000075049",
+                    "responseMessage" : "Scheduler failed",
+                    "schedulerName" : "Sample schedule 4",
+                    "responseCode" : "101",
+                    "status" : "FAILURE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "duration" : {
+        "name" : "duration",
+        "in" : "query",
+        "description" : "Predefined time range from which the stats must be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Predefined time range from which the stats must be fetched",
+          "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH", "TODAY", "YESTERDAY", "LAST24HOURS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department from which the scheduler must be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the department from which the scheduler must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "schedulerId" : {
+        "name" : "schedulerId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of schedules to fetch. By default 50 schedules can be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of schedules to fetch. By default 50 schedules can be fetched",
+          "maximum" : 50,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which schedules must be fetched.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which schedules must be fetched.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "type" : {
+        "name" : "type",
+        "in" : "query",
+        "description" : "Scheduler type",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Scheduler type",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "status" : {
+        "name" : "status",
+        "in" : "query",
+        "description" : "To get scheduler list based on status @ACTIVE@|@INACTIVE@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "To get scheduler list based on status @ACTIVE@|@INACTIVE@",
+          "enum" : [ "ACTIVE", "INACTIVE" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "commonJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "endsAfter" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "startTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "notifyTo" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "callBackUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "mailTo" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "emailIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "agentIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "roleIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "roleAndSubIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "teamIds" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int64",
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        }
+                      },
+                      "required" : [ "agentIds", "emailIds", "roleAndSubIds", "roleIds", "teamIds" ]
+                    }
+                  },
+                  "required" : [ "callBackUrl", "mailTo" ]
+                },
+                "notificationType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MAIL", "CALLBACKURL" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status_addUpdate" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actions" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "frequency" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "repeatsOn" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 7,
+                      "minProperties" : 7,
+                      "properties" : {
+                        "islastDateOfMonth" : {
+                          "type" : [ "boolean", "null" ]
+                        },
+                        "dates" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null", "integer" ],
+                            "format" : "int32",
+                            "maximum" : 31,
+                            "minimum" : 1,
+                            "pattern" : "([0-9]+)"
+                          },
+                          "uniqueItems" : false
+                        },
+                        "repetitionType" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "daysOfWeek" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "enum" : [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "uniqueItems" : false
+                        },
+                        "skipFrequency" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "maximum" : 10,
+                          "minimum" : 1,
+                          "pattern" : "([0-9]+)"
+                        },
+                        "monthsOfYear" : {
+                          "type" : [ "null", "array" ],
+                          "items" : {
+                            "type" : [ "string", "null" ],
+                            "enum" : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "uniqueItems" : false
+                        },
+                        "weeksOfMonth" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "FIRST", "SECOND", "THIRD", "FOURTH", "LAST" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "dates", "daysOfWeek", "islastDateOfMonth", "monthsOfYear", "repetitionType", "skipFrequency", "weeksOfMonth" ]
+                    },
+                    "type" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "NONE", "DAILY", "HOURLY", "WEEKLY", "MONTHLY", "YEARLY", "CUSTOM" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "repeatsOn", "type" ]
+                }
+              },
+              "required" : [ "actions", "frequency", "name", "startTime" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "name" : "Yearly -  new schedule",
+                  "description" : "Yearly -  new schedule created through API.",
+                  "startTime" : 1571667000000,
+                  "actions" : [ {
+                    "id" : 1000000099001,
+                    "type" : "CUSTOMFUNCTIONS"
+                  } ],
+                  "frequency" : {
+                    "repeatsOn" : {
+                      "dates" : [ 5, 10 ],
+                      "repetitionType" : "YEARLY",
+                      "monthsOfYear" : [ "Jan", "Feb" ],
+                      "skipFrequency" : "2"
+                    },
+                    "type" : "CUSTOM"
+                  },
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addScheduleJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Schedule.json#/components/schemas/commonJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "departmentId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "type" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "actions", "departmentId", "frequency", "name", "startTime", "type" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "endsAfter" : {
+                    "type" : "NONE"
+                  },
+                  "departmentId" : 1000000012806,
+                  "name" : "Create sample schedule",
+                  "description" : "Schedule created through API.",
+                  "startTime" : 1569393935000,
+                  "notifyTo" : {
+                    "mailTo" : {
+                      "agentIds" : [ 1000000016086 ],
+                      "roleIds" : [ 1000000015363 ]
+                    }
+                  },
+                  "notificationType" : "EMAIL",
+                  "type" : "SCHEDULE",
+                  "actions" : [ {
+                    "id" : "10",
+                    "type" : "CUSTOMFUNCTIONS",
+                    "params" : [ {
+                      "name" : "param1",
+                      "value" : "value1"
+                    } ]
+                  } ],
+                  "frequency" : {
+                    "repeatsOn" : {
+                      "repetitionType" : "WEEKLY",
+                      "daysOfWeek" : [ "Monday", "Friday" ],
+                      "skipFrequency" : "2"
+                    },
+                    "type" : "CUSTOM"
+                  },
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Schedule"
+}

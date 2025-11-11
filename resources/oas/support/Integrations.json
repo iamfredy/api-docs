@@ -1,0 +1,1141 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Integrations",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/integrations/info" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get integrations basic info",
+        "description" : "Get integrations basic info by type",
+        "operationId" : "getAvailableIntegrationsInfo",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "description" : "To filter the integrations by their type",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To filter the integrations by their type",
+            "enum" : [ "zoho", "microsoft", "others" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/integrationsInfoResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "a23571e5ec075efd8433307beea08e1c",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegrationsService.getAvailableIntegrationsInfo"
+        }
+      }
+    },
+    "/api/v1/integrations/agentstudio" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Agent Studio Integration Status",
+        "description" : "Checks whether Agent Studio integration is currently enabled.",
+        "operationId" : "getAgentStudioIntegrationStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns the Agent Studio integration status.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : false,
+                  "properties" : {
+                    "isIntegrationEnabled" : {
+                      "type" : "boolean",
+                      "description" : "Indicates whether Agent Studio integration is enabled.",
+                      "example" : true
+                    },
+                    "createdBy" : {
+                      "type" : "String",
+                      "description" : "The Agent ID of the user who created the integration.",
+                      "example" : "9222000000002097"
+                    }
+                  },
+                  "required" : [ "isIntegrationEnabled" ]
+                }
+              }
+            }
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "18b6fdd045be72bab0285fc09cc3bd74",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.getIntegration"
+        }
+      },
+      "post" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Create Agent Studio Integration",
+        "description" : "Creates an integration for Agent Studio. Admin privileges are required.",
+        "operationId" : "createAgentStudioIntegration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "201" : {
+            "$ref" : "#/components/responses/agentStudioCreateIntegrationSuccess"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "409" : {
+            "$ref" : "#/components/responses/agentStudioCreateIntegrationFailure"
+          },
+          "424" : {
+            "$ref" : "#/components/responses/agentStudioCreateIntegrationFailure"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.CREATE" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "9cff29de69376603ba3c3e3db586c4d2",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.createIntegration"
+        }
+      }
+    },
+    "/api/v1/integrations/agentstudio/agents" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Predefined Agents",
+        "description" : "Retrieves a list of predefined agents available for Agent Studio integration.",
+        "operationId" : "getPredefinedAgentStudioAgents",
+        "parameters" : [ {
+          "name" : "view",
+          "in" : "query",
+          "description" : "Specifies the response format for agent details. Use 'detailed' to get complete agent configurations and metadata, or 'summary' for a concise overview.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Specifies the response format for agent details. Use 'detailed' to get complete agent configurations and metadata, or 'summary' for a concise overview.",
+            "enum" : [ "detailed" ]
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "To Paginate agents",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "description" : "To Paginate agents"
+          }
+        }, {
+          "name" : "agentState",
+          "in" : "query",
+          "description" : "To fetch agents by its state",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "To fetch agents by its state",
+            "enum" : [ "deployed", "not-deployed" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/predefinedAgentListResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "fac1802891876b57340236124470403a",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.getAgents"
+        }
+      },
+      "post" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Predefined Agent Deploy Url",
+        "description" : "Retrieves deployUrl of a predefined agent from a given template in Agent Studio.",
+        "operationId" : "getPredefinedAgentStudioAgentsDeployUrl",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "object",
+                "additionalProperties" : false,
+                "properties" : {
+                  "agentTemplateName" : {
+                    "type" : "string",
+                    "description" : "Unique name of the agent template to instantiate.",
+                    "example" : "zoho_desk_resolution_expert_agent"
+                  }
+                },
+                "required" : [ "agentTemplateName" ]
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Returns details of the predefined agent to be hired.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "agent" : {
+                      "type" : "object",
+                      "properties" : {
+                        "deploymentState" : {
+                          "type" : "string",
+                          "example" : "active"
+                        },
+                        "agentId" : {
+                          "type" : "string",
+                          "example" : "9222000000002097"
+                        },
+                        "deployUrl" : {
+                          "type" : "string",
+                          "format" : "uri",
+                          "example" : "https://ziaagents.zoho.com/108223615/agents/details/9222000000002097?signature=..."
+                        },
+                        "agentName" : {
+                          "type" : "string",
+                          "example" : "Resolution Expert"
+                        },
+                        "zuid" : {
+                          "type" : "integer",
+                          "example" : 108224011
+                        }
+                      },
+                      "required" : [ "agentId", "agentName", "deployUrl", "deploymentState", "zuid" ]
+                    },
+                    "status" : {
+                      "type" : "string",
+                      "example" : "success"
+                    }
+                  },
+                  "required" : [ "agent", "status" ]
+                }
+              }
+            }
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.CREATE" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "707d5c4d50cb340d052553755dc75ac8",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.hireAgent"
+        }
+      }
+    },
+    "/api/v1/integrations" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get  Integrarion Status Details",
+        "description" : "This API returns available Integrations for a particular Portal",
+        "operationId" : "getAvailableIntegrations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAvailableIntegrationsResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "b47c56dca5d37169f37d5d930ab41be9",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegrationService.getAvailableIntegrations"
+        }
+      }
+    },
+    "/api/v1/integrations/reports" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Report Integrarion Details",
+        "description" : "This API returns report integration details for setup.",
+        "operationId" : "getReportIntegrationsDetails",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getReportIntegrationsDetails"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "14cc71ec62c8403293f59e44dc352ed4",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.IntegrationService.getReportIntegrationsDetails"
+        }
+      }
+    },
+    "/api/v1/integrations/{service}/channels" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Fetch channel information for Cliq or Slack",
+        "description" : "Fetches information about channels for the specified service (Cliq or Slack).",
+        "operationId" : "getChannelsInfo",
+        "parameters" : [ {
+          "name" : "service",
+          "in" : "path",
+          "description" : "The service name, either 'cliq' or 'slack'.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "description" : "",
+            "enum" : [ "slack" ]
+          }
+        }, {
+          "name" : "channelIds",
+          "in" : "query",
+          "description" : "Comma-separated channel IDs.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "array",
+            "description" : "",
+            "items" : {
+              "type" : "string",
+              "description" : ""
+            }
+          }
+        }, {
+          "name" : "workspaceId",
+          "in" : "query",
+          "description" : "The workspace ID for the service.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : ""
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response with channel information.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "data" : {
+                      "type" : "array",
+                      "items" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "string",
+                            "description" : "Channel ID."
+                          },
+                          "name" : {
+                            "type" : "string",
+                            "description" : "Channel name."
+                          }
+                        },
+                        "required" : [ "id", "name" ]
+                      }
+                    }
+                  },
+                  "required" : [ "data" ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content available."
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegChatService.getChannelsInfo"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "integrationsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "visibility" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "label" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "displayName", "label", "visibility" ]
+      },
+      "integrationsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Integrations.json#/components/schemas/integrationsObject"
+        }
+      },
+      "integrationStatus" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "IS_SUPPORTED" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "installedOn" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "IS_SUPPORTED", "installedOn", "status" ]
+      },
+      "microsoftIntegrationStatus" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isSSOUser" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "IS_SUPPORTED" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "installedOn" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "IS_SUPPORTED", "installedOn", "isSSOUser", "status" ]
+      }
+    },
+    "responses" : {
+      "integrationsInfoResponse" : {
+        "description" : "integrationsInfoResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "integrations" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationsArray"
+                }
+              },
+              "required" : [ "integrations" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "integrations" : [ {
+                    "apiName" : "Zohocrm",
+                    "visibility" : true,
+                    "displayName" : "Zoho CRM",
+                    "label" : "Enabled",
+                    "status" : "enabled"
+                  }, {
+                    "apiName" : "Zohobugtracker",
+                    "visibility" : true,
+                    "displayName" : "Zoho BugTracker",
+                    "label" : "Enabled",
+                    "status" : "enabled"
+                  }, {
+                    "apiName" : "Zohoprojects",
+                    "visibility" : true,
+                    "displayName" : "Zoho Projects",
+                    "label" : "",
+                    "status" : ""
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "agentStudioCreateIntegrationSuccess" : {
+        "description" : "Integration created successfully",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "maxLength" : 20,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Success response" : {
+                "value" : {
+                  "status" : "success"
+                }
+              }
+            }
+          }
+        }
+      },
+      "agentStudioCreateIntegrationFailure" : {
+        "description" : "Integration failed response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "maxLength" : 20,
+                  "minLength" : 0
+                },
+                "message" : {
+                  "type" : "string",
+                  "maxLength" : 200,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "message", "status" ]
+            },
+            "examples" : {
+              "Error response" : {
+                "value" : {
+                  "status" : "error",
+                  "message" : "Some error message here."
+                }
+              }
+            }
+          }
+        }
+      },
+      "predefinedAgentListResponse" : {
+        "description" : "List of predefined agents available for Agent Studio integration.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "success"
+                },
+                "agents" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "templateName" : {
+                        "type" : "string",
+                        "example" : "zoho_desk_resolution_expert_agent"
+                      },
+                      "agentName" : {
+                        "type" : "string",
+                        "example" : "Resolution Expert"
+                      },
+                      "description" : {
+                        "type" : "string",
+                        "example" : "Documents ticket resolutions..."
+                      },
+                      "agentMode" : {
+                        "type" : "string",
+                        "example" : "async"
+                      },
+                      "roleName" : {
+                        "type" : "string",
+                        "example" : "A virtual support agent specialized in..."
+                      },
+                      "guidelines" : {
+                        "type" : "string",
+                        "example" : "You are “Resolution Expert,” an AI Agent that..."
+                      },
+                      "actions" : {
+                        "type" : "array",
+                        "items" : {
+                          "type" : "object",
+                          "properties" : {
+                            "displayName" : {
+                              "type" : "string",
+                              "example" : "Ticket View"
+                            },
+                            "description" : {
+                              "type" : "string",
+                              "example" : "Access all tickets in the help desk"
+                            }
+                          },
+                          "required" : [ "description", "displayName" ]
+                        }
+                      }
+                    },
+                    "required" : [ "agentName", "description", "isUpcoming", "tags" ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "getAvailableIntegrationsResponse" : {
+        "description" : "getAvailableIntegrationsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "BIGIN" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "MICROSOFT_SSO" : {
+                  "$ref" : "./Integrations.json#/components/schemas/microsoftIntegrationStatus"
+                },
+                "SUBSCRIPTIONS" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "SLACK" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "CHAT" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "SALESFORCE" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "ASSIST" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "JIRA" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "INVOICE" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "BOOKS" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "CLIQ" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "isCrmIntegrated" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "INVENTORY" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "MAIL" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "BUG" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "REPORTS" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "CLOUD_ATTACHMENTS" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "LENS" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                },
+                "CRM" : {
+                  "$ref" : "./Integrations.json#/components/schemas/integrationStatus"
+                }
+              },
+              "required" : [ "ASSIST", "BIGIN", "BOOKS", "BUG", "CHAT", "CLIQ", "CLOUD_ATTACHMENTS", "CRM", "INVENTORY", "INVOICE", "JIRA", "LENS", "MAIL", "MICROSOFT_SSO", "REPORTS", "SALESFORCE", "SLACK", "SUBSCRIPTIONS", "isCrmIntegrated" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "BIGIN" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "MICROSOFT_SSO" : {
+                    "isSSOUser" : false,
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "not Configured"
+                  },
+                  "SUBSCRIPTIONS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "SLACK" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : ""
+                  },
+                  "CHAT" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "ASSIST" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "JIRA" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "INVOICE" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "BOOKS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "CLIQ" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "isCrmIntegrated" : true,
+                  "MAIL" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "INVENTORY" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "BUG" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "REPORTS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "CLOUD_ATTACHMENTS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "enabled"
+                  },
+                  "CRM" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getReportIntegrationsDetails" : {
+        "description" : "getReportIntegrationsDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "url" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status", "url" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "url" : "https://analytics.zoho.com/workspace/15694000000921001",
+                  "status" : "ENABLED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Integrations"
+}

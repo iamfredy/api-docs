@@ -1,0 +1,547 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_Search",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/messages/search" : {
+      "get" : {
+        "tags" : [ "IM_Search" ],
+        "operationId" : "searchMessages",
+        "parameters" : [ {
+          "name" : "convoCreatedTimeRange",
+          "in" : "query",
+          "description" : "time range of conversation created",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "time range of conversation created",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "query",
+          "description" : "Agent zuid who sent the message",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Agent zuid who sent the message",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int32",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Agent zuid who sent the message", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "convoName",
+          "in" : "query",
+          "description" : "Conversation name",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Conversation name",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(^([a-zA-Z0-9\\s\\.\\?\\_\\-\\,])*$|null|undefined)",
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "attachmentType",
+          "in" : "query",
+          "description" : "Filter messages based on attachmentType",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter messages based on attachmentType",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter messages based on attachmentType", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "deskContactId",
+          "in" : "query",
+          "description" : "desk contact Ids from which the conversations must be fetched",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "desk contact Ids from which the conversations must be fetched",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "desk contact Ids from which the conversations must be fetched", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "createdTimeRange",
+          "in" : "query",
+          "description" : "Message ctime filter",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Message ctime filter",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Filter conversations of a channels in given department Id",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter conversations of a channels in given department Id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "contactProfileName",
+          "in" : "query",
+          "description" : "Contact Profile name to be fetched",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Contact Profile name to be fetched",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Contact Profile name to be fetched", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "updatedTimeRange",
+          "in" : "query",
+          "description" : "message mtime filter",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "message mtime filter",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+          }
+        }, {
+          "name" : "channelType",
+          "in" : "query",
+          "description" : "Filter conversations with channelType",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter conversations with channelType",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "TELEGRAM", "TWILIO", "IM_TALK", "LINE", "WECHAT", "WHATSAPP", "FACEBOOKMESSENGER" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter conversations with channelType", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "sessionId",
+          "in" : "query",
+          "description" : "Filter conversations using conversation id",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter conversations using conversation id",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter conversations using conversation id", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "message",
+          "in" : "query",
+          "description" : "Key to Search (Message text)",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Key to Search (Message text)",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "participantId",
+          "in" : "query",
+          "description" : "agentID for which the conversations must be fetched (Handle multiple Ids)",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "agentID for which the conversations must be fetched (Handle multiple Ids)",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int32",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "agentID for which the conversations must be fetched (Handle multiple Ids)", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "metaValue",
+          "in" : "query",
+          "description" : "Filter messages based on metaValue (CRMLEAD|1234, DESKTICKET|123458)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter messages based on metaValue (CRMLEAD|1234, DESKTICKET|123458)",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "Key to Search in all fields.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Key to Search in all fields.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(^([a-zA-Z0-9\\s\\.\\?\\_\\-\\,])*$|null|undefined)",
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "messageType",
+          "in" : "query",
+          "description" : "type of Messge to be fetched",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "type of Messge to be fetched",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "TEXT", "INFO", "ATTACHMENT", "LOCATION", "CAROUSEL" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "sort order",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "sort order",
+            "enum" : [ "ASC", "DESC" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of conversations to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of conversations to fetch",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "metaType",
+          "in" : "query",
+          "description" : "Filter messages based on metaType (CF-1 to CF-20)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Filter messages based on metaType (CF-1 to CF-20)",
+            "enum" : [ "DESK_TICKET_ID", "DESK_TICKET_NUMBER" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the conversations must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the conversations must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "sort by column (To discuss which key to handle)",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "sort by column (To discuss which key to handle)",
+            "enum" : [ "CREATED_TIME", "STATUS_UPDATED_TIME" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "attachmentName",
+          "in" : "query",
+          "description" : "Filter messages based on attachmentName",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter messages based on attachmentName",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter messages based on attachmentName", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "channelId",
+          "in" : "query",
+          "description" : "Filter conversations of a channel using channel external id",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Filter conversations of a channel using channel external id",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Filter conversations of a channel using channel external id", false, 10, false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "convoUpdatedTimeRange",
+          "in" : "query",
+          "description" : "time range of conversation update",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "time range of conversation update",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/searchMessages"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSearchService.searchMessages"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "replyToMessage" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./IM_Message.json#/components/schemas/getMessage_listview_main"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "session" : {
+              "$ref" : "./IM_Session.json#/components/schemas/getSession"
+            },
+            "replyToMessage" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false
+            }
+          },
+          "required" : [ "replyToMessage", "session" ]
+        } ]
+      },
+      "getMessage_searchView" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./IM_Message.json#/components/schemas/getMessage_listview_main"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "session" : {
+              "$ref" : "./IM_Session.json#/components/schemas/getSession"
+            },
+            "replyToMessage" : {
+              "$ref" : "./IM_Search.json#/components/schemas/replyToMessage"
+            }
+          },
+          "required" : [ "replyToMessage", "session" ]
+        } ]
+      },
+      "getMessages_searchListView" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_Search.json#/components/schemas/getMessage_searchView"
+        }
+      }
+    },
+    "responses" : {
+      "searchMessages" : {
+        "description" : "searchMessages template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Search.json#/components/schemas/getMessages_searchListView"
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_Search"
+}

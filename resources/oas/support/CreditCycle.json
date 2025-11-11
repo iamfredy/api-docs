@@ -1,0 +1,124 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CreditCycle",
+    "version" : "1.0.0"
+  },
+  "paths" : { },
+  "components" : {
+    "schemas" : {
+      "creditCycleJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "creditCyclePeriod" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 3,
+            "minProperties" : 3,
+            "properties" : {
+              "duration" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "WEEKLY", "MONTHLY", "QUARTERLY", "HALF_YEARLY", "YEARLY" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "endDate" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+              },
+              "startDate" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+              }
+            },
+            "required" : [ "duration", "endDate", "startDate" ]
+          },
+          "creditSpent" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "creditLimit" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "extraUsedCredit" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "creditRemaining" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "creditCyclePeriod", "creditLimit", "creditRemaining", "creditSpent", "extraUsedCredit" ]
+      },
+      "creditCycleList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CreditCycle.json#/components/schemas/creditCycleJSON"
+        }
+      }
+    },
+    "responses" : {
+      "creditCyclesResponse" : {
+        "description" : "creditCyclesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./CreditCycle.json#/components/schemas/creditCycleList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "creditCyclePeriod" : {
+                      "duration" : "WEEKLY",
+                      "endDate" : 1683590400000,
+                      "startDate" : 1683072000000
+                    },
+                    "creditSpent" : "0",
+                    "creditLimit" : "13",
+                    "extraUsedCredit" : "0",
+                    "creditRemaining" : "13"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CreditCycle"
+}

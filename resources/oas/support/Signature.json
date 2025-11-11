@@ -1,0 +1,354 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Signature",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/agents/{agentId}/signature" : {
+      "get" : {
+        "tags" : [ "Signature" ],
+        "summary" : "Get signature of an agent",
+        "description" : "Show the signature detail of particular agent",
+        "operationId" : "getSign",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/signCommonResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "17b22ac3e61a1e6e8386b626a1e7bbd9",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.SignatureService.getAgentSignature"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Signature" ],
+        "operationId" : "updateSign",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/signInputStream"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/signCommonResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e7b3586d58b0efb6f507766196ea7765",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.SignatureService.updateAgentSignature"
+        }
+      }
+    },
+    "/api/v1/agentsSignatures" : {
+      "get" : {
+        "tags" : [ "Signature" ],
+        "summary" : "Get signatures of all agents in a department or oraganization",
+        "description" : "Show the signatures detail of all agents",
+        "operationId" : "getAllSign",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "query param department id",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "query param department id",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/allSignResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "e26193f9d88ec29e83e82cc2e6c9a2cd",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.SignatureService.getAgentsSignatures"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "signCommonResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "signature" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 6000,
+            "minLength" : 0
+          },
+          "isActive" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "agentId", "isActive", "signature" ]
+      }
+    },
+    "responses" : {
+      "signCommonResponse" : {
+        "description" : "signCommonResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Id of an agent",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "signature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 6000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "signature of an agent",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "xss" : "antisamyfilter_custom",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Determines whether the agent's signature is included in ticket replies.! _Note:_  !If set to true, the agent's signature will be appended to all ticket replies; if set to false, it will be excluded.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "agentId", "isActive", "signature" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "allSignResponse" : {
+        "description" : "allSignResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./Signature.json#/components/schemas/signCommonResponse"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "agentId" : "19000000008734",
+                  "signature" : "<div style=\"font-size: 13.0px;font-family: Arial , Helvetica , Verdana , sans-serif;\"><img src=\"https://desk.zylker.com/desk/ImageDisplay?downloadType=uploadedFile&amp;fileName=maxresdefault.jpg&amp;blockId=6bcb4f108954d9b181b86645c34fbc09d23c69a56893359b&amp;zgId=faaf3f5d9d53d122&amp;mode=view\" /></div>",
+                  "isActive" : false
+                }, {
+                  "agentId" : "19000000154001",
+                  "signature" : "Raj Bharat Test",
+                  "isActive" : true
+                }, {
+                  "agentId" : "19000000008872",
+                  "signature" : "thanks and Regard, Deen Test",
+                  "isActive" : true
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "agentId" : {
+        "name" : "agentId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "signInputStream" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "signature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 6000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_custom"
+                  }
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Signature"
+}

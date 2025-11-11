@@ -1,0 +1,204 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "NewFeatureFields",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/filterFields" : {
+      "get" : {
+        "tags" : [ "NewFeatureFields" ],
+        "operationId" : "getFeatureFields",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Allowed values are : @tickets@ and @Custom modules@.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Allowed values are : @tickets@ and @Custom modules@.",
+            "enum" : [ "tickets" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "entity" : "NewFeatureFields"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Allowed values are : @Valid Department Id@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Allowed values are : @Valid Department Id@.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "NewFeatureFields"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getFeatureFieldsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "eff813aa58a0c03427aada7b9805d334",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.FeatureFieldService.getFeatureFields"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "featureFieldDetailsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "AutoNumber", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "LookUp", "Lookup", "Fax", "MultiLookup", "PrimaryIdentifier" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "i18NLabel", "id", "type" ]
+      },
+      "featureFieldDetailsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./NewFeatureFields.json#/components/schemas/featureFieldDetailsJson"
+        }
+      },
+      "featureFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Cases" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldDetails" : {
+            "$ref" : "./NewFeatureFields.json#/components/schemas/featureFieldDetailsArr"
+          }
+        },
+        "required" : [ "displayLabel", "fieldDetails", "name" ]
+      },
+      "featureFieldsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./NewFeatureFields.json#/components/schemas/featureFieldsJson"
+        }
+      }
+    },
+    "responses" : {
+      "getFeatureFieldsResponse" : {
+        "description" : "getFeatureFieldsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "filterFields" : {
+                  "$ref" : "./NewFeatureFields.json#/components/schemas/featureFieldsArr"
+                }
+              },
+              "required" : [ "filterFields" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "NewFeatureFields"
+}

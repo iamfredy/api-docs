@@ -1,0 +1,620 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Upload",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "paths" : {
+    "/api/v1/uploads" : {
+      "post" : {
+        "tags" : [ "Upload" ],
+        "summary" : " Upload file",
+        "description" : "This API uploads a file.",
+        "operationId" : "uploadFile",
+        "parameters" : [ {
+          "name" : "X-Request-Timestamp",
+          "in" : "query",
+          "description" : "used for import tool",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "used for import tool",
+            "pattern" : "([0-9]+)",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "The key indicates whether the file is an inline or a normal attachment. The allowed values are @Attachment@ and @InlineAttachment@. <br><br> Note: If the @type=InlineAttachment@, the response will be as follows: <br><br> { \"fileName\": \"helo.png\", <br>\"size\": \"125919\", <br> \"createdTime\": \"2024-11-12T04:33:08Z\", <br> \"id\": \"1000000199004\", <br> \"storeId\": \"edbsnf6cec308871ed6c39d\", <br> \"ownerId\": \"1000000000521\" }",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The key indicates whether the file is an inline or a normal attachment. The allowed values are @Attachment@ and @InlineAttachment@. <br><br> Note: If the @type=InlineAttachment@, the response will be as follows: <br><br> { \"fileName\": \"helo.png\", <br>\"size\": \"125919\", <br> \"createdTime\": \"2024-11-12T04:33:08Z\", <br> \"id\": \"1000000199004\", <br> \"storeId\": \"edbsnf6cec308871ed6c39d\", <br> \"ownerId\": \"1000000000521\" }",
+            "enum" : [ "InlineAttachment", "Attachment" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/uploadFileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "UploadsApi_SubRateLimit_OrgPolicy,SubConcurrency_Stringent_OrgPolicy,WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "mail",
+          "apihash" : "f91c8d30a97ad14a244a0ab3888c38fc",
+          "module-group" : "mail",
+          "apimethod" : "com.zoho.support.restapi.AttachmentService.associateTemporaryAttachment"
+        }
+      }
+    },
+    "/api/v1/uploads/{attachmentId}" : {
+      "delete" : {
+        "tags" : [ "Upload" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "deleteTemporaryAttachment",
+        "parameters" : [ {
+          "name" : "attachmentId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/uploads/{uploadId}/content" : {
+      "get" : {
+        "tags" : [ "Upload" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "viewTemporaryAttachment",
+        "parameters" : [ {
+          "name" : "inline",
+          "in" : "query",
+          "description" : "",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "name" : "uploadId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/uploadFromUrl" : {
+      "post" : {
+        "tags" : [ "Upload" ],
+        "summary" : " Upload a file from url",
+        "description" : "This API uploads a file.",
+        "operationId" : "uploadFromUrl",
+        "parameters" : [ {
+          "name" : "attachmentUrl",
+          "in" : "query",
+          "description" : "Download content from this url",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Download content from this url",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)",
+            "x-custom-parameters-attributes" : {
+              "antivirus" : true,
+              "importUrl" : true
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/uploadResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 900000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "mail",
+          "apihash" : "f369ffa046dfa6addf39f34a3d0b27f6",
+          "module-group" : "mail",
+          "apimethod" : "com.zoho.support.restapi.AttachmentService.associateTemporaryAttachmentFromUrl"
+        }
+      }
+    },
+    "/api/v1/inlineattachments/{id}/content" : {
+      "get" : {
+        "tags" : [ "Upload" ],
+        "summary" : "Get Inline Attachment",
+        "description" : "This API retrieves the inline attachment from the desk.",
+        "operationId" : "getInlineAttachment",
+        "parameters" : [ {
+          "name" : "mode",
+          "in" : "query",
+          "description" : "The mode of attachment. The allowed value is @view@.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The mode of attachment. The allowed value is @view@.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "view"
+          }
+        }, {
+          "name" : "fileName",
+          "in" : "query",
+          "description" : "The name of the file",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The name of the file",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "filterMatchedContent" : true,
+              "replacementString" : "_"
+            }
+          }
+        }, {
+          "name" : "storeId",
+          "in" : "query",
+          "description" : "The ID of the file",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The ID of the file",
+            "maxLength" : 255,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_InlineAttachment_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "d96fa861ce646048a359c29e3b0db99c",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.InlineAttachmentService.getInlineAttachment"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "uploadResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "previewurl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 16000000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "size" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "creatorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "createdTime", "creatorId", "href", "id", "name", "previewurl", "size" ]
+      },
+      "uploadDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Upload.json#/components/schemas/uploadResponse"
+        }
+      }
+    },
+    "responses" : {
+      "uploadFileResponse" : {
+        "description" : "uploadFileResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "previewurl" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 16000000,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  },
+                  "size" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "creatorId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "href" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 500,
+                    "minLength" : 0,
+                    "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                  }
+                },
+                "required" : [ "createdTime", "creatorId", "href", "id", "name", "previewurl", "size" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "fileName" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "size" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "storeId" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  },
+                  "ownerId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "createdTime", "fileName", "id", "ownerId", "size", "storeId" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "size" : "4769",
+                  "creatorId" : "4000000008692",
+                  "name" : "zoho.jpeg",
+                  "createdTime" : 1466667102000,
+                  "isPublic" : false,
+                  "id" : "4000000055001",
+                  "href" : "https://desk.zoho.com/api/v1/uploads/1892000001008043/contents"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "uploadResponse" : {
+        "description" : "uploadResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "previewurl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 16000000,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "size" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "creatorId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "href" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                }
+              },
+              "required" : [ "createdTime", "creatorId", "href", "id", "name", "previewurl", "size" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "size" : "4769",
+                  "creatorId" : "4000000008692",
+                  "name" : "untitled.jpeg",
+                  "createdTime" : 1466667102000,
+                  "isPublic" : false,
+                  "id" : "4000000055001",
+                  "href" : "https://desk.zoho.com/api/v1/uploads/1892000001008043/contents"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "uploadListReponse" : {
+        "description" : "uploadListReponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Upload.json#/components/schemas/uploadDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "size" : "484807",
+                    "name" : "Motor.png",
+                    "creatorId" : "4000000016508",
+                    "createdTime" : 1586401759000,
+                    "id" : "4000000052009",
+                    "href" : "https://desk.zoho.com/api/v1/uploads/4000000052009/content"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Upload"
+}

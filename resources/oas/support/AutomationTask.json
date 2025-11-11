@@ -1,0 +1,1054 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AutomationTask",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/automationTasks" : {
+      "get" : {
+        "tags" : [ "AutomationTask" ],
+        "summary" : "List all Automation Tasks",
+        "description" : "get all automation tasks for a particular department id",
+        "operationId" : "getTasksInDept",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to tasks. Values allowed are @createdBy@, @modifiedBy@, @assignedTo@. You can include all these values by separating them with commas in the API request.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Secondary information related to tasks. Values allowed are @createdBy@, @modifiedBy@, @assignedTo@. You can include all these values by separating them with commas in the API request.",
+            "enum" : [ "createdBy", "modifiedBy", "assignedTo" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which tasks should be listed",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "department for which tasks should be listed",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/wftaskListViewArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7b5347971500458ea1489e8f001fd561",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.AutomationTaskService.getTasksInDept"
+        }
+      }
+    },
+    "/api/v1/automationTasks/{id}" : {
+      "get" : {
+        "tags" : [ "AutomationTask" ],
+        "summary" : "Get Automation Task",
+        "description" : "get a particular automation task",
+        "operationId" : "getTasks",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to tasks. Values allowed are @createdBy@, @modifiedBy@, @assignedTo@. You can include all these values by separating them with commas in the API request.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Secondary information related to tasks. Values allowed are @createdBy@, @modifiedBy@, @assignedTo@. You can include all these values by separating them with commas in the API request.",
+            "enum" : [ "createdBy", "modifiedBy", "assignedTo" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/tasksListviewJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "521ffa4c4a5d0c6e0a9c48510dd3d049",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.AutomationTaskService.get"
+        }
+      }
+    },
+    "/api/v1/automationTasks/{automationTaskId}/relatedRules" : {
+      "get" : {
+        "tags" : [ "AutomationTask" ],
+        "summary" : "Get Related Automation Rules",
+        "description" : "Get all automation rules related to this particular task, ruleType indicates whether the rule is  @SUPERVISE@,@MACRO@,@WORKFLOW@ or @BLUEPRINT@, and status implies whether the rule is active or not",
+        "operationId" : "getRelatedRules",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "automationTaskId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/relatedRuleListArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "6416e647e40049bae978680d07dec85d",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.AutomationTaskService.getRelatedRules"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "tasksListviewJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "dueDateInMins" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "maximum" : 535680,
+            "minimum" : 5,
+            "pattern" : "([0-9]+)"
+          },
+          "subject" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 30000,
+            "minLength" : 0
+          },
+          "priority" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          },
+          "assigneeId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "teamId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "assignToTicketOwner" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          }
+        },
+        "required" : [ "assignToTicketOwner", "assigneeId", "createdBy", "createdTime", "departmentId", "description", "dueDateInMins", "id", "modifiedBy", "modifiedTime", "priority", "status", "subject", "teamId" ]
+      },
+      "rulesListviewJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ruleType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SUPERVISE", "MACRO", "WORKFLOW", "BLUEPRINT", "SLA", "SKILLS", "CUSTOMVIEW", "CONTRACTS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "accounts", "contacts", "tasks", "products", "timeentry" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ruleName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 1,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "ruleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 3000,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "module", "ruleId", "ruleName", "ruleType", "status", "url" ]
+      },
+      "relatedRulesData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AutomationTask.json#/components/schemas/rulesListviewJson"
+        }
+      }
+    },
+    "responses" : {
+      "wftaskListViewArray" : {
+        "description" : "wftaskListViewArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "creator" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "lastName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "firstName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "photoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "email" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                    },
+                    "agent" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "lastName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "firstName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "photoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "email" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                    },
+                    "modifier" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "lastName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "firstName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "photoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "email" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                    },
+                    "team" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 3,
+                      "minProperties" : 3,
+                      "properties" : {
+                        "name" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 1,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "logoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                        }
+                      },
+                      "required" : [ "id", "logoURL", "name" ]
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "$ref" : "./AutomationTask.json#/components/schemas/tasksListviewJson"
+                }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "modifiedTime" : 1497879610000,
+                  "creator" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "agent" : {
+                    "photoURL" : "https://test-1111.desk.zoho.com:9001/api/v1/agents/4000000009090/photo?orgId=18908000",
+                    "firstName" : "Faizal",
+                    "lastName" : "K",
+                    "id" : "4000000009090",
+                    "email" : "jack@zylker.com"
+                  },
+                  "dueDateInMins" : "15",
+                  "subject" : "Design and Process",
+                  "departmentId" : "4000000007245",
+                  "modifier" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "description" : "",
+                  "team" : null,
+                  "priority" : "High",
+                  "assigneeId" : "4000000009086",
+                  "createdBy" : "4000000009086",
+                  "teamId" : null,
+                  "assignToTicketOwner" : false,
+                  "createdTime" : 1497879610000,
+                  "modifiedBy" : "4000000009086",
+                  "id" : "4000000019017",
+                  "status" : "Not Started"
+                }, {
+                  "modifiedTime" : 1497879961000,
+                  "creator" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "agent" : null,
+                  "dueDateInMins" : "15",
+                  "subject" : "Reminder for the backup process",
+                  "departmentId" : "4000000007245",
+                  "modifier" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "description" : "",
+                  "team" : {
+                    "name" : "team 2",
+                    "id" : "4000000099001",
+                    "logoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902"
+                  },
+                  "priority" : "High",
+                  "assigneeId" : null,
+                  "createdBy" : "4000000009086",
+                  "assignToTicketOwner" : false,
+                  "teamId" : "4000000007245",
+                  "createdTime" : 1497879961000,
+                  "modifiedBy" : "4000000009086",
+                  "id" : "4000000019055",
+                  "status" : "Not Started"
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "tasksListviewJson" : {
+        "description" : "tasksListviewJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "creator" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "lastName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "firstName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                  },
+                  "agent" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "lastName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "firstName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                  },
+                  "modifier" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "lastName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "firstName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                  },
+                  "team" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "properties" : {
+                      "name" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 1,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "logoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                      }
+                    },
+                    "required" : [ "id", "logoURL", "name" ]
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "dueDateInMins" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "maximum" : 535680,
+                    "minimum" : 5,
+                    "pattern" : "([0-9]+)"
+                  },
+                  "subject" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 300,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                  },
+                  "departmentId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "description" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 30000,
+                    "minLength" : 0
+                  },
+                  "priority" : {
+                    "type" : [ "string", "null" ],
+                    "x-dynamic-enum" : true
+                  },
+                  "assigneeId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "createdBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "teamId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "assignToTicketOwner" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "status" : {
+                    "type" : [ "string", "null" ],
+                    "x-dynamic-enum" : true
+                  }
+                },
+                "required" : [ "assignToTicketOwner", "assigneeId", "createdBy", "createdTime", "departmentId", "description", "dueDateInMins", "id", "modifiedBy", "modifiedTime", "priority", "status", "subject", "teamId" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1497879610000,
+                  "creator" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "agent" : {
+                    "photoURL" : "https://test-1111.desk.zoho.com:9001/api/v1/agents/4000000009090/photo?orgId=18908000",
+                    "firstName" : "Faizal",
+                    "lastName" : "K",
+                    "id" : "4000000009090",
+                    "email" : "jack@zylker.com"
+                  },
+                  "dueDateInMins" : "15",
+                  "subject" : "Design and Process",
+                  "departmentId" : "4000000007245",
+                  "modifier" : {
+                    "firstName" : "Faizal",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "description" : "",
+                  "team" : {
+                    "name" : "team 2",
+                    "id" : "4000000007245",
+                    "logoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902"
+                  },
+                  "priority" : "High",
+                  "assigneeId" : "4000000009086",
+                  "createdBy" : "4000000009086",
+                  "assignToTicketOwner" : false,
+                  "teamId" : "4000000007245",
+                  "createdTime" : 1497879610000,
+                  "modifiedBy" : "4000000009086",
+                  "id" : "4000000019017",
+                  "status" : "Not Started"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "relatedRuleListArray" : {
+        "description" : "relatedRuleListArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./AutomationTask.json#/components/schemas/relatedRulesData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Updated My Macro 33",
+                    "ruleId" : "10000000043003",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000043003",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Hala Madrid II",
+                    "ruleId" : "10000000046003",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000046003",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "WORKFLOW",
+                    "module" : "tickets",
+                    "ruleName" : "Update CFStringType to WF Applied",
+                    "ruleId" : "10000000047221",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/workflows/rules/edit/10000000047221",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Hala Madrid II",
+                    "ruleId" : "10000000047311",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000047311",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Order ID 1-INACTIVE",
+                    "ruleId" : "10000000155057",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000155057",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "INACT First",
+                    "ruleId" : "10000000160013",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000160013",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "First Rule",
+                    "ruleId" : "10000000210003",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000210003",
+                    "status" : "ACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Second Rule",
+                    "ruleId" : "10000000210007",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000210007",
+                    "status" : "ACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Third Rule",
+                    "ruleId" : "10000000210011",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000210011",
+                    "status" : "ACTIVE"
+                  }, {
+                    "ruleType" : "MACRO",
+                    "module" : "tickets",
+                    "ruleName" : "Fourth Rule",
+                    "ruleId" : "10000000210015",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/macros/rules/edit/10000000210015",
+                    "status" : "ACTIVE"
+                  }, {
+                    "ruleType" : "SUPERVISE",
+                    "module" : "tickets",
+                    "ruleName" : "Hellsddsfsdo Supervise Rule UPDATED",
+                    "ruleId" : "10000000302003",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/supervise/rules/edit/10000000302003",
+                    "status" : "ACTIVE"
+                  }, {
+                    "ruleType" : "BLUEPRINT",
+                    "module" : "tickets",
+                    "ruleName" : "My Second BP",
+                    "ruleId" : "10000000263001",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/blueprint/edit/10000000263001",
+                    "status" : "INACTIVE"
+                  }, {
+                    "ruleType" : "BLUEPRINT",
+                    "module" : "tickets",
+                    "ruleName" : "MyFirst BluePrint",
+                    "ruleId" : "10000000260001",
+                    "url" : "https://desk.zoho.com/support/fredrickaabh/ShowHomePage.do#setup/automate/10000000010762/blueprint/edit/10000000260001",
+                    "status" : "INACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "number of automation tasks to be retrieved @DEFAULT 50@ allowed limit between 1-50",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "number of automation tasks to be retrieved @DEFAULT 50@ allowed limit between 1-50",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "from index @DEFAULT 1@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "from index @DEFAULT 1@",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AutomationTask"
+}

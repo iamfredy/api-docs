@@ -1,0 +1,883 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CustomFunctionExecutionLogs",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/customFunctionExecutionLogs" : {
+      "get" : {
+        "tags" : [ "CustomFunctionExecutionLogs" ],
+        "summary" : "List Execution Logs of Custom Functions ",
+        "description" : "This API retrieves all execution logs of custom functions. ",
+        "operationId" : "getAllCustomFunctionExecutionLogs",
+        "parameters" : [ {
+          "name" : "duration",
+          "in" : "query",
+          "description" : "Specifies the time range for which the execution logs need to be retrieved. The allowed  values are  @TODAY@, @YESTERDAY@, @LAST_7_DAYS@, @LAST_30_DAYS@ and @CUSTOM@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the time range for which the execution logs need to be retrieved. The allowed  values are  @TODAY@, @YESTERDAY@, @LAST_7_DAYS@, @LAST_30_DAYS@ and @CUSTOM@",
+            "enum" : [ "TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "CUSTOM" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "Specifies the end date when defining a custom date for the duration. The format must  be YYYY-MM-DD. ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the end date when defining a custom date for the duration. The format must  be YYYY-MM-DD. ",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department for which the custom function execution logs are to be listed. ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department for which the custom function execution logs are to be listed. ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "description" : "The module with which the custom function is associated. The allowed  values are @tickets@, @contacts@, @accounts@, @tasks@, @timeEntry@, @products@, @calls@ and @events@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The module with which the custom function is associated. The allowed  values are @tickets@, @contacts@, @accounts@, @tasks@, @timeEntry@, @products@, @calls@ and @events@",
+            "enum" : [ "accounts", "contacts", "tickets", "products", "timeEntry", "tasks", "calls", "events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "ruleType",
+          "in" : "query",
+          "description" : "The key that filters custom function execution logs based on rule type. The allowed  values are @workflow@, @blueprint@, @macro@ and @button@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The key that filters custom function execution logs based on rule type. The allowed  values are @workflow@, @blueprint@, @macro@ and @button@",
+            "enum" : [ "workflow", "blueprint", "macro", "button" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of custom function execution logs to be fetched. ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The number of custom function execution logs to be fetched. ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting index number from which the custom function execution logs should be  fetched. ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting index number from which the custom function execution logs should be  fetched. ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "entityId",
+          "in" : "query",
+          "description" : "The key that filters custom function execution logs based on entity Id ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "The key that filters custom function execution logs based on entity Id ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "ruleId",
+          "in" : "query",
+          "description" : "The key that filters custom function execution logs based on rule Id ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "The key that filters custom function execution logs based on rule Id ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "Specifies the start date when defining a custom date for the duration. The format must  be YYYY-MM-DD. ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the start date when defining a custom date for the duration. The format must  be YYYY-MM-DD. ",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([12][0-9]{3})-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$"
+          }
+        }, {
+          "name" : "customFunctionId",
+          "in" : "query",
+          "description" : "The key that filters custom function execution logs based on custom function Id ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "The key that filters custom function execution logs based on custom function Id ",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "The key that filters custom function execution logs based on their status.The allowed  values are @success@ and @failure@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The key that filters custom function execution logs based on their status.The allowed  values are @success@ and @failure@.",
+            "enum" : [ "success", "failure" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAllCustomFunctionExecutionLogsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 900000,
+                  "lock-period" : 900000,
+                  "threshold" : 600,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "6cc61fd22fb9c3aebd1fb7cac53ffcdf",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.CustomFunctionService.getAllCustomFunctionLogs"
+        }
+      }
+    },
+    "/api/v1/customFunctionExecutionLogs/{customFunction_logId}" : {
+      "get" : {
+        "tags" : [ "CustomFunctionExecutionLogs" ],
+        "summary" : "Get Execution Log of a Custom Function ",
+        "description" : "This API retrieves the details of execution logs of a specific custom function using its unique identifier(LogId). The response time will be in milliseconds (ms). ",
+        "operationId" : "getCustomFunctionExecutionLogs",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/customFunction_logId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCustomFunctionExecutionLogsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 900000,
+                  "lock-period" : 900000,
+                  "threshold" : 600,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "291f3874ee70ca9138a4815b59266b1e",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.CustomFunctionService.getCustomFunctionExecutionLog"
+        }
+      }
+    },
+    "/api/v1/customFunctionExecutionLogs/{customFunction_logId}/executionArguments" : {
+      "get" : {
+        "tags" : [ "CustomFunctionExecutionLogs" ],
+        "summary" : "Get Runtime Arguments of the Execution Log of a Custom Function ",
+        "description" : "This API fetches the argument details of the execution log of a specific custom function.",
+        "operationId" : "getExecutionarguments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/customFunction_logId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getExecutionargumentsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 900000,
+                  "lock-period" : 900000,
+                  "threshold" : 600,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "ef7b6b205de307660da70ab962e57e6c",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.CustomFunctionService.getCustomFunctionExecutionArguments"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "customFunction" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "description", "id", "name" ]
+      },
+      "getAllCustomFunctionExecutionLogsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "entryTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "customFunction" : {
+            "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/customFunction"
+          },
+          "customFunctionLogId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "source" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 4,
+            "minProperties" : 4,
+            "properties" : {
+              "webUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 500,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "type" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "workflow", "blueprint", "macro", "button" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "id", "name", "type", "webUrl" ]
+          },
+          "entity" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 4,
+            "minProperties" : 4,
+            "properties" : {
+              "webUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 500,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "module" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "value" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "id", "module", "value", "webUrl" ]
+          },
+          "responseMsg" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "The key that filters custom function execution logs based on their status.The allowed  values are @success@ and @failure@.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "customFunction", "customFunctionLogId", "entity", "entryTime", "responseMsg", "source", "status" ]
+      },
+      "getAllCustomFunctionExecutionLogsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/getAllCustomFunctionExecutionLogsObject"
+        }
+      },
+      "InfoMessagesObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "dateTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "messageindex" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "dateTime", "message", "messageindex" ]
+      },
+      "InfoMessagesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/InfoMessagesObject"
+        }
+      },
+      "DreExecutionDetailsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "dreLogStatus" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "infoMessages" : {
+            "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/InfoMessagesArray"
+          }
+        },
+        "required" : [ "dreLogStatus", "infoMessages" ]
+      },
+      "customFunctionWithDre" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "dreFunctionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "departmentId", "description", "dreFunctionId", "id", "name" ]
+      },
+      "ArgumentsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "name", "value" ]
+      },
+      "ArgumentsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/ArgumentsObject"
+        }
+      }
+    },
+    "responses" : {
+      "getAllCustomFunctionExecutionLogsResponse" : {
+        "description" : "getAllCustomFunctionExecutionLogsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/getAllCustomFunctionExecutionLogsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "entryTime" : 1733835270458,
+                    "customFunction" : {
+                      "name" : "Test - CF hbase",
+                      "description" : "test",
+                      "id" : "10000000055089"
+                    },
+                    "customFunctionLogId" : "1000000019099",
+                    "source" : {
+                      "webUrl" : "https://desk.zoho.com/support/portalName/ShowHomePage.do#setup/automation/10000000026164/workflows/rules/edit/10000000103060",
+                      "name" : "test",
+                      "id" : "10000000103060",
+                      "type" : "workflow"
+                    },
+                    "entity" : {
+                      "webUrl" : "https://desk.zoho.com/support/portalName/ShowHomePage.do#Cases/dv/10000000109660",
+                      "module" : "Tickets",
+                      "id" : "10000000109660",
+                      "value" : "test 1"
+                    },
+                    "responseMsg" : "DRE connection failed",
+                    "status" : "Success"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getCustomFunctionExecutionLogsResponse" : {
+        "description" : "getCustomFunctionExecutionLogsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "dreExecutionDetails" : {
+                  "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/DreExecutionDetailsObject"
+                },
+                "entryTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "customFunction" : {
+                  "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/customFunctionWithDre"
+                },
+                "customFunctionLogId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "responseTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "dreExecUniqueID" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "source" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 4,
+                  "minProperties" : 4,
+                  "properties" : {
+                    "webUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 500,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                    },
+                    "name" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "type" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "workflow", "blueprint", "macro", "button" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "id", "name", "type", "webUrl" ]
+                },
+                "entity" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 4,
+                  "minProperties" : 4,
+                  "properties" : {
+                    "webUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 500,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                    },
+                    "module" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "value" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "id", "module", "value", "webUrl" ]
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "responseMsg" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "runBy" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                    },
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "email" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    }
+                  },
+                  "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                }
+              },
+              "required" : [ "customFunction", "customFunctionLogId", "dreExecUniqueID", "dreExecutionDetails", "entity", "entryTime", "responseMsg", "responseTime", "runBy", "source", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "dreExecutionDetails" : {
+                    "dreLogStatus" : true,
+                    "infoMessages" : [ {
+                      "dateTime" : "22-11-2024 16:34:23:924",
+                      "messageindex" : 0,
+                      "message" : "test message 0"
+                    }, {
+                      "dateTime" : "22-11-2024 16:34:23:924",
+                      "messageindex" : 1,
+                      "message" : "test message 1"
+                    } ]
+                  },
+                  "entryTime" : 1732171700816,
+                  "customFunction" : {
+                    "dreFunctionId" : "62483000000008001",
+                    "departmentId" : "10000000026164",
+                    "name" : "Test - CF hbase",
+                    "description" : "test",
+                    "id" : "10000000124265"
+                  },
+                  "customFunctionLogId" : "10000000055089",
+                  "responseTime" : 4008,
+                  "dreExecUniqueID" : "0a612550-b6d6-11ef-b475-2d653cc724d7",
+                  "source" : {
+                    "webUrl" : "https://desk.zoho.com/support/portalName/ShowHomePage.do#setup/automation/10000000026164/workflows/rules/edit/10000000103060",
+                    "name" : "TestForAuditLog",
+                    "id" : "10000000103060",
+                    "type" : "workflow"
+                  },
+                  "entity" : {
+                    "webUrl" : "https://desk.zoho.com/agent/portalName/all/tickets/details/10000000074018",
+                    "module" : "tickets",
+                    "id" : "10000000074018",
+                    "value" : "CF - 02"
+                  },
+                  "status" : "Success",
+                  "responseMsg" : "{\"Error\": \"Error in performing the Operation / : Divide by zero error\", \"lineNumber\": \"19\"}",
+                  "runBy" : {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/10000000000521/photo?orgId=89144526",
+                    "firstName" : "",
+                    "lastName" : "Primary",
+                    "id" : "10000000000521",
+                    "email" : "example@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getExecutionargumentsResponse" : {
+        "description" : "getExecutionargumentsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "dreLogStatus" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "arguments" : {
+                  "$ref" : "./CustomFunctionExecutionLogs.json#/components/schemas/ArgumentsArray"
+                }
+              },
+              "required" : [ "arguments", "dreLogStatus" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "dreLogStatus" : true,
+                  "arguments" : [ {
+                    "name" : "myEntityArg1",
+                    "value" : "Open"
+                  }, {
+                    "name" : "myEntityArg2",
+                    "value" : "TestForAuditLog second subject"
+                  }, {
+                    "name" : "myCustomArg",
+                    "value" : "myCustomValue"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "customFunction_logId" : {
+        "name" : "customFunction_logId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CustomFunctionExecutionLogs"
+}

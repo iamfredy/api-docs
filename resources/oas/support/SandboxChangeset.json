@@ -1,0 +1,501 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SandboxChangeset",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "sandbox"
+  },
+  "paths" : {
+    "/api/v1/sandbox/{sandboxId}/changesets/count" : {
+      "get" : {
+        "tags" : [ "SandboxChangeset" ],
+        "summary" : "Get ChangeSet Count",
+        "description" : "This API lists the count of all the ChangeSets by its action.",
+        "operationId" : "getChangesetCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getCountResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "9dea3613055f147d42d7f7abbe0d633c",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.getChangesetCount"
+        }
+      }
+    },
+    "/api/v1/sandbox/{sandboxId}/changesets" : {
+      "get" : {
+        "tags" : [ "SandboxChangeset" ],
+        "summary" : "List SandBox ChangeSet",
+        "description" : "This API lists all the SandBox ChangeSets in a portal.",
+        "operationId" : "getAllChangeSets",
+        "parameters" : [ {
+          "name" : "entityType",
+          "in" : "query",
+          "description" : "To filer changesets based on specific entities like @Fields@, @Layouts@, @Blueprint@, @Workflows@, @Macros@ etc. The default value includes all entities.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To filer changesets based on specific entities like @Fields@, @Layouts@, @Blueprint@, @Workflows@, @Macros@ etc. The default value includes all entities.",
+            "enum" : [ "Fields", "Layouts", "Layout Rules", "Validation Rules", "Ticket Templates", "Email Templates Folder", "Email Templates", "Modules", "Time Tracking", "Field Dependencies", "Direct Assignment Rule", "Round Robin Rule", "Notification Rules", "Feed Preferences", "Skill Type", "Skills", "Skill Configuration", "Alerts", "Tasks", "Field Updates", "Custom Function", "Schedules", "Macro", "Supervise", "Custom Action", "Blueprint", "Workflow" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "To filter changesets based on specific department. The default value includes all departments.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To filter changesets based on specific department. The default value includes all departments.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Module to search in: @tickets@, @accounts@, @contacts@ or @tasks@. The default response includes all modules.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Module to search in: @tickets@, @accounts@, @contacts@ or @tasks@. The default response includes all modules.",
+            "enum" : [ "tickets", "contacts", "accounts", "tasks", "calls", "events", "timeEntry", "contracts", "products" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of changeset to list. The default value and the maximum value allowed is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of changeset to list. The default value and the maximum value allowed is 50",
+            "maximum" : 50,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "To filters changesets based on their actions like @ADD@, @UPDATE@, @DELETE@. The default value includes all actions",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To filters changesets based on their actions like @ADD@, @UPDATE@, @DELETE@. The default value includes all actions",
+            "enum" : [ "ADD", "UPDATE", "DELETE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the changeset must be fetched. The default value is 1",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the changeset must be fetched. The default value is 1",
+            "maximum" : 50,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/allSandboxChangesetResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "6ecef05ca9fe2a653b9f922db480751f",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.getChangesets"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "changesetCountResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ADD", "UPDATE", "DELETE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "action", "count" ]
+      },
+      "changesetResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "actor" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              },
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              }
+            },
+            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+          },
+          "entityType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Fields", "Layouts", "Layout Rules", "Validation Rules", "Ticket Templates", "Email Templates Folder", "Email Templates", "Modules", "Time Tracking", "Field Dependencies", "Direct Assignment Rule", "Round Robin Rule", "Notification Rules", "Feed Preferences", "Skill Type", "Skills", "Skill Configuration", "Alerts", "Tasks", "Field Updates", "Custom Function", "Schedules", "Macro", "Supervise", "Custom Action", "Blueprint", "Workflow" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To filer changesets based on specific entities like @Fields@, @Layouts@, @Blueprint@, @Workflows@, @Macros@ etc. The default value includes all entities.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "entityName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "module" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "apiName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "displayName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "apiName", "displayName" ]
+          },
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ADD", "UPDATE", "DELETE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To filters changesets based on their actions like @ADD@, @UPDATE@, @DELETE@. The default value includes all actions",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "externalId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "entityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "department" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              }
+            },
+            "required" : [ "id", "name" ]
+          },
+          "changeSetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "action", "actor", "changeSetId", "department", "entityId", "entityName", "entityType", "eventTime", "externalId", "module" ]
+      },
+      "changesetRespArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SandboxChangeset.json#/components/schemas/changesetResponse"
+        }
+      }
+    },
+    "responses" : {
+      "getCountResponse" : {
+        "description" : "getCountResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./SandboxChangeset.json#/components/schemas/changesetCountResponse"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "count" : "3",
+                    "action" : "ADD"
+                  }, {
+                    "count" : "1",
+                    "action" : "UPDATE"
+                  }, {
+                    "count" : "2",
+                    "action" : "DELETE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "allSandboxChangesetResponse" : {
+        "description" : "allSandboxChangesetResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SandboxChangeset.json#/components/schemas/changesetRespArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "actor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000000349/photo?orgId=15990343",
+                      "firstName" : "raja",
+                      "lastName" : "sekar",
+                      "name" : "raja sekar",
+                      "id" : "4000000000349"
+                    },
+                    "entityType" : "Blueprint",
+                    "entityName" : "PM process",
+                    "module" : {
+                      "apiName" : "tickets",
+                      "displayName" : "Ticket"
+                    },
+                    "eventTime" : 1663632355000,
+                    "action" : "UPDATE",
+                    "externalId" : "2000000000953",
+                    "entityId" : "4000000000953",
+                    "department" : {
+                      "name" : "changeset1",
+                      "id" : "4000000020772"
+                    },
+                    "changeSetId" : "4000000044003"
+                  }, {
+                    "actor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000000349/photo?orgId=15990343",
+                      "firstName" : "raja",
+                      "lastName" : "sekar",
+                      "name" : "raja sekar",
+                      "id" : "4000000000349"
+                    },
+                    "entityType" : "SLA",
+                    "entityName" : "Notify ticket assignment",
+                    "module" : {
+                      "apiName" : "contacts",
+                      "displayName" : "Contact"
+                    },
+                    "eventTime" : 1663653963000,
+                    "action" : "UPDATE",
+                    "externalId" : null,
+                    "entityId" : "4000000000802",
+                    "department" : {
+                      "name" : "changeset1",
+                      "id" : "4000000020772"
+                    },
+                    "changeSetId" : "4000000046003"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "sandboxId" : {
+        "name" : "sandboxId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SandboxChangeset"
+}

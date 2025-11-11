@@ -1,0 +1,331 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "HelpcenterAutoTranslateSetting",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/v1/helpCenters/{helpcenterId}/autoTranslateSettings" : {
+      "get" : {
+        "tags" : [ "HelpcenterAutoTranslateSetting" ],
+        "operationId" : "getHelpcenterAutoTranslateAppSettings",
+        "parameters" : [ {
+          "name" : "helpcenterId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/autoTranslateAppSettingResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d93ef3632ad4b5c117b8752319b1003a",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.rest.support.HelpCenterService.getHelpCenterAutoTranslationSettings"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "autoTranslateSetting" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "languages" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+            },
+            "maxItems" : 50,
+            "minItems" : 0,
+            "uniqueItems" : true
+          },
+          "appName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "active" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "installationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "uuId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "active", "appName", "installationId", "languages", "uuId" ]
+      },
+      "autoTranslateSettingsList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/schemas/autoTranslateSetting"
+        }
+      },
+      "autoTranslateAppSettings" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "languages" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+            },
+            "maxItems" : 50,
+            "minItems" : 0,
+            "uniqueItems" : true
+          },
+          "latestVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "appName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isInstalled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isPublic" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "installationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isActive" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "uuId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "version" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "logoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "appName", "installationId", "isActive", "isInstalled", "isPublic", "languages", "latestVersion", "logoURL", "uuId", "version" ]
+      },
+      "autoTranslateAppSettingsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/schemas/autoTranslateAppSettings"
+        }
+      }
+    },
+    "responses" : {
+      "autoTranslateSetting" : {
+        "description" : "autoTranslateSetting template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languages" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 50,
+                  "minItems" : 0,
+                  "uniqueItems" : true
+                },
+                "appName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "active" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "installationId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uuId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "active", "appName", "installationId", "languages", "uuId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "languages" : [ "ar", "bn", "af" ],
+                  "active" : true,
+                  "installationId" : "28841000002610039",
+                  "uuId" : "b10998f6-0396-4ff7-80ec-f3023ad53e0a"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "autoTranslateAppSettingResponse" : {
+        "description" : "autoTranslateAppSettingResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./HelpcenterAutoTranslateSetting.json#/components/schemas/autoTranslateAppSettingsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "autoTranslateSettingInputForHelpcenter" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languages" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 50,
+                  "minItems" : 0,
+                  "uniqueItems" : true
+                }
+              },
+              "required" : [ "languages" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "languages" : [ "ar", "bn", "da" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "HelpcenterAutoTranslateSetting"
+}

@@ -1,0 +1,1131 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AutomationEngine",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/automationEngine/engineSupportedActions" : {
+      "get" : {
+        "tags" : [ "AutomationEngine" ],
+        "summary" : "Get Supported Actions of an Engine",
+        "description" : "This API fetches the supported Actions of an AutomationEngine",
+        "operationId" : "getSupportedActionsEngine",
+        "parameters" : [ {
+          "name" : "engineSysName",
+          "in" : "query",
+          "description" : "System Name of the Engine.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "System Name of the Engine.",
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "engineId",
+          "in" : "query",
+          "description" : "ID of the Engine",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the Engine",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "description" : "API Name of the Module",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "API Name of the Module",
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "moduleId",
+          "in" : "query",
+          "description" : "ID of the Module",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the Module",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "eventSystemNames",
+          "in" : "query",
+          "description" : "System names of the events (e.g., tickets_create, comments_create)",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "System names of the events (e.g., tickets_create, comments_create)",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 200,
+              "minLength" : 0
+            },
+            "maxItems" : 50,
+            "uniqueItems" : true,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/supportedActionsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "d68fe045f86d66bd01070f5176a9cde4",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.automationengine.restapi.AutomationEngineService.getSupportedActionsEngine"
+        }
+      }
+    },
+    "/api/v1/engines" : {
+      "get" : {
+        "tags" : [ "AutomationEngine" ],
+        "summary" : "Get list of engines",
+        "description" : "This API fetches the list of engines",
+        "operationId" : "getAutomationEngine",
+        "parameters" : [ {
+          "name" : "systemNames",
+          "in" : "query",
+          "description" : "Comma separated system names of the engine",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Specifies the system name of the engines (e.g., WORKFLOWS, MACRO). <br><br>_Note:_ Provide the values as a comma-separated array. A maximum of 50 system names is allowed.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 200,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : {
+                "split" : ","
+              }
+            },
+            "maxItems" : 50,
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of engines to be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "integer" ],
+            "format" : "int32",
+            "description" : "The number of engines to be fetched",
+            "maximum" : 200,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting index from which engines should be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting index from which engines should be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/automationEngineJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2d8a1895e52efecba29d866890b3540e",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.automationengine.restapi.AutomationEngineService.getAutomationEngine"
+        }
+      }
+    },
+    "/api/v1/engines/{engineId}/modules" : {
+      "get" : {
+        "tags" : [ "AutomationEngine" ],
+        "summary" : "Get supported modules of an engine",
+        "description" : "This API gives the supported modules of an engine.",
+        "operationId" : "getSupportedModulesOfEngine",
+        "parameters" : [ {
+          "name" : "engineId",
+          "in" : "path",
+          "description" : "The id  of the engine.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/engineModulesJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attributes" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "552a042d480a07bf0ec5243391e3a355",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.automationengine.restapi.AutomationEngineService.getEngineSupportedModules"
+        }
+      }
+    },
+    "/api/v1/engines/{engineId}/modules/{moduleId}/events" : {
+      "get" : {
+        "tags" : [ "AutomationEngine" ],
+        "summary" : "Get supported events in a module of a specific engine",
+        "description" : "This API gives the supported events in a module of a specific engine.",
+        "operationId" : "getSupportedEventsOfModule",
+        "parameters" : [ {
+          "name" : "engineId",
+          "in" : "path",
+          "description" : "The id of the engine.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "moduleId",
+          "in" : "path",
+          "description" : "The id of the module.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/moduleEventsJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attributes" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0b8de3fa4b4fd3b05739f4193ed5bdfa",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.automationengine.restapi.AutomationEngineService.getModuleSupportedEvents"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "actionObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "async" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "reusable" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "async", "name", "reusable" ]
+      },
+      "actions" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/actionObject"
+        }
+      },
+      "eventsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "submodule" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actions" : {
+            "$ref" : "#/components/schemas/actions"
+          }
+        },
+        "required" : [ "actions", "name", "submodule" ]
+      },
+      "events" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/eventsObject"
+        }
+      },
+      "modulesObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actions" : {
+            "$ref" : "#/components/schemas/actions"
+          },
+          "events" : {
+            "$ref" : "#/components/schemas/events"
+          }
+        },
+        "required" : [ "actions", "events", "name" ]
+      },
+      "modules" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/modulesObject"
+        }
+      },
+      "EngineDeptProperty" : {
+        "type" : "object",
+        "properties" : {
+          "departmentId" : {
+            "type" : [ "string", "null" ]
+          },
+          "order" : {
+            "type" : [ "string", "null" ]
+          },
+          "status" : {
+            "type" : [ "string", "null" ]
+          },
+          "configurationType" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "configurationType", "order", "status" ]
+      },
+      "EngineProperties" : {
+        "type" : "object",
+        "properties" : {
+          "engineDeptProperties" : {
+            "type" : [ "array", "null" ],
+            "items" : {
+              "$ref" : "#/components/schemas/EngineDeptProperty"
+            }
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "EngineModule" : {
+        "type" : "object",
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 30
+              }
+            }
+          },
+          "isCustomModule" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isDeptSpecific" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "i18NLabel", "id", "isCustomModule", "isDeptSpecific" ]
+      },
+      "EngineModulesResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : [ "array", "null" ],
+            "items" : {
+              "$ref" : "#/components/schemas/EngineModule"
+            }
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "Module" : {
+        "type" : "object",
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 30
+              }
+            }
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "id" ]
+      },
+      "ModuleEvent" : {
+        "type" : "object",
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          },
+          "module" : {
+            "$ref" : "#/components/schemas/Module"
+          },
+          "baseEvent" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 30
+              }
+            }
+          },
+          "sysName" : {
+            "type" : [ "string", "null" ],
+            "x-custom-parameters-attributes" : {
+              "validation" : {
+                "maxLength" : 100
+              }
+            }
+          }
+        },
+        "required" : [ "baseEvent", "displayLabel", "module", "sysName" ]
+      },
+      "ModuleEventsResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : [ "array", "null" ],
+            "items" : {
+              "$ref" : "#/components/schemas/ModuleEvent"
+            }
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "Engine" : {
+        "type" : "object",
+        "properties" : {
+          "engineID" : {
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ]
+          },
+          "systemName" : {
+            "type" : [ "string", "null" ]
+          },
+          "engineExecutionType" : {
+            "type" : [ "string", "null" ]
+          },
+          "ruleGroupOrderType" : {
+            "type" : [ "string", "null" ]
+          },
+          "engineProperties" : {
+            "$ref" : "#/components/schemas/EngineProperties"
+          }
+        },
+        "required" : [ "engineExecutionType", "engineID", "engineProperties", "name", "ruleGroupOrderType", "systemName" ]
+      },
+      "AutomationEngineResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : [ "array", "null" ],
+            "items" : {
+              "$ref" : "#/components/schemas/Engine"
+            }
+          }
+        },
+        "required" : [ "data" ]
+      }
+    },
+    "responses" : {
+      "supportedActionsResponse" : {
+        "description" : "supportedActionsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "engineName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actions" : {
+                  "$ref" : "#/components/schemas/actions"
+                },
+                "modules" : {
+                  "$ref" : "#/components/schemas/modules"
+                }
+              },
+              "required" : [ "actions", "engineName", "modules" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+				    "engineName": "AUTOMATION_STUDIO",
+				    "actionCombination": "UNION",
+				    "modules": [
+				        {
+				            "name": "accounts",
+				            "supportedActions": {
+				                "groups": [],
+				                "actions": []
+				            },
+				            "events": [
+				                {
+				                    "submodule": null,
+				                    "name": "CREATE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "recordManagement",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "updateRecord",
+				                                        "id": "1000009730655",
+				                                        "displayLabel": "Update Record"
+				                                    }
+				                                ],
+				                                "displayLabel": "Record Management"
+				                            },
+				                            {
+				                                "systemName": "comment",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "addComment",
+				                                        "id": "1000000047786",
+				                                        "displayLabel": "Add Comment"
+				                                    }
+				                                ],
+				                                "displayLabel": "Comment"
+				                            },
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "accounts_create"
+				                },
+				                {
+				                    "submodule": null,
+				                    "name": "UPDATE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "recordManagement",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "updateRecord",
+				                                        "id": "1000009730655",
+				                                        "displayLabel": "Update Record"
+				                                    }
+				                                ],
+				                                "displayLabel": "Record Management"
+				                            },
+				                            {
+				                                "systemName": "comment",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "addComment",
+				                                        "id": "1000000047786",
+				                                        "displayLabel": "Add Comment"
+				                                    }
+				                                ],
+				                                "displayLabel": "Comment"
+				                            },
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "accounts_update"
+				                },
+				                {
+				                    "submodule": null,
+				                    "name": "DELETE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "accounts_delete"
+				                },
+				                {
+				                    "submodule": "comments",
+				                    "name": "CREATE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "recordManagement",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "updateRecord",
+				                                        "id": "1000009730655",
+				                                        "displayLabel": "Update Record"
+				                                    }
+				                                ],
+				                                "displayLabel": "Record Management"
+				                            },
+				                            {
+				                                "systemName": "comment",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "addComment",
+				                                        "id": "1000000047786",
+				                                        "displayLabel": "Add Comment"
+				                                    }
+				                                ],
+				                                "displayLabel": "Comment"
+				                            },
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "comments_create"
+				                },
+				                {
+				                    "submodule": "comments",
+				                    "name": "UPDATE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "recordManagement",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "updateRecord",
+				                                        "id": "1000009730655",
+				                                        "displayLabel": "Update Record"
+				                                    }
+				                                ],
+				                                "displayLabel": "Record Management"
+				                            },
+				                            {
+				                                "systemName": "comment",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "addComment",
+				                                        "id": "1000000047786",
+				                                        "displayLabel": "Add Comment"
+				                                    }
+				                                ],
+				                                "displayLabel": "Comment"
+				                            },
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "comments_update"
+				                },
+				                {
+				                    "submodule": "comments",
+				                    "name": "DELETE",
+				                    "supportedActions": {
+				                        "groups": [
+				                            {
+				                                "systemName": "notification",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "sendAutomationAlert",
+				                                        "id": "1000010023003",
+				                                        "displayLabel": "Send Automation Alert"
+				                                    }
+				                                ],
+				                                "displayLabel": "Notification"
+				                            },
+				                            {
+				                                "systemName": "scripting",
+				                                "actions": [
+				                                    {
+				                                        "reusable": false,
+				                                        "async": true,
+				                                        "apiName": "executeCustomFunction",
+				                                        "id": "1000009730117",
+				                                        "displayLabel": "Execute Custom Function"
+				                                    }
+				                                ],
+				                                "displayLabel": "Scripting"
+				                            }
+				                        ],
+				                        "actions": []
+				                    },
+				                    "eventSystemName": "comments_delete"
+				                }
+				            ],
+				            "groupOrder": [
+				                "notification",
+				                "recordManagement",
+				                "scripting",
+				                "comment"
+				            ]
+				        }
+				    ]
+				}
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "automationEngineJson" : {
+        "description" : "Automation Engine JSON",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/AutomationEngineResponse"
+            },
+            "examples" : {
+              "default" : {
+                "value" : {
+                  "data" : [ {
+                    "engineID" : "3000000048725",
+                    "name" : "Workflows",
+                    "systemName" : "WORKFLOWS",
+                    "engineExecutionType" : "1",
+                    "ruleGroupOrderType" : "3",
+                    "engineProperties" : {
+                      "engineDeptProperties" : [ {
+                        "departmentId" : null,
+                        "order" : "10",
+                        "status" : "ACTIVE",
+                        "configurationType" : "0"
+                      } ]
+                    }
+                  }, {
+                    "engineID" : "3000000048711",
+                    "name" : "Macro Rules",
+                    "systemName" : "MACRO",
+                    "engineExecutionType" : "2",
+                    "ruleGroupOrderType" : "4",
+                    "engineProperties" : {
+                      "engineDeptProperties" : [ {
+                        "departmentId" : null,
+                        "order" : "2",
+                        "status" : "ACTIVE",
+                        "configurationType" : "2"
+                      } ]
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "engineModulesJson" : {
+        "description" : "Supported modules of the engine",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/EngineModulesResponse"
+            },
+            "examples" : {
+              "default" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Tickets",
+                    "apiName" : "tickets",
+                    "id" : "1000000000585",
+                    "isCustomModule" : false,
+                    "isDeptSpecific" : true,
+                    "i18NLabel" : "Tickets"
+                  }, {
+                    "displayLabel" : "Contacts",
+                    "apiName" : "contacts",
+                    "id" : "1000000000587",
+                    "isCustomModule" : false,
+                    "isDeptSpecific" : false,
+                    "i18NLabel" : "Contacts"
+                  }, {
+                    "displayLabel" : "Accounts",
+                    "apiName" : "accounts",
+                    "id" : "1000000000589",
+                    "isCustomModule" : false,
+                    "isDeptSpecific" : true,
+                    "i18NLabel" : "Accounts"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "headers" : { },
+          "security" : { }
+        }
+      },
+      "moduleEventsJson" : {
+        "description" : "Supported events in a module of a specific engine",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/ModuleEventsResponse"
+            },
+            "examples" : {
+              "default" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Ticket Created",
+                    "module" : {
+                      "displayLabel" : "Tickets",
+                      "apiName" : "tickets",
+                      "id" : "1000000000585"
+                    },
+                    "baseEvent" : "CREATE",
+                    "sysName" : "tickets_create"
+                  }, {
+                    "displayLabel" : "Ticket Updated",
+                    "module" : {
+                      "displayLabel" : "Tickets",
+                      "apiName" : "tickets",
+                      "id" : "1000000000585"
+                    },
+                    "baseEvent" : "UPDATE",
+                    "sysName" : "tickets_update"
+                  }, {
+                    "displayLabel" : "Ticket Deleted",
+                    "module" : {
+                      "displayLabel" : "Tickets",
+                      "apiName" : "tickets",
+                      "id" : "1000000000585"
+                    },
+                    "baseEvent" : "DELETE",
+                    "sysName" : "tickets_delete"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "headers" : { },
+          "security" : { }
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AutomationEngine"
+}

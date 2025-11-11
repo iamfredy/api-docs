@@ -1,0 +1,3453 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CustomView",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/lastAccessedView/{cvId}" : {
+      "put" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update Last Accessed View",
+        "description" : "This API updates the view last accessed by the user in the module and department specified in the request.",
+        "operationId" : "updateRecentView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 1000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "7e053b1001161a79777f7f4366c4f1d7",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.setRecentViews"
+        }
+      }
+    },
+    "/api/v1/views/{cvId}/star" : {
+      "post" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Add Starred View",
+        "description" : "This API stars a view, enabling quick access to the view.",
+        "operationId" : "addStarredView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "f724c522ec870485522215c97526f458",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.StarredViewService.addStarredView"
+        }
+      }
+    },
+    "/api/v1/views/archivedEntities/myPreference" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get My preference for archived view",
+        "description" : "This API gets my preference for provided view.",
+        "operationId" : "getArchivedViewPreference",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department from which the view's preference should be fetched.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department from which the view's preference should be fetched.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/archivedViewPreference"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 420000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "bb2dd0ec917511b9a7007ea7929ee81d",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getArchivedViewPreference"
+        }
+      },
+      "patch" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update Archived Tickets  preference",
+        "description" : "This API updates my preference for Archived Ticket view. Only createdTime, modifiedTime fields supported in Sort Field.",
+        "operationId" : "updateArchivedViewPreference",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/archivedViewPreferenceKeys"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "35fc431d243b7eaef7a1dd08461a9697",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.updateArchivedViewPreference"
+        }
+      }
+    },
+    "/api/v1/views/availableFields" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "List Available Select Fields",
+        "description" : "This API fetches the available select fields for specified module.",
+        "operationId" : "getAvailableSelectFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAvailableFieldsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "741a45101de8a7359680d30079baab8b",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.FeatureFieldService.getAvailableFields"
+        }
+      }
+    },
+    "/api/v1/views/{cvId}" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get Custom View",
+        "description" : "This API fetches the details of a particular custom view.",
+        "operationId" : "getCustomView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureFlags"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/customViewResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "ec409d76c6df6e424f556f62345be0ff",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getCustomView"
+        }
+      },
+      "delete" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Delete Custom View",
+        "description" : "This API deletes the custom view specified.",
+        "operationId" : "deleteCustomView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "6a2c0734506d162ce83e2de82785ae1d",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.deleteCustomView"
+        }
+      },
+      "patch" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update Custom View",
+        "description" : "This API updates the details of an existing custom view. The value of the department attribute can be a valid department ID or allDepartments. Similarly, the value of agents can be a valid agent ID or allAgents. If you want the custom view to be visible only to you, do not pass any attribute values in the API request. Either module or moduleMapping is mandatory (For old format: module should be given, for new format: moduleMapping should be given)",
+        "operationId" : "updateCustomView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureFlags"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateCustomViewJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/customViewResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "4589e76be863e8e843ca0a7c346e3f10",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.updateCustomView"
+        }
+      }
+    },
+    "/api/v1/lastAccessedView" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get Last Accessed View",
+        "description" : "This API fetches the view last accessed by the user in the module and department specified in the request.",
+        "operationId" : "getRecentView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getRecentViewJson"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "60e4030358c074d5b49e0e3dc3514b70",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getRecentView"
+        }
+      }
+    },
+    "/api/v1/starredViews/{cvId}/unstar" : {
+      "post" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Remove Starred View",
+        "description" : "This API unstars a view, disabling quick access to the view.",
+        "operationId" : "removeStarredView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "31db61d39bda2b5a6227e3615ec1a68b",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.StarredViewService.removeStarredView"
+        }
+      }
+    },
+    "/api/v1/starredViews/order" : {
+      "put" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update Starred View order - Reorder",
+        "description" : "This API helps reorder the starred views in a module.",
+        "operationId" : "updateStarredViewOrder",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/starredViewJsonOrder"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "a7abc76f51b1ba2c2374d52ec210380b",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.StarredViewService.updateStarredViewOrder"
+        }
+      }
+    },
+    "/api/v1/views/{cvId}/myPreference" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get My preference for given view",
+        "description" : "This API gets my preference for provided view.",
+        "operationId" : "getViewPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getViewPreferenceResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 420000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "e8f6c0f9befa49332387fa08459d7039",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getViewPreference"
+        }
+      },
+      "patch" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update My preference for given view",
+        "description" : "This API updates my preference for provided view.ReceivedIn update is supported for only Tickets Module.Sort Field update is not supported for @Accounts@,@Contacts@ module.",
+        "operationId" : "updateViewPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateMyViewPreferenceKeys"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getViewPreferenceResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "5939d4dcef1ead1f6c2eee8be5aeab52",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.updateViewPreference"
+        }
+      }
+    },
+    "/api/v1/views" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "List Views",
+        "description" : "This API lists the different views configured for a specific module or for all modules in your help desk portal.",
+        "operationId" : "getViews",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Module Name (for which the view configured and need to be fetched)",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Module Name (for which the view configured and need to be fetched)",
+            "enum" : [ "tickets", "contacts", "events", "activities", "tasks", "contracts", "accounts", "calls" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "entity" : "Views"
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "name" : "featureFlags",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "createdBy" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getViewsResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "2e9ea5e8f979014bd9d8fda5306996f0",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getViews"
+        }
+      },
+      "post" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Create Custom View",
+        "description" : "This API creates a custom view based on the attribute values passed in the API request. The value of the department attribute can be a valid department ID or allDepartments. Similarly, the value of agents can be a valid agent ID or allAgents. If you want the custom view to be visible only to you, do not pass any attribute values in the API request. Either module or moduleMapping is mandatory (For old format: module should be given, for new format: moduleMapping should be given)",
+        "operationId" : "addCustomView",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureFlags"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addCustomViewJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/customViewResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "94408ae7ad7d4f88fb9766d18d616094",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.createCustomView"
+        }
+      }
+    },
+    "/api/v1/me/queueSlots" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get Selected Slots Of The User For Specified Queue Mode",
+        "description" : "This API fetches the selected slots of the user for specified queue mode configured in your helpdesk.",
+        "operationId" : "getMyQueueSlots",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getQueueSlotsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "eb1d3f795b9be255ef1650638b52731d",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.QueueSlotsService.getMyQueueSlots"
+        }
+      },
+      "put" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update Slots To Be Listed For Specified Queue Mode",
+        "description" : "This API updates the selected slots of the user for specified queue mode configured in your helpdesk.",
+        "operationId" : "updateMyQueueSlots",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/queueSlotsJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getQueueSlotsResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "1bc52100352593cfb70a47d6fc7183c9",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.QueueSlotsService.updateMyQueueSlots"
+        }
+      }
+    },
+    "/api/v1/views/{cvId}/selectedFields" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "List views selected fields",
+        "description" : "This API fetches the available select field for given view in given department.",
+        "operationId" : "getSelectedFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "name" : "featureFlags",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "getSelectedFieldsNewMetaResponse" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getSelectedFieldsResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 420000,
+                  "threshold" : 100,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 1200000,
+                  "threshold" : 1000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "48e340f8f700ec2beb9c267402bcc908",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.getSelectedFields"
+        }
+      },
+      "put" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Update views selected fields",
+        "description" : "This API updates the selected fields for given view in given department.Mandatory Columns For module is always required @tickets@ : @ticketNumber@, @contacts@ : @fullName@ ,@accounts@ : @accountName@, @products@ : @productName@, @contracts@ : @contractName@",
+        "operationId" : "updateSelectedFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/cvId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/getSelectedFieldsResponse"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 1800000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "75621b948b7d5761e6db818a317a792c",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.ViewService.updateSelectFields"
+        }
+      }
+    },
+    "/api/v1/queueSlots" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "Get Slots For Specified Queue Mode",
+        "description" : "This API fetches the slots for specified queue mode configured in your helpdesk.",
+        "operationId" : "getQueueSlots",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getQueueSlotsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "ed279bf6a162f55b949e8bcd5299dfb2",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.QueueSlotsService.getQueueSlots"
+        }
+      }
+    },
+    "/api/v1/starredViews" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "summary" : "List Starred Views",
+        "description" : "This API lists the starred views in a module. Number of resources in the starred view is displayed only for the Tickets module.",
+        "operationId" : "getStarredViews",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "featureFlags",
+          "in" : "header",
+          "required" : false,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "createdBy" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getStarredViewsResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 420000,
+                  "threshold" : 1000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "555cc4fa218c3da33c9025405fb3c996",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.StarredViewService.getStarredViews"
+        }
+      }
+    },
+    "/api/v1/queryStore" : {
+      "get" : {
+        "tags" : [ "CustomView" ],
+        "operationId" : "getQueryStore",
+        "parameters" : [ {
+          "name" : "feature",
+          "in" : "query",
+          "description" : "Allowed values are : @viewQuery@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Allowed values are : @viewQuery@",
+            "enum" : [ "viewQuery" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Allowed values are : @execution@, @display@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Allowed values are : @execution@, @display@",
+            "enum" : [ "display", "execution" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "userId",
+          "in" : "query",
+          "description" : "userId",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "userId",
+            "maximum" : 1,
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Criteria"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getQueryStoreResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "8562389a6f8a7c425cece6407fe5e7c3123",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.desk.framework.query.store.refactor.QueryStoreService.getQueryStore"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "field" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "products", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiName" : {
+            "type" : "string"
+          },
+          "fieldLabel" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "apiName", "fieldLabel", "module" ]
+      },
+      "primitive" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properites" : {
+          "key" : {
+            "type" : [ "null", "string", "integer" ]
+          },
+          "displaykey" : {
+            "type" : [ "null", "string", "integer" ]
+          }
+        }
+      },
+      "value" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "primitive" ]
+          },
+          "primitive" : {
+            "$ref" : "#/components/schemas/primitive"
+          }
+        },
+        "required" : [ "type" ]
+      },
+      "criteriaNewFields" : {
+        "type" : [ "null", "array" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "field" : {
+            "$ref" : "#/components/schemas/field"
+          },
+          "condition" : {
+            "type" : "string"
+          },
+          "value" : {
+            "$ref" : "#/components/schemas/value"
+          }
+        },
+        "required" : [ "condition", "field", "value" ]
+      },
+      "criteriaNewResponseJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "criteriaFields" : {
+            "$ref" : "#/components/schemas/criteriaNewFields"
+          },
+          "criteriaPattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "criteriaFields", "criteriaPattern" ]
+      },
+      "criteriaRequestJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "fieldName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldModule" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "products", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "oneOf" : [ {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+              }, {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+                },
+                "uniqueItems" : false
+              } ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "condition", "fieldModule", "fieldName", "value" ]
+      },
+      "criteriaResponseJson" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/criteriaRequestJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "displayValue" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "uniqueItems" : false
+            },
+            "criteriaValues" : {
+              "$ref" : "./CriteriaValue.json#/components/schemas/criteriaValueArr"
+            }
+          },
+          "required" : [ "criteriaValues", "displayValue" ]
+        } ]
+      },
+      "criteriaResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/criteriaResponseJson"
+        }
+      },
+      "criteriaDetailsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "#/components/schemas/criteriaResponse"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[andor()0-9\\s]*"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      },
+      "criteriaRequest" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/criteriaRequestJson"
+        }
+      },
+      "criteriaDetailsRequest" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "#/components/schemas/criteriaRequest"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[andor()0-9\\s]*"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      },
+      "moduleMappingRequest" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "properties" : {
+          "primaryModule" : {
+            "$ref" : "#/components/schemas/primaryModuleRequest"
+          }
+        },
+        "required" : [ "primaryModule" ]
+      },
+      "primaryModuleRequest" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName" ]
+      },
+      "accessibilityFormatForRequest" : {
+        "oneOf" : [ {
+          "type" : "object",
+          "properties" : {
+            "type" : {
+              "type" : "string",
+              "enum" : [ "onlyMe", "allAgents" ]
+            }
+          },
+          "required" : [ "type" ]
+        }, {
+          "type" : "object",
+          "properties" : {
+            "type" : {
+              "type" : "string",
+              "enum" : [ "restrictedAccess" ]
+            },
+            "agents" : {
+              "type" : "array",
+              "items" : {
+                "type" : "integer",
+                "format" : "int64"
+              }
+            }
+          },
+          "required" : [ "agents", "type" ]
+        } ]
+      },
+      "accessibilityFormatForResponse" : {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "type" : "string",
+            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+          },
+          "agents" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "integer", "string" ],
+              "format" : "int64"
+            }
+          },
+          "rolesAndSubordinates" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "integer", "string" ],
+              "format" : "int64"
+            }
+          },
+          "teams" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "integer", "string" ],
+              "format" : "int64"
+            }
+          },
+          "roles" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "integer", "string" ],
+              "format" : "int64"
+            }
+          }
+        },
+        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ]
+      },
+      "updateCustomViewJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accessibility" : {
+            "$ref" : "#/components/schemas/accessibilityFormatForRequest"
+          },
+          "criteria" : {
+            "$ref" : "#/components/schemas/criteriaDetailsRequest"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&<>\\+=]+"
+          },
+          "department" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+|allDepartment)"
+          }
+        },
+        "required" : [ "accessibility", "criteria", "department", "name" ]
+      },
+      "getArchivedCustomViewJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accessibility" : {
+            "$ref" : "#/components/schemas/accessibilityFormatForResponse"
+          },
+          "criteria" : {
+            "$ref" : "#/components/schemas/criteriaDetailsRequest"
+          },
+          "moduleMapping" : {
+            "$ref" : "#/components/schemas/moduleMappingRequest"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&<>\\+=]+"
+          },
+          "department" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+|allDepartment)"
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accessibility", "criteria", "department", "module", "name" ]
+      },
+      "addCustomViewJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accessibility" : {
+            "$ref" : "#/components/schemas/accessibilityFormatForRequest"
+          },
+          "criteria" : {
+            "$ref" : "#/components/schemas/criteriaDetailsRequest"
+          },
+          "moduleMapping" : {
+            "$ref" : "#/components/schemas/moduleMappingRequest"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&<>\\+=]+"
+          },
+          "department" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+|allDepartment)"
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accessibility", "criteria", "department", "module", "moduleMapping", "name" ]
+      },
+      "getArchivedCustomViewResponse" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./CustomView.json#/components/schemas/getArchivedCustomViewJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "criteria" : {
+              "$ref" : "./CustomView.json#/components/schemas/criteriaDetailsResponse"
+            },
+            "id" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "criteria", "id" ]
+        } ]
+      },
+      "customViewNewResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accessibility" : {
+            "$ref" : "#/components/schemas/accessibilityFormatForResponse"
+          },
+          "criteria" : {
+            "$ref" : "#/components/schemas/criteriaNewResponseJson"
+          },
+          "moduleMapping" : {
+            "$ref" : "#/components/schemas/moduleMappingRequest"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          },
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          },
+          "sanitizedName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}&amp;&lt;&gt;\\+=]+"
+          },
+          "department" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+|allDepartment)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "accessibility", "criteria", "department", "id", "moduleMapping", "name" ]
+      },
+      "archivedViewSortField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "createdTime", "modifiedTime" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "order" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "ascending", "descending" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "name", "order" ]
+      },
+      "getArchivedSelectFields" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fields" : {
+            "type" : [ "null", "array" ],
+            "description" : "",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "description" : "",
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+              "x-custom-parameters-attributes" : { }
+            },
+            "maxItems" : 15,
+            "minItems" : 1,
+            "uniqueItems" : true,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "fields" ]
+      },
+      "archivedViewPreferenceKeys" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./CustomView.json#/components/schemas/getArchivedSelectFields"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "sortField" : {
+              "$ref" : "./CustomView.json#/components/schemas/archivedViewSortField"
+            },
+            "fields" : {
+              "type" : [ "null", "array" ],
+              "description" : "",
+              "items" : {
+                "type" : [ "string", "null" ],
+                "description" : "",
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                "x-custom-parameters-attributes" : { }
+              },
+              "maxItems" : 15,
+              "minItems" : 1,
+              "uniqueItems" : true,
+              "x-custom-parameters-attributes" : { }
+            }
+          },
+          "required" : [ "fields", "sortField" ]
+        } ]
+      },
+      "formulaFieldResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isCustomField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isSortable" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isVisible" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isReadOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "isEncryptedField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isPHI" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "maxLength" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "returnType" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayLabel", "i18NLabel", "id", "isCustomField", "isEncryptedField", "isMandatory", "isPHI", "isReadOnly", "isSortable", "isVisible", "maxLength", "name", "returnType", "type" ]
+      },
+      "selectColumnMetaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isCustomField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isSortable" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isVisible" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isReadOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "isEncryptedField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isPHI" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "maxLength" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayLabel", "i18NLabel", "id", "isCustomField", "isEncryptedField", "isMandatory", "isPHI", "isReadOnly", "isSortable", "isVisible", "maxLength", "name", "type" ]
+      },
+      "selectColumnJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isReadOnly" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isCustomField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "isEncryptedField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isPHI" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isVisible" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "Number", "Percent", "Decimal", "Currency", "Date", "DateTime", "Email", "Phone", "Picklist", "URL", "Textarea", "Boolean", "Multiselect", "AutoNumber", "LookUp", "Fax", "Formula" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "maxLength" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayLabel", "i18NLabel", "id", "isCustomField", "isEncryptedField", "isMandatory", "isPHI", "isReadOnly", "isVisible", "maxLength", "name", "type" ]
+      },
+      "availableFieldsData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "#/components/schemas/formulaFieldResponse"
+          }, {
+            "$ref" : "#/components/schemas/selectColumnMetaJson"
+          }, {
+            "$ref" : "#/components/schemas/selectColumnJson"
+          } ]
+        }
+      },
+      "customView_array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "sortField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "order" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ascending", "descending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "name", "order" ]
+      },
+      "starredViewsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "properties" : { }
+          },
+          "isCustomView" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deprecatedViewId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "viewName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "deprecatedViewId", "id", "isCustomView", "name", "viewName" ]
+      },
+      "viewsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isCustomView" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deprecatedViewId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "viewName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "isCustomView", "name", "id", "viewName" ]
+      },
+      "viewsData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/viewsJson"
+        }
+      },
+      "queueSlotsResponseArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+        }
+      },
+      "queueSlotsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 3000,
+          "minLength" : 0,
+          "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+        },
+        "maxItems" : 10,
+        "minItems" : 1
+      },
+      "starredViewResponseArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/starredViewsJson"
+        }
+      },
+      "updateMyPreferenceSortField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "createdTime", "modifiedTime" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "order" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ascending", "descending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "name", "order" ]
+      },
+      "recentViewPreference" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "sortField" : {
+            "$ref" : "#/components/schemas/sortField"
+          },
+          "records" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "receivedIn" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "last15Days", "last30Days", "last90Days", "allDays" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Records received in.Allowed values are @last15Days@,@last30Days@,@last90Days@,@allDays@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "receivedIn", "records", "sortField" ]
+      }
+    },
+    "responses" : {
+      "archivedViewPreference" : {
+        "description" : "archivedViewPreference template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./CustomView.json#/components/schemas/archivedViewPreferenceKeys"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "fields" : [ "customerResponseTime", "assigneeId", "contactId", "subject", "channel", "dueDate", "ticketNumber" ],
+                    "sortField" : {
+                      "name" : "createdTime",
+                      "order" : "descending"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "getAvailableFieldsResponse" : {
+        "description" : "getAvailableFieldsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fields" : {
+                  "$ref" : "#/components/schemas/availableFieldsData"
+                }
+              },
+              "required" : [ "fields" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "fields" : [ {
+                    "displayLabel" : "Account Name",
+                    "isReadOnly" : "false",
+                    "name" : "accountName",
+                    "id" : "5000000000369",
+                    "isVisible" : "true",
+                    "type" : "Text"
+                  }, {
+                    "displayLabel" : "Email",
+                    "isReadOnly" : "false",
+                    "name" : "email",
+                    "id" : "5000000000373",
+                    "isVisible" : "true",
+                    "type" : "Email"
+                  }, {
+                    "displayLabel" : "Phone",
+                    "isReadOnly" : "false",
+                    "name" : "phone",
+                    "id" : "5000000000371",
+                    "isVisible" : "true",
+                    "type" : "Phone"
+                  }, {
+                    "displayLabel" : "Website",
+                    "isReadOnly" : "false",
+                    "name" : "website",
+                    "id" : "5000000000375",
+                    "isVisible" : "true",
+                    "type" : "URL"
+                  }, {
+                    "displayLabel" : "Country",
+                    "isReadOnly" : "false",
+                    "name" : "country",
+                    "id" : "5000000000403",
+                    "isVisible" : "true",
+                    "type" : "Text"
+                  }, {
+                    "displayLabel" : "Category",
+                    "isReadOnly" : "true",
+                    "name" : "cf_category",
+                    "id" : "5000000000446",
+                    "isVisible" : "true",
+                    "type" : "Text"
+                  }, {
+                    "displayLabel" : "Account Owner",
+                    "isReadOnly" : "false",
+                    "name" : "ownerId",
+                    "id" : "5000000000377",
+                    "isVisible" : "true",
+                    "type" : "LookUp"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "customViewResponse" : {
+        "description" : "customViewResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/customViewNewResponse"
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "oldFormat" : {
+                    "accessibility" : {
+                      "roles" : null,
+                      "groups" : null,
+                      "type" : "restrictedAccess",
+                      "rolesAndSubordinates" : null,
+                      "agents" : [ "20998000000101010" ]
+                    },
+                    "criteria" : {
+                      "fieldConditions" : [ {
+                        "displayValue" : [ "${OPEN}" ],
+                        "criteriaValues" : [ {
+                          "displayValue" : "${OPEN}",
+                          "value" : "${OPEN}"
+                        } ],
+                        "condition" : "is OPEN",
+                        "fieldName" : "Status",
+                        "value" : [ "${OPEN}" ]
+                      }, {
+                        "displayValue" : [ "${CURRENTTIME}" ],
+                        "criteriaValues" : [ {
+                          "displayValue" : "${CURRENTTIME}",
+                          "value" : "${CURRENTTIME}"
+                        } ],
+                        "condition" : "is",
+                        "fieldName" : "Due Date",
+                        "value" : [ "${CURRENTTIME}" ]
+                      }, {
+                        "displayValue" : [ "Johnson" ],
+                        "criteriaValues" : [ {
+                          "displayValue" : "Johnson",
+                          "value" : "20998000000101010"
+                        } ],
+                        "condition" : "is",
+                        "fieldName" : "Case Owner",
+                        "value" : [ "20998000000101010" ]
+                      } ],
+                      "pattern" : "(1and2)or3"
+                    },
+                    "module" : "tickets",
+                    "name" : "my customview",
+                    "id" : "20998000000101016",
+                    "department" : "allDepartment"
+                  },
+                  "newFormat" : {
+                    "moduleMapping" : {
+                      "primaryModule" : {
+                        "apiName" : "tickets"
+                      }
+                    },
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "restrictedAccess",
+                      "rolesAndSubordinates" : null,
+                      "agents" : [ "20998000000101010" ]
+                    },
+                    "criteria" : {
+                      "criteriaFields" : [ {
+                        "condition" : "is OPEN",
+                        "field" : {
+                          "apiName" : "status",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "dueDate",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "displayKey" : "${CURRENTTIME}",
+                            "key" : "${CURRENTTIME}"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "assigneeId",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "displayKey" : "Johnson",
+                            "key" : "20998000000101010"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      } ],
+                      "criteriaPattern" : "(1and2)or3"
+                    },
+                    "name" : "my customview",
+                    "id" : "20998000000101016",
+                    "department" : "allDepartment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getRecentViewJson" : {
+        "description" : "getRecentViewJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "preference" : {
+                  "ref" : "./CustomView.json#/components/schemas/recentViewPreference"
+                },
+                "sanitizedName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}&amp;&lt;&gt;\\+=]+"
+                },
+                "displayLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+                }
+              },
+              "required" : [ "displayLabel", "id", "name", "preference", "sanitizedName" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "name" : "My Records",
+                    "id" : "4000000008143"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getViewPreferenceResponse" : {
+        "description" : "getViewPreferenceResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "records" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "sortField" : {
+                  "$ref" : "#/components/schemas/sortField"
+                },
+                "receivedIn" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "last15Days", "last30Days", "last90Days", "allDays" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Records received in.Allowed values are @last15Days@,@last30Days@,@last90Days@,@allDays@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "receivedIn", "records", "sortField" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "records" : "20",
+                  "sortField" : {
+                    "name" : "createdTime",
+                    "order" : "descending"
+                  },
+                  "receivedIn" : "last15Days"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getViewsResponse" : {
+        "description" : "getViewsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/viewsData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isCustomView" : false,
+                    "name" : "All Tasks",
+                    "id" : "4000000007834"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "My Tasks",
+                    "id" : "4000000007836"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "My Open Tasks",
+                    "id" : "4000000007838"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Completed Tasks",
+                    "id" : "4000000007840"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Open Tasks",
+                    "id" : "4000000007842"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Overdue Tasks",
+                    "id" : "4000000007844"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Todays Tasks",
+                    "id" : "4000000007846"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Tomorrows Tasks",
+                    "id" : "4000000007848"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Today+Overdue Tasks",
+                    "id" : "4000000007850"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Next7days+Overdue Tasks",
+                    "id" : "4000000007852"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getQueueSlotsResponse" : {
+        "description" : "getQueueSlotsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "queueSlots" : {
+                  "$ref" : "#/components/schemas/queueSlotsResponseArray"
+                }
+              },
+              "required" : [ "queueSlots" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "queueSlots" : [ "Open", "On Hold", "Escalated" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSelectedFieldsResponse" : {
+        "description" : "getSelectedFieldsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "fields" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    },
+                    "maxItems" : 15,
+                    "minItems" : 1,
+                    "uniqueItems" : true
+                  }
+                },
+                "required" : [ "fields" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "fields" : {
+                    "$ref" : "#/components/schemas/availableFieldsData"
+                  }
+                },
+                "required" : [ "fields" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "fields" : [ "ticketNumber", "subject", "contactId", "accountId", "customerResponseTime", "dueDate", "status", "channel" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getStarredViewsResponse" : {
+        "description" : "getStarredViewsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "starredViews" : {
+                  "$ref" : "#/components/schemas/starredViewResponseArray"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "calls", "events", "activities" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Module associated with the view. Values allowed are:@tickets@, @tasks@, @contacts@, @accounts@, @activities@, @calls@, @events@ or @contracts@.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false,
+                    "entity" : "Views"
+                  }
+                }
+              },
+              "required" : [ "module", "starredViews" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "starredViews" : [ {
+                    "isCustomView" : false,
+                    "name" : "All Tickets",
+                    "count" : "40",
+                    "id" : "4000000007834"
+                  }, {
+                    "isCustomView" : false,
+                    "name" : "Open Tickets",
+                    "count" : "22",
+                    "id" : "4000000007844"
+                  } ],
+                  "module" : "tickets"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getQueryStoreResponse" : {
+        "description" : "getQueryStoreResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "selectFields" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "module" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "apiName", "module" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "moduleMapping" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 1,
+                  "minProperties" : 1,
+                  "properties" : {
+                    "primaryModule" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 1,
+                      "minProperties" : 1,
+                      "properties" : {
+                        "apiName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "apiName" ]
+                    }
+                  },
+                  "required" : [ "primaryModule" ]
+                },
+                "sortKey" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "criteria" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "criteriaFields" : {
+                      "type" : [ "null", "array" ],
+                      "items" : {
+                        "type" : [ "null", "object" ],
+                        "additionalProperties" : false,
+                        "maxProperties" : 3,
+                        "minProperties" : 3,
+                        "properties" : {
+                          "condition" : {
+                            "type" : [ "string", "null" ],
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "field" : {
+                            "type" : [ "null", "object" ],
+                            "additionalProperties" : false,
+                            "maxProperties" : 2,
+                            "minProperties" : 2,
+                            "properties" : {
+                              "apiName" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                              },
+                              "module" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "required" : [ "apiName", "module" ]
+                          },
+                          "value" : {
+                            "type" : [ "null", "object" ],
+                            "additionalProperties" : false,
+                            "maxProperties" : 1,
+                            "minProperties" : 1,
+                            "properties" : {
+                              "type" : {
+                                "type" : [ "string", "null" ],
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "required" : [ "type" ]
+                          }
+                        },
+                        "required" : [ "condition", "field", "value" ]
+                      },
+                      "uniqueItems" : false
+                    },
+                    "criteriaPattern" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "criteriaFields", "criteriaPattern" ]
+                }
+              },
+              "required" : [ "criteria", "moduleMapping", "selectFields", "sortKey" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "featureFlags" : {
+        "name" : "featureFlags",
+        "in" : "header",
+        "description" : "Feature flags for special cases",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "enum" : [ "requestNewResponse", "showI18NFields", "sanitizedName" ]
+        }
+      },
+      "cvId" : {
+        "name" : "cvId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "mode" : {
+        "name" : "mode",
+        "in" : "query",
+        "description" : "Queue mode for which the ticket should be fetched.Values allowed are: @status@, @priority@, @crmContactType@, @dueInMinutes@.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Queue mode for which the ticket should be fetched.Values allowed are: @status@, @priority@, @crmContactType@, @dueInMinutes@.",
+          "enum" : [ "status", "priority", "dueInMinutes", "crmContactType" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department in which the view(s) is (are) configured.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the department in which the view(s) is (are) configured.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "module" : {
+        "name" : "module",
+        "in" : "query",
+        "description" : "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contacts@, @products@ ,@activities@,@calls@,@events@.",
+          "enum" : [ "tickets" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : {
+            "entity" : "Views"
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "archivedViewPreferenceKeys" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./CustomView.json#/components/schemas/getArchivedSelectFields"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "sortField" : {
+                    "$ref" : "./CustomView.json#/components/schemas/archivedViewSortField"
+                  },
+                  "fields" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    },
+                    "maxItems" : 15,
+                    "minItems" : 1,
+                    "uniqueItems" : true
+                  }
+                }
+              }, {
+                "type" : "object"
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "sortField" : {
+                    "name" : "createdTime",
+                    "order" : "descending"
+                  },
+                  "fields" : [ "ticketNumber", "subject", "contactId", "accountId", "customerResponseTime", "dueDate", "status", "channel" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateCustomViewJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/updateCustomViewJson",
+              "additionalProperties" : false
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "oldFormat" : {
+                    "accessibility" : {
+                      "type" : "allAgents"
+                    },
+                    "criteria" : {
+                      "fieldConditions" : [ {
+                        "condition" : "is OPEN",
+                        "fieldName" : "Status",
+                        "value" : [ "${OPEN}" ]
+                      }, {
+                        "condition" : "is",
+                        "fieldName" : "Due Date",
+                        "value" : [ "${CURRENTTIME}" ]
+                      }, {
+                        "condition" : "is",
+                        "fieldName" : "Case Owner",
+                        "value" : [ "20998000000101010" ]
+                      } ],
+                      "pattern" : "(1and2)or3"
+                    },
+                    "name" : "my customview",
+                    "department" : "allDepartment"
+                  },
+                  "newFormat" : {
+                    "accessibility" : {
+                      "type" : "allAgents"
+                    },
+                    "criteria" : {
+                      "criteriaFields" : [ {
+                        "condition" : "is OPEN",
+                        "field" : {
+                          "apiName" : "status",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "dueDate",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "key" : "${CURRENTTIME}"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "assigneeId",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "key" : "20998000000101010"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      } ],
+                      "criteriaPattern" : "(1and2)or3"
+                    },
+                    "name" : "my customview",
+                    "department" : "allDepartment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "starredViewJsonOrder" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "starredViewIds" : {
+                  "$ref" : "#/components/schemas/customView_array"
+                }
+              },
+              "required" : [ "starredViewIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "starredViewIds" : [ "4000000007808", "4000000007810", "4000000007818", "4000000007820", "4000000007828", "4000000007830", "4000000007848", "4000000007850" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "getSelectedFieldsResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fields" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "maxItems" : 15,
+                  "minItems" : 1,
+                  "uniqueItems" : true
+                }
+              },
+              "required" : [ "fields" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "fields" : [ "ticketNumber", "subject", "contactId", "accountId", "customerResponseTime", "dueDate", "status", "channel" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addCustomViewJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/addCustomViewJson",
+              "additionalProperties" : false
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "oldFormat" : {
+                    "accessibility" : {
+                      "type" : "restrictedAccess",
+                      "agents" : [ "20998000000101010" ]
+                    },
+                    "criteria" : {
+                      "fieldConditions" : [ {
+                        "condition" : "is OPEN",
+                        "fieldName" : "Status",
+                        "value" : [ "${OPEN}" ]
+                      }, {
+                        "condition" : "is",
+                        "fieldName" : "Due Date",
+                        "value" : [ "${CURRENTTIME}" ]
+                      }, {
+                        "condition" : "is",
+                        "fieldName" : "Case Owner",
+                        "value" : [ "20998000000101010" ]
+                      } ],
+                      "pattern" : "(1and2)or3"
+                    },
+                    "module" : "tickets",
+                    "name" : "my customview",
+                    "department" : "allDepartment"
+                  },
+                  "newFormat" : {
+                    "moduleMapping" : {
+                      "primaryModule" : {
+                        "apiName" : "tickets"
+                      }
+                    },
+                    "accessibility" : {
+                      "type" : "restrictedAccess",
+                      "agents" : [ "20998000000101010" ]
+                    },
+                    "criteria" : {
+                      "criteriaFields" : [ {
+                        "condition" : "is OPEN",
+                        "field" : {
+                          "apiName" : "status",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "dueDate",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "key" : "${CURRENTTIME}"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "is",
+                        "field" : {
+                          "apiName" : "assigneeId",
+                          "module" : "tickets"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "key" : "20998000000101010"
+                          } ],
+                          "type" : "primitive"
+                        }
+                      } ],
+                      "criteriaPattern" : "(1and2)or3"
+                    },
+                    "name" : "my customview",
+                    "department" : "allDepartment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "queueSlotsJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "queueSlots" : {
+                  "$ref" : "#/components/schemas/queueSlotsArray"
+                }
+              },
+              "required" : [ "queueSlots" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "queueSlots" : [ "Open", "On Hold", "Escalated" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateMyViewPreferenceKeys" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "records" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "10", "20", "30", "40", "50" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(10|20|30|40|50)"
+                },
+                "sortField" : {
+                  "$ref" : "#/components/schemas/updateMyPreferenceSortField"
+                },
+                "receivedIn" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "last15Days", "last30Days", "last90Days", "allDays" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(last15Days|last30Days|last90Days|allDays)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "records" : "20",
+                  "sortField" : {
+                    "name" : "createdTime",
+                    "order" : "descending"
+                  },
+                  "receivedIn" : "last15Days"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CustomView"
+}

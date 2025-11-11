@@ -1,0 +1,597 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IMTemplateMessage",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/cannedMessages/{id}" : {
+      "get" : {
+        "tags" : [ "IMTemplateMessage" ],
+        "summary" : "Get a Template Message",
+        "description" : "This API fetches details of a template message.",
+        "operationId" : "getTemplateMessage",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTemplateMessage"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.InstantMessages.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "apihash" : "25021246a6b34d613b8476c1d5a94c30",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMCannedMessageService.getCannedMessage"
+        }
+      }
+    },
+    "/api/v1/im/cannedMessages" : {
+      "get" : {
+        "tags" : [ "IMTemplateMessage" ],
+        "summary" : "List Template Message",
+        "description" : "This API lists all sessions",
+        "operationId" : "getTemplateMessages",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department ID for which the canned messages to be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department ID for which the canned messages to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Filter by MessageType. Allowed values are @TEMPLATE@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Filter by MessageType. Allowed values are @TEMPLATE@",
+            "enum" : [ "TEMPLATE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTemplateMessages"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.InstantMessages.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "apihash" : "eab0cacf13a6e2ca2d678afa660f3404",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMCannedMessageService.getCannedMessagesList"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getTemplateMessage" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          },
+          "message" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TEMPLATE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter by MessageType. Allowed values are @TEMPLATE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "isActive" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Canned Message Active Status",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "tags" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actor" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "displayMessage" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 65535,
+            "minLength" : 0
+          },
+          "translations" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false
+            },
+            "minItems" : 0,
+            "uniqueItems" : false
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SUBMITTED", "FAILED", "APPROVED", "REJECTED", "PENDING" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter with Status of Message Applicable only if messageType is Template. Allowed values are @PENDING@, @FAILED@, @APPROVED@, @REJECTED@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "actor", "contactId", "departmentId", "displayMessage", "id", "isActive", "message", "modifiedTime", "status", "tags", "title", "translations", "type" ]
+      },
+      "listofTemplateMessages" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IMTemplateMessage.json#/components/schemas/getTemplateMessage"
+        }
+      }
+    },
+    "responses" : {
+      "getTemplateMessage" : {
+        "description" : "getTemplateMessage template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "contactId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "title" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65535,
+                  "minLength" : 0
+                },
+                "message" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65535,
+                  "minLength" : 0
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "TEMPLATE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isActive" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "tags" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actor" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "displayMessage" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65535,
+                  "minLength" : 0
+                },
+                "translations" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false
+                  },
+                  "minItems" : 0,
+                  "uniqueItems" : false
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "SUBMITTED", "FAILED", "APPROVED", "REJECTED", "PENDING" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actor", "contactId", "departmentId", "displayMessage", "id", "isActive", "message", "modifiedTime", "status", "tags", "title", "translations", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1711085762000,
+                  "departmentId" : "186543000000006907",
+                  "title" : "fb marketing",
+                  "message" : "Welcome to Tasty Bakery. What would you like to eat?",
+                  "type" : "TEMPLATE",
+                  "isActive" : true,
+                  "tags" : "MARKETING",
+                  "actor" : {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                    "name" : "Abhishek Aich",
+                    "id" : "186543000000190001",
+                    "type" : "AGENT",
+                    "email" : "zykler@sales.com"
+                  },
+                  "wabaId" : "102086489526176",
+                  "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?",
+                  "translations" : [ {
+                    "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?",
+                    "templateItems" : {
+                      "buttons" : [ {
+                        "action" : null,
+                        "type" : "QUICK_REPLY",
+                        "message" : "Cakes"
+                      }, {
+                        "action" : null,
+                        "type" : "QUICK_REPLY",
+                        "message" : "pizza"
+                      } ],
+                      "footer" : {
+                        "type" : "TEXT",
+                        "message" : "Thank you"
+                      },
+                      "header" : null
+                    },
+                    "language" : "en",
+                    "id" : "3942000001074177",
+                    "message" : "Welcome to Tasty Bakery. What would you like to eat?",
+                    "rejectionReason" : null,
+                    "status" : "APPROVED"
+                  } ],
+                  "id" : "3942000001074175",
+                  "status" : "APPROVED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTemplateMessages" : {
+        "description" : "getTemplateMessages template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IMTemplateMessage.json#/components/schemas/listofTemplateMessages"
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1711085762000,
+                    "departmentId" : "186543000000006907",
+                    "title" : "fb marketing",
+                    "message" : "Welcome to Tasty Bakery. What would you like to eat?",
+                    "type" : "TEMPLATE",
+                    "isActive" : true,
+                    "tags" : "MARKETING",
+                    "actor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "name" : "Abhishek Aich",
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler@sales.com"
+                    },
+                    "wabaId" : "102086489526176",
+                    "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?",
+                    "translations" : [ {
+                      "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?",
+                      "templateItems" : {
+                        "buttons" : [ {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Cakes"
+                        }, {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "pizza"
+                        } ],
+                        "footer" : null,
+                        "header" : null
+                      },
+                      "language" : "en",
+                      "id" : "3942000001074177",
+                      "message" : "Welcome to Tasty Bakery. What would you like to eat?",
+                      "rejectionReason" : null,
+                      "status" : "APPROVED"
+                    } ],
+                    "id" : "3942000001074175",
+                    "status" : "APPROVED"
+                  }, {
+                    "modifiedTime" : 1711085753000,
+                    "departmentId" : "186543000000006907",
+                    "title" : "Rice Marketing",
+                    "message" : "Hello please select our new rice items",
+                    "type" : "TEMPLATE",
+                    "isActive" : true,
+                    "tags" : "MARKETING",
+                    "actor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "name" : "Abhishek Aich",
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler@sales.com"
+                    },
+                    "wabaId" : "102086489526176",
+                    "displayMessage" : "Hello please select our new rice items",
+                    "translations" : [ {
+                      "displayMessage" : "Hello please select our new rice items",
+                      "templateItems" : {
+                        "buttons" : [ {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Boiled Rice"
+                        }, {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Rice Cake"
+                        }, {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Fried Rice"
+                        } ],
+                        "footer" : null,
+                        "header" : {
+                          "attachment" : null,
+                          "type" : "TEXT",
+                          "message" : "Welcome Back"
+                        }
+                      },
+                      "language" : "en",
+                      "id" : "3942000001423160",
+                      "message" : "Hello please select our new rice items",
+                      "rejectionReason" : null,
+                      "status" : "APPROVED"
+                    } ],
+                    "id" : "3942000001423158",
+                    "status" : "APPROVED"
+                  }, {
+                    "modifiedTime" : 1711082873000,
+                    "departmentId" : "186543000000006907",
+                    "title" : "Whatsapp marketing",
+                    "message" : "Welcome to Tasty Bakery. What would you like to eat?\nHere are our new products",
+                    "type" : "TEMPLATE",
+                    "isActive" : true,
+                    "tags" : "UTILITY",
+                    "actor" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "name" : "Abhishek Aich",
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler@sales.com"
+                    },
+                    "wabaId" : "102086489526176",
+                    "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?\nHere are our new products",
+                    "translations" : [ {
+                      "displayMessage" : "Welcome to Tasty Bakery. What would you like to eat?\nHere are our new products",
+                      "templateItems" : {
+                        "buttons" : [ {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Croissants"
+                        }, {
+                          "action" : null,
+                          "type" : "QUICK_REPLY",
+                          "message" : "Pizza"
+                        } ],
+                        "footer" : null,
+                        "header" : null
+                      },
+                      "language" : "en",
+                      "id" : "3942000001262607",
+                      "message" : "Welcome to Tasty Bakery. What would you like to eat?\nHere are our new products",
+                      "rejectionReason" : null,
+                      "status" : "APPROVED"
+                    } ],
+                    "id" : "3942000001262605",
+                    "status" : "APPROVED"
+                  } ],
+                  "hasMore" : false
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IMTemplateMessage"
+}

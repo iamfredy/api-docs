@@ -1,0 +1,678 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "BulkWrite",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/bulkWrite" : {
+      "get" : {
+        "tags" : [ "BulkWrite" ],
+        "summary" : "Get bulkWrite list",
+        "description" : "This API fetches a bulk write info from your help desk portal.",
+        "operationId" : "listOfBulkWrite",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of BulkWrite requests to be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The number of BulkWrite requests to be fetched.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting position of the index.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting position of the index.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkWriteResponseList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "20b156e3df1d38810d51fd4a33c90c66",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.BulkWriteService.getBulkWrite"
+        }
+      },
+      "post" : {
+        "tags" : [ "BulkWrite" ],
+        "summary" : "Post bulkWrite",
+        "description" : "This API to bulk write data in your help desk portal.",
+        "operationId" : "addBulkWrite",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/bulkWriteRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/bulkWriteResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "Zwitch_DOSRateLimiter"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "a7d267a822991743333b29bf74823baf",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.BulkWriteService.addBulkWriteEntry"
+        }
+      }
+    },
+    "/api/v1/bulkWrite/{bulkWriteId}" : {
+      "get" : {
+        "tags" : [ "BulkWrite" ],
+        "summary" : "Get bulkWrite",
+        "description" : "This API fetches a single bulk write info from your help desk portal.",
+        "operationId" : "getBulkWrite",
+        "parameters" : [ {
+          "name" : "bulkWriteId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkWriteResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "40f19c97f882c99fb190fc72186ab746",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.BulkWriteService.getBulkWriteEntry"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "bulkWriteResponses" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "scope" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$"
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "kbRootCategories" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fileProperties" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "separatedWith" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "COMMA", "SEMICOLON", "PIPE" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "escapedWith" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "QUOTE", "DOUBLE_QUOTE" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "escapedWith", "separatedWith" ]
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "queue", "initiated", "in_progress", "completed" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fileId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "createdBy", "createdTime", "fileId", "fileProperties", "id", "modifiedTime", "module", "scope", "status" ]
+      },
+      "bulkWriteList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./BulkWrite.json#/components/schemas/bulkWriteResponses"
+        }
+      }
+    },
+    "responses" : {
+      "bulkWriteResponseList" : {
+        "description" : "bulkWriteResponseList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./BulkWrite.json#/components/schemas/bulkWriteList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1637209044000,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Roderick",
+                      "lastName" : "Jarvis",
+                      "name" : "Roderick Jarvis",
+                      "id" : "1892000000042035"
+                    },
+                    "scope" : "4c0d8735-3831-42f5-ab95-57e9862195da",
+                    "module" : {
+                      "apiName" : "tickets",
+                      "displayName" : "Requests"
+                    },
+                    "fileProperties" : {
+                      "separatedWith" : null,
+                      "escapedWith" : null
+                    },
+                    "createdTime" : 1637209044000,
+                    "resultUrl" : "",
+                    "id" : "189200000004001",
+                    "fileId" : "189200000003001",
+                    "status" : "QUEUE"
+                  }, {
+                    "modifiedTime" : 1637209044000,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Roderick",
+                      "lastName" : "Jarvis",
+                      "name" : "Roderick Jarvis",
+                      "id" : "1892000000042035"
+                    },
+                    "scope" : "4c0d8735-3831-42f5-ab95-57e9862195da",
+                    "module" : {
+                      "apiName" : "tickets",
+                      "displayName" : "Requests"
+                    },
+                    "fileProperties" : {
+                      "separatedWith" : null,
+                      "escapedWith" : null
+                    },
+                    "createdTime" : 1637209044000,
+                    "resultUrl" : "",
+                    "id" : "189200000004002",
+                    "fileId" : "189200000003002",
+                    "status" : "INITIATED"
+                  }, {
+                    "modifiedTime" : 1637209044000,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Roderick",
+                      "lastName" : "Jarvis",
+                      "name" : "Roderick Jarvis",
+                      "id" : "1892000000042035"
+                    },
+                    "scope" : "4c0d8735-3831-42f5-ab95-57e9862195da",
+                    "module" : {
+                      "apiName" : "tickets",
+                      "displayName" : "Requests"
+                    },
+                    "fileProperties" : {
+                      "separatedWith" : null,
+                      "escapedWith" : null
+                    },
+                    "createdTime" : 1637209044000,
+                    "resultUrl" : "",
+                    "id" : "189200000004003",
+                    "fileId" : "189200000003003",
+                    "status" : "IN_PROGRESS"
+                  }, {
+                    "modifiedTime" : 1637209044000,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Roderick",
+                      "lastName" : "Jarvis",
+                      "name" : "Roderick Jarvis",
+                      "id" : "1892000000042035"
+                    },
+                    "scope" : "4c0d8735-3831-42f5-ab95-57e9862195da",
+                    "module" : {
+                      "apiName" : "tickets",
+                      "displayName" : "Requests"
+                    },
+                    "fileProperties" : {
+                      "separatedWith" : null,
+                      "escapedWith" : null
+                    },
+                    "createdTime" : 1637209044000,
+                    "resultUrl" : "https://download.zohotest.com/acdse/udsfwer3dcds",
+                    "id" : "189200000004004",
+                    "fileId" : "189200000003004",
+                    "status" : "COMPLETED"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkWriteResponse" : {
+        "description" : "bulkWriteResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "scope" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "kbRootCategories" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fileProperties" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "separatedWith" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "COMMA", "SEMICOLON", "PIPE" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "escapedWith" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "QUOTE", "DOUBLE_QUOTE" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "escapedWith", "separatedWith" ]
+                },
+                "count" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 4,
+                  "minProperties" : 4,
+                  "properties" : {
+                    "total" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "inProgress" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "succeed" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "failed" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    }
+                  },
+                  "required" : [ "failed", "inProgress", "succeed", "total" ]
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fieldMappings" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "headerName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "apiName", "headerName" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "queue", "initiated", "in_progress", "completed" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "fileId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "count", "createdBy", "createdTime", "fieldMappings", "fileId", "fileProperties", "id", "modifiedTime", "module", "scope", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1637209044000,
+                  "createdBy" : {
+                    "photoURL" : null,
+                    "firstName" : "Roderick",
+                    "lastName" : "Jarvis",
+                    "name" : "Roderick Jarvis",
+                    "id" : "1892000000042035"
+                  },
+                  "scope" : "4c0d8735-3831-42f5-ab95-57e9862195da",
+                  "module" : {
+                    "apiName" : "tickets",
+                    "displayName" : "Requests"
+                  },
+                  "fileProperties" : {
+                    "separatedWith" : null,
+                    "escapedWith" : null
+                  },
+                  "createdTime" : 1637209044000,
+                  "resultUrl" : "https://download.zoho.com/acdse/udsfwer3dcds",
+                  "importRecordSummary" : {
+                    "total" : "100",
+                    "inProgress" : "0",
+                    "succeed" : "100",
+                    "failed" : "0"
+                  },
+                  "id" : "189200000004001",
+                  "fieldMappings" : [ {
+                    "apiName" : "ticketExtId",
+                    "headerName" : "ticket_id"
+                  }, {
+                    "apiName" : "contactExtId",
+                    "headerName" : "contact_id"
+                  }, {
+                    "apiName" : "subject",
+                    "headerName" : "subject"
+                  } ],
+                  "fileId" : "189200000003001",
+                  "status" : "QUEUE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "bulkWriteRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "kbRootCategories" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "scope" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12})$"
+                },
+                "fileProperties" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "separatedWith" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "COMMA", "SEMICOLON", "PIPE" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "escapedWith" : {
+                      "type" : [ "string", "null" ],
+                      "enum" : [ "QUOTE", "DOUBLE_QUOTE" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "escapedWith", "separatedWith" ]
+                },
+                "fieldMappings" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "headerName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "required" : [ "apiName", "headerName" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "fileId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "fieldMappings", "fileId", "module", "scope" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "module" : {
+                    "apiName" : "accounts"
+                  },
+                  "fileProperties" : {
+                    "separatedWith" : "COMMA",
+                    "escapedWith" : "DOUBLE_QUOTE"
+                  },
+                  "fieldMappings" : [ {
+                    "apiName" : "accountExtId",
+                    "headerName" : "account_id"
+                  }, {
+                    "apiName" : "accountName",
+                    "headerName" : "account_name"
+                  } ],
+                  "fileId" : 1892000000032001
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "BulkWrite"
+}

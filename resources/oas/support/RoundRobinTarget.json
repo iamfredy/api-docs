@@ -1,0 +1,381 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "RoundRobinTarget",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/roundRobinRules/{ruleId}/targets/{targetId}" : {
+      "get" : {
+        "tags" : [ "RoundRobinTarget" ],
+        "summary" : "Get round robin rule target",
+        "description" : "To get a particular target in a round robin rule",
+        "operationId" : "getRRTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/ruleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/targetJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c51cd9415b8bdfec0b19f20764948b52",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.RoundRobinRulesService.getRoundRobinRuleTarget"
+        }
+      }
+    },
+    "/api/v1/roundRobinRules/{ruleId}/targets/reorder" : {
+      "post" : {
+        "tags" : [ "RoundRobinTarget" ],
+        "summary" : "Reorder targets in a round robin rule",
+        "description" : "To reorder all the targets in a round robin rule",
+        "operationId" : "reorderTargets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ruleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/targetIdsToReorderPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "55df58b8dae3febca6c9d658af542650",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.RoundRobinRulesService.reOrderTargets"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "fieldConditionsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/automationCriteriaResponse"
+        }
+      },
+      "criteriaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "./RoundRobinTarget.json#/components/schemas/fieldConditionsArr"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[andor()0-9\\s]*"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      },
+      "targetJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "targetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "orderId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "criteria" : {
+            "$ref" : "./RoundRobinTarget.json#/components/schemas/criteriaJson"
+          },
+          "agentIdsToExclude" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "assigneeType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENT", "TEAM" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "assignmentType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SkillBased", "LoadBalance", "SequentialAssignment" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "agentIds", "agentIdsToExclude", "assigneeType", "assignmentType", "criteria", "orderId", "targetId" ]
+      },
+      "targetJsonWithTeamId" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./RoundRobinTarget.json#/components/schemas/targetJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "teamId" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "teamId" ]
+        } ]
+      },
+      "targetList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./RoundRobinTarget.json#/components/schemas/targetJson"
+          }, {
+            "$ref" : "./RoundRobinTarget.json#/components/schemas/targetJsonWithTeamId"
+          } ]
+        }
+      }
+    },
+    "responses" : {
+      "targetJson" : {
+        "description" : "targetJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "targetId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "orderId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "criteria" : {
+                  "$ref" : "./RoundRobinTarget.json#/components/schemas/criteriaJson"
+                },
+                "agentIdsToExclude" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "assigneeType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AGENT", "TEAM" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "assignmentType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "SkillBased", "LoadBalance", "SequentialAssignment" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "agentIds", "agentIdsToExclude", "assigneeType", "assignmentType", "criteria", "orderId", "targetId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "agentIds" : [ 4000000007865 ],
+                  "targetId" : 4000000004876,
+                  "criteria" : {
+                    "fieldConditions" : [ {
+                      "condition" : "is",
+                      "fieldName" : "Priority",
+                      "fieldModule" : "tickets",
+                      "value" : [ "Low" ]
+                    } ],
+                    "pattern" : "(1)"
+                  },
+                  "agentIdsToExclude" : [ ],
+                  "assigneeType" : "AGENT",
+                  "assignmentType" : "LoadBalance"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "ruleId" : {
+        "name" : "ruleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "targetIdsToReorderPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "targetIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "targetIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : [ 4000000004076, 4000000004479, 4000000004506 ]
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "RoundRobinTarget"
+}

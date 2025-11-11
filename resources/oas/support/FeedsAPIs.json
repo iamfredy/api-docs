@@ -1,0 +1,198 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "FeedsAPIs",
+    "version" : "1.0.0",
+    "x-clan-group" : "chat",
+    "x-module-group" : "acs"
+  },
+  "paths" : {
+    "/api/v1/feed/notification/markAsRead" : {
+      "post" : {
+        "tags" : [ "FeedsAPIs" ],
+        "summary" : "API used to mark specific notification as read",
+        "description" : "API used to mark specific notification as read",
+        "operationId" : "Mark_Notification_As_Read",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/markAsReadJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "202" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.feeds.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "chat",
+          "apihash" : "dfec853098dcd37dfd001c29ac388ab2",
+          "module-group" : "acs",
+          "apimethod" : "com.zoho.support.restapi.FeedService.markNotifictionAsRead"
+        }
+      }
+    },
+    "/api/v1/feed/notification/flag" : {
+      "post" : {
+        "tags" : [ "FeedsAPIs" ],
+        "summary" : "To flag or unflag a specific notification",
+        "description" : "To flag or unflag a specific notification",
+        "operationId" : "FlagNotification",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/flagJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "202" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.feeds.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "chat",
+          "apihash" : "3f01df659515402fd98461f3cd6e3769",
+          "module-group" : "acs",
+          "apimethod" : "com.zoho.support.restapi.FeedService.flagNotification"
+        }
+      }
+    }
+  },
+  "components" : {
+    "parameters" : { },
+    "requestBodies" : {
+      "markAsReadJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "skeyList" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "maxItems" : 25,
+                  "uniqueItems" : false
+                },
+                "skey" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([a-zA-Z0-9\\._\\*\\-%])+$"
+                },
+                "fdk" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([a-zA-Z0-9\\._\\*\\-%])+$"
+                }
+              },
+              "required" : [ "fdk", "skey" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "flagJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isFlag" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "skey" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([a-zA-Z0-9\\._\\*\\-%])+$"
+                },
+                "fdk" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^([a-zA-Z0-9\\._\\*\\-%])+$"
+                }
+              },
+              "required" : [ "fdk", "isFlag", "skey" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "FeedsAPIs"
+}

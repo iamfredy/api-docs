@@ -1,0 +1,304 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ActorsAPI",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/actors" : {
+      "get" : {
+        "tags" : [ "ActorsAPI" ],
+        "summary" : "Get Actors by Ids",
+        "description" : "This API fetches details of actors by Actor Ids .",
+        "operationId" : "getActorByIds",
+        "parameters" : [ {
+          "name" : "actorIds",
+          "in" : "query",
+          "description" : "Comma-separated array of user IDs. Maximum number of IDs allowed is 50.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Comma-separated array of user IDs. Maximum number of IDs allowed is 50.",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, "", false, false, false, "Comma-separated array of user IDs. Maximum number of IDs allowed is 50.", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidOauthErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/authorsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "a674b910b9b36640b3b165aa1894a197",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.actors.ActorsService.getActors"
+        }
+      }
+    },
+    "/api/v1/actors/{actorId}" : {
+      "get" : {
+        "tags" : [ "ActorsAPI" ],
+        "summary" : "Get Actor Details",
+        "description" : "This API fetches details of the actor by Actor Id .",
+        "operationId" : "getActor",
+        "parameters" : [ {
+          "name" : "actorId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/authorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7ecf2aa2d104fca872be9b93fea02152",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.actors.ActorsService.getActor"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "authorResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "firstName", "id", "lastName", "photoURL", "type" ]
+      },
+      "actorResponseArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ActorsAPI.json#/components/schemas/authorResponse"
+        }
+      }
+    },
+    "responses" : {
+      "authorsResponse" : {
+        "description" : "authorsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ActorsAPI.json#/components/schemas/actorResponseArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/1892000000056007/photo?orgId=3981311",
+                    "firstName" : "Steve",
+                    "lastName" : "Waught",
+                    "id" : "1892000000056007",
+                    "type" : "AGENT"
+                  }, {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/1892000000042001/photo?orgId=3981311",
+                    "firstName" : "",
+                    "lastName" : "jade",
+                    "id" : "1892000000042001",
+                    "type" : "AGENT"
+                  }, {
+                    "photoURL" : "https://desk.zoho.com/api/v1/contacts/1892000000042569/photo?orgId=3981311",
+                    "firstName" : "",
+                    "lastName" : "case",
+                    "id" : "1892000000888059",
+                    "type" : "END_USER"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "authorResponse" : {
+        "description" : "authorResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "firstName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "lastName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "photoURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "END_USER", "AGENT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "firstName", "id", "lastName", "photoURL", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "photoURL" : "https://desk.zoho.com/api/v1/agents/1892000000042001/photo?orgId=3981311",
+                  "firstName" : "Steve",
+                  "lastName" : "Waught",
+                  "id" : "1892000000042001",
+                  "type" : "AGENT"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ActorsAPI"
+}

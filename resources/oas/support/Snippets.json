@@ -1,0 +1,918 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Snippets",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/mysnippets" : {
+      "get" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "List MySnippets",
+        "description" : "get all my snippets",
+        "operationId" : "getMySnippets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/snippetListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "46549ae9d85b2c18e71eea1772fe2052",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.getMySnippets"
+        }
+      },
+      "post" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Create a Snippet",
+        "description" : "create a snippet",
+        "operationId" : "create",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/snippetJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "201" : {
+            "$ref" : "#/components/responses/snippetResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "5af17683db4b53adfa15be32c730bd6c",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.create"
+        }
+      }
+    },
+    "/api/v1/mysnippets/{snippetId}/apply" : {
+      "post" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Apply Snippet",
+        "description" : "Fetch the content to be replaced for snippet",
+        "operationId" : "apply",
+        "parameters" : [ {
+          "name" : "caseId",
+          "in" : "query",
+          "description" : "Ticket id in which the snippet has to be applied",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Ticket id in which the snippet has to be applied",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/snippetId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/applyAPIResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "a4971b44bdb0c1fc7d8c1847fc6ab519",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.apply"
+        }
+      }
+    },
+    "/api/v1/mysnippets/{snippetId}" : {
+      "get" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Get your Snippet",
+        "description" : "get a particular snippet",
+        "operationId" : "get",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/snippetId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/snippetResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3c8d35886ed73d785df42c90fd5ed5d1",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.get"
+        }
+      },
+      "put" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Update My Snippet",
+        "description" : "update a snippet",
+        "operationId" : "update",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/snippetId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/update_snippetJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/snippetResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "43225ebf377e78f875481721e28e88d6",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.update"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Delete My Snippet",
+        "description" : "delete a snippet",
+        "operationId" : "delete",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/snippetId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/snippetResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "06e614de58d3bad46f868c5642a4cc95",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.delete"
+        }
+      }
+    },
+    "/api/v1/snippetPlaceHolders" : {
+      "get" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Get Snippet Placeholders",
+        "description" : "Get Supported Snippet Placholders",
+        "operationId" : "fetchPlaceHolders",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/placeHolderList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "5492136f794b097c2a00a6fd1e2d4aee",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.fetchPlaceHolders"
+        }
+      }
+    },
+    "/api/v1/mysnippets/search" : {
+      "get" : {
+        "tags" : [ "Snippets" ],
+        "summary" : "Search My Snippet",
+        "description" : "search a snippet based on snippet word",
+        "operationId" : "searchMySnippet",
+        "parameters" : [ {
+          "name" : "snippetWord",
+          "in" : "query",
+          "description" : "snippetWord to be searched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "snippetWord to be searched",
+            "maxLength" : 20,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}])+"
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/snippetListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "4eca1d6519c5f8a84ff013ad1d5e65ad",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.SnippetService.searchMySnippet"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "snippetResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "expandedContent" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          },
+          "snippetWord" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 20,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "snippetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "expandedContent", "snippetId", "snippetWord" ]
+      },
+      "placeHolderResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Cases", "Case Owner", "User", "Organization" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modulei18nVal" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fields" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 3,
+              "minProperties" : 3,
+              "properties" : {
+                "mergeField" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "fieldLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "fieldI18nVal" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              },
+              "required" : [ "fieldI18nVal", "fieldLabel", "mergeField" ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "fields", "module", "modulei18nVal" ]
+      }
+    },
+    "responses" : {
+      "snippetListResponse" : {
+        "description" : "snippetListResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./Snippets.json#/components/schemas/snippetResponse"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "expandedContent" : "Hi,Thank you for contacting us",
+                  "snippetWord" : "hi",
+                  "snippetId" : "4000000019143"
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "applyAPIResponse" : {
+        "description" : "applyAPIResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "replacedContent" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "replacedContent" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "replacedContent" : "Welcome Stella"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "snippetResponse" : {
+        "description" : "snippetResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "expandedContent" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Snippet Content mapped for the keyword",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "xss" : "antisamyfilter_withstyletag",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "snippetWord" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 20,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Snippet Keyword",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "snippetId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "expandedContent", "snippetId", "snippetWord" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "expandedContent" : "Hi! Welcome to Zoho Desk.. How can I help you?",
+                  "snippetWord" : "greetings",
+                  "snippetId" : "4000000019145"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "placeHolderList" : {
+        "description" : "placeHolderList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./Snippets.json#/components/schemas/placeHolderResponse"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "module" : "Cases",
+                  "modulei18nVal" : "Ticket",
+                  "fields" : [ {
+                    "mergeField" : "${Cases.Account Name}",
+                    "fieldLabel" : "Account Name",
+                    "fieldI18nVal" : "Account Name"
+                  }, {
+                    "mergeField" : "${Cases.Contact Name}",
+                    "fieldLabel" : "Contact Name",
+                    "fieldI18nVal" : "Contact Name"
+                  }, {
+                    "mergeField" : "${Cases.Email}",
+                    "fieldLabel" : "Email",
+                    "fieldI18nVal" : "Email"
+                  }, {
+                    "mergeField" : "${Cases.Phone}",
+                    "fieldLabel" : "Phone",
+                    "fieldI18nVal" : "Phone"
+                  }, {
+                    "mergeField" : "${Cases.Subject}",
+                    "fieldLabel" : "Subject",
+                    "fieldI18nVal" : "Subject"
+                  }, {
+                    "mergeField" : "${Cases.Description}",
+                    "fieldLabel" : "Description",
+                    "fieldI18nVal" : "Description"
+                  }, {
+                    "mergeField" : "${Cases.Request Id}",
+                    "fieldLabel" : "Request Id",
+                    "fieldI18nVal" : "Ticket Id"
+                  }, {
+                    "mergeField" : "${Cases.First Name}",
+                    "fieldLabel" : "First Name",
+                    "fieldI18nVal" : "First Name"
+                  }, {
+                    "mergeField" : "${Cases.Last Name}",
+                    "fieldLabel" : "Last Name",
+                    "fieldI18nVal" : "Last Name"
+                  }, {
+                    "mergeField" : "${Cases.CUSTOMER_PORTAL_LINK}",
+                    "fieldLabel" : "Customer Ticket Url",
+                    "fieldI18nVal" : "Customer Ticket URL"
+                  } ]
+                }, {
+                  "module" : "User",
+                  "modulei18nVal" : "Agent",
+                  "fields" : [ {
+                    "mergeField" : "${User.Support Rep Name}",
+                    "fieldLabel" : "Support Rep Name",
+                    "fieldI18nVal" : "Support Rep Name"
+                  }, {
+                    "mergeField" : "${User.Email}",
+                    "fieldLabel" : "Email",
+                    "fieldI18nVal" : "Email"
+                  }, {
+                    "mergeField" : "${User.Phone}",
+                    "fieldLabel" : "Phone",
+                    "fieldI18nVal" : "Phone"
+                  }, {
+                    "mergeField" : "${User.First Name}",
+                    "fieldLabel" : "First Name",
+                    "fieldI18nVal" : "First Name"
+                  }, {
+                    "mergeField" : "${User.Last Name}",
+                    "fieldLabel" : "Last Name",
+                    "fieldI18nVal" : "Last Name"
+                  }, {
+                    "mergeField" : "${User.Mobile}",
+                    "fieldLabel" : "Mobile",
+                    "fieldI18nVal" : "Mobile"
+                  } ]
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "no of snippets to be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "no of snippets to be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "from index",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "from index",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "snippetId" : {
+        "name" : "snippetId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "snippetJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "expandedContent" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_withstyletag"
+                  }
+                },
+                "snippetWord" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 20,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}])+"
+                }
+              },
+              "required" : [ "expandedContent", "snippetWord" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "expandedContent" : "Hi! Welcome to Zoho Desk.. How can I help you?",
+                  "snippetWord" : "greet"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "update_snippetJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "expandedContent" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_withstyletag"
+                  }
+                },
+                "snippetWord" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 20,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}])+"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "expandedContent" : "Hi! Welcome to Zoho Desk.. How can I help you?",
+                  "snippetWord" : "greetings"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Snippets"
+}

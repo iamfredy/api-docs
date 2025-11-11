@@ -1,0 +1,1960 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Macros",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/tickets/{caseId}/applyMacro" : {
+      "post" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Apply Macro",
+        "description" : "This API applies a macro to a ticket",
+        "operationId" : "applyMacro",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/macroId"
+        }, {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/applyMacro"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "cec7a9bd7080085a1c76a033e8d08bf6",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.applyMacro"
+        }
+      }
+    },
+    "/api/v1/tickets/{caseId}/applicableMacros" : {
+      "get" : {
+        "tags" : [ "Macros" ],
+        "summary" : "List all applicable macros",
+        "description" : "This API is used to fetch all applicable macro details for a ticket",
+        "operationId" : "getApplicableMacros",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/caseId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getApplicableMacros"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "f6df2f62b876c897fb5dead0336c2653",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.getApplicableMacros"
+        }
+      }
+    },
+    "/api/v1/macros" : {
+      "get" : {
+        "tags" : [ "Macros" ],
+        "summary" : "List all macros",
+        "description" : "This API is used to fetch all the macro details in a department",
+        "operationId" : "getAllMacro",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department from which all the macros is going to be listed",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "department from which all the macros is going to be listed",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "number of macros to be retrieved",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "number of macros to be retrieved",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "from index",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "To get a list of all macros shared to the user. Allowed value is @SHARED@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To get a list of all macros shared to the user. Allowed value is @SHARED@",
+            "enum" : [ "SHARED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "to get macros by status, allowed values are @ACTIVE@ and @INACTIVE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "to get macros by status, allowed values are @ACTIVE@ and @INACTIVE@",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAllMacro"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "f3bff95cd5da7a8b2e6de888fed6c148",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.getAllMacro"
+        }
+      },
+      "post" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Create Macro",
+        "description" : "This API is used to create a Macro",
+        "operationId" : "createMacro",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createMacro_macrojson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "201" : {
+            "$ref" : "#/components/responses/createMacro"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "296c202b6d8311590072ff7e9610cccb",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.createMacro"
+        }
+      }
+    },
+    "/api/v1/macros/order" : {
+      "post" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Reorder Macros",
+        "description" : "This API is used to reorder the listing of Macros",
+        "operationId" : "reorderMacros",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/reordermacrojson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "23e1bdfa2d355bb7bcfeb9581e629ec5",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.reorderMacros"
+        }
+      }
+    },
+    "/api/v1/macros/{macroId}/apply" : {
+      "post" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Apply Macro to many entities",
+        "description" : "This API applies a macro to a list of tickets",
+        "operationId" : "applyMacroForMultipleTickets",
+        "parameters" : [ {
+          "name" : "macroId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/applyMacroJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3d1c4c0b1a8fc25355a879174e16f7af",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.applyMacroForMultipleTickets"
+        }
+      }
+    },
+    "/api/v1/macros/{macroId}" : {
+      "get" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Get Macro",
+        "description" : "This API is used to get a Macro details",
+        "operationId" : "getMacro",
+        "parameters" : [ {
+          "name" : "macroId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getMacro"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "b8f33e1bfe9a7347a35a5a9d28a3d1b7",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.getMacro"
+        }
+      },
+      "put" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Update Macro",
+        "description" : "This API is used to update a Macro",
+        "operationId" : "updateMacro",
+        "parameters" : [ {
+          "name" : "macroId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/macrojson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/updateMacro"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0362ab8e347175f1b0aa25b3ad7072fc",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.updateMacro"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Macros" ],
+        "summary" : "Delete Macro",
+        "description" : "This API is used to Delete a Macro",
+        "operationId" : "deleteMacro",
+        "parameters" : [ {
+          "name" : "macroId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7d68ee985df467265908aed8f8079c3b",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.MacroService.deleteMacro"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "skippedField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "fieldId" ]
+      },
+      "skippedFieldsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Macros.json#/components/schemas/skippedField"
+        }
+      },
+      "skippedFieldUpdate" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "skippedFields" : {
+            "$ref" : "./Macros.json#/components/schemas/skippedFieldsArr"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "name", "skippedFields" ]
+      },
+      "skippedFieldUpdatesArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Macros.json#/components/schemas/skippedFieldUpdate"
+        }
+      },
+      "getApplicableMacroItem" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "orderId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "orderId" ]
+      },
+      "getApplicableMacroArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Macros.json#/components/schemas/getApplicableMacroItem"
+        }
+      },
+      "shareDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "teams" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "roles" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ALL_AGENTS", "RESTRICTED_ACCESS", null ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "rolesAndSubordinates" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "agents" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ]
+      },
+      "data" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "automationTaskIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : true
+          },
+          "orderId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "department from which all the macros is going to be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "shareDetails" : {
+            "$ref" : "./Macros.json#/components/schemas/shareDetails"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          },
+          "macroActionIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "automationFieldUpdateIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : true
+          },
+          "automationCustomFunctionId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "automationAlertIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : true
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE", null ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "to get macros by status, allowed values are @ACTIVE@ and @INACTIVE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "automationAlertIds", "automationCustomFunctionId", "automationFieldUpdateIds", "automationTaskIds", "createdBy", "createdTime", "departmentId", "description", "id", "macroActionIds", "modifiedBy", "modifiedTime", "name", "orderId", "shareDetails", "status" ]
+      },
+      "dataArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Macros.json#/components/schemas/data"
+        }
+      },
+      "entityIdArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "responses" : {
+      "applyMacro" : {
+        "description" : "applyMacro template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "skippedFieldUpdates" : {
+                  "$ref" : "./Macros.json#/components/schemas/skippedFieldUpdatesArr"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "MACRO_APPLIED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "skippedFieldUpdates", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "skippedFieldUpdates" : [ {
+                    "skippedFields" : [ {
+                      "displayLabel" : "Status",
+                      "apiName" : "status",
+                      "fieldId" : "9000000018399"
+                    } ],
+                    "name" : "Subject-Status Change"
+                  }, {
+                    "skippedFields" : [ {
+                      "displayLabel" : "Due Date",
+                      "apiName" : "dueDate",
+                      "fieldId" : "9000000018457"
+                    } ],
+                    "name" : "Subject-Duedate Change"
+                  } ],
+                  "status" : "MACRO_APPLIED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getApplicableMacros" : {
+        "description" : "getApplicableMacros template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Macros.json#/components/schemas/getApplicableMacroArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "orderId" : "1",
+                    "name" : "Welcome",
+                    "id" : "10000000049003"
+                  }, {
+                    "orderId" : "2",
+                    "name" : "Second Rule",
+                    "id" : "10000000160013"
+                  }, {
+                    "orderId" : "3",
+                    "name" : "Update Ticket Owner Rule",
+                    "id" : "10000000170012"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllMacro" : {
+        "description" : "getAllMacro template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Macros.json#/components/schemas/dataArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1683576053639,
+                    "automationTaskIds" : [ "4000000047222" ],
+                    "orderId" : "1",
+                    "departmentId" : "4000000025568",
+                    "shareDetails" : {
+                      "teams" : [ "4000000045119" ],
+                      "roles" : [ ],
+                      "type" : "RESTRICTED_ACCESS",
+                      "rolesAndSubordinates" : [ "4000000029448" ],
+                      "agents" : [ "4000000045005" ]
+                    },
+                    "description" : "My New Rule Description",
+                    "macroActionIds" : [ "4000000047232" ],
+                    "createdBy" : "4000000000351",
+                    "automationFieldUpdateIds" : [ "4000000045133" ],
+                    "automationCustomFunctionId" : null,
+                    "name" : "Macro Rule",
+                    "createdTime" : 1683576053639,
+                    "modifiedBy" : "4000000000351",
+                    "id" : "4000000047280",
+                    "automationAlertIds" : [ "4000000047157" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1683797794414,
+                    "automationTaskIds" : [ ],
+                    "orderId" : "4",
+                    "departmentId" : "4000000025568",
+                    "shareDetails" : {
+                      "teams" : [ "4000000045119" ],
+                      "roles" : [ ],
+                      "type" : "RESTRICTED_ACCESS",
+                      "rolesAndSubordinates" : [ "4000000029448" ],
+                      "agents" : [ "4000000045005" ]
+                    },
+                    "description" : "Macro Rule 2",
+                    "macroActionIds" : [ "4000000047202" ],
+                    "createdBy" : "4000000000351",
+                    "automationFieldUpdateIds" : [ "4000000045133" ],
+                    "automationCustomFunctionId" : null,
+                    "name" : "restricted",
+                    "createdTime" : 1683576053639,
+                    "modifiedBy" : "4000000000351",
+                    "id" : "4000000047280",
+                    "automationAlertIds" : [ "4000000047157" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1683798040659,
+                    "automationTaskIds" : [ ],
+                    "orderId" : "11",
+                    "departmentId" : "4000000025568",
+                    "shareDetails" : {
+                      "teams" : [ ],
+                      "roles" : [ ],
+                      "type" : "ALL_AGENTS",
+                      "rolesAndSubordinates" : [ ],
+                      "agents" : [ ]
+                    },
+                    "description" : "Macro with all agents access for execution",
+                    "macroActionIds" : [ ],
+                    "createdBy" : "4000000000351",
+                    "automationFieldUpdateIds" : [ "4000000045133" ],
+                    "automationCustomFunctionId" : null,
+                    "name" : "Macro for all agents",
+                    "createdTime" : 1683561010501,
+                    "modifiedBy" : "4000000000351",
+                    "id" : "4000000045153",
+                    "automationAlertIds" : [ ],
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "updateMacro" : {
+        "description" : "updateMacro template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "orderId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "departmentId in which macro is going to be created",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "shareDetails" : {
+                  "$ref" : "./Macros.json#/components/schemas/shareDetails"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "description for macro",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "macroActionIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "automationCustomFunctionId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "name for macro",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "It states whether macro is active or inactive, allowed values are @ACTIVE@ and @INACTIVE@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "automationAlertIds", "automationCustomFunctionId", "automationFieldUpdateIds", "automationTaskIds", "createdBy", "createdTime", "departmentId", "description", "id", "macroActionIds", "modifiedBy", "modifiedTime", "name", "orderId", "shareDetails", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1683576748180,
+                  "automationTaskIds" : [ ],
+                  "orderId" : "1",
+                  "departmentId" : "4000000025568",
+                  "shareDetails" : {
+                    "teams" : [ "4000000045119" ],
+                    "roles" : [ "4000000029448" ],
+                    "type" : "RESTRICTED_ACCESS",
+                    "rolesAndSubordinates" : [ ],
+                    "agents" : [ "4000000045005" ]
+                  },
+                  "description" : "My New Rule Description - Updated",
+                  "macroActionIds" : [ "4000000047232" ],
+                  "createdBy" : "4000000000351",
+                  "automationFieldUpdateIds" : [ "4000000045133" ],
+                  "automationCustomFunctionId" : null,
+                  "name" : "Macro Rule",
+                  "createdTime" : 1683576053639,
+                  "modifiedBy" : "4000000000351",
+                  "id" : "4000000047280",
+                  "automationAlertIds" : [ "4000000047157" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getMacro" : {
+        "description" : "getMacro template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : true
+                },
+                "orderId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "shareDetails" : {
+                  "$ref" : "./Macros.json#/components/schemas/shareDetails"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0
+                },
+                "macroActionIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : true
+                },
+                "automationCustomFunctionId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : true
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "automationAlertIds", "automationCustomFunctionId", "automationFieldUpdateIds", "automationTaskIds", "createdBy", "createdTime", "departmentId", "description", "id", "macroActionIds", "modifiedBy", "modifiedTime", "name", "orderId", "shareDetails", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1683576053639,
+                  "automationTaskIds" : [ "4000000047222" ],
+                  "orderId" : "1",
+                  "departmentId" : "4000000025568",
+                  "shareDetails" : {
+                    "teams" : [ "4000000045119" ],
+                    "roles" : [ ],
+                    "type" : "RESTRICTED_ACCESS",
+                    "rolesAndSubordinates" : [ "4000000029448" ],
+                    "agents" : [ "4000000045005" ]
+                  },
+                  "description" : "My New Rule Description",
+                  "macroActionIds" : [ "4000000047232" ],
+                  "createdBy" : "4000000000351",
+                  "automationFieldUpdateIds" : [ "4000000045133" ],
+                  "automationCustomFunctionId" : null,
+                  "name" : "Macro Rule",
+                  "createdTime" : 1683576053639,
+                  "modifiedBy" : "4000000000351",
+                  "id" : "4000000047280",
+                  "automationAlertIds" : [ "4000000047157" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "createMacro" : {
+        "description" : "createMacro template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "orderId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "departmentId in which macro is going to be created",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "shareDetails" : {
+                  "$ref" : "./Macros.json#/components/schemas/shareDetails"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "description for macro",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "macroActionIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationCustomFunctionId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "CustomFunction id to be associated with macro",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "name for macro",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "It states whether macro is active or inactive, allowed values are @ACTIVE@ and @INACTIVE@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "automationAlertIds", "automationCustomFunctionId", "automationFieldUpdateIds", "automationTaskIds", "createdBy", "createdTime", "departmentId", "description", "id", "macroActionIds", "modifiedBy", "modifiedTime", "name", "orderId", "shareDetails", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1683576053639,
+                  "automationTaskIds" : [ "4000000047222" ],
+                  "orderId" : "1",
+                  "departmentId" : "4000000025568",
+                  "shareDetails" : {
+                    "teams" : [ "4000000045119" ],
+                    "roles" : [ "4000000029451" ],
+                    "type" : "RESTRICTED_ACCESS",
+                    "rolesAndSubordinates" : [ "4000000029448" ],
+                    "agents" : [ "4000000045005" ]
+                  },
+                  "description" : "My New Rule Description",
+                  "macroActionIds" : [ "4000000047232" ],
+                  "createdBy" : "4000000000351",
+                  "automationFieldUpdateIds" : [ "4000000045133" ],
+                  "automationCustomFunctionId" : null,
+                  "name" : "Macro Rule",
+                  "createdTime" : 1683576053639,
+                  "modifiedBy" : "4000000000351",
+                  "id" : "4000000047280",
+                  "automationAlertIds" : [ "4000000047157" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "macroId" : {
+        "name" : "macroId",
+        "in" : "query",
+        "description" : "Macro rule Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Macro rule Id",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "caseId" : {
+        "name" : "caseId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "reordermacrojson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "macroIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                }
+              },
+              "required" : [ "departmentId", "macroIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "departmentId" : "146284000000006907",
+                  "macroIds" : [ "10000000117007", "10000000027213", "10000000117019" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "applyMacroJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "entityIds" : {
+                  "$ref" : "./Macros.json#/components/schemas/entityIdArray"
+                }
+              },
+              "required" : [ "entityIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "entityIds" : [ "10000000023021", "10000000023023", "10000000023025" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "macrojson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationCustomFunctionId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "shareDetails" : {
+                  "$ref" : "./Macros.json#/components/schemas/shareDetails"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "macroActionIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "automationTaskIds" : [ ],
+                  "shareDetails" : {
+                    "teams" : [ "4000000045119" ],
+                    "roles" : [ "4000000029448" ],
+                    "type" : "RESTRICTED_ACCESS",
+                    "agents" : [ "4000000045005" ]
+                  },
+                  "description" : "My New Rule Description - Updated"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "createMacro_macrojson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "automationTaskIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "automationFieldUpdateIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "automationCustomFunctionId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "shareDetails" : {
+                  "$ref" : "./Macros.json#/components/schemas/shareDetails"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0
+                },
+                "automationAlertIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : true
+                },
+                "macroActionIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "automationAlertIds", "automationCustomFunctionId", "automationFieldUpdateIds", "automationTaskIds", "departmentId", "description", "name", "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "automationTaskIds" : [ "4000000047222" ],
+                  "automationFieldUpdateIds" : [ "4000000045133" ],
+                  "departmentId" : "4000000025568",
+                  "automationCustomFunctionId" : null,
+                  "name" : "Macro Rule",
+                  "shareDetails" : {
+                    "teams" : [ "4000000045119" ],
+                    "roles" : [ "4000000029451" ],
+                    "type" : "RESTRICTED_ACCESS",
+                    "rolesAndSubordinates" : [ "4000000029448" ],
+                    "agents" : [ "4000000045005" ]
+                  },
+                  "description" : "My New Rule Description",
+                  "automationAlertIds" : [ "4000000047157" ],
+                  "macroActionIds" : [ "4000000047232" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Macros"
+}

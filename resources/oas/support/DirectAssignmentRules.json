@@ -1,0 +1,722 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DirectAssignmentRules",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/directAssignmentRules/{ruleId}" : {
+      "get" : {
+        "tags" : [ "DirectAssignmentRules" ],
+        "summary" : "Get Direct Assignment Rule",
+        "description" : "To fetch a direct assignment rule details",
+        "operationId" : "getDirectAssignRule",
+        "parameters" : [ {
+          "name" : "ruleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/ruleJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0f4a9b228a8acba4541892e5dcf1f854",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.getDirectAssignRule"
+        }
+      }
+    },
+    "/api/v1/directAssignmentRules" : {
+      "get" : {
+        "tags" : [ "DirectAssignmentRules" ],
+        "summary" : "List all Direct Assignment rules",
+        "description" : "To list all direct assignment rules",
+        "operationId" : "getAllDARRules",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "To filter the rules associated with the department specified in the 'Ticket coming to' or 'Move Ticket to' fields.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To filter the rules associated with the department specified in the 'Ticket coming to' or 'Move Ticket to' fields.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "The number of rules to be fetched. The default value is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The number of rules to be fetched. The default value is 50",
+            "maximum" : 50,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting index number from where the rules should be fetched. The default value is 1",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting index number from where the rules should be fetched. The default value is 1",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "To filter the rules by status. The allowed values are ACTIVE and INACTIVE",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To filter the rules by status. The allowed values are ACTIVE and INACTIVE",
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/rulesListViewResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "cdb1c16315be8b433657e1ddf5151ae1",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.getAllDirectAssignRules"
+        }
+      }
+    },
+    "/api/v1/directAssignmentExecutionStatus" : {
+      "get" : {
+        "tags" : [ "DirectAssignmentRules" ],
+        "summary" : "Get Direct Assignment Rules Execution Status",
+        "description" : "This API is used to Get the Direct Assignment Rules Execution Status",
+        "operationId" : "getExecutionStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/executionStatusJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "d53b69b85576531599c574c2ebd6c028",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.getDirectAssignmentRuleExecutionStatus"
+        }
+      },
+      "put" : {
+        "tags" : [ "DirectAssignmentRules" ],
+        "summary" : "Enable or Disable Direct Assignment Rules Execution",
+        "description" : "This API is used to Enable/Disable Direct Assignment Rules Execution",
+        "operationId" : "updateExecutionStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/executionStatusJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "bee58a56044f5794e15d6b98ace9d416",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.updateExecutionStatus"
+        }
+      }
+    },
+    "/api/v1/directAssignmentRules/reorder" : {
+      "post" : {
+        "tags" : [ "DirectAssignmentRules" ],
+        "summary" : "Reorder direct assignment rules",
+        "description" : "To reorder the direct assignment rules",
+        "operationId" : "reorderDARRules",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/ruleIdsToReorderPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "19f64d0350c5e3ab17da9f8e3659474f",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.reOrderDirectAssignRules"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ruleJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "executeOptions" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "CREATE", "EDIT" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "orderId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ruleId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "targets" : {
+            "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/targetList"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To filter the rules by status. The allowed values are ACTIVE and INACTIVE",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "createdBy", "createdTime", "description", "executeOptions", "modifiedBy", "modifiedTime", "name", "orderId", "ruleId", "status", "targets" ]
+      },
+      "ruleList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DirectAssignmentRules.json#/components/schemas/ruleJson"
+        }
+      }
+    },
+    "responses" : {
+      "ruleJson" : {
+        "description" : "ruleJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "executeOptions" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "CREATE", "EDIT" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                },
+                "orderId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 32000,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "ruleId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "targets" : {
+                  "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/targetList"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "createdBy", "createdTime", "description", "executeOptions", "modifiedBy", "modifiedTime", "name", "orderId", "ruleId", "status", "targets" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "name" : "Move to Payments Department and assign",
+                  "description" : "To move tickets to payments team department and assigning it appropriately",
+                  "id" : 4000000005634,
+                  "targets" : [ {
+                    "agentId" : 4000000004530,
+                    "targetId" : 4000000007347,
+                    "criteria" : {
+                      "fieldConditions" : [ {
+                        "condition" : "is open",
+                        "fieldName" : "Status",
+                        "fieldModule" : "tickets",
+                        "value" : [ "${OPEN}" ]
+                      } ],
+                      "pattern" : "(1)"
+                    },
+                    "teamId" : 4000000008730,
+                    "fromDepartmentId" : 4000000007745,
+                    "toDepartmentId" : 4000000008500
+                  } ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "rulesListViewResponse" : {
+        "description" : "rulesListViewResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DirectAssignmentRules.json#/components/schemas/ruleList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "name" : "Move to Payments Department and assign",
+                    "description" : "To move tickets to payments team department and assigning it appropriately",
+                    "id" : 4000000005634,
+                    "targets" : [ {
+                      "agentId" : 4000000004530,
+                      "targetId" : 4000000007347,
+                      "criteria" : {
+                        "fieldConditions" : [ {
+                          "condition" : "is open",
+                          "fieldName" : "Status",
+                          "fieldModule" : "tickets",
+                          "value" : [ "${OPEN}" ]
+                        } ],
+                        "pattern" : "(1)"
+                      },
+                      "fromDepartmentId" : 4000000007745,
+                      "toDepartmentId" : 4000000008500
+                    } ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "name" : "Move to Admin Department and assign",
+                    "description" : "To move tickets to Admin team department and assigning it appropriately",
+                    "id" : 4000000005064,
+                    "targets" : [ {
+                      "agentId" : 4000000004530,
+                      "targetId" : 4000000007897,
+                      "criteria" : {
+                        "fieldConditions" : [ {
+                          "condition" : "is open",
+                          "fieldName" : "Status",
+                          "fieldModule" : "tickets",
+                          "value" : [ "${OPEN}" ]
+                        } ],
+                        "pattern" : "(1)"
+                      },
+                      "teamId" : 4000000008730,
+                      "fromDepartmentId" : 4000000007745,
+                      "toDepartmentId" : 4000000008900
+                    } ],
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "executionStatusJson" : {
+        "description" : "executionStatusJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "ruleIdsToReorderPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ruleIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ruleIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : [ 4000000004076, 4000000004479, 4000000004506 ]
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "executionStatusJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DirectAssignmentRules"
+}

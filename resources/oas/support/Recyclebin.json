@@ -1,0 +1,669 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Recyclebin",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "recycleBin"
+  },
+  "paths" : {
+    "/api/v1/recycleBin/restore" : {
+      "post" : {
+        "tags" : [ "Recyclebin" ],
+        "summary" : "Restore deleted resources",
+        "description" : "This API restores the deleted resources specified in the API request. Additionally, the parent resources are also restored. ",
+        "operationId" : "restoreEntities",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/restoreEntities"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "0b90858c25177a21e9f234c5d09399a2",
+          "module-group" : "recycleBin",
+          "apimethod" : "com.zoho.support.restapi.RecycleBinService.restoreEntities"
+        }
+      }
+    },
+    "/api/v1/recycleBin/restoreAll" : {
+      "post" : {
+        "tags" : [ "Recyclebin" ],
+        "summary" : "Restore all resources from Recycle Bin",
+        "description" : "This API restores all deleted resources from the Recycle Bin.",
+        "operationId" : "restoreAllEntities",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "202" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "942e6f9eac3184189ec93cdf8a17469a",
+          "module-group" : "recycleBin",
+          "apimethod" : "com.zoho.support.restapi.RecycleBinService.restoreAllEntities"
+        }
+      }
+    },
+    "/api/v1/recycleBin" : {
+      "get" : {
+        "tags" : [ "Recyclebin" ],
+        "summary" : "List deleted resources",
+        "description" : "This API lists a particular number of deleted resources, based on the limit specified.",
+        "operationId" : "getRecycleBinEntities",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Additional information related to the resources. Values allowed are: @department@ and @deletedBy@. You can pass multiple values by separating them with commas in the API request.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Additional information related to the resources. Values allowed are: @department@ and @deletedBy@. You can pass multiple values by separating them with commas in the API request.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "deletedBy", "department" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department to which the deleted resources belong.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department to which the deleted resources belong.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Departments"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of resources to list. The default value is 10 and the maximum value supported is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of resources to list. The default value is 10 and the maximum value supported is 100.",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the resources must be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the resources must be fetched.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "moduleId",
+          "in" : "query",
+          "description" : "ID of the module to which the deleted resources belong.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the module to which the deleted resources belong.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Modules"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getRecycleBinEntities"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "e05b3f81b27a05f936cb4f5dd9eb4260",
+          "module-group" : "recycleBin",
+          "apimethod" : "com.zoho.support.restapi.RecycleBinService.getEntities"
+        }
+      }
+    },
+    "/api/v1/recycleBin/delete" : {
+      "post" : {
+        "tags" : [ "Recyclebin" ],
+        "summary" : "Delete resources from Recycle Bin",
+        "description" : "This API permanently deletes the resources specified in the API request. Additionally, the child resources are also permanently deleted.",
+        "operationId" : "deleteEntities",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteEntities"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "a7f9dbcb9b71d38c6df8d3d6ab49ecbf",
+          "module-group" : "recycleBin",
+          "apimethod" : "com.zoho.support.restapi.RecycleBinService.deleteEntities"
+        }
+      }
+    },
+    "/api/v1/recycleBin/deleteAll" : {
+      "post" : {
+        "tags" : [ "Recyclebin" ],
+        "summary" : "Delete all resources from Recycle Bin",
+        "description" : "This API permanently deletes all resources from the Recycle Bin.",
+        "operationId" : "deleteAllEntities",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "202" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "c6122d6e951746ed084b4073b45b081a",
+          "module-group" : "recycleBin",
+          "apimethod" : "com.zoho.support.restapi.RecycleBinService.deleteAllEntities"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ids" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "recycleBinKeys" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "ID of the department to which the deleted resources belong.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false,
+              "entity" : "Departments"
+            }
+          },
+          "deletedById" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "deletedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "deletedById", "deletedTime", "departmentId", "displayName", "id", "type" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Recyclebin.json#/components/schemas/recycleBinKeys"
+        }
+      }
+    },
+    "responses" : {
+      "getRecycleBinEntities" : {
+        "description" : "getRecycleBinEntities template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "department" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 2,
+                          "minProperties" : 2,
+                          "properties" : {
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "id", "name" ]
+                        },
+                        "deletedBy" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "email" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./Recyclebin.json#/components/schemas/data"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayName" : "Sample display name",
+                    "departmentId" : null,
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046163",
+                    "type" : "Attachments",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046093",
+                    "type" : "Calls",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000017184",
+                    "type" : "Tickets",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046029",
+                    "type" : "Tickets",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : null,
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000019005",
+                    "type" : "Contacts",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046131",
+                    "type" : "Events",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046111",
+                    "type" : "Tasks",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  }, {
+                    "displayName" : "Sample display name",
+                    "departmentId" : "4000000013244",
+                    "deletedById" : "4000000000059",
+                    "id" : "4000000046153",
+                    "type" : "Time Entry",
+                    "deletedTime" : "2020-06-21T16:16:16.000Z"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "restoreEntities" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isChildNeedToBeRestored" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ids" : {
+                  "$ref" : "./Recyclebin.json#/components/schemas/ids"
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "isChildNeedToBeRestored" : "true",
+                  "ids" : [ "232323", "400000005634", "232", "4000000056156" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteEntities" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "$ref" : "./Recyclebin.json#/components/schemas/ids"
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ "232323", "3213123", "40000000561232", "4000000056156" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Recyclebin"
+}

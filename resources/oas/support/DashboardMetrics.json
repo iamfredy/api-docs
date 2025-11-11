@@ -1,0 +1,2310 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DashboardMetrics",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/dashboards/customerHappinessMetrics" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "CustomerHappiness",
+        "description" : "To get customer happiness count.",
+        "operationId" : "getCustomerHappinessMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "To get customer happiness based on user sorting option.This value can be @rating@ | @-rating@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "To get customer happiness based on user sorting option.This value can be @rating@ | @-rating@",
+            "enum" : [ "-rating", "rating" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/customerHappinessMetrics"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "823aa6b1f608d84560cd55bf8767381b",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getCustomerHappinessRating"
+        }
+      }
+    },
+    "/api/v1/dashboards/onholdTickets" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get on hold tickets count",
+        "description" : "This API fetches the number of tickets that are in the on hold status.",
+        "operationId" : "getOnholdTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/reopenedTickets"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "83118c7c39978027366caec72eaff041",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getOnholdTickets"
+        }
+      }
+    },
+    "/api/v1/dashboards/solvedTickets" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get closed tickets count",
+        "description" : "This API fetches the number of tickets that are resolved.",
+        "operationId" : "getSolvedTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/reopenedTickets"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "f55e807bb9c8657ee5633e831af41a20",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getSolvedTickets"
+        }
+      }
+    },
+    "/api/v1/dashboards/ziaFieldValuePredictionMetrics" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Field Value Prediction Metrics",
+        "description" : "To get ZIA Field Value Prediction Metrics",
+        "operationId" : "getInferenceValueMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID(s) of the department(s) from which the stats must be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID(s) of the department(s) from which the stats must be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/predictionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/inferenceValueMetric"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "apihash" : "c3d11b233e434e0b0cc643d794bcff1b",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getZiaInferenceValueMetrics"
+        }
+      }
+    },
+    "/api/v1/dashboards/ticketByStatus" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "TicketsByStatus",
+        "description" : "To get created tickets by status.",
+        "operationId" : "getTicketByStatus",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/sortOrder"
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/ticketByStatus"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "7c6843e99364d9c72093798c9684d5f3",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getTicketByStatus"
+        }
+      }
+    },
+    "/api/v1/dashboards/backlogTickets" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get unresolved tickets count",
+        "description" : "This API fetches the number of tickets that have remained unresolved over a particular period.",
+        "operationId" : "getBacklogTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "name" : "groupBy",
+          "in" : "query",
+          "description" : "Key that groups the ticket count according to a particular attribute.This value can be @date@ @channel@ @agent@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that groups the ticket count according to a particular attribute.This value can be @date@ @channel@ @agent@",
+            "enum" : [ "date", "channel", "agent" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/reopenedTickets"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "484c12a3178f978eda356e393b1d5fad",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getBacklogTickets"
+        }
+      }
+    },
+    "/api/v1/dashboards/reopenedTickets" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get reopened tickets count",
+        "description" : "This API fetches the number of tickets that were reopened in your help desk portal.",
+        "operationId" : "getReopenedTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/reopenedTickets"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "317ffe5cf428f3d9a9a7064ee9164239",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getReopenedTickets"
+        }
+      }
+    },
+    "/api/v1/dashboards/ziaPredictionMetrics" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Zia Prediction Metrics",
+        "description" : "To get ZIA Prediction Metrics",
+        "operationId" : "getZiaInferenceMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "#/components/parameters/predictionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/inferenceMetrics"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "zia",
+          "apihash" : "bf982e05cad88e9f003eb53b50230b11",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getZiaInferenceMetrics"
+        }
+      }
+    },
+    "/api/v1/dashboards/slaMetrics" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "SLAMetrics",
+        "description" : "To get sla metrics like violationcount , successcount , breachtime, fullfilltime.Other params include - departmentId(list of department ids separated by commas.When departmentId is not given,data for all department is given),agentId(list of agent ids separated by commas.When agentId is not given,data for all agents is given),slaId(list of sla ids separated by commas.When slaId is not given,data for all sla is given),duration,startDate,endDate and channel.",
+        "operationId" : "getSlaMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/slaId"
+        }, {
+          "$ref" : "#/components/parameters/violationType"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/slaDashboard"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 90,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "32867705f083fcafd08fb369040f7081",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getSLAData"
+        }
+      }
+    },
+    "/api/v1/dashboards/ticketsResolutionTime" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "List resolution times",
+        "description" : "This API lists the durations taken to resolve tickets.",
+        "operationId" : "getResolutionTime",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/resolutionTime"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "6cd5d76eea1e47d040a53ce530425274",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getResolutionTime"
+        }
+      }
+    },
+    "/api/v1/dashboards/createdTickets" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get created tickets count",
+        "description" : "This API fetches the number of tickets created in a particular duration.",
+        "operationId" : "getCreatedTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/reopenedTickets"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "56a8d5f379f87df4de7b897ec2e4108c",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getCreatedTickets"
+        }
+      }
+    },
+    "/api/v1/dashboards/slaOverViewMetrics" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "SLAOverViewMetrics",
+        "description" : "To get sla Overview metrics like violationcount , successcount , breachtime, fullfilltime.Other params include - departmentId(list of department ids separated by commas.When departmentId is not given,data for all department is given),agentId(list of agent ids separated by commas.When agentId is not given,data for all agents is given),slaId(list of sla ids separated by commas.When slaId is not given,data for all sla is given),duration,startDate,endDate and channel.",
+        "operationId" : "getSlaOverViewMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/slaId"
+        }, {
+          "$ref" : "#/components/parameters/violationType"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/slaOverViewMetrics"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ea19e76cd66ed9f52a6f4081034fa644",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getSLAOverViewData"
+        }
+      }
+    },
+    "/api/v1/dashboards/responseCount" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "Get total response count",
+        "description" : "This API fetches the total number of responses sent/made by your agents.",
+        "operationId" : "getResponseCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "sortOrder",
+          "in" : "query",
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/responseCount"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy,SubConcurrency_Stringent_OrgPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "34092ad84c96c8e6120c23d2b26d13dd",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getResponseCount"
+        }
+      }
+    },
+    "/api/v1/dashboards/responseTime" : {
+      "get" : {
+        "tags" : [ "DashboardMetrics" ],
+        "summary" : "List response times",
+        "description" : "This API lists the durations taken to respond to tickets.",
+        "operationId" : "getResponseTime",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/duration"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/channel"
+        }, {
+          "$ref" : "#/components/parameters/groupBy"
+        }, {
+          "name" : "isFirstResponse",
+          "in" : "query",
+          "description" : "Key that specifies if the response is the first response to the customer question",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Key that specifies if the response is the first response to the customer question"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/responseTime"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy,SubConcurrency_Stringent_OrgPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "19fad44b77185af92813740760d46460",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getResponseTimeData"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "happinessMetricsObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "badCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "goodCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "okCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(null|^$|NULL|[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+)"
+          }
+        },
+        "required" : [ "badCount", "goodCount", "okCount", "referenceValue", "value" ]
+      },
+      "happinessMetricsArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/happinessMetricsObject"
+        }
+      },
+      "countArrayObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "count", "referenceValue", "value" ]
+      },
+      "countArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/countArrayObject"
+        }
+      },
+      "ziaInferenceValueMetricObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "totalFieldValuePredictionOccurences" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "predictedFieldValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(null|^$|NULL|[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+)"
+          }
+        },
+        "required" : [ "predictedFieldValue", "referenceValue", "totalFieldValuePredictionOccurences" ]
+      },
+      "ziaInferenceValueMetricValueArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/ziaInferenceValueMetricObject"
+        }
+      },
+      "statusInfoObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "statusMapping" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Open", "Closed", "On Hold" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          }
+        },
+        "required" : [ "count", "status", "statusMapping" ]
+      },
+      "statusInfoArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/statusInfoObject"
+        }
+      },
+      "ticketCountObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "statusInfo" : {
+            "$ref" : "./DashboardMetrics.json#/components/schemas/statusInfoArray"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "statusInfo", "value" ]
+      },
+      "ticketCountArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/ticketCountObject"
+        }
+      },
+      "ziaInferenceMetricsObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "overriddenPredictionsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "missedPredictionsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "predictionsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "incomingResponsesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(null|^$|NULL|[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+)"
+          }
+        },
+        "required" : [ "incomingResponsesCount", "missedPredictionsCount", "overriddenPredictionsCount", "predictionsCount", "referenceValue", "value" ]
+      },
+      "ziaInferenceMetricsArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/ziaInferenceMetricsObject"
+        }
+      },
+      "slaDashboardObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "violationCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "violatedTicketsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "breachTime" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fulfillTime" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "successCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "succeededTicketCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "agentId", "breachTime", "fulfillTime", "referenceValue", "succeededTicketCount", "successCount", "value", "violatedTicketsCount", "violationCount" ]
+      },
+      "slaMetricsData" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/slaDashboardObject"
+        }
+      },
+      "resolutionTimeObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "avgSystemTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "ticketCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "avgAgentTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "avgAgentTime", "avgSystemTime", "referenceValue", "ticketCount", "value" ]
+      },
+      "resolutionTimeArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/resolutionTimeObject"
+        }
+      },
+      "responseTimeObject" : {
+        "type" : [ "object", "null" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "avgSystemTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "avgAgentTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "responseCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "referenceValue" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "avgAgentTime", "avgSystemTime", "referenceValue", "responseCount", "value" ]
+      },
+      "responseTimeArray" : {
+        "type" : [ "array", "null" ],
+        "items" : {
+          "$ref" : "./DashboardMetrics.json#/components/schemas/responseTimeObject"
+        }
+      }
+    },
+    "responses" : {
+      "customerHappinessMetrics" : {
+        "description" : "customerHappinessMetrics template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalBadCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalGoodCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "totalOkCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "happinessMetrics" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/happinessMetricsArray"
+                }
+              },
+              "required" : [ "groupedBy", "happinessMetrics", "totalBadCount", "totalGoodCount", "totalOkCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalBadCount" : "20",
+                  "totalGoodCount" : "20",
+                  "groupedBy" : "agent",
+                  "totalOkCount" : "20",
+                  "happinessMetrics" : [ {
+                    "badCount" : "12",
+                    "goodCount" : "12",
+                    "value" : "Jhon",
+                    "okCount" : "12",
+                    "referenceValue" : "123123213"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "reopenedTickets" : {
+        "description" : "reopenedTickets template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalTicketCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "avg" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "ticketCount" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/countArray"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that groups the ticket count according to a particular attribute.This value can be @date@ @channel@ @agent@ | @hour@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "avg", "groupedBy", "ticketCount", "totalTicketCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalTicketCount" : "1",
+                  "avg" : "0.1",
+                  "ticketCount" : [ {
+                    "count" : "0",
+                    "value" : "2018-04-01",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-02",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-03",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-04",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-05",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "1",
+                    "value" : "2018-04-06",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-07",
+                    "referenceValue" : null
+                  } ],
+                  "groupedBy" : "date"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "inferenceValueMetric" : {
+        "description" : "inferenceValueMetric template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fieldValuePredictionMetrics" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/ziaInferenceValueMetricValueArray"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "totalPredictionOccurrences" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "fieldValuePredictionMetrics", "groupedBy", "totalPredictionOccurrences" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "fieldValuePredictionMetrics" : [ {
+                    "predictedValue" : "High",
+                    "predictionOccurences" : "2",
+                    "referenceValue" : null
+                  }, {
+                    "predictedValue" : "Low",
+                    "predictionOccurences" : "0",
+                    "referenceValue" : null
+                  }, {
+                    "predictedValue" : "Medium",
+                    "predictionOccurences" : "1",
+                    "referenceValue" : null
+                  } ],
+                  "totalPredictionOccurrences" : "3"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "ticketByStatus" : {
+        "description" : "ticketByStatus template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalTicketCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "ticketCount" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/ticketCountArray"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To get created tickets count via particular group.This value can be @date@ @channel@ @agent@ | @hour@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "groupedBy", "ticketCount", "totalTicketCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalTicketCount" : 5,
+                  "ticketCount" : [ {
+                    "statusInfo" : [ {
+                      "statusMapping" : "Open",
+                      "count" : 2,
+                      "status" : "open"
+                    } ],
+                    "value" : "2018-04-02"
+                  }, {
+                    "statusInfo" : [ {
+                      "statusMapping" : "Onhold",
+                      "count" : 2,
+                      "status" : "onhold"
+                    } ],
+                    "value" : "2018-04-03"
+                  }, {
+                    "statusInfo" : [ {
+                      "statusMapping" : "Closed",
+                      "count" : 1,
+                      "status" : "closed"
+                    } ],
+                    "value" : "2018-04-04"
+                  }, {
+                    "statusInfo" : [ ],
+                    "value" : "2018-04-05"
+                  }, {
+                    "statusInfo" : [ ],
+                    "value" : "2018-04-06"
+                  }, {
+                    "statusInfo" : [ ],
+                    "value" : "2018-04-07"
+                  }, {
+                    "statusInfo" : [ ],
+                    "value" : "2018-04-08"
+                  } ],
+                  "groupedBy" : "date"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "inferenceMetrics" : {
+        "description" : "inferenceMetrics template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalMissedPredictionsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalIncomingResponsesCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "totalOverriddenPredictionsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "predictionMetrics" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/ziaInferenceMetricsArray"
+                },
+                "totalPredictionsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "groupedBy", "predictionMetrics", "totalIncomingResponsesCount", "totalMissedPredictionsCount", "totalOverriddenPredictionsCount", "totalPredictionsCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalMissedPredictionsCount" : "1",
+                  "totalIncomingResponsesCount" : "5",
+                  "totalOverriddenPredictionsCount" : "1",
+                  "predictionMetrics" : [ {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "0",
+                    "value" : "2022-06-29",
+                    "incomingResponsesCount" : "0"
+                  }, {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "0",
+                    "value" : "2022-06-30",
+                    "incomingResponsesCount" : "0"
+                  }, {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "0",
+                    "value" : "2022-07-01",
+                    "incomingResponsesCount" : "0"
+                  }, {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "0",
+                    "value" : "2022-07-02",
+                    "incomingResponsesCount" : "0"
+                  }, {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "0",
+                    "value" : "2022-07-03",
+                    "incomingResponsesCount" : "0"
+                  }, {
+                    "overriddenPredictionsCount" : "0",
+                    "missedPredictionsCount" : "1",
+                    "predictionsCount" : "0",
+                    "value" : "2022-07-04",
+                    "incomingResponsesCount" : "1"
+                  }, {
+                    "overriddenPredictionsCount" : "1",
+                    "missedPredictionsCount" : "0",
+                    "predictionsCount" : "3",
+                    "value" : "2022-07-05",
+                    "incomingResponsesCount" : "4"
+                  } ],
+                  "totalPredictionsCount" : "3"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "slaDashboard" : {
+        "description" : "slaDashboard template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalSlaViolation" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalSlaSuccess" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "slaMetricsData" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/slaMetricsData"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "totalFullFillTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalBreachTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "groupedBy", "slaMetricsData", "totalBreachTime", "totalFullFillTime", "totalSlaSuccess", "totalSlaViolation" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalSlaViolation" : "5",
+                  "totalSlaSuccess" : "5",
+                  "slaMetricsData" : [ {
+                    "violationCount" : "5",
+                    "violatedTicketsCount" : "1",
+                    "breachTime" : "600000",
+                    "referanceValue" : null,
+                    "fulfillTime" : "600000",
+                    "successCount" : "5",
+                    "succeededTicketsCount" : "1",
+                    "value" : "2018-04-01"
+                  }, {
+                    "violationCount" : "5",
+                    "violatedTicketsCount" : "1",
+                    "breachTime" : "1200000",
+                    "referanceValue" : null,
+                    "fulfillTime" : "1200000",
+                    "successCount" : "5",
+                    "succeededTicketsCount" : "1",
+                    "value" : "2018-04-02"
+                  } ],
+                  "groupedBy" : "date",
+                  "totalFulfillTime" : "600000",
+                  "totalBreachTime" : "600000"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "resolutionTime" : {
+        "description" : "resolutionTime template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalAvgAgentTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+                },
+                "timeData" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/resolutionTimeArray"
+                },
+                "totalTicketCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalAvgSystemTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that groups stats according to a specific attribute: date, channel, agent, or hour",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "groupedBy", "timeData", "totalAvgAgentTime", "totalAvgSystemTime", "totalTicketCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalAvgAgentTime" : "41:50 hrs",
+                  "timeData" : [ {
+                    "avgSystemTime" : "41:50 hrs",
+                    "ticketCount" : "1",
+                    "avgAgentTime" : "41:50 hrs",
+                    "value" : "Priyanka",
+                    "referenceValue" : "4000000012629"
+                  } ],
+                  "totalTicketCount" : "1",
+                  "totalAvgSystemTime" : "41:50 hrs",
+                  "groupedBy" : "agent"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "slaOverViewMetrics" : {
+        "description" : "slaOverViewMetrics template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalSlaViolation" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalSlaSuccess" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalSlaViolatedTickets" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalFulfillTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalSlaSucceededTickets" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "totalBreachTime" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "totalBreachTime", "totalFulfillTime", "totalSlaSucceededTickets", "totalSlaSuccess", "totalSlaViolatedTickets", "totalSlaViolation" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalSlaSuccess" : "0",
+                  "totalSlaViolation" : "19",
+                  "totalSlaViolatedTickets" : "2",
+                  "totalFulfillTime" : "0",
+                  "totalSlaSucceededTickets" : "0",
+                  "totalBreachTime" : "2880000"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "responseCount" : {
+        "description" : "responseCount template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "avg" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that groups the thread count according to a particular attribute.This value can be @date@ @channel@ @agent@ | @hour@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "totalResponseCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "responseCount" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/countArray"
+                }
+              },
+              "required" : [ "avg", "groupedBy", "responseCount", "totalResponseCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "avg" : "0.0",
+                  "groupedBy" : "date",
+                  "totalResponseCount" : "0",
+                  "responseCount" : [ {
+                    "count" : "0",
+                    "value" : "2018-04-06",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-07",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-08",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-09",
+                    "referenceValue" : null
+                  }, {
+                    "count" : "0",
+                    "value" : "2018-04-10",
+                    "referenceValue" : null
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "responseTime" : {
+        "description" : "responseTime template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "object", "null" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "totalAvgAgentTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+                },
+                "timeData" : {
+                  "$ref" : "./DashboardMetrics.json#/components/schemas/responseTimeArray"
+                },
+                "totalAvgSystemTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+                },
+                "groupedBy" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "date", "channel", "agent", "hour" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that groups stats according to a specific attribute: date, channel, agent, or hour",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "totalResponseCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "groupedBy", "timeData", "totalAvgAgentTime", "totalAvgSystemTime", "totalResponseCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalAvgAgentTime" : "41:50 hrs",
+                  "timeData" : [ {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Feedback Widget",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Email",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Web",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "41:50 hrs",
+                    "avgAgentTime" : "41:50 hrs",
+                    "responseCount" : "1",
+                    "value" : "Phone",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Forums",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Chat",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Twitter",
+                    "referenceValue" : null
+                  }, {
+                    "avgSystemTime" : "00:00 hrs",
+                    "avgAgentTime" : "00:00 hrs",
+                    "responseCount" : "0",
+                    "value" : "Facebook",
+                    "referenceValue" : null
+                  } ],
+                  "totalAvgSystemTime" : "41:50 hrs",
+                  "groupedBy" : "channel",
+                  "totalResponseCount" : "1"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "duration" : {
+        "name" : "duration",
+        "in" : "query",
+        "description" : "Predefined time range from which the stats must be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Predefined time range from which the stats must be fetched",
+          "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "agentId" : {
+        "name" : "agentId",
+        "in" : "query",
+        "description" : "ID(s) of the agent(s) whose stats must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID(s) of the agent(s) whose stats must be fetched",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      },
+      "slaId" : {
+        "name" : "slaId",
+        "in" : "query",
+        "description" : "list of SLA ids separated by commas.When slaid is not given,data for all sla is given",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "list of SLA ids separated by commas.When slaid is not given,data for all sla is given",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      },
+      "violationType" : {
+        "name" : "violationType",
+        "in" : "query",
+        "description" : "To get sla metrics count for a particular SLA type. This value can be @FIRST_RESPONSE@ @RESPONSE@ @RESOLUTION@ @ALL@",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "To get sla metrics count for a particular SLA type. This value can be @FIRST_RESPONSE@ @RESPONSE@ @RESOLUTION@ @ALL@",
+          "enum" : [ "ALL", "FIRST_RESPONSE", "RESPONSE", "RESOLUTION" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID(s) of the department(s) from which the stats must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID(s) of the department(s) from which the stats must be fetched",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      },
+      "sortOrder" : {
+        "name" : "sortOrder",
+        "in" : "query",
+        "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "boolean", "null" ],
+          "description" : "Key that defines the sorting order for the data in the response. TRUE sets ascending order of sorting and FALSE sets descending order of sorting. This key is applicable only if the data is also grouped by agent."
+        }
+      },
+      "teamId" : {
+        "name" : "teamId",
+        "in" : "query",
+        "description" : "ID(s) of the team(s) from which the stats must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID(s) of the team(s) from which the stats must be fetched",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      },
+      "channel" : {
+        "name" : "channel",
+        "in" : "query",
+        "description" : "Channel through which the tickets were received",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Channel through which the tickets were received",
+          "x-dynamic-enum" : true
+        }
+      },
+      "groupBy" : {
+        "name" : "groupBy",
+        "in" : "query",
+        "description" : "To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "To get customer happiness count via particular group.This value can be @date@ @channel@ @agent@ | @hour@",
+          "enum" : [ "date", "channel", "agent", "hour" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "predictionId" : {
+        "name" : "predictionId",
+        "in" : "query",
+        "description" : "ID of Prediction for which the stats must be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of Prediction for which the stats must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DashboardMetrics"
+}

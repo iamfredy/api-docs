@@ -1,0 +1,1246 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DataSync",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "paths" : {
+    "/api/v1/dataSync/{installationId}/fields" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "DataSync Field Information",
+        "description" : "To fetch the field information for the given Module created via Extension FrameWork",
+        "operationId" : "getFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/fieldsJSONResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "00da3457b2c048b52f65cb38902ed608",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getFields"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/modules/sync" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Data Sync Modules",
+        "description" : "To fetch All the modules in data Sync",
+        "operationId" : "getSyncedModulesInfo",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/syncConfigResponseJSON"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "4edbd3bdda254e3408d3f3699ec2b680",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getSyncedModulesInfo"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/entity/relatedModule" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Related Module Info",
+        "description" : "To fetch Related info Of entity",
+        "operationId" : "getRelatedModuleInfo",
+        "parameters" : [ {
+          "name" : "relatedModule",
+          "in" : "query",
+          "description" : "Related Module",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Related Module",
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of Potentials to be fetched from Salesforce CRM",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of Potentials to be fetched from Salesforce CRM",
+            "maximum" : 10,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Number denoting the start of the related Module  to get fetched from Third Party Service",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number denoting the start of the related Module  to get fetched from Third Party Service",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "8251b1a3974af5202cb2bb61f39a8d73",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getRelatedModuleInfo"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/preference" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Data Sync Preference",
+        "description" : "To fetch the data sync preference of the module",
+        "operationId" : "getDataSyncConfiguration",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/syncConfiguration"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "0aa01ea170c4b9576968a430220ad4a3",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getDataSyncConfiguration"
+        }
+      },
+      "patch" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Modify Sync Preference",
+        "description" : "This API updates the preferences configured for DataSync, including sync type, state, field mapping, and more",
+        "operationId" : "updateDataSyncConfigurationForModule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/syncConfiguration"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/syncConfiguration"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "489fc3a18c1657bcfc5e2046d10468b8",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.updateDataSyncConfigurationForModule"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/modules" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "DataSync Module Information",
+        "description" : "To fetch the module information created via Extension FrameWork",
+        "operationId" : "getModules",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/moduleJSONResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "b6926126f512cb15de2b8cf021f97fc9",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getModules"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/entity" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Related Info",
+        "description" : "To fetch Related info Of entity",
+        "operationId" : "getRelatedInfo",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "5626f03e84f271d9570ac49b63b8c0ae",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.getRelatedInfo"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/export/{exportModule}" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Data Sync Export File",
+        "description" : "This API is used to download the file that contains the exported data. The exported data file cannot be shared through an API. Instead, an upload-download service is utilized to upload the file with a file id, which can then be used to download the exported data by accessing this API.",
+        "operationId" : "downloadExportFile",
+        "parameters" : [ {
+          "name" : "exportType",
+          "in" : "query",
+          "description" : "The type of export can be either initial or periodic. The allowed values are bulk or scheduled.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The type of export can be either initial or periodic. The allowed values are bulk or scheduled.",
+            "enum" : [ "bulk", "scheduled" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "exportModule",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "contacts" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([A-Za-z0-9=_-]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.exports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "3d6460b88817181b5f9c9746801e6a6c",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.downloadExportFile"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/deletePreference" : {
+      "delete" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "Delete Module Preference",
+        "description" : "This API deletes the configured preference setting of a module, which is utilized for syncing data between Zoho Desk modules and modules of other services. Note: Typically, a module can only sync with another single module. If you wish to sync a module that has already been synced with another service module, you must first delete the configured preference setting, then reconfigure and sync the module.",
+        "operationId" : "deletePreferenceForModule",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "da08e244a960eb45d6bceffb0cffa54e",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.DataSyncService.deletePreference"
+        }
+      }
+    },
+    "/api/v1/dataSync/{installationId}/logo" : {
+      "get" : {
+        "tags" : [ "DataSync" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getCustomIntegrationPhotoStream",
+        "parameters" : [ {
+          "name" : "height",
+          "in" : "query",
+          "description" : "",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "",
+            "maximum" : 500,
+            "minimum" : 100,
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "#/components/parameters/installationId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "fieldResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiKey" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "apiKey", "displayLabel", "id", "isMandatory", "type" ]
+      },
+      "fieldJSONArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataSync.json#/components/schemas/fieldResponse"
+        }
+      },
+      "syncConfig" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "contacts" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "syncState" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "mappedModule" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "syncType" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "mappedModule", "module", "syncState", "syncType" ]
+      },
+      "syncConfigArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataSync.json#/components/schemas/syncConfig"
+        }
+      },
+      "deskModulesToRestrictArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+        }
+      },
+      "fieldMappingJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "deskField" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "mappedField" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "deskField", "mappedField" ]
+      },
+      "fieldMappingJSONArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataSync.json#/components/schemas/fieldMappingJSON"
+        }
+      },
+      "mduleResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiKey" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isEnabled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "apiKey", "displayLabel", "id", "isEnabled" ]
+      },
+      "moduleArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DataSync.json#/components/schemas/mduleResponse"
+        }
+      }
+    },
+    "responses" : {
+      "fieldsJSONResponse" : {
+        "description" : "fieldsJSONResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DataSync.json#/components/schemas/fieldJSONArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Account Name",
+                    "apiKey" : "accountId",
+                    "id" : 4000000000355,
+                    "type" : "Lookup",
+                    "isMandatory" : true
+                  }, {
+                    "displayLabel" : "Email",
+                    "apiKey" : "email",
+                    "id" : 4000000000359,
+                    "type" : "Email",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Phone",
+                    "apiKey" : "phone",
+                    "id" : 4000000000361,
+                    "type" : "Phone",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Subject",
+                    "apiKey" : "subject",
+                    "id" : 4000000000363,
+                    "type" : "Text",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Description",
+                    "apiKey" : "description",
+                    "id" : 4000000000365,
+                    "type" : "Textarea",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Postal Code",
+                    "apiKey" : "zip",
+                    "id" : 4000000000354,
+                    "type" : "Number",
+                    "isMandatory" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "syncConfigResponseJSON" : {
+        "description" : "syncConfigResponseJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "deskModulesToRestrict" : {
+                  "$ref" : "./DataSync.json#/components/schemas/deskModulesToRestrictArray"
+                },
+                "modules" : {
+                  "$ref" : "./DataSync.json#/components/schemas/syncConfigArray"
+                }
+              },
+              "required" : [ "deskModulesToRestrict", "modules" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "internal" : true,
+                  "modules" : [ {
+                    "fieldMapping" : [ {
+                      "deskField" : "lastName",
+                      "mappedField" : "LastName"
+                    }, {
+                      "deskField" : "email",
+                      "mappedField" : "Email"
+                    } ],
+                    "module" : "contact",
+                    "syncState" : "on",
+                    "mappedModule" : "People",
+                    "syncType" : "oneway"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "syncConfiguration" : {
+        "description" : "syncConfiguration template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fieldMapping" : {
+                  "$ref" : "./DataSync.json#/components/schemas/fieldMappingJSONArray"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "contacts" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Name of the Desk module for data synchronization.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "syncState" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Specifies the status of the synchronization as either _'on'_ or _'off'_.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "primaryFieldsForDuplicateCheck" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "mappedModule" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Name of the third-party module to map for synchronization.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "syncType" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Specifies the type of the synchronization. !The allowed value is _'oneway'_!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "departmentId", "fieldMapping", "mappedModule", "module", "primaryFieldsForDuplicateCheck", "syncState", "syncType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "fieldMapping" : [ {
+                    "deskField" : "lastName",
+                    "mappedField" : "LastName"
+                  }, {
+                    "deskField" : "email",
+                    "mappedField" : "Email"
+                  } ],
+                  "module" : "contact",
+                  "syncState" : "on",
+                  "primaryFieldsForDuplicateCheck" : [ "email" ],
+                  "mappedModule" : "People",
+                  "syncType" : "oneway"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "moduleJSONResponse" : {
+        "description" : "moduleJSONResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./DataSync.json#/components/schemas/moduleArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Accounts",
+                    "apiKey" : "accounts",
+                    "isEnabled" : true
+                  }, {
+                    "displayLabel" : "Contacts",
+                    "apiKey" : "contacts",
+                    "isEnabled" : true
+                  }, {
+                    "displayLabel" : "Products",
+                    "apiKey" : "products",
+                    "isEnabled" : true,
+                    "id" : 143690000019283005
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "module" : {
+        "name" : "module",
+        "in" : "query",
+        "description" : "Module name To get Fields ",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Module name To get Fields ",
+          "enum" : [ "contacts" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "installationId" : {
+        "name" : "installationId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "id" : {
+        "name" : "id",
+        "in" : "query",
+        "description" : "Support Entity Id",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Support Entity Id",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "syncConfiguration" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fieldMapping" : {
+                  "$ref" : "./DataSync.json#/components/schemas/fieldMappingJSONArray"
+                },
+                "module" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "contacts" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "syncState" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "primaryFieldsForDuplicateCheck" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "mappedModule" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "syncType" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "fieldMapping" : [ {
+                    "deskField" : "lastName",
+                    "mappedField" : "LastName"
+                  }, {
+                    "deskField" : "email",
+                    "mappedField" : "Email"
+                  } ],
+                  "module" : "contact",
+                  "syncState" : "on",
+                  "primaryFieldsForDuplicateCheck" : [ "email" ],
+                  "mappedModule" : "People",
+                  "syncType" : "oneway"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DataSync"
+}

@@ -1,0 +1,214 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Misc",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "common"
+  },
+  "paths" : {
+    "/api/v1/constructWebURLs" : {
+      "post" : {
+        "tags" : [ "Misc" ],
+        "summary" : "Construct web URLs",
+        "description" : "This API constructs the weburls for the ids specified.",
+        "operationId" : "constructWebURLs",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/constructWebURLsRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/constructWebURLsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 800,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "common",
+          "apihash" : "bb16f0307751afc71387da8d51ac76a5",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.SearchIntegService.constructWebURLs"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "webURL" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "entityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "niceUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "entityId", "niceUrl", "url" ]
+      },
+      "webURLArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Misc.json#/components/schemas/webURL"
+        }
+      },
+      "constructWebURLs" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "urls" : {
+            "$ref" : "./Misc.json#/components/schemas/webURLArray"
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Cases", "Contacts", "Accounts", "Solutions", "Products", "Tasks", "Calls", "Events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "module", "urls" ]
+      },
+      "constructWebURLsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Misc.json#/components/schemas/constructWebURLs"
+        }
+      },
+      "entityIdArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "responses" : {
+      "constructWebURLsResponse" : {
+        "description" : "constructWebURLsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Misc.json#/components/schemas/constructWebURLsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "urls" : [ {
+                      "entityId" : "3000000008783",
+                      "url" : "https://desk.zoho.com/support/zohocorp/ShowHomePage.do#Cases/dv/2e05fe9ed7312c8a52c480563922543",
+                      "niceUrl" : "https://desk.zoho.com/agent/zohocorp/desk/requests/details/3000000008783"
+                    }, {
+                      "entityId" : "3000000008784",
+                      "url" : "https://desk.zoho.com/support/zohocorp/ShowHomePage.do#Cases/dv/2e05fe9ed7312c8a52c48056311111",
+                      "niceUrl" : "https://desk.zoho.com/agent/zohocorp/desk/requests/details/3000000008784"
+                    } ],
+                    "module" : "Cases"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "constructWebURLsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "entityIds" : {
+                  "$ref" : "./Misc.json#/components/schemas/entityIdArray"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "entityIds" : [ 3000000008783, 3000000008784 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Misc"
+}

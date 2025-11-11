@@ -1,0 +1,174 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "LookupRecord",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/lookupRecords" : {
+      "get" : {
+        "tags" : [ "LookupRecord" ],
+        "operationId" : "getLookupValues",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "Text of the Record that should be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Text of the Record that should be fetched",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z0-9\\_\\.\\-\\+\\%\\P{InBasicLatin}\\s]+",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department from which the view's preference should be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department from which the view's preference should be fetched.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Criteria"
+            }
+          }
+        }, {
+          "name" : "fieldId",
+          "in" : "query",
+          "description" : "ID of the lookup field whose records are to be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the lookup field whose records are to be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Views"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/LookupRecords"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "8562389a6f8a7c425cece6407fe5e7c3123",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.LookupRecordService.getLookupValues"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "lookupRecordJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "displayLabel", "id" ]
+      },
+      "lookupRecordsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./LookupRecord.json#/components/schemas/lookupRecordJson"
+        }
+      }
+    },
+    "responses" : {
+      "LookupRecords" : {
+        "description" : "LookupRecords template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "lookupRecords" : {
+                  "$ref" : "./LookupRecord.json#/components/schemas/lookupRecordsArr"
+                }
+              },
+              "required" : [ "lookupRecords" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "LookupRecord"
+}

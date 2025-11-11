@@ -1,0 +1,614 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Training Courses",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "training"
+  },
+  "paths" : {
+    "/api/v1/courses/{courseId}" : {
+      "get" : {
+        "tags" : [ "TrainingCourses" ],
+        "summary" : "Get course by ID",
+        "description" : "Gets a course record by its ID.",
+        "operationId" : "getCourse",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "$ref" : "#/components/parameters/courseId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/courseJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "iam-oauth2-schema" : [ "settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.support.restapi.RecordService.getRecordOld"
+        }
+      },
+      "patch" : {
+        "tags" : [ "TrainingCourses" ],
+        "summary" : "Update course",
+        "description" : "Updates a course record by its ID.",
+        "operationId" : "updateCourse",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "$ref" : "#/components/parameters/courseId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CourseUpdateRequest"
+              },
+              "examples" : {
+                "updateCourseExample" : {
+                  "value" : {
+                    "courseName" : "Good course 185ddsdf",
+                    "courseSubTitle" : "sdfsfas\nsdfmsfdsdfgf",
+                    "courseDescription" : "<div>adfadfaqqfsdfvbvc<br></div>"
+                  }
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/courseJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "iam-oauth2-schema" : [ "settings.WRITE", "settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.support.restapi.RecordService.editRecordOld"
+        }
+      }
+    },
+    "/api/v1/courses" : {
+      "get" : {
+        "tags" : [ "TrainingCourses" ],
+        "summary" : "List courses",
+        "description" : "Gets a paginated list of courses.",
+        "operationId" : "listCourses",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "$ref" : "#/components/parameters/viewId"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/sortBy"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/courseListJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "iam-oauth2-schema" : [ "settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.support.restapi.RecordService.getRecordsOld"
+        }
+      },
+      "post" : {
+        "tags" : [ "TrainingCourses" ],
+        "summary" : "Create course",
+        "description" : "Creates a new course record.",
+        "operationId" : "createCourse",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CourseCreateRequest"
+              },
+              "examples" : {
+                "createCourseExample" : {
+                  "value" : {
+                    "courseName" : "My First Course",
+                    "courseSubTitle" : "fdfcdf g",
+                    "courseDescription" : "<div>gfdfsvb</div>",
+                    "department" : {
+                      "id" : "136801000000286065"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/courseJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "iam-oauth2-schema" : [ "settings.WRITE", "settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.support.restapi.RecordService.createRecordOld"
+        }
+      }
+    },
+    "/api/v1/courses/count" : {
+      "get" : {
+        "tags" : [ "TrainingCourses" ],
+        "summary" : "Get courses count",
+        "description" : "Gets the number of course records in a view.",
+        "operationId" : "getCoursesCount",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "$ref" : "#/components/parameters/viewId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/courseCountJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "iam-oauth2-schema" : [ "settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "",
+          "module-group" : "training",
+          "apimethod" : "com.zoho.support.restapi.RecordsCountService.getRecordsCountOld"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AgentRef" : {
+        "type" : "object",
+        "properties" : {
+          "lastName" : {
+            "type" : "string"
+          },
+          "firstName" : {
+            "type" : "string"
+          },
+          "photoURL" : {
+            "type" : "string",
+            "format" : "uri"
+          },
+          "id" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id" ]
+      },
+      "DepartmentRef" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id" ]
+      },
+      "Course" : {
+        "type" : "object",
+        "properties" : {
+          "modifiedTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "courseName" : {
+            "type" : "string"
+          },
+          "courseSubTitle" : {
+            "type" : "string"
+          },
+          "createdBy" : {
+            "$ref" : "#/components/schemas/AgentRef"
+          },
+          "courseState" : {
+            "type" : "string"
+          },
+          "tcCourseId" : {
+            "type" : "string"
+          },
+          "createdTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "modifiedBy" : {
+            "$ref" : "#/components/schemas/AgentRef"
+          },
+          "isPresence" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "department" : {
+            "$ref" : "#/components/schemas/DepartmentRef"
+          },
+          "courseDescription" : {
+            "type" : [ "null", "string" ]
+          }
+        },
+        "required" : [ "courseName", "createdTime", "id", "modifiedTime" ]
+      },
+      "CourseListResponse" : {
+        "type" : "object",
+        "properties" : {
+          "data" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Course"
+            }
+          }
+        },
+        "required" : [ "data" ]
+      },
+      "CourseCreateRequest" : {
+        "type" : "object",
+        "properties" : {
+          "courseName" : {
+            "type" : "string",
+            "description" : "",
+            "x-custom-parameters-attributes" : {
+              "preserveCharsLimit" : 100,
+              "trim" : true
+            }
+          },
+          "courseSubTitle" : {
+            "type" : "string",
+            "description" : "",
+            "x-custom-parameters-attributes" : {
+              "preserveCharsLimit" : 200,
+              "trim" : true
+            }
+          },
+          "courseDescription" : {
+            "type" : "string",
+            "description" : "",
+            "x-custom-parameters-attributes" : {
+              "filterMatchedContent" : true,
+              "replacementString" : "",
+              "preserveCharsLimit" : 1000,
+              "trim" : true,
+              "preserveChars" : "0,10"
+            }
+          },
+          "department" : {
+            "type" : "object",
+            "description" : "",
+            "properties" : {
+              "id" : {
+                "type" : "string",
+                "description" : "",
+                "x-custom-parameters-attributes" : {
+                  "preserveCharsLimit" : 20
+                }
+              }
+            },
+            "required" : [ "id" ],
+            "x-custom-parameters-attributes" : {
+              "preserveCharsLimit" : 50
+            }
+          }
+        },
+        "required" : [ "courseName", "courseSubTitle", "department" ]
+      },
+      "CourseUpdateRequest" : {
+        "type" : "object",
+        "properties" : {
+          "courseName" : {
+            "type" : "string",
+            "description" : ""
+          },
+          "courseSubTitle" : {
+            "type" : "string",
+            "description" : ""
+          },
+          "courseDescription" : {
+            "type" : "string",
+            "description" : ""
+          }
+        }
+      },
+      "CourseCountResponse" : {
+        "type" : "object",
+        "properties" : {
+          "count" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "count" ]
+      }
+    },
+    "responses" : {
+      "courseJson" : {
+        "description" : "Course record",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Course"
+            },
+            "examples" : {
+              "courseExample" : {
+                "value" : {
+                  "modifiedTime" : "2025-07-03T11:03:36.000Z",
+                  "courseName" : "Good course 1",
+                  "courseSubTitle" : "sdaslkdfka",
+                  "createdBy" : {
+                    "lastName" : "Ram Kumar",
+                    "firstName" : "",
+                    "photoURL" : "https://photo-url",
+                    "id" : "136801000000517001"
+                  },
+                  "courseState" : "1",
+                  "tcCourseId" : "70336000000008043",
+                  "createdTime" : "2025-07-03T11:03:36.000Z",
+                  "modifiedBy" : {
+                    "lastName" : "Ram Kumar",
+                    "firstName" : "",
+                    "photoURL" : "https://photo-url",
+                    "id" : "136801000000517001"
+                  },
+                  "isPresence" : true,
+                  "id" : "136801000003693153",
+                  "department" : {
+                    "name" : "Kushaq",
+                    "id" : "136801000000286065"
+                  },
+                  "courseDescription" : "<div>asfnsdklnflas</div>"
+                }
+              }
+            }
+          }
+        }
+      },
+      "courseListJson" : {
+        "description" : "Courses list",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/CourseListResponse"
+            }
+          }
+        }
+      },
+      "courseCountJson" : {
+        "description" : "Courses count",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/CourseCountResponse"
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "courseId" : {
+        "name" : "courseId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "description" : "",
+          "pattern" : "^[0-9]+$",
+          "x-custom-parameters-attributes" : {
+            "preserveCharsLimit" : 20
+          }
+        }
+      },
+      "viewId" : {
+        "name" : "viewId",
+        "in" : "query",
+        "description" : "The ID of the view from which records need to be fetched.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "string",
+          "description" : "",
+          "pattern" : "^[0-9]+$",
+          "x-custom-parameters-attributes" : {
+            "preserveCharsLimit" : 20
+          }
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "The starting index number from where the records should be fetched.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "integer",
+          "default" : 0,
+          "description" : "",
+          "minimum" : 0
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "The number of records that need to be fetched (1-50).",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "integer",
+          "default" : 50,
+          "description" : "",
+          "maximum" : 50,
+          "minimum" : 1
+        }
+      },
+      "sortBy" : {
+        "name" : "sortBy",
+        "in" : "query",
+        "description" : "Sort by a specific attribute. Allowed values are createdTime or modifiedTime. Use '-' prefix for descending.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "string",
+          "description" : "",
+          "pattern" : "^-?(createdTime|modifiedTime)$"
+        }
+      }
+    }
+  },
+  "x-entity" : "TrainingCourses"
+}

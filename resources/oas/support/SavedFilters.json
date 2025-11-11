@@ -1,0 +1,652 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SavedFilters",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/filters/{filterId}" : {
+      "get" : {
+        "tags" : [ "SavedFilters" ],
+        "summary" : "Get Saved Filter",
+        "description" : "This API fetches the details of a specific saved filter.",
+        "operationId" : "GetSavedFilter",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/filterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSavedFilterResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ],
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "f22f63745e688aeb940e89bcf5ec11cb",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.SavedFilterService.getSavedFilter"
+        }
+      },
+      "delete" : {
+        "tags" : [ "SavedFilters" ],
+        "summary" : "Delete Saved Filter",
+        "description" : "This API deletes a specific saved filter.",
+        "operationId" : "deleteSavedFilter",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/filterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "fbd54c0bc8b9d6da09180c92a5f07aee",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.SavedFilterService.deleteSavedFilter"
+        }
+      },
+      "patch" : {
+        "tags" : [ "SavedFilters" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "updateSavedFilter",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/filterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createSavedFilterPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSavedFilterResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/filters" : {
+      "get" : {
+        "tags" : [ "SavedFilters" ],
+        "summary" : "List All Saved Filters",
+        "description" : "This API fetches all the saved filters.",
+        "operationId" : "GetSavedFilters",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "The name of the module for which the saved filters are configured",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The name of the module for which the saved filters are configured",
+            "enum" : [ "tickets" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "entity" : "Views"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "The ID of the department for which the saved filters need to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "The ID of the department for which the saved filters need to be fetched",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Criteria"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/data"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ],
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "58df6145b54010562652c9f6c7950035",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.SavedFilterService.getSavedFilters"
+        }
+      },
+      "post" : {
+        "tags" : [ "SavedFilters" ],
+        "summary" : "Create Saved Filter",
+        "description" : "This API creates saved filters. Note: The value of the department should be a valid department ID or allDepartments. Module mapping is mandatory.",
+        "operationId" : "createSavedFilter",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createSavedFilter_createSavedFilterPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSavedFilterResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "ba5e05a2edf1b9a6b1e89425d5134a55",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.SavedFilterService.createSavedFilter"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getSavedFilterResponseNew" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "filterId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "moduleMapping" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 1,
+            "minProperties" : 1,
+            "properties" : {
+              "primaryModule" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "maxProperties" : 1,
+                "minProperties" : 1,
+                "properties" : {
+                  "apiName" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "apiName" ]
+              }
+            },
+            "required" : [ "primaryModule" ]
+          },
+          "criteria" : {
+            "$ref" : "./QueryStore.json#/components/schemas/criteriaFieldsJson"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          },
+          "department" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+|allDepartment)"
+          }
+        },
+        "required" : [ "criteria", "department", "filterId", "moduleMapping", "name" ]
+      },
+      "getFiltersJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "filterId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+"
+          }
+        },
+        "required" : [ "filterId", "name" ]
+      },
+      "getFiltersData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./SavedFilters.json#/components/schemas/getFiltersJson"
+        }
+      }
+    },
+    "responses" : {
+      "getSavedFilterResponse" : {
+        "description" : "getSavedFilterResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SavedFilters.json#/components/schemas/getSavedFilterResponseNew"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "filterId" : "16000000388015",
+                    "moduleMapping" : {
+                      "primaryModule" : {
+                        "apiName" : "accounts"
+                      }
+                    },
+                    "criteria" : {
+                      "criteriaFields" : [ {
+                        "condition" : "between",
+                        "field" : {
+                          "apiName" : "createdTime",
+                          "module" : "accounts",
+                          "fieldLabel" : "Created Time"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "displayKey" : 1701585000000,
+                            "key" : 1701585000000
+                          }, {
+                            "displayKey" : 1701585000000,
+                            "key" : 1733207400000
+                          } ],
+                          "type" : "primitive"
+                        }
+                      }, {
+                        "condition" : "between",
+                        "field" : {
+                          "apiName" : "modifiedTime",
+                          "module" : "accounts",
+                          "fieldLabel" : "Modified Time"
+                        },
+                        "value" : {
+                          "primitive" : [ {
+                            "displayKey" : 1733207400000,
+                            "key" : 1701585000000
+                          }, {
+                            "displayKey" : 1733207400000,
+                            "key" : 1733207400000
+                          } ],
+                          "type" : "primitive"
+                        }
+                      } ]
+                    },
+                    "name" : "CreatedTime And Modified Time Filter",
+                    "department" : "allDepartment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "data" : {
+        "description" : "data template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SavedFilters.json#/components/schemas/getFiltersData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "filterId" : "4000000007834",
+                    "name" : "Saved Test Filter"
+                  }, {
+                    "filterId" : "4000000007836",
+                    "name" : "My Filter"
+                  }, {
+                    "filterId" : "4000000007838",
+                    "name" : "My open filters"
+                  }, {
+                    "filterId" : "4000000007840",
+                    "name" : "My Team Filters"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "filterId" : {
+        "name" : "filterId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "createSavedFilterPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "moduleMapping" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "description" : "",
+                  "maxProperties" : 1,
+                  "minProperties" : 1,
+                  "properties" : {
+                    "primaryModule" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "description" : "",
+                      "maxProperties" : 1,
+                      "minProperties" : 1,
+                      "properties" : {
+                        "apiName" : {
+                          "type" : [ "string", "null" ],
+                          "description" : "",
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "x-custom-parameters-attributes" : { }
+                        }
+                      },
+                      "required" : [ "apiName" ],
+                      "x-custom-parameters-attributes" : { }
+                    }
+                  },
+                  "required" : [ "primaryModule" ],
+                  "x-custom-parameters-attributes" : { }
+                },
+                "criteria" : {
+                  "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterCriteriaFieldsPayLoad"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&amp;&lt;&gt;\\+=]+",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "department" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "criteria", "department", "moduleMapping", "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      },
+      "createSavedFilter_createSavedFilterPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "moduleMapping" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 1,
+                  "minProperties" : 1,
+                  "properties" : {
+                    "primaryModule" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 1,
+                      "minProperties" : 1,
+                      "properties" : {
+                        "apiName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "required" : [ "apiName" ]
+                    }
+                  },
+                  "required" : [ "primaryModule" ]
+                },
+                "criteria" : {
+                  "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterCriteriaFieldsPayLoad"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@%\\?\\,\\:\\'\\P{InBasicLatin}\\s&<>\\+=]+"
+                },
+                "department" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "entity" : "Departments"
+                  }
+                }
+              },
+              "required" : [ "criteria", "department", "moduleMapping", "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "moduleMapping" : {
+                    "primaryModule" : {
+                      "apiName" : "accounts"
+                    }
+                  },
+                  "criteria" : {
+                    "criteriaFields" : [ {
+                      "condition" : "between",
+                      "field" : {
+                        "apiName" : "createdTime",
+                        "module" : "accounts"
+                      },
+                      "value" : {
+                        "primitive" : [ {
+                          "key" : 1701585000000
+                        }, {
+                          "key" : 1733207400000
+                        } ],
+                        "type" : "primitive"
+                      }
+                    }, {
+                      "condition" : "between",
+                      "field" : {
+                        "apiName" : "modifiedTime",
+                        "module" : "accounts"
+                      },
+                      "value" : {
+                        "primitive" : [ {
+                          "key" : 1701585000000
+                        }, {
+                          "key" : 1733207400000
+                        } ],
+                        "type" : "primitive"
+                      }
+                    } ]
+                  },
+                  "name" : "CreatedTime and ModifiedTime Filter",
+                  "department" : "allDepartment"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SavedFilters"
+}

@@ -1,0 +1,318 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "FederatedLogin",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/v1/helpCenters/{helpCenterId}/federatedLogins" : {
+      "get" : {
+        "tags" : [ "FederatedLogin" ],
+        "summary" : "Get Federated Login Configuration",
+        "description" : "This API fetches configuration details of federated logins for given help center.",
+        "operationId" : "getFederatedLogin",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/federatedLoginResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "022f7e9bfa6345ea7165891770f84a74",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.federatedlogin.FedLoginService.getFedLoginProviders"
+        }
+      }
+    },
+    "/api/v1/helpCenters/{helpCenterId}/federatedLogins/{provider}" : {
+      "post" : {
+        "tags" : [ "FederatedLogin" ],
+        "summary" : "Update Federated Login Configuration",
+        "description" : "This API Configures federated login for the given help center. Allowed 'provider' values are @Zoho@, @Google@, @Facebook@, and @LinkedIn@. For provider @Zoho@, values for 'clientId' and 'clientSecret' are @null@",
+        "operationId" : "updateFederatedLogin",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/provider"
+        }, {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/federatedLoginRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "9f4e949bec9f435ed046dc9980e16b19",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.federatedlogin.FedLoginService.updateFedLoginProvider"
+        }
+      },
+      "delete" : {
+        "tags" : [ "FederatedLogin" ],
+        "summary" : "Delete Federated Login Configuration",
+        "description" : "This API deletes federated login for the given help center. Allowed 'provider' values are @Zoho@, @Google@, @Facebook@, and @LinkedIn@.",
+        "operationId" : "deleteFederatedLogin",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/provider"
+        }, {
+          "$ref" : "#/components/parameters/helpCenterId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "34bc885eddb2b0270a8f1f5e28d6cbc4",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.federatedlogin.FedLoginService.deleteFedLoginProvider"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "metaObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "string", "null" ],
+            "pattern" : "((^(ht|f)tp(s?)\\:\\/\\/[0-9a-zA-Z][-.\\w]*(:[0-9])*(\\/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\\\\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]|([0-9]+))"
+          }
+        },
+        "required" : [ "name", "value" ]
+      },
+      "metaDataArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./FederatedLogin.json#/components/schemas/metaObj"
+        }
+      }
+    },
+    "responses" : {
+      "federatedLoginResponse" : {
+        "description" : "federatedLoginResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "metaData" : {
+                  "$ref" : "./FederatedLogin.json#/components/schemas/metaDataArr"
+                },
+                "providers" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "Zoho", "Google", "Facebook", "LinkedIn" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "metaData", "providers" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "metaData" : [ {
+                    "name" : "ZAID",
+                    "value" : "1025414718"
+                  } ],
+                  "providers" : [ "Zoho", "Facebook" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "provider" : {
+        "name" : "provider",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "Zoho", "Google", "Facebook", "LinkedIn" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "(Zoho|Google|Facebook|LinkedIn|Microsoft)"
+        }
+      },
+      "helpCenterId" : {
+        "name" : "helpCenterId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "federatedLoginRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "clientId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "clientSecret" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "clientId", "clientSecret" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "clientId" : "123456789.apps.googleusercontent.com",
+                  "clientSecret" : "aBcDeFgHiJkLmNoPqRsTuVwXyZ"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "FederatedLogin"
+}

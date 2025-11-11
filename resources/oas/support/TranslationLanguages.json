@@ -1,0 +1,2772 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "TranslationLanguages",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "common"
+  },
+  "paths" : {
+    "/api/v1/translationLanguages" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get Languages added for translation",
+        "description" : "This API fetches the list of languages added for translation.",
+        "operationId" : "getAllTranslations",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "The status of the language added for translation. The allowed values are @yetToTranslate@ , @active@ and @inactive@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The status of the import. The allowed values are: @yetToTranslate@, @inactive@, @active@",
+            "enum" : [ "inactive", "yetToTranslate", "active" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/translationResponseList"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "be6d05026a82bdb31308e75b0e025e7a",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getAddedLanguages"
+        }
+      },
+      "post" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Add Language for translation",
+        "description" : "This API adds a language for translation.",
+        "operationId" : "addTranslation",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translationAddRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/addTranslationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "986745e967cb2e2eb164e5bd6560a49f",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.addTranslation"
+        }
+      }
+    },
+    "/api/v1/translationLanguagesImports" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get translation import history details",
+        "description" : "This API fetches the import information for the translation.",
+        "operationId" : "getTranslationImportHistory",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/searchString"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/isAscending"
+        }, {
+          "$ref" : "#/components/parameters/status"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTranslationImportHistoryResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "26b41f9f4dcfc98b0784d7793cde2139",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getTranslationImportHistory"
+        }
+      },
+      "post" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Import translation file for languages",
+        "description" : "",
+        "operationId" : "importTranslation",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "importFile" : {
+                    "oneOf" : [ {
+                      "type" : "string",
+                      "format" : "binary",
+                      "contentMediaType" : ".txt"
+                    } ]
+                  }
+                },
+                "required" : [ "importFile" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTranslationImportHistoryResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "13a740910db0d8d1e6ad9ba6ef4695fb",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.importTranslation"
+        }
+      }
+    },
+    "/api/v1/deleteTranslations" : {
+      "post" : {
+        "tags" : [ "TranslationLanguages" ],
+        "operationId" : "DeleteTranslation",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translationDeleteRequest"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "dccf1d5e7572ed29f5dc812c5fbfa7a3",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.deleteTranslationLanguage"
+        }
+      }
+    },
+    "/api/v1/translationLanguageExports" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get all exports info",
+        "description" : "This API fetches the list of exports and its information.",
+        "operationId" : "getTranslationExportHistory",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/searchString"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/isAscending"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status of the export. The allowed values are  @failed@, @exported@, @inprogress@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The status of the import. The allowed values are: @failed@, @exported@, @inprogress@",
+            "enum" : [ "failed", "exported", "inprogress" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTranslationExportHistoryResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "7aaa3e4f777334764fcb13bcebcb9ae6",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getTranslationExportHistory"
+        }
+      },
+      "post" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Export translation file for languages",
+        "description" : "This API exports the translation file for a language.",
+        "operationId" : "exportTranslation",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/exportTranslationRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/exportTranslationResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "3ec53ff7c48431c95a84d38f7dbf91ca",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.exportTranslation"
+        }
+      }
+    },
+    "/api/v1/multiLingualConfiguration" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get Translation Status",
+        "description" : "",
+        "operationId" : "getTranslationStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/translationStatusJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "1f74337cefde6a2180e0b027b75accf2",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getTranslationStatus"
+        }
+      },
+      "put" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Update Translation Status",
+        "description" : "",
+        "operationId" : "updateTranslationStatus",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translationStatusJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/translationStatusJson"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "63140d1bf29bd3927a2f64bb98eff4b0",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.updateTranslationStatus"
+        }
+      }
+    },
+    "/api/v1/translationLanguages/{languageId}" : {
+      "put" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Update status of translation",
+        "description" : "This API updates the status of a translation language.",
+        "operationId" : "updateTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/languageId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translationUpdateRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/translationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "0b304691f150658341e3b22046b64159",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.updateTranslation"
+        }
+      }
+    },
+    "/api/v1/translationLanguageExports/{exportId}/content" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Download Exported Language File",
+        "description" : "This API downloads the Exported Language File",
+        "operationId" : "downloadExportedFile",
+        "parameters" : [ {
+          "name" : "exportId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "b8b9f1175395a024e97daf709fd49848",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.downloadExportedFile"
+        }
+      }
+    },
+    "/api/v1/translatedValues" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get translated values",
+        "description" : "This API fetches the translated values.",
+        "operationId" : "getTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/languageId"
+        }, {
+          "name" : "languageCode",
+          "in" : "query",
+          "description" : "code of the language.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "code of the language.",
+            "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTranslationResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "97b95b0a03bf6e897d1a0295a2955485",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getTranslatedValues"
+        }
+      }
+    },
+    "/api/v1/translatableLanguages" : {
+      "get" : {
+        "tags" : [ "TranslationLanguages" ],
+        "summary" : "Get Supported Languages",
+        "description" : "",
+        "operationId" : "getAllSupportedLanguages",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/languagesList"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "46cba3bdf24d7c5bc03a04cd61e11f67",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.TranslationService.getSupportedLanguages"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "translationResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedAgentDetails" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "email" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+          },
+          "code" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ { } ]
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "exportStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "initiated", "exporting", "exported", "failed", null ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "exportURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(/api/v1/translationLanguageExports/([0-9]+)/content|null)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "active", "inactive", "yetToTranslate" ]
+          }
+        },
+        "required" : [ "code", "createdBy", "createdTime", "exportStatus", "exportURL", "id", "modifiedAgentDetails", "modifiedBy", "modifiedTime", "name", "status" ]
+      },
+      "translationResponseArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/translationResponse"
+        }
+      },
+      "languageCode_array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "en_US", "ta_IN", "zh_CN", "te_IN" ,"is_IS","nl_NL","hi_IN","ja_JP","he_IL","de_DE" ,"zh_TW","ko_KR","pt_BR","es_ES","kk_KZ","it_IT","ru_RU","pl_PL","ro_RO","ar_EG",
+                  "sv_SE","id_ID","tr_TR","da_DK","fr_FR","vi_VN","th_TH"
+                  ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "importTranslationResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "importedAgentDetails" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "email" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+          },
+          "fileName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "importedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "importCompletionTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "completed", "initiated", "importing", "failed", "reverted" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "importedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "fileName", "id", "importCompletionTime", "importedAgentDetails", "importedBy", "importedTime", "status" ]
+      },
+      "importHistoryResponseAsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/importTranslationResponse"
+        }
+      },
+      "LanguageId_Array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "modules_array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "tickets", "contacts", "accounts", "activities", "tasks", "events", "calls", "products", "timeEntry", "contracts" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : [ { } ]
+        }
+      },
+      "entity_array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "Field", "PickListValue", "Layout", "Department", "Report", "CustomerHappiness" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : [ { } ]
+        }
+      },
+      "exportTranslationResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "exportedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "exportedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "downloadURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(/api/v1/translationLanguageExports/([0-9]+)/content|null)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "exportedAgentDetails" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "email" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+          },
+          "exportCompletionTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "agent", "helpcenter" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "languageCode" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "languageName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "initiated", "exporting", "exported", "failed" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "downloadURL", "exportCompletionTime", "exportedAgentDetails", "exportedBy", "exportedTime", "id", "languageCode", "languageName", "status", "type" ]
+      },
+      "exportResponseAsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/exportTranslationResponse"
+        }
+      },
+      "languageJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "isConfigured" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "code" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "code", "isConfigured", "name" ]
+      },
+      "languagesArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/languageJson"
+        }
+      }
+    },
+    "responses" : {
+      "addTranslationResponse" : {
+        "description" : "addTranslationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/translationResponseArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1654509076000,
+                    "modifiedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/1000000000329/photo",
+                      "id" : "1000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "code" : "af-ZA",
+                    "createdBy" : "1000000000329",
+                    "exportStatus" : "exported",
+                    "exportURL" : "/api/v1/translationLanguageExports/1000000046188/content",
+                    "name" : "Afrikaans",
+                    "createdTime" : 1654509076000,
+                    "modifiedBy" : "1000000000329",
+                    "id" : "1000000045025",
+                    "status" : "yetToTranslate"
+                  }, {
+                    "modifiedTime" : 1654508259000,
+                    "modifiedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/1000000000329/photo",
+                      "id" : "1000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "code" : "en-US",
+                    "createdBy" : "1000000000329",
+                    "exportStatus" : "exported",
+                    "exportURL" : "/api/v1/translationLanguageExports/1000000047051/content",
+                    "name" : "English",
+                    "createdTime" : 1654508259000,
+                    "modifiedBy" : "1000000000329",
+                    "id" : "1000000045001",
+                    "status" : "yetToTranslate"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTranslationImportHistoryResponse" : {
+        "description" : "getTranslationImportHistoryResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "history" : {
+                  "$ref" : "#/components/schemas/importHistoryResponseAsArray"
+                }
+              },
+              "required" : [ "history" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "history" : [ {
+                    "importedAgentDetails" : {
+                      "firstName" : "Jade",
+                      "lastName" : "Tywin",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/4000000000329/photo",
+                      "id" : "4000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "fileName" : "en-US_1.txt",
+                    "importedTime" : 1644388112000,
+                    "importCompletionTime" : 1644388134000,
+                    "id" : "4000000061001",
+                    "status" : "completed",
+                    "importedBy" : "4000000000329"
+                  }, {
+                    "importedAgentDetails" : {
+                      "firstName" : "Jade",
+                      "lastName" : "Tywin",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/4000000000329/photo",
+                      "id" : "4000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "fileName" : "en-US_2.txt",
+                    "importedTime" : 1644387868000,
+                    "importCompletionTime" : 1644387889000,
+                    "id" : "4000000060001",
+                    "status" : "completed",
+                    "importedBy" : "4000000000329"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "exportTranslationResponse" : {
+        "description" : "exportTranslationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "exportedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "exportedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "downloadURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(/api/v1/translationLanguageExports/([0-9]+)/content|null)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "exportedAgentDetails" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "email" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    }
+                  },
+                  "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                },
+                "exportCompletionTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(^((((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)))*$|null)"
+                },
+                "type" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "agent", "helpcenter" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "languageCode" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "code for the language whose translation file is to be exported",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "languageName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "initiated", "exporting", "exported", "failed" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "downloadURL", "exportCompletionTime", "exportedAgentDetails", "exportedBy", "exportedTime", "id", "languageCode", "languageName", "status", "type" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "exportedTime" : 1644222032000,
+                  "exportedBy" : "4000000000329",
+                  "downloadURL" : "/api/v1/translationLanguageExports/4000000039083/content",
+                  "id" : "4000000039083",
+                  "exportedAgentDetails" : {
+                    "firstName" : "arun",
+                    "lastName" : "dhas",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agent/1000000000517/photo",
+                    "id" : "1000000000517",
+                    "email" : "case@zylker.com"
+                  },
+                  "languageCode" : "en_US,ta_IN",
+                  "exportCompletionTime" : 1644222094000,
+                  "type" : "agent",
+                  "languageName" : "English (United States),Tamil",
+                  "status" : "exported"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "translationStatusJson" : {
+        "description" : "translationStatusJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "active", "inactive" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "status" : "active"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTranslationExportHistoryResponse" : {
+        "description" : "getTranslationExportHistoryResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/exportResponseAsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "exportedTime" : 1644222032000,
+                    "exportedBy" : "4000000000329",
+                    "downloadURL" : "/api/v1/translationLanguageExports/4000000039083/content",
+                    "id" : "4000000039083",
+                    "exportedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/4000000000329/photo",
+                      "id" : "4000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "languageCode" : "en_US",
+                    "exportCompletionTime" : 1644222094000,
+                    "type" : "agent",
+                    "languageName" : "English (United States)",
+                    "status" : "exported"
+                  }, {
+                    "exportedTime" : 1644221762000,
+                    "exportedBy" : "4000000000329",
+                    "downloadURL" : "/api/v1/translationLanguageExports/4000000038019/content",
+                    "id" : "4000000038019",
+                    "exportedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/4000000000329/photo",
+                      "id" : "4000000000329",
+                      "email" : "case@zylker.com"
+                    },
+                    "languageCode" : "en_US",
+                    "exportCompletionTime" : 1644221825000,
+                    "type" : "helpcenter",
+                    "languageName" : "English (United States)",
+                    "status" : "exported"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "translationResponseList" : {
+        "description" : "translationResponseList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languages" : {
+                  "$ref" : "#/components/schemas/translationResponseArray"
+                }
+              },
+              "required" : [ "languages" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "languages" : [ {
+                    "modifiedTime" : 1613479562000,
+                    "modifiedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/36000000000247/photo",
+                      "id" : "36000000000247",
+                      "email" : "case@zylker.com"
+                    },
+                    "code" : "zh",
+                    "importedTime" : 1613479562000,
+                    "exportStatus" : "exported",
+                    "exportURL" : "/api/v1/translationLanguageExports/1000000046188/content",
+                    "modifiedBy" : "36000000000247",
+                    "id" : "36000000461149",
+                    "importedBy" : "36000000000247",
+                    "status" : "active"
+                  }, {
+                    "modifiedTime" : 1616663456000,
+                    "modifiedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/36000000000247/photo",
+                      "id" : "36000000000247",
+                      "email" : "case@zylker.com"
+                    },
+                    "code" : "en_US",
+                    "importedTime" : 1616663456000,
+                    "exportStatus" : null,
+                    "exportURL" : null,
+                    "modifiedBy" : "36000000000247",
+                    "id" : "36000000689001",
+                    "importedBy" : "36000000000247",
+                    "status" : "yetToTranslate"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "translationResponse" : {
+        "description" : "translationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedAgentDetails" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "email" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    }
+                  },
+                  "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                },
+                "code" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "code of the language.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "exportStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "initiated", "exporting", "exported", "failed", null ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "exportURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(/api/v1/translationLanguageExports/([0-9]+)/content|null)"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "active", "inactive", "yetToTranslate" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "code", "createdBy", "createdTime", "exportStatus", "exportURL", "id", "modifiedAgentDetails", "modifiedBy", "modifiedTime", "name", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "languages" : [ {
+                    "modifiedTime" : 1613479562000,
+                    "modifiedAgentDetails" : {
+                      "firstName" : "arun",
+                      "lastName" : "dhas",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/36000000000247/photo",
+                      "id" : "36000000000247",
+                      "email" : "case@zylker.com"
+                    },
+                    "code" : "zh_CN",
+                    "importedTime" : 1613479562000,
+                    "exportStatus" : "exported",
+                    "exportURL" : "/api/v1/translationLanguageExports/1000000046188/content",
+                    "modifiedBy" : "36000000000247",
+                    "id" : "36000000461149",
+                    "importedBy" : "36000000000247",
+                    "status" : "inactive"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTranslationResponse" : {
+        "description" : "getTranslationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "Field" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                      "x-custom-parameters-attributes" : {
+                        "languageId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Id of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "languageCode" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "code of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "portalname" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        },
+                        "orgId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        }
+                      }
+                    }
+                  }
+                },
+                "Department" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                      "x-custom-parameters-attributes" : {
+                        "languageId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Id of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "languageCode" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "code of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "portalname" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        },
+                        "orgId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        }
+                      }
+                    }
+                  }
+                },
+                "PickListValue" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                      "x-custom-parameters-attributes" : {
+                        "languageId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Id of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "languageCode" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "code of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "portalname" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        },
+                        "orgId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        }
+                      }
+                    }
+                  }
+                },
+                "Report" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "Layout" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                },
+                "Module" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                      "x-custom-parameters-attributes" : {
+                        "languageId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Id of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "languageCode" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "code of the language.",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        },
+                        "portalname" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        },
+                        "orgId" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "allowInvalid" : false,
+                          "importUrl" : false,
+                          "secret" : false,
+                          "decrypt" : false,
+                          "preserveCharsLimit" : 10
+                        }
+                      }
+                    }
+                  }
+                },
+                "CustomView" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false
+                }
+              },
+              "required" : [ "CustomView", "Department", "Field", "Layout", "Module", "PickListValue", "Report" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "Field" : {
+                    "tickets" : {
+                      "entitySkills" : "Skills",
+                      "modifiedTime" : "Modified Time",
+                      "ticketNumber" : "Request Id",
+                      "subCategory" : "Sub Category",
+                      "subject" : "Subject",
+                      "isArchived" : "Is Archived",
+                      "departmentId" : "Department",
+                      "dueDate" : "Due Date",
+                      "channel" : "Mode",
+                      "description" : "Description",
+                      "language" : "Language",
+                      "type" : "Department Sharing Type",
+                      "resolution" : "Resolution",
+                      "sharedCount" : "Shared Count",
+                      "threadStatus" : "Thread Status",
+                      "transitionOwnerDepartmentType" : "Transition Owner Department Type",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "id" : "Case Id",
+                      "departments" : "Departments",
+                      "isResponseOverdue" : "Is Response Overdue",
+                      "email" : "Email",
+                      "customerResponseTime" : "Customer Responded Time",
+                      "productId" : "Product Name",
+                      "transitionOwnerDepartment" : "Transition Owner Department",
+                      "transitionOwnerAgent" : "Transition Owner Agent",
+                      "contactId" : "Contact Name",
+                      "threadCount" : "Thread Count",
+                      "sla" : "SLA",
+                      "transitionOwnerTeam" : "Transition Owner Team",
+                      "priority" : "Priority",
+                      "classification" : "Classification",
+                      "layoutId" : "Layout",
+                      "assigneeId" : "Case Owner",
+                      "commentCount" : "Comment Count",
+                      "blueprint" : "Blueprint",
+                      "accountId" : "Account Name",
+                      "isOverdue" : "Is Overdue",
+                      "phone" : "Phone",
+                      "createdBy" : "Created By",
+                      "teamId" : "Team",
+                      "isEscalated" : "Is Escalated",
+                      "lastActivityTime" : "Ticket Last Activity Time",
+                      "category" : "Category",
+                      "status" : "Status"
+                    },
+                    "calls" : {
+                      "callId" : "Activity Id",
+                      "modifiedTime" : "Modified Time",
+                      "reminder" : "Remind me",
+                      "contactId" : "Contact Name",
+                      "subject" : "Subject",
+                      "completedTime" : "Completed Time",
+                      "departmentId" : "Department",
+                      "creatorId" : "Created By",
+                      "description" : "Description",
+                      "activityTime" : "Activity Time",
+                      "priority" : "Priority",
+                      "ownerId" : "Call Owner",
+                      "layoutId" : "Layout",
+                      "teamId" : "Team",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "lastActivityTime" : "calls Last Activity Time",
+                      "ticketId" : "Request",
+                      "direction" : "Direction",
+                      "status" : "Call Status"
+                    },
+                    "activities" : {
+                      "modifiedTime" : "Modified Time",
+                      "reminder" : "Remind me",
+                      "contactId" : "Contact Name",
+                      "subject" : "Subject",
+                      "completedTime" : "Completed Time",
+                      "creatorId" : "Created By",
+                      "description" : "Description",
+                      "activityTime" : "Activity Time",
+                      "ownerId" : "Owner",
+                      "priority" : "Priority",
+                      "teamId" : "Team",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "id" : "Activity Id",
+                      "category" : "Category",
+                      "lastActivityTime" : "Activities Last Activity Time",
+                      "ticketId" : "Request",
+                      "status" : "Status"
+                    },
+                    "accounts" : {
+                      "modifiedTime" : "Modified Time",
+                      "country" : "Country",
+                      "website" : "Website",
+                      "code" : "Code",
+                      "contactId" : "Contact Name",
+                      "accountName" : "Account Name",
+                      "city" : "City",
+                      "description" : "Description",
+                      "industry" : "Industry",
+                      "ownerId" : "Account Owner",
+                      "layoutId" : "Layout",
+                      "crmAccountId" : "Mapped With CRM",
+                      "phone" : "Phone",
+                      "createdBy" : "Created By",
+                      "annualrevenue" : "Annual Revenue",
+                      "street" : "Street",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "state" : "State",
+                      "id" : "Account Id",
+                      "fax" : "Fax",
+                      "lastActivityTime" : "Account Last Activity Time",
+                      "email" : "Email"
+                    },
+                    "timeEntry" : {
+                      "secondsSpent" : "Seconds Spent",
+                      "modifiedTime" : "Modified Time",
+                      "executedTime" : "Executed Time",
+                      "contactId" : "Contact Name",
+                      "departmentId" : "Department",
+                      "minutesSpent" : "Minutes Spent",
+                      "agentCostPerHour" : "Support Rep Cost Per Hour",
+                      "description" : "Description",
+                      "hoursSpent" : "Hours Spent",
+                      "ownerId" : "Support Rep",
+                      "layoutId" : "Layout",
+                      "isBillable" : "Billing Type",
+                      "activityId" : "Activity",
+                      "createdBy" : "Created By",
+                      "requestId" : "Request",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "requestChargeType" : "Request Charge Type",
+                      "additionalCost" : "Additional Cost",
+                      "totalCost" : "Total Cost"
+                    },
+                    "contracts" : {
+                      "associatedSLAId" : "SLA Name",
+                      "modifiedTime" : "Modified Time",
+                      "productId" : "Product Name",
+                      "endDate" : "Contract End Date",
+                      "departmentId" : "Department",
+                      "contractNumber" : "Contract Number",
+                      "description" : "Description",
+                      "ownerId" : "Contract Owner",
+                      "layoutId" : "Layout",
+                      "accountId" : "Account Name",
+                      "createdBy" : "Created By",
+                      "createdTime" : "Created Time",
+                      "contractName" : "Contract Name",
+                      "modifiedBy" : "Modified By",
+                      "id" : "Contract Id",
+                      "startDate" : "Contract Start Date"
+                    },
+                    "tasks" : {
+                      "modifiedTime" : "Modified Time",
+                      "reminder" : "Remind At",
+                      "contactId" : "Contact Name",
+                      "subject" : "Subject",
+                      "completedTime" : "Completed Time",
+                      "departmentId" : "Department",
+                      "dueDate" : "Due Date",
+                      "creatorId" : "Created By",
+                      "description" : "Description",
+                      "activityTime" : "Activity Time",
+                      "ownerId" : "Task Owner",
+                      "priority" : "Priority",
+                      "layoutId" : "Layout",
+                      "teamId" : "Team",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "lastActivityTime" : "tasks Last Activity Time",
+                      "category" : "Category",
+                      "ticketId" : "Request",
+                      "taskId" : "Activity Id",
+                      "status" : "Status"
+                    },
+                    "contacts" : {
+                      "lastName" : "Last Name",
+                      "modifiedTime" : "Modified Time",
+                      "country" : "Country",
+                      "secondaryEmail" : "Secondary Email",
+                      "city" : "City",
+                      "description" : "Description",
+                      "potentialsClosingDate" : "Closing Date",
+                      "type" : "Type",
+                      "ownerId" : "Contact Owner",
+                      "title" : "Title",
+                      "twitter" : "Twitter",
+                      "street" : "Street",
+                      "createdTime" : "Created Time",
+                      "isEndUser" : "isPortalUser",
+                      "modifiedBy" : "Modified By",
+                      "id" : "Contact Id",
+                      "state" : "State",
+                      "crmContactId" : "Mapped With CRM",
+                      "email" : "Email",
+                      "zip" : "Zip",
+                      "facebook" : "Facebook",
+                      "crmContactType" : "CRM Contact Type",
+                      "mobile" : "Mobile",
+                      "secAccountId" : "Secondary Accounts",
+                      "layoutId" : "Layout",
+                      "customerSince" : "Customer Since",
+                      "firstName" : "First Name",
+                      "accountId" : "Account Name",
+                      "potentialsRevenue" : "Total Revenue",
+                      "revenueReceived" : "Revenue Received",
+                      "phone" : "Phone",
+                      "createdBy" : "Created By",
+                      "lastActivityTime" : "Contact Last Activity Time",
+                      "ticketId" : "Ticket"
+                    },
+                    "events" : {
+                      "modifiedTime" : "Completed Time",
+                      "eventId" : "Activity Id",
+                      "reminder" : "Remind me",
+                      "contactId" : "Contact Name",
+                      "subject" : "Subject",
+                      "departmentId" : "Department",
+                      "creatorId" : "Created By",
+                      "description" : "Description",
+                      "activityTime" : "Activity Time",
+                      "priority" : "Priority",
+                      "ownerId" : "Event Owner",
+                      "layoutId" : "Layout",
+                      "teamId" : "Team",
+                      "createdTime" : "Created Time",
+                      "startTime" : "Start Time",
+                      "modifiedBy" : "Modified By",
+                      "category" : "Category",
+                      "lastActivityTime" : "Events Last Activity Time",
+                      "ticketId" : "Request",
+                      "status" : "Status"
+                    },
+                    "products" : {
+                      "unitPrice" : "Unit Price",
+                      "modifiedTime" : "Modified Time",
+                      "description" : "Description",
+                      "departmentIds" : "Department",
+                      "ownerId" : "Product Owner",
+                      "layoutId" : "Layout",
+                      "productName" : "Product Name",
+                      "manufacturer" : "Manufacturer",
+                      "productCategory" : "Product Category",
+                      "productCode" : "Product Code",
+                      "createdBy" : "Created By",
+                      "createdTime" : "Created Time",
+                      "modifiedBy" : "Modified By",
+                      "id" : "Product Id",
+                      "lastActivityTime" : "Product Last Activity Time"
+                    }
+                  },
+                  "Department" : {
+                    "departmentname" : "departmentName"
+                  },
+                  "PickListValue" : {
+                    "calls" : {
+                      "priority" : {
+                        "Highest" : "2"
+                      }
+                    },
+                    "tasks" : {
+                      "priority" : {
+                        "Highest" : "2"
+                      }
+                    },
+                    "events" : {
+                      "priority" : {
+                        "High" : "1",
+                        "Low" : "3",
+                        "Lowest" : "4",
+                        "Normal" : "5",
+                        "Highest" : "2"
+                      }
+                    },
+                    "products" : {
+                      "productCategory" : {
+                        "Hardware" : "h2"
+                      }
+                    }
+                  },
+                  "Layout" : {
+                    "tickets" : {
+                      "departmentname" : {
+                        "layoutname" : "layoutName"
+                      }
+                    },
+                    "calls" : {
+                      "departmentname" : {
+                        "layoutname" : "layoutName"
+                      }
+                    },
+                    "accounts" : {
+                      "layoutname" : "layoutName"
+                    },
+                    "timeEntry" : {
+                      "departmentname" : {
+                        "layoutname" : "layoutName"
+                      }
+                    },
+                    "contracts" : {
+                      "layoutname" : "layoutName"
+                    },
+                    "contacts" : {
+                      "layoutname" : "layoutName"
+                    },
+                    "events" : {
+                      "departmentname" : {
+                        "layoutname" : "layoutName"
+                      }
+                    },
+                    "tasks" : {
+                      "departmentname" : {
+                        "layoutname" : "layoutName"
+                      }
+                    },
+                    "products" : {
+                      "layoutname" : "layoutName"
+                    }
+                  },
+                  "Report" : {
+                    "AllDepartments" : {
+                      "Static Reports" : {
+                        "reopenTickets" : {
+                          "188347000000176023" : "reopenTickets"
+                        },
+                        "slaReports" : {
+                          "188347000000176020" : "slaReports"
+                        },
+                        "agentAvailability" : {
+                          "188347000000268029" : "agentAvailability"
+                        },
+                        "incomingThreads" : {
+                          "188347000000176029" : "incomingThreads"
+                        },
+                        "responseTime" : {
+                          "188347000000176026" : "responseTime"
+                        },
+                        "agentPerformanceReport" : {
+                          "188347000000268021" : "agentPerformanceReport"
+                        },
+                        "resolutionTime" : {
+                          "188347000000176032" : "resolutionTime"
+                        },
+                        "stagingReports" : {
+                          "188347000000268032" : "stagingReports"
+                        }
+                      },
+                      "Global Reports" : {
+                        "Tickets by departments" : {
+                          "188347000000276189" : "Tickets by departments"
+                        }
+                      }
+                    }
+                  },
+                  "Module" : {
+                    "reports" : "Reports",
+                    "tickets" : "Tickets",
+                    "im" : "IM",
+                    "social" : "Social",
+                    "community" : "Community",
+                    "contracts" : "Contracts",
+                    "dashboards" : "Dashboards",
+                    "products" : "Products",
+                    "calls" : "Calls",
+                    "activities" : "Activities",
+                    "chat" : "Chat",
+                    "accounts" : "Accounts",
+                    "timeEntry" : "TimeEntry",
+                    "contacts" : "Contacts",
+                    "tasks" : "Tasks",
+                    "events" : "Events"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "languagesList" : {
+        "description" : "languagesList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languages" : {
+                  "$ref" : "#/components/schemas/languagesArray"
+                }
+              },
+              "required" : [ "languages" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "languages" : [ {
+                    "isConfigured" : false,
+                    "code" : "en_US",
+                    "name" : "English (United States)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ja_JP",
+                    "name" : "Japanese (Japan)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "zh_CN",
+                    "name" : "Chinese (China)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "es_ES",
+                    "name" : "Spanish (Spain)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "de_DE",
+                    "name" : "German (Germany)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "fr_FR",
+                    "name" : "French (France)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "tr_TR",
+                    "name" : "Turkish (Turkey)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ru_RU",
+                    "name" : "Russian (Russia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "pt_BR",
+                    "name" : "Portuguese (Brazil)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "it_IT",
+                    "name" : "Italian (Italy)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "nl_NL",
+                    "name" : "Dutch (Netherlands)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "da_DK",
+                    "name" : "Danish (Denmark)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "sv_SE",
+                    "name" : "Swedish (Sweden)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "pl_PL",
+                    "name" : "Polish (Poland)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ar_EG",
+                    "name" : "Arabic (Egypt)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "he_IL",
+                    "name" : "Hebrew (Israel)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "af_ZA",
+                    "name" : "Afrikaans (South Africa)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "cs_CZ",
+                    "name" : "Czech (Czech Republic)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "fr_CA",
+                    "name" : "French (Canada)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "bg_BG",
+                    "name" : "Bulgarian (Bulgaria)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "fi_FI",
+                    "name" : "Finnish (Finland)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "el_GR",
+                    "name" : "Greek (Greece)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "hu_HU",
+                    "name" : "Hungarian (Hungary)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "id_ID",
+                    "name" : "Indonesian (Indonesia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "nb_NO",
+                    "name" : "Norwegian Bokmål (Norway)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ro_RO",
+                    "name" : "Romanian (Romania)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "th_TH",
+                    "name" : "Thai (Thailand)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "uk_UA",
+                    "name" : "Ukrainian (Ukraine)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "vi_VN",
+                    "name" : "Vietnamese (Vietnam)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ur_PK",
+                    "name" : "Urdu (Pakistan)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "hi_IN",
+                    "name" : "Hindi (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "te_IN",
+                    "name" : "Telugu (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "kn_IN",
+                    "name" : "Kannada (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ta_IN",
+                    "name" : "Tamil (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "mr_IN",
+                    "name" : "Marathi (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ko_KR",
+                    "name" : "Korean (South Korea)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "fa_IR",
+                    "name" : "Persian (Iran)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "bn_IN",
+                    "name" : "Bengali (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "gu_IN",
+                    "name" : "Gujarati (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ms_MY",
+                    "name" : "Malay (Malaysia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ml_IN",
+                    "name" : "Malayalam (India)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "en_GB",
+                    "name" : "English (United Kingdom)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "sk_SK",
+                    "name" : "Slovak (Slovakia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "hr_HR",
+                    "name" : "Croatian (Croatia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "sl_SI",
+                    "name" : "Slovenian (Slovenia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "zh_TW",
+                    "name" : "Chinese (Taiwan)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ca_ES",
+                    "name" : "Catalan (Spain)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "ka_GE",
+                    "name" : "Georgian (Georgia)"
+                  }, {
+                    "isConfigured" : false,
+                    "code" : "kk_KZ",
+                    "name" : "Kazakh (Kazakhstan)"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "searchString" : {
+        "name" : "searchString",
+        "in" : "query",
+        "description" : "String that is used to search the entire import and its history.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "String that is used to search the entire import and its history.",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of translation languages details to fetch",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of translation languages details to fetch",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "languageId" : {
+        "name" : "languageId",
+        "in" : "path",
+        "description" : "Id of the language.",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Id of the language.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index starting point to fetch the information of translation languages.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index starting point to fetch the information of translation languages.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "isAscending" : {
+        "name" : "isAscending",
+        "in" : "query",
+        "description" : "Sorting order of the imports.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "boolean", "null" ],
+          "description" : "Sorting order of the imports."
+        }
+      },
+      "status" : {
+        "name" : "status",
+        "in" : "query",
+        "description" : "The status of the import. The allowed values are: @failed@, @completed@, @inprogress@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "The status of the import. The allowed values are: @failed@, @completed@, @inprogress@",
+          "enum" : [ "failed", "completed", "inprogress" ]
+        }
+      }
+    },
+    "requestBodies" : {
+      "translationAddRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "code" : {
+                  "$ref" : "#/components/schemas/languageCode_array"
+                }
+              },
+              "required" : [ "code" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "code" : [ "af-ZA", "en-US" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "translationDeleteRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languageIds" : {
+                  "$ref" : "#/components/schemas/LanguageId_Array"
+                }
+              },
+              "required" : [ "languageIds" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "exportTranslationRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "languageCodes" : {
+                  "$ref" : "#/components/schemas/languageCode_array"
+                },
+                "languageCode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "en_US", "ta_IN", "zh_CN", "te_IN" ,"is_IS","nl_NL","hi_IN","ja_JP","he_IL","de_DE" ,"zh_TW","ko_KR","pt_BR","es_ES","kk_KZ","it_IT","ru_RU","pl_PL","ro_RO","ar_EG",
+                  "sv_SE","id_ID","tr_TR","da_DK","fr_FR","vi_VN","th_TH"
+                  ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modules" : {
+                  "$ref" : "#/components/schemas/modules_array"
+                },
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "translated", "tobetranslated" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "entity" : {
+                  "$ref" : "#/components/schemas/entity_array"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "languageCodes" : [ "en_US", "ta_IN" ],
+                  "modules" : [ "contacts" ],
+                  "content" : "tobetranslated"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "translationStatusJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "active", "inactive" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "active"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "translationUpdateRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "active", "inactive" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "code" : "zh_CN",
+                  "status" : "inactive"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "TranslationLanguages"
+}

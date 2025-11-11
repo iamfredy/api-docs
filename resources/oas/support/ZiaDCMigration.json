@@ -1,0 +1,159 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ZiaDCMigration",
+    "version" : "1.0.0",
+    "x-clan-group" : "zia",
+    "x-module-group" : "zia"
+  },
+  "paths" : {
+    "/api/v1/ziadesk/dcmigration/idgenerator" : {
+      "post" : {
+        "tags" : [ "ZiaDCMigration" ],
+        "operationId" : "PrimaryIdGenerator",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/idGenerator"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/idGenerator"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50000,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "zia",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.desk.zia.restapi.ZIADCMigrationService.autoIdGeneration"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "IdPair": {
+        "type": "object",
+        "properties": {
+          "oldId": {
+            "type" : [ "string", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"   
+          },
+          "newId": {
+            "type" : [ "string", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required": ["oldId", "newId"]
+      }     
+    },
+    "responses" : {
+      "idGenerator" : {
+        "description": "ID Generation for DC Migration",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "$ref" : "#/components/schemas/IdPair"
+                  }
+               }
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+       "idGenerator" : {
+        "content" : {
+          "application/json" : {
+            "schema" :{
+                "properties": {
+                  "previousOrgId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : {
+                      "allowInvalid" : false,
+                      "descrption" : "Previous OrgID to Migrate",
+                      "secret" : false
+                  }
+                  },
+                  "ids" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                        "type" : [ "string", "null" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)",
+                        "maxLength" : 50000,
+                        "minLength" : 0                       
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      }
+    }
+  },
+  "x-entity" : "ZiaDCMigration"
+}

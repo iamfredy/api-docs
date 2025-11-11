@@ -1,0 +1,2316 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "KBRecycleBin",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/kbComments/trashedComments" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "List trashed kb comments",
+        "description" : "To fetch list of kb comments that has been trashed earlier",
+        "operationId" : "getTrashedComments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort trashed comments based on : !@deletedTime@! ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort trashed comments based on : !@deletedTime@! ",
+            "enum" : [ "deletedTime" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/listOfComments"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d4303acde159ac1146c620de61a217c2",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.getTrashedComments"
+        }
+      }
+    },
+    "/api/v1/articleTranslations/trashedTranslations/restore" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Restore trashed article translations",
+        "description" : "Restores all the associated parent entities of given translation from recyclebin to your helpdesk.",
+        "operationId" : "restoreTrashedTranslations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/restoreJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "129aba473a969bf93df332028f192473",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.restoreTranslations"
+        }
+      }
+    },
+    "/api/v1/articleTranslations/trashedTranslations/count" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Get trashed article translations count",
+        "description" : "This API returns the number of article translations in recyclebin.",
+        "operationId" : "getTrashedTranslationsCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "#/components/parameters/deletedTimeRange"
+        }, {
+          "$ref" : "#/components/parameters/deletedBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "name" : "isTemplate",
+          "in" : "query",
+          "description" : "Is it a template",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false,
+            "description" : "To search the article template",
+            "x-audience" : [ "company-internal" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/countJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 250,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "f01289686e446b6c17a38d4473a19b1a",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.obtainTrashedArticlesCount"
+        }
+      }
+    },
+    "/api/v1/kbCategory/trashedCategories/count" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Get trashed categories count",
+        "description" : "This API returns the number of categories in recyclebin.",
+        "operationId" : "getTrashedCategoriesCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "#/components/parameters/deletedTimeRange"
+        }, {
+          "$ref" : "#/components/parameters/deletedBy"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/countJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 250,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "4bb4bf74198f6a04c2857af9a172b59d",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.obtainTrashedCategoryCount"
+        }
+      }
+    },
+    "/api/v1/articleTranslations/trashedTranslations/delete" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Delete trashed article translations",
+        "description" : "Deletes all the associated child entities of a given translation permanentely from recyclebin.",
+        "operationId" : "deleteTrashedTranslations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteTrashedTranslations_restoreJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "ba66ca5a081159fcba4cfa8e1e29766f",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.deleteTranslation"
+        }
+      }
+    },
+    "/api/v1/kbComments/trashedComments/count" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Get trashed article translations comments count",
+        "description" : "This API returns the number of article translations comments in recyclebin.",
+        "operationId" : "getTrashedCommentsCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/countJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "306909927c04fc147e80b1ea76e9a1af",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.obtainTrashedArticleCommentsCount"
+        }
+      }
+    },
+    "/api/v1/kbCategory/trashedCategories/restore" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Restore trashed kb categories",
+        "description" : "Restores all the associated parent and child entities of given category from recyclebin to your helpdesk.",
+        "operationId" : "restoreTrashedCategories",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/restoreTrashedCategories_restoreJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d9ed0e0d9e13d4722ecf9d4a8ed1d20a",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.restoreKbCategory"
+        }
+      }
+    },
+    "/api/v1/articleTranslations/trashedTranslations" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "List trashed article translations",
+        "description" : "To fetch list of trashed article translations",
+        "operationId" : "getTrashedTranslations",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort trashed translations based on : !@deletedTime@! ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort trashed translations based on : !@deletedTime@! ",
+            "enum" : [ "deletedTime" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/deletedBy"
+        }, {
+          "$ref" : "#/components/parameters/deletedTimeRange"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "name" : "isTemplate",
+          "in" : "query",
+          "description" : "Is it a template",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false,
+            "description" : "To search the article template",
+            "x-audience" : [ "company-internal" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTrashedTranslationResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 250,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "cc5bb59b57159eb5f6fe50b9c1cfe867",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.getTrashedArticles"
+        }
+      }
+    },
+    "/api/v1/kbComments/trashedComments/delete" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Delete trashed article translation comments",
+        "description" : "Deletes all the associated child entities of a given translation comments permanentely from recyclebin.",
+        "operationId" : "deleteTrashedComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/restoreCommentJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "331a3fec23b264afa04763798ad81d89",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.deleteArticleComments"
+        }
+      }
+    },
+    "/api/v1/kbCategory/trashedCategories/delete" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Delete trashed kb categories",
+        "description" : "Deletes all the associated child entities of given category permanentely from recyclebin.",
+        "operationId" : "deleteTrashedCategories",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteTrashedCategories_restoreJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "38ec4039159fb8aee062f2977ecbde66",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.deleteKBCategory"
+        }
+      }
+    },
+    "/api/v1/kbComments/trashedComments/restore" : {
+      "post" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Restore trashed article translation comments",
+        "description" : "Restores all the associated parent entities of given translation comment from recyclebin to your helpdesk.",
+        "operationId" : "restoreTrashedComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/restoreTrashedComments_restoreCommentJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "71288b19ec32be0642cfa44156402359",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.restoreArticleComments"
+        }
+      }
+    },
+    "/api/v1/kbCategory/trashedCategories" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "List trashed kb categories",
+        "description" : "To fetch list of kb categories that has been trashed earlier",
+        "operationId" : "getTrashedCategories",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort trashed categories based on : !@deletedTime@! ",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort trashed categories based on : !@deletedTime@! ",
+            "enum" : [ "deletedTime" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/deletedBy"
+        }, {
+          "$ref" : "#/components/parameters/deletedTimeRange"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getTrashedCategoriesResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 250,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "feb31ea8a0cbd18f72105323ba6049aa",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.getTrashedKbCategoryList"
+        }
+      }
+    },
+    "/api/v1/kbCategory/trashedCategories/{trashedCategoryId}" : {
+      "get" : {
+        "tags" : [ "KBRecycleBin" ],
+        "summary" : "Fetch trashed kb category info",
+        "description" : "To fetch meta info of the trashed topic",
+        "operationId" : "getTrashedCategoriesInfo",
+        "parameters" : [ {
+          "name" : "trashedCategoryId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/trashedCategoryMetaResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 250,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "8c6d752e70432bf2f65ba925e0982329",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.recyclebin.RecycleBinService.trashedKbCategoryInfo"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "articleTranslation" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "translationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        },
+        "required" : [ "id", "locale", "title", "translationId" ]
+      },
+      "category" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        },
+        "required" : [ "id", "locale", "name" ]
+      },
+      "commentListResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "articleTranslation" : {
+            "$ref" : "./KBRecycleBin.json#/components/schemas/articleTranslation"
+          },
+          "hashtags" : {
+            "$ref" : "./ArticleComment.json#/components/schemas/hashtags"
+          },
+          "commentedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "content" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0
+          },
+          "commenterId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deletedBy" : {
+            "$ref" : "./ArticleComment.json#/components/schemas/commenter"
+          },
+          "commenter" : {
+            "$ref" : "./ArticleComment.json#/components/schemas/commenter"
+          },
+          "rootCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "mentions" : {
+            "$ref" : "./ArticleComment.json#/components/schemas/mentionObjResponse"
+          },
+          "isPublic" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deleterId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deletedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "category" : {
+            "$ref" : "./KBRecycleBin.json#/components/schemas/category"
+          },
+          "contentType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "plainText", "html" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "categoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Get trashed comments under the given category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "articleTranslationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "articleTranslation", "articleTranslationId", "category", "categoryId", "commentedTime", "commenter", "commenterId", "content", "contentType", "deletedBy", "deletedTime", "deleterId", "hashtags", "id", "isPublic", "mentions", "modifiedTime", "rootCategoryId" ]
+      },
+      "commentData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/commentListResponse"
+        }
+      },
+      "deletedBy" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Fetch trashed translations by user",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "DISABLED", "LICENSE_DOWNGRADED", "DELETED", "ANONYMIZED", "CLOSED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "status", "zuid" ]
+      },
+      "availableLocaleTranslationsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "latestVersionStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Published", "Draft", "Review", "Expired", "Unpublished", "Auto-translate Pending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isTrashed" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "translationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "recycleBinEntityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "latestVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isLocked" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "latestPublishedVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "href" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          },
+          "authorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "translationState" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "OUTDATED", "UP-TO-DATE", "AUTO-TRANSLATE INPROGRESS", "AUTO-TRANSLATE FAILED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Published", "Draft", "Review", "Expired", "Unpublished", "Auto-translate Pending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "authorId", "href", "isLocked", "isTrashed", "latestPublishedVersion", "latestVersion", "latestVersionStatus", "locale", "recycleBinEntityId", "status", "translationId", "translationState" ]
+      },
+      "availableLocaleTranslations" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/availableLocaleTranslationsObject"
+        }
+      },
+      "translationResponse" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./ArticleTranslation.json#/components/schemas/articleTranslationListViewObject"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "recycleBinEntityId" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "availableLocaleTranslations" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/availableLocaleTranslations"
+            },
+            "deletedTime" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+            },
+            "deletedBy" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/deletedBy"
+            }
+          },
+          "required" : [ "availableLocaleTranslations", "deletedBy", "deletedTime", "recycleBinEntityId" ]
+        } ]
+      },
+      "trashedTranslationData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/translationResponse"
+        }
+      },
+      "categoryResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "visibility" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]*"
+          },
+          "groups" : {
+            "$ref" : "./KbCategory.json#/components/schemas/groupJsonArr"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "deletedBy" : {
+            "$ref" : "./KBRecycleBin.json#/components/schemas/deletedBy"
+          },
+          "associatedDepartmentIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "uniqueItems" : false
+          },
+          "rootCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+          },
+          "recycleBinEntityId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "translations" : {
+            "$ref" : "./KBRootCategory.json#/components/schemas/rootTranslationResponseJsonArr"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+          },
+          "parentCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ipAddresses" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)(/(?:[012]?[0-9]|3[012]))?)|\\*)$"
+            },
+            "uniqueItems" : false
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deletedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "associatedDepartmentIds", "createdBy", "createdTime", "deletedBy", "deletedTime", "description", "groups", "id", "ipAddresses", "logoUrl", "modifiedBy", "modifiedTime", "name", "order", "parentCategoryId", "recycleBinEntityId", "rootCategoryId", "status", "translations", "visibility" ]
+      },
+      "trashedCategoryData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/categoryResponse"
+        }
+      },
+      "metaParent3" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "parent" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        },
+        "required" : [ "parent" ]
+      },
+      "trashedCategoryMetaCommonJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "level" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "subSectionCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "topicId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "parentTopicId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isTrashed" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "createdBy" : {
+            "$ref" : "./KBRecycleBin.json#/components/schemas/deletedBy"
+          },
+          "topicName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modifiedBy" : {
+            "$ref" : "./KBRecycleBin.json#/components/schemas/deletedBy"
+          },
+          "rootTopicId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "permalink" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-z0-9\\/%\\-\\P{InBasicLatin}]+"
+          },
+          "articlesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "articlesCount", "createdBy", "description", "isTrashed", "level", "logoUrl", "modifiedBy", "order", "parentTopicId", "permalink", "rootTopicId", "subSectionCount", "topicId", "topicName" ]
+      },
+      "metaParent2" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "parent" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaParent3"
+            }
+          },
+          "required" : [ "parent" ]
+        } ]
+      },
+      "metaParent1" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "parent" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaParent2"
+            }
+          },
+          "required" : [ "parent" ]
+        } ]
+      },
+      "metaParent" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "parent" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaParent1"
+            }
+          },
+          "required" : [ "parent" ]
+        } ]
+      },
+      "metaChildren3" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "children" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "children" ]
+      },
+      "metaChildrenArr3" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildren3"
+        }
+      },
+      "metaChildren2" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "children" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildrenArr3"
+            }
+          },
+          "required" : [ "children" ]
+        } ]
+      },
+      "metaChildrenArr2" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildren2"
+        }
+      },
+      "metaChildren1" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "children" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildrenArr2"
+            }
+          },
+          "required" : [ "children" ]
+        } ]
+      },
+      "metaChildrenArr1" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildren1"
+        }
+      },
+      "metaChildren" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "children" : {
+              "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildrenArr1"
+            }
+          },
+          "required" : [ "children" ]
+        } ]
+      },
+      "metaChildrenArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildren"
+        }
+      }
+    },
+    "responses" : {
+      "listOfComments" : {
+        "description" : "listOfComments template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KBRecycleBin.json#/components/schemas/commentData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Example" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1726054566000,
+                    "articleTranslation" : {
+                      "translationId" : "2000000129020",
+                      "id" : "2000000129018",
+                      "title" : "johny article",
+                      "locale" : "en"
+                    },
+                    "hashtags" : [ ],
+                    "commentedTime" : 1726054566000,
+                    "commenterId" : "2000000000521",
+                    "deletedBy" : {
+                      "firstName" : "Anamika",
+                      "lastName" : "Ragunath",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/2000000000521/photo?orgId=55318532",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/2000000000521/en",
+                      "roleName" : "CEO",
+                      "name" : "Anamika Ragunath",
+                      "id" : "2000000000521",
+                      "label" : null,
+                      "type" : "AGENT",
+                      "email" : "anamika@desk.com",
+                      "kbRole" : null
+                    },
+                    "content" : "<div>Zoho Desk KB Comment</div>",
+                    "rootCategoryId" : "2000000129001",
+                    "commenter" : {
+                      "firstName" : "Anamika",
+                      "lastName" : "Ragunath",
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/2000000000521/photo?orgId=55318532",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/2000000000521/en",
+                      "roleName" : "CEO",
+                      "name" : "Anamika Rahunath",
+                      "id" : "2000000000521",
+                      "label" : null,
+                      "type" : "AGENT",
+                      "email" : "anamika@desk.com",
+                      "kbRole" : null
+                    },
+                    "mentions" : {
+                      "groups" : [ ],
+                      "users" : [ ]
+                    },
+                    "isPublic" : false,
+                    "id" : "2000000131002",
+                    "deletedTime" : 1726054635000,
+                    "deleterId" : "2000000000521",
+                    "category" : {
+                      "name" : "Desk category",
+                      "id" : "2000000129001",
+                      "locale" : "en"
+                    },
+                    "contentType" : "html",
+                    "categoryId" : "2000000129001",
+                    "articleTranslationId" : "2000000129020"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "countJson" : {
+        "description" : "countJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "count" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "count" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "count" : "5"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTrashedTranslationResponse" : {
+        "description" : "getTrashedTranslationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KBRecycleBin.json#/components/schemas/trashedTranslationData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1576136119000,
+                    "departmentId" : "1000000147842",
+                    "creatorId" : "1000000015894",
+                    "dislikeCount" : "0",
+                    "modifierId" : "1000000015894",
+                    "likeCount" : "0",
+                    "title" : "django basic commands",
+                    "ownerId" : "1000000015894",
+                    "locale" : "zh-CN",
+                    "deletedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "translationState" : "UP-TO-DATE",
+                    "isTrashed" : true,
+                    "createdTime" : 1576136022000,
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "id" : "1000000247006",
+                    "viewCount" : "0",
+                    "deletedTime" : 1576136119000,
+                    "summary" : "django basic commands",
+                    "owner" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "latestVersionStatus" : "Published",
+                    "myVote" : null,
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "permission" : "ALL",
+                    "authorId" : "1000000015894",
+                    "usageCount" : "0",
+                    "isTemplate" : false,
+                    "templateUsageCount" : "2",
+                    "templateUsedUsersCount" : "2",
+                    "templateLastUpdatedTime" : "2019-12-31T09:45:52.000Z",
+                    "commentCount" : "0",
+                    "sourceLocale" : "ja-JP",
+                    "translationId" : "1000000247096",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "latestVersion" : "1.0",
+                    "recycleBinEntityId" : "1000000247096",
+                    "webUrl" : "https://desk.zoho.com//support/magicmouse/ShowHomePage.do#Solutions/dv/1000000247006/locale/zh-CN",
+                    "portalUrl" : null,
+                    "feedbackCount" : "0",
+                    "attachmentCount" : "0",
+                    "latestPublishedVersion" : "1.0",
+                    "availableLocaleTranslations" : [ {
+                      "latestVersionStatus" : "Published",
+                      "translationId" : "1000000247008",
+                      "isTrashed" : true,
+                      "recycleBinEntityId" : "1000000247008",
+                      "href" : "https://desk.zoho.com//api/v1/articles/1000000247006/translations/en-us?orgId=10283556",
+                      "authorId" : "1000000015894",
+                      "locale" : "en-US",
+                      "translationState" : "UP-TO-DATE",
+                      "status" : "Published"
+                    }, {
+                      "latestVersionStatus" : "Published",
+                      "translationId" : "1000000247044",
+                      "isTrashed" : false,
+                      "recycleBinEntityId" : "1000000247006",
+                      "href" : "https://desk.zoho.com//api/v1/articles/1000000247006/translations/ja-jp?orgId=10283556",
+                      "authorId" : "1000000015894",
+                      "locale" : "ja-JP",
+                      "translationState" : "UP-TO-DATE",
+                      "status" : "Published"
+                    }, {
+                      "latestVersionStatus" : "Published",
+                      "translationId" : "1000000247071",
+                      "isTrashed" : true,
+                      "recycleBinEntityId" : "1000000247071",
+                      "href" : "https://desk.zoho.com//api/v1/articles/1000000247006/translations/de-de?orgId=10283556",
+                      "authorId" : "1000000015894",
+                      "locale" : "de-DE",
+                      "translationState" : "UP-TO-DATE",
+                      "status" : "Published"
+                    }, {
+                      "latestVersionStatus" : "Published",
+                      "translationId" : "1000000247096",
+                      "isTrashed" : true,
+                      "recycleBinEntityId" : "1000000247096",
+                      "href" : "https://desk.zoho.com//api/v1/articles/1000000247006/translations/zh-cn?orgId=10283556",
+                      "authorId" : "1000000015894",
+                      "locale" : "zh-CN",
+                      "translationState" : "UP-TO-DATE",
+                      "status" : "Published"
+                    } ],
+                    "category" : {
+                      "name" : "django",
+                      "id" : "1000000221006"
+                    },
+                    "permalink" : "django-basic-commands",
+                    "categoryId" : "1000000221006",
+                    "status" : "Published"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTrashedCategoriesResponse" : {
+        "description" : "getTrashedCategoriesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1595493475000,
+                    "visibility" : "NONE",
+                    "groups" : [ ],
+                    "description" : "Analytics samples",
+                    "deletedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "4000000015894",
+                      "status" : "ACTIVE",
+                      "zuid" : "98936729"
+                    },
+                    "logoUrl" : "https://desk.zoho.com/portal/api/departments/4000000007245/logo?orgId=55318532",
+                    "rootCategoryId" : "4000002881348",
+                    "associatedDepartmentIds" : [ "4000002879058" ],
+                    "recycleBinEntityId" : "4000002881365",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "4000000015894",
+                      "status" : "ACTIVE",
+                      "zuid" : "98936729"
+                    },
+                    "translations" : [ {
+                      "modifiedTime" : 1595493475000,
+                      "createdBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "4000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "name" : "General Analytics",
+                      "description" : "Analytics samples",
+                      "createdTime" : 1595493475000,
+                      "modifiedBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "4000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "id" : "4000002881367",
+                      "permalink" : "general-analytics",
+                      "locale" : "en",
+                      "categoryId" : "4000002881365"
+                    } ],
+                    "name" : "General Analytics",
+                    "createdTime" : 1595493475000,
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "4000000015894",
+                      "status" : "ACTIVE",
+                      "zuid" : "98936729"
+                    },
+                    "parentCategoryId" : "4000002881348",
+                    "ipAddresses" : [ ],
+                    "id" : "4000002881365",
+                    "deletedTime" : 1596250760000,
+                    "status" : "SHOW_IN_HELPCENTER",
+                    "order" : "1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "trashedCategoryMetaResponse" : {
+        "description" : "trashedCategoryMetaResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./KBRecycleBin.json#/components/schemas/trashedCategoryMetaCommonJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "parent" : {
+                    "$ref" : "./KBRecycleBin.json#/components/schemas/metaParent"
+                  },
+                  "children" : {
+                    "$ref" : "./KBRecycleBin.json#/components/schemas/metaChildrenArr"
+                  }
+                },
+                "required" : [ "children", "parent" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "parent" : {
+                    "parent" : null,
+                    "level" : "1",
+                    "description" : "Topic that segregate documents",
+                    "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/globe.svg",
+                    "subSectionCount" : "5",
+                    "topicId" : "1000000107291",
+                    "parentTopicId" : null,
+                    "isTrashed" : true,
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "topicName" : "tumblr",
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "rootTopicId" : "1000000107291",
+                    "permalink" : "tumblr",
+                    "articlesCount" : "2",
+                    "order" : "4"
+                  },
+                  "level" : "2",
+                  "description" : "Topic that segregate documents",
+                  "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/globe.svg",
+                  "subSectionCount" : "3",
+                  "topicId" : "1000000107298",
+                  "parentTopicId" : "1000000107291",
+                  "isTrashed" : true,
+                  "createdBy" : {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                    "name" : "Anamika",
+                    "id" : "1000000015894",
+                    "status" : "ACTIVE"
+                  },
+                  "children" : [ {
+                    "level" : "3",
+                    "description" : "Topic that segregate documents",
+                    "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/globe.svg",
+                    "subSectionCount" : "2",
+                    "topicId" : "1000000255001",
+                    "parentTopicId" : "1000000107298",
+                    "isTrashed" : true,
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "children" : [ {
+                      "level" : "4",
+                      "description" : "Topic that segregate documents",
+                      "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/globe.svg",
+                      "subSectionCount" : "0",
+                      "topicId" : "1000000256001",
+                      "parentTopicId" : "1000000255001",
+                      "isTrashed" : true,
+                      "createdBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "1000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "children" : null,
+                      "topicName" : "Linkedin",
+                      "modifiedBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "1000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "rootTopicId" : "1000000107291",
+                      "permalink" : "linkedin",
+                      "articlesCount" : "2",
+                      "order" : "1"
+                    }, {
+                      "level" : "4",
+                      "description" : "Topic that segregate documents",
+                      "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/globe.svg",
+                      "subSectionCount" : "0",
+                      "topicId" : "1000000256006",
+                      "parentTopicId" : "1000000255001",
+                      "isTrashed" : true,
+                      "createdBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "1000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "children" : null,
+                      "topicName" : "facebook",
+                      "modifiedBy" : {
+                        "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                        "name" : "Anamika",
+                        "id" : "1000000015894",
+                        "status" : "ACTIVE"
+                      },
+                      "rootTopicId" : "1000000107291",
+                      "permalink" : "facebook",
+                      "articlesCount" : "0",
+                      "order" : "2"
+                    } ],
+                    "topicName" : "Social web",
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                      "name" : "Anamika",
+                      "id" : "1000000015894",
+                      "status" : "ACTIVE"
+                    },
+                    "rootTopicId" : "1000000107291",
+                    "permalink" : "social-web",
+                    "articlesCount" : "2",
+                    "order" : "1"
+                  } ],
+                  "topicName" : "General",
+                  "modifiedBy" : {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/1000000015894/photo?orgId=55318532",
+                    "name" : "Anamika",
+                    "id" : "1000000015894",
+                    "status" : "ACTIVE"
+                  },
+                  "rootTopicId" : "1000000107291",
+                  "permalink" : "general",
+                  "articlesCount" : "2",
+                  "order" : "1"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of Comments to fetch",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of Comments to fetch",
+          "maximum" : 50,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number starting from which the trashed comments must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number starting from which the trashed comments must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "locale" : {
+        "name" : "locale",
+        "in" : "query",
+        "description" : "Language of the trashed comments",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Language of the trashed comments",
+          "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+        }
+      },
+      "categoryId" : {
+        "name" : "categoryId",
+        "in" : "query",
+        "description" : "Get trashed comments under the given category",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Get trashed comments under the given category",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "deletedTimeRange" : {
+        "name" : "deletedTimeRange",
+        "in" : "query",
+        "description" : "Fetch count of trashed translations between deleted time. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Fetch count of trashed translations between deleted time. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+        }
+      },
+      "deletedBy" : {
+        "name" : "deletedBy",
+        "in" : "query",
+        "description" : "Count of  trashed translations done by user",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Count of  trashed translations done by user",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "restoreJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ 1000000182001, 1000000207102, 234567890 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteTrashedTranslations_restoreJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ 1000000182001, 1000000207102, 234567890 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "restoreTrashedCategories_restoreJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ 1000000221001, 1000000172007, 1000000168006, 234567890 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "restoreCommentJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ "2000000108022", "2000000108012" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteTrashedCategories_restoreJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ 1000000211001, 1000000211042, 234567898765 ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "restoreTrashedComments_restoreCommentJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "ids" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ids" : [ "2000000117009", "2000000116060" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "KBRecycleBin"
+}

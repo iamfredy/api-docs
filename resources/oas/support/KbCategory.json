@@ -1,0 +1,1273 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "KbCategory",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/kbCategory/{categoryId}/articles" : {
+      "get" : {
+        "tags" : [ "KbCategory" ],
+        "summary" : "Get Articles under a category",
+        "description" : "API gets the list of child section along with articles under given category",
+        "operationId" : "getArticlesUnderCategory",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "the limit index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "the limit index",
+            "maximum" : 10,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The from index. from starts with 1, not 0.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The from index. from starts with 1, not 0.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "articleCount",
+          "in" : "query",
+          "description" : "Number of articles",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of articles",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "The sortBy param for the list articles",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "The sortBy param for the list articles",
+            "enum" : [ "createdTime", "mostliked", "mostviewed", "modifiedTime", "mostunliked" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "Locale of the article",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Locale of the article",
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "name" : "isTemplate",
+          "in" : "query",
+          "description" : "Is it a template",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "boolean",
+            "default" : false,
+            "description" : "To search the article template",
+            "x-audience" : [ "company-internal" ]
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleCategoryDataResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "211f4d424087eb4ce60d8cb63f55a498",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.getArticlesUnderCategory"
+        }
+      }
+    },
+    "/api/v1/kbCategory/{categoryId}/repositionArticles" : {
+      "get" : {
+        "tags" : [ "KbCategory" ],
+        "summary" : "Get articles for manual sorting",
+        "description" : "This API lists the positions of help articles to enable manual sorting. Only leaf categories that have a maximum of 1000 articles can be repositioned.",
+        "operationId" : "getArticlesForRepositioning",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "./Article.json#/components/responses/listAllArticleForRepositioning"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "4e9d199ca69ae492e581338013d2555e",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.getRepositionArticles"
+        }
+      },
+      "post" : {
+        "tags" : [ "KbCategory" ],
+        "summary" : "Update article position",
+        "description" : "This API helps you manually sort articles in your knowledge base. Only leaf categories that have a maximum of 1000 articles can be repositioned.",
+        "operationId" : "updateKBArticlesRepositioning",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./Article.json#/components/requestBodies/articleIdsJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "46fad587460e8e5393c8d0fe545e1547",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleService.repositionArticles"
+        }
+      }
+    },
+    "/api/v1/kbCategory" : {
+      "get" : {
+        "tags" : [ "KbCategory" ],
+        "operationId" : "listAllCategory",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "To get individual department details",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To get individual department details",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "reviewOwnerId",
+          "in" : "query",
+          "description" : "Review Owner user Id to get the topics where this user has review permission",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Review Owner user Id to get the topics where this user has review permission",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort based on categoryname or sortorder. Allowed values are @categoryname@ and @sortorder@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort based on categoryname or sortorder. Allowed values are @categoryname@ and @sortorder@",
+            "enum" : [ "categoryname", "sortorder" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "categoryId",
+          "in" : "path",
+          "description" : "To get individual category details",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To get individual category details",
+            "pattern" : "([0-9]+)",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/listAllCategoryResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "ba92e57c6504fc800e8117c9b1563527",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategories.rest.support.TopicService.getTopic"
+        }
+      },
+      "post" : {
+        "tags" : [ "KbCategory" ],
+        "operationId" : "createCategory",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/categoryJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/categoryWithReviewResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "ad35891a628828dc07a3a1484f535284",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategories.rest.support.TopicService.createCategory"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "groupJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "id", "logoUrl", "name" ]
+      },
+      "groupJsonArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/groupJson"
+        }
+      },
+      "solutionCommonResponseWithLocale" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "permalink" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0,
+            "pattern" : "[A-Za-z0-9%\\-+\\/=\\P{InBasicLatin}]+"
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Locale of the article",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : true,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "categoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "categoryId", "id", "locale", "permalink", "title", "webUrl" ]
+      },
+      "articleJson" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/solutionCommonResponseWithLocale"
+        }
+      },
+      "articleUnderCategory" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "permalink" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-z0-9\\/%\\-\\P{InBasicLatin}]+"
+          },
+          "articles" : {
+            "$ref" : "./KbCategory.json#/components/schemas/articleJson"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "articles", "description", "id", "logoUrl", "name", "permalink" ]
+      },
+      "articleCategoryDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/articleUnderCategory"
+        }
+      },
+      "associatedDepartmentsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "removeExif" : false,
+            "filterMatchedContent" : false,
+            "antivirus" : false,
+            "replacementString" : "",
+            "allowInvalid" : false,
+            "descrption" : "ID of the department to associate with the category",
+            "secret" : false,
+            "preserveCharsLimit" : 10,
+            "trim" : false,
+            "internalParam" : false,
+            "preserveChars" : "0,5",
+            "importUrl" : false,
+            "decrypt" : false
+          }
+        }
+      },
+      "commonCategoryResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "articleViewType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "LISTVIEW", "OVERVIEW" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "visibility" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Visibility setting of the category. Values allowed are: AGENTS, GROUP_USERS, ALL_USERS, and NONE.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "level" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Navigation depth of the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the department to associate with the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "A brief description of the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "groups" : {
+            "$ref" : "./KbCategory.json#/components/schemas/groupJsonArr"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "associatedDepartments" : {
+            "$ref" : "./KbCategory.json#/components/schemas/associatedDepartmentsArr"
+          },
+          "rootCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "childOrder" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : false
+          },
+          "encryptedWorkspaceId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0
+          },
+          "helpcenterId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the help center to which the knowledge base belongs",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Name of the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "parentCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the parent category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Unique ID of the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "articlesCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Number of help articles under the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "permalink" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-z0-9\\/%\\-\\P{InBasicLatin}]+"
+          },
+          "featuredCategory" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that specifies whether the category must be featured in the help center or not",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Position of the category in the overall order of categories of the same level",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "isVisibleInHC" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that specifies whether the category must be visible in the help center or not",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "workspaceId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^([a-zA-Z0-9]{37}|-1)$",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the Zoho Workdrive folder (Gallery) associated with the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "articleViewType", "articlesCount", "associatedDepartments", "childOrder", "createdTime", "departmentId", "description", "encryptedWorkspaceId", "featuredCategory", "groups", "helpcenterId", "id", "isVisibleInHC", "level", "logoUrl", "name", "order", "parentCategoryId", "permalink", "rootCategoryId", "visibility", "workspaceId" ]
+      },
+      "childCategoryResponse" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KbCategory.json#/components/schemas/commonCategoryResponse"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "child" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "x-custom-parameters-attributes" : [ ]
+              },
+              "uniqueItems" : false
+            }
+          },
+          "required" : [ "child" ]
+        } ]
+      },
+      "childCategoryResponseData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/childCategoryResponse"
+        }
+      },
+      "reviewOwnerDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Unique ID of the category",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "id", "name", "photoURL" ]
+      },
+      "reviewOwnerArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/reviewOwnerDetails"
+        }
+      },
+      "reviewOwners" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "removeExif" : false,
+            "filterMatchedContent" : false,
+            "antivirus" : false,
+            "replacementString" : "",
+            "allowInvalid" : false,
+            "descrption" : "Unique ID of the category",
+            "secret" : false,
+            "preserveCharsLimit" : 10,
+            "trim" : false,
+            "internalParam" : false,
+            "preserveChars" : "0,5",
+            "importUrl" : false,
+            "decrypt" : false
+          }
+        }
+      },
+      "categoryResponse" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./KbCategory.json#/components/schemas/commonCategoryResponse"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "child" : {
+              "$ref" : "./KbCategory.json#/components/schemas/childCategoryResponseData"
+            },
+            "rootCategoryId" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "child", "rootCategoryId" ]
+        } ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KbCategory.json#/components/schemas/categoryResponse"
+        }
+      }
+    },
+    "responses" : {
+      "articleCategoryDataResponse" : {
+        "description" : "articleCategoryDataResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KbCategory.json#/components/schemas/articleCategoryDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "name" : "Hellooo",
+                    "description" : "dataset",
+                    "id" : "46582000007093472",
+                    "permalink" : "Hellooo",
+                    "articles" : [ {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000011400068/en",
+                      "id" : "46582000011400068",
+                      "locale" : "en",
+                      "permalink" : "quick-edit-modifiedby",
+                      "title" : "Quick edit modifiedBy",
+                      "categoryId" : "46582000007108339"
+                    }, {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000010701399/en",
+                      "id" : "46582000010701399",
+                      "locale" : "en",
+                      "permalink" : "new-article",
+                      "title" : "New Article ",
+                      "categoryId" : "46582000007108339"
+                    }, {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000010675070/en",
+                      "id" : "46582000010675070",
+                      "locale" : "en",
+                      "permalink" : "checking-line",
+                      "title" : "Checking Line",
+                      "categoryId" : "46582000007108339"
+                    }, {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000010675005/en",
+                      "id" : "46582000010675005",
+                      "locale" : "en",
+                      "permalink" : "line-up",
+                      "title" : "Line Up",
+                      "categoryId" : "46582000007108339"
+                    }, {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000010443001/en",
+                      "id" : "46582000010443001",
+                      "locale" : "en",
+                      "permalink" : "sample-article",
+                      "title" : "sample article",
+                      "categoryId" : "46582000007108339"
+                    }, {
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/46582000007118040/en",
+                      "id" : "46582000007118040",
+                      "locale" : "en",
+                      "permalink" : "sample",
+                      "title" : "sample",
+                      "categoryId" : "46582000007108339"
+                    } ],
+                    "logoUrl" : "https://static.zohocdn.com/desk/app/fonts/block.4339707c19ff2c38330b.svg"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "categoryWithReviewResponse" : {
+        "description" : "categoryWithReviewResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./KbCategory.json#/components/schemas/commonCategoryResponse"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "reviewOwners" : {
+                    "$ref" : "./KbCategory.json#/components/schemas/reviewOwnerArr"
+                  },
+                  "isReview" : {
+                    "type" : [ "boolean", "null" ],
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Key that specifies whether review must be enabled for the category or not",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "child" : {
+                    "$ref" : "./KbCategory.json#/components/schemas/childCategoryResponseData"
+                  }
+                },
+                "required" : [ "child", "isReview", "reviewOwners" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "listAllCategoryResponse" : {
+        "description" : "listAllCategoryResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./KbCategory.json#/components/schemas/data"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "categoryId" : {
+        "name" : "categoryId",
+        "in" : "path",
+        "description" : "To get individual category details",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "To get individual category details",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "categoryJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "articleViewType" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "View to apply while listing help articles. Values allowed are: LISTVIEW and OVERVIEW.",
+                  "enum" : [ "LISTVIEW", "OVERVIEW" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "reviewOwners" : {
+                  "$ref" : "./KbCategory.json#/components/schemas/reviewOwners"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Name of the category",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isReview" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "Key that specifies whether review must be enabled for the category or not"
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "A brief description of the category",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "logo" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Logo for the category",
+                  "pattern" : "([0-9]+)"
+                },
+                "parentCategoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the parent category",
+                  "pattern" : "([0-9]+)"
+                },
+                "featuredCategory" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "Key that specifies whether the category must be featured in the help center or not"
+                },
+                "isVisibleInHC" : {
+                  "type" : [ "boolean", "null" ],
+                  "description" : "Key that specifies whether the category must be visible in the help center or not"
+                }
+              },
+              "required" : [ "featuredCategory", "isVisibleInHC", "name", "parentCategoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "KbCategory"
+}

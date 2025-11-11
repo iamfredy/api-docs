@@ -1,0 +1,416 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "zlabsnlp",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "zia"
+  },
+  "paths" : {
+    "/api/v1/zlabsnlp/detect" : {
+      "post" : {
+        "tags" : [ "zlabsnlp" ],
+        "operationId" : "languageDetection",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/detectionInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/LanguageJson"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : true
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.support.restapi.ZlabsnlpService.detect"
+        }
+      }
+    },
+    "/api/v1/zlabsnlp/languages" : {
+      "post" : {
+        "tags" : [ "zlabsnlp" ],
+        "operationId" : "getLanguages",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translationInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/languagesList"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : true
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.support.restapi.ZlabsnlpService.getLanguages"
+        }
+      }
+    },
+    "/api/v1/zlabsnlp/translate" : {
+      "post" : {
+        "tags" : [ "zlabsnlp" ],
+        "operationId" : "translation",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/translation_translationInput"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/translationResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ { }, {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : true
+            },
+            "ip-validations" : "internal",
+            "authentication" : {
+              "scoped-services" : [ "ZohoSupport" ]
+            }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "zia",
+          "apimethod" : "com.zoho.support.restapi.ZlabsnlpService.translate"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "LanguageJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "langId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 5,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "langId" ]
+      }
+    },
+    "responses" : {
+      "LanguageJson" : {
+        "description" : "LanguageJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "langId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 5,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "langId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "languagesList" : {
+        "description" : "languagesList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./zlabsnlp.json#/components/schemas/LanguageJson"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "translationResponse" : {
+        "description" : "translationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "langId" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 5,
+                    "minLength" : 0
+                  }
+                },
+                "required" : [ "langId" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "jobId" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false
+                  }
+                },
+                "required" : [ "jobId" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "detectionInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 100
+                }
+              },
+              "required" : [ "content" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "translationInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "targetLanguage" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 5,
+                  "minLength" : 0
+                },
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 100
+                },
+                "sourceLanguage" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 5,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        }
+      },
+      "translation_translationInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "targetLanguage" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 5,
+                  "minLength" : 0
+                },
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 65000,
+                  "minLength" : 100
+                },
+                "sourceLanguage" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 5,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "content", "sourceLanguage", "targetLanguage" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "zlabsnlp"
+}

@@ -1,0 +1,2254 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SearchInteg",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "paths" : {
+    "/api/v1/searchInteg/searchableFields" : {
+      "get" : {
+        "tags" : [ "SearchInteg" ],
+        "summary" : "searchableFields",
+        "description" : "This api to fetch searchable fields in a module",
+        "operationId" : "searchableFields",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Module to search in: @tickets@, @accounts@, @contacts@, @tasks@, @products@, or @solutions@ ",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Module to search in: @tickets@, @accounts@, @contacts@, @tasks@, @products@, or @solutions@ ",
+            "enum" : [ "contacts" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the department",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/searchableFieldsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 800,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "0f77bd148c5c68619a9c702cd5542900",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.SearchIntegService.searchableFields"
+        }
+      }
+    },
+    "/api/v1/searchInteg/myPermissions" : {
+      "get" : {
+        "tags" : [ "SearchInteg" ],
+        "summary" : "myPermissions",
+        "description" : "This API enables global search and fetches only those modules and fields that the user can access. Each module has a unique ID as follows.:  @1 is Cases,  2 is Solutions, 3 is Contacts, 4 is Accounts, 5 is Feedback,  6 is Tasks,  7 is Products,  8 is Community@.",
+        "operationId" : "myPermissions",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/myPermissionsResponseData"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "eb38e3f77989bfc5e19bb3db128347e0",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.SearchIntegService.myPermissions"
+        }
+      }
+    },
+    "/api/v1/searchInteg/lastAccessed" : {
+      "get" : {
+        "tags" : [ "SearchInteg" ],
+        "operationId" : "getLastAccessed",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getLastAccessedResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "50cc819db2116061d4bccc114ae1350a",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.SearchIntegService.getLastAccessed"
+        }
+      }
+    },
+    "/api/v1/searchInteg/zuidsToUserids" : {
+      "get" : {
+        "tags" : [ "SearchInteg" ],
+        "summary" : "zuidsToUserids",
+        "description" : "This API fetches the user ID for the ZUID specified.",
+        "operationId" : "zuidsToUserids",
+        "parameters" : [ {
+          "name" : "zuids",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/zuidsToUseridsResponseArr"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "22ac89e37b6ad574657b4a6b6537ca8f",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.SearchIntegService.zuidsToUserids"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "searchableField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Text", "URL", "Textarea", "Email", "Phone", "Multiselect", "Date", "DateTime", "Number", "Checkbox", "Percent", "Decimal", "Currency", "Picklist", "LookUp", "Lookup", "AutoNumber", "Boolean", "Fax" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "searchColumnName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "i18NLabel", "id", "searchColumnName", "type" ]
+      },
+      "picklistValues" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "allowedValues" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 1,
+              "minProperties" : 1,
+              "properties" : {
+                "value" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 120,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+                }
+              },
+              "required" : [ "value" ]
+            },
+            "uniqueItems" : false
+          },
+          "hasMore" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "allowedValues", "hasMore" ]
+      },
+      "searchableFieldWithPicklistValue" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SearchInteg.json#/components/schemas/searchableField"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "picklistValues" : {
+              "$ref" : "./SearchInteg.json#/components/schemas/picklistValues"
+            }
+          },
+          "required" : [ "picklistValues" ]
+        } ]
+      },
+      "searchableFieldsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SearchInteg.json#/components/schemas/searchableField"
+          }, {
+            "$ref" : "./SearchInteg.json#/components/schemas/searchableFieldWithPicklistValue"
+          } ]
+        }
+      },
+      "fields" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "null", "object" ],
+          "additionalProperties" : false,
+          "maxProperties" : 6,
+          "minProperties" : 6,
+          "properties" : {
+            "apiName" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+            },
+            "isReadOnly" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "isVisible" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "searchColumnName" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+            },
+            "type" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+            },
+            "dbColumnName" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+            }
+          },
+          "required" : [ "apiName", "dbColumnName", "isReadOnly", "isVisible", "searchColumnName", "type" ]
+        }
+      },
+      "myPermissionsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+          },
+          "permissions" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 6,
+            "minProperties" : 6,
+            "properties" : {
+              "view" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "import" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "edit" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "create" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "delete" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "export" : {
+                "type" : [ "boolean", "null" ]
+              }
+            },
+            "required" : [ "create", "delete", "edit", "export", "import", "view" ]
+          },
+          "moduleName" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Accounts", "Contacts", "Tasks", "Tickets", "Knowledge Base", "Products", "Calls", "Events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "moduleId" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "4", "3", "6", "1", "2", "7", "9", "10" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fields" : {
+            "$ref" : "./SearchInteg.json#/components/schemas/fields"
+          }
+        },
+        "required" : [ "apiName", "fields", "moduleId", "moduleName", "permissions" ]
+      },
+      "permissionsWithComment" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "view" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "import" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "edit" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "deleteComment" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "editComment" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "create" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "delete" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "export" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "create", "delete", "deleteComment", "edit", "editComment", "export", "import", "view" ]
+      },
+      "ticketPermissions" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./SearchInteg.json#/components/schemas/permissionsWithComment"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "mergeTickets" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "changeOwner" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "handleUnassigned" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "deleteComment" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "closeTicket" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "editComment" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "addFollowers" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "mailReview" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "mailSend" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "unassignedChangeOwner" : {
+              "type" : [ "boolean", "null" ]
+            }
+          },
+          "required" : [ "addFollowers", "changeOwner", "closeTicket", "deleteComment", "editComment", "handleUnassigned", "mailReview", "mailSend", "mergeTickets", "unassignedChangeOwner" ]
+        } ]
+      },
+      "myPermissionsTicketResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+          },
+          "permissions" : {
+            "$ref" : "./SearchInteg.json#/components/schemas/ticketPermissions"
+          },
+          "moduleName" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Accounts", "Contacts", "Tasks", "Tickets", "Knowledge Base", "Products", "Calls", "Events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "moduleId" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "4", "3", "6", "1", "2", "7", "9", "10" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fields" : {
+            "$ref" : "./SearchInteg.json#/components/schemas/fields"
+          }
+        },
+        "required" : [ "apiName", "fields", "moduleId", "moduleName", "permissions" ]
+      },
+      "myPermissionsWithCommentResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z0-9\\_\\-\\+\\?\\!\\.\\P{InBasicLatin}\\(\\)\\s]+"
+          },
+          "permissions" : {
+            "$ref" : "./SearchInteg.json#/components/schemas/permissionsWithComment"
+          },
+          "moduleName" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Accounts", "Contacts", "Tasks", "Tickets", "Knowledge Base", "Products", "Calls", "Events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "moduleId" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "4", "3", "6", "1", "2", "7", "9", "10" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fields" : {
+            "$ref" : "./SearchInteg.json#/components/schemas/fields"
+          }
+        },
+        "required" : [ "apiName", "fields", "moduleId", "moduleName", "permissions" ]
+      },
+      "modules" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "./SearchInteg.json#/components/schemas/myPermissionsResponse"
+          }, {
+            "$ref" : "./SearchInteg.json#/components/schemas/myPermissionsTicketResponse"
+          }, {
+            "$ref" : "./SearchInteg.json#/components/schemas/myPermissionsWithCommentResponse"
+          } ]
+        }
+      },
+      "zuidsToUseridsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "userId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "zuId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "userId", "zuId" ]
+      }
+    },
+    "responses" : {
+      "searchableFieldsResponse" : {
+        "description" : "searchableFieldsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./SearchInteg.json#/components/schemas/searchableFieldsArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Contact Name",
+                    "apiName" : "contactId",
+                    "i18NLabel" : "Contact Name",
+                    "id" : "4013556845213",
+                    "type" : "LookUp",
+                    "searchColumnName" : "CONTACTNAME"
+                  }, {
+                    "displayLabel" : "Email",
+                    "apiName" : "email",
+                    "i18NLabel" : "Email",
+                    "id" : "4013556845233",
+                    "type" : "Email",
+                    "searchColumnName" : "EMAIL"
+                  }, {
+                    "displayLabel" : "Phone",
+                    "apiName" : "phone",
+                    "i18NLabel" : "Phone",
+                    "id" : "4013556845333",
+                    "type" : "Phone",
+                    "searchColumnName" : "PHONE"
+                  }, {
+                    "displayLabel" : "Subject",
+                    "apiName" : "subject",
+                    "i18NLabel" : "Subject",
+                    "id" : "4013556845433",
+                    "type" : "Text",
+                    "searchColumnName" : "CASESUBJECT"
+                  }, {
+                    "displayLabel" : "Description",
+                    "apiName" : "description",
+                    "i18NLabel" : "Description",
+                    "id" : "4013556845533",
+                    "type" : "Textarea",
+                    "searchColumnName" : "CASE_DESCRIPTION"
+                  }, {
+                    "displayLabel" : "Status",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "statusType" : "Open",
+                        "value" : "Open"
+                      }, {
+                        "statusType" : "On Hold",
+                        "value" : "On Hold"
+                      }, {
+                        "statusType" : "Open",
+                        "value" : "Escalated"
+                      }, {
+                        "statusType" : "Closed",
+                        "value" : "Closed"
+                      }, {
+                        "statusType" : "Closed",
+                        "value" : "Completed"
+                      }, {
+                        "statusType" : "Open",
+                        "value" : "Dev Open"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "status",
+                    "i18NLabel" : "Status",
+                    "id" : "4013556846533",
+                    "type" : "Picklist",
+                    "searchColumnName" : "STATUS"
+                  }, {
+                    "displayLabel" : "Product Name",
+                    "apiName" : "productId",
+                    "i18NLabel" : "Product Name",
+                    "id" : "4013556845733",
+                    "type" : "LookUp",
+                    "searchColumnName" : "PRODUCTNAME"
+                  }, {
+                    "displayLabel" : "Ticket Owner",
+                    "apiName" : "assigneeId",
+                    "i18NLabel" : "Ticket Owner",
+                    "id" : "4013556845233",
+                    "type" : "LookUp",
+                    "searchColumnName" : "SMOWNERID"
+                  }, {
+                    "displayLabel" : "Created By",
+                    "apiName" : "createdBy",
+                    "i18NLabel" : "Created By",
+                    "id" : "4013556835233",
+                    "type" : "LookUp",
+                    "searchColumnName" : "SMCREATORID"
+                  }, {
+                    "displayLabel" : "Modified By",
+                    "apiName" : "modifiedBy",
+                    "i18NLabel" : "Modified By",
+                    "id" : "4013556845233",
+                    "type" : "LookUp",
+                    "searchColumnName" : "MODIFIEDBY"
+                  }, {
+                    "displayLabel" : "Created Time",
+                    "apiName" : "createdTime",
+                    "i18NLabel" : "Created Time",
+                    "id" : "4013556825233",
+                    "type" : "DateTime",
+                    "searchColumnName" : "CREATEDTIME"
+                  }, {
+                    "displayLabel" : "Modified Time",
+                    "apiName" : "modifiedTime",
+                    "i18NLabel" : "Modified Time",
+                    "id" : "4013556845223",
+                    "type" : "DateTime",
+                    "searchColumnName" : "MODIFIEDTIME"
+                  }, {
+                    "displayLabel" : "Common Status",
+                    "apiName" : "common_status",
+                    "i18NLabel" : "Common Status",
+                    "id" : "4013556845113",
+                    "type" : "Text",
+                    "searchColumnName" : "STATUS"
+                  }, {
+                    "displayLabel" : "Ticket Id",
+                    "apiName" : "ticketNumber",
+                    "i18NLabel" : "Ticket Id",
+                    "id" : "4013556845983",
+                    "type" : "AutoNumber",
+                    "searchColumnName" : "CASENUMBER"
+                  }, {
+                    "displayLabel" : "Account Name",
+                    "apiName" : "accountId",
+                    "i18NLabel" : "Account Name",
+                    "id" : "4013556845783",
+                    "type" : "LookUp",
+                    "searchColumnName" : "ACCOUNTNAME"
+                  }, {
+                    "displayLabel" : "Due Date",
+                    "apiName" : "dueDate",
+                    "i18NLabel" : "Due Date",
+                    "id" : "4013556845781",
+                    "type" : "DateTime",
+                    "searchColumnName" : "DUE_DATE"
+                  }, {
+                    "displayLabel" : "Priority",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "value" : "-None-"
+                      }, {
+                        "value" : "High"
+                      }, {
+                        "value" : "Medium"
+                      }, {
+                        "value" : "Low"
+                      }, {
+                        "value" : "Important"
+                      }, {
+                        "value" : "wow"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "priority",
+                    "i18NLabel" : "Priority",
+                    "id" : "4013556845784",
+                    "type" : "Picklist",
+                    "searchColumnName" : "PRIORITY"
+                  }, {
+                    "displayLabel" : "Channel",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "value" : "Phone"
+                      }, {
+                        "value" : "Email"
+                      }, {
+                        "value" : "Web"
+                      }, {
+                        "value" : "Twitter"
+                      }, {
+                        "value" : "Facebook"
+                      }, {
+                        "value" : "Chat"
+                      }, {
+                        "value" : "Forums"
+                      }, {
+                        "statusType" : "NULL",
+                        "value" : "Feedback Widget"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "channel",
+                    "i18NLabel" : "Channel",
+                    "id" : "4013556845484",
+                    "type" : "Picklist",
+                    "searchColumnName" : "MODE"
+                  }, {
+                    "displayLabel" : "Category",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "value" : "General"
+                      }, {
+                        "value" : "Defects"
+                      }, {
+                        "value" : "General"
+                      }, {
+                        "value" : "Defects"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "category",
+                    "i18NLabel" : "Category",
+                    "id" : "4013556845384",
+                    "type" : "Picklist",
+                    "searchColumnName" : "CATEGORY"
+                  }, {
+                    "displayLabel" : "Sub Category",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "value" : "Sub General"
+                      }, {
+                        "value" : "Sub Defects"
+                      }, {
+                        "value" : "Sub General"
+                      }, {
+                        "value" : "Sub Defects"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "subCategory",
+                    "i18NLabel" : "Sub Category",
+                    "id" : "4013556845184",
+                    "type" : "Picklist",
+                    "searchColumnName" : "SUBCATEGORY"
+                  }, {
+                    "displayLabel" : "Ticket Closed Time",
+                    "apiName" : "closedTime",
+                    "i18NLabel" : "Ticket Closed Time",
+                    "id" : "4013556845224",
+                    "type" : "DateTime",
+                    "searchColumnName" : "CLOSEDTIME"
+                  }, {
+                    "displayLabel" : "Is Overdue",
+                    "apiName" : "isOverdue",
+                    "i18NLabel" : "Is Overdue",
+                    "id" : "4013556845194",
+                    "type" : "Boolean",
+                    "searchColumnName" : "ISOVERDUE"
+                  }, {
+                    "displayLabel" : "Is Escalated",
+                    "apiName" : "isEscalated",
+                    "i18NLabel" : "Is Escalated",
+                    "id" : "4013556845184",
+                    "type" : "Boolean",
+                    "searchColumnName" : "ISESCALATED"
+                  }, {
+                    "displayLabel" : "Classification",
+                    "picklistValues" : {
+                      "allowedValues" : [ {
+                        "value" : "-None-"
+                      }, {
+                        "value" : "Question"
+                      }, {
+                        "value" : "Problem"
+                      }, {
+                        "value" : "Feature"
+                      }, {
+                        "value" : "Others"
+                      } ],
+                      "hasMore" : false
+                    },
+                    "apiName" : "classification",
+                    "i18NLabel" : "Classifications",
+                    "id" : "4013556845164",
+                    "type" : "Picklist",
+                    "searchColumnName" : "CLASSIFICATION"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "myPermissionsResponseData" : {
+        "description" : "myPermissionsResponseData template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modules" : {
+                  "$ref" : "./SearchInteg.json#/components/schemas/modules"
+                }
+              },
+              "required" : [ "modules" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modules" : [ {
+                    "apiName" : "accounts",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Accountsssssssss",
+                    "moduleId" : "4",
+                    "fields" : [ {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Account Owner"
+                    }, {
+                      "apiName" : "accountName",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ACCOUNTNAME",
+                      "type" : "Text",
+                      "dbColumnName" : "Account Name"
+                    }, {
+                      "apiName" : "phone",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PHONE",
+                      "type" : "Phone",
+                      "dbColumnName" : "Phone"
+                    }, {
+                      "apiName" : "email",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "EMAIL",
+                      "type" : "Email",
+                      "dbColumnName" : "Email"
+                    }, {
+                      "apiName" : "fax",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "FAX",
+                      "type" : "Fax",
+                      "dbColumnName" : "Fax"
+                    }, {
+                      "apiName" : "website",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "WEBSITE",
+                      "type" : "URL",
+                      "dbColumnName" : "Website"
+                    }, {
+                      "apiName" : "industry",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "INDUSTRY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Industry"
+                    }, {
+                      "apiName" : "annualrevenue",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ANNUALREVENUE",
+                      "type" : "Currency",
+                      "dbColumnName" : "Annual Revenue"
+                    }, {
+                      "apiName" : "createdBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "common_status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Text",
+                      "dbColumnName" : "Common Status"
+                    }, {
+                      "apiName" : "street",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "BILLINGSTREET",
+                      "type" : "Text",
+                      "dbColumnName" : "Street"
+                    }, {
+                      "apiName" : "city",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "BILLINGCITY",
+                      "type" : "Text",
+                      "dbColumnName" : "City"
+                    }, {
+                      "apiName" : "state",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "BILLINGSTATE",
+                      "type" : "Text",
+                      "dbColumnName" : "State"
+                    }, {
+                      "apiName" : "code",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "BILLINGCODE",
+                      "type" : "Text",
+                      "dbColumnName" : "Code"
+                    }, {
+                      "apiName" : "country",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "BILLINGCOUNTRY",
+                      "type" : "Text",
+                      "dbColumnName" : "Country"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "crmAccountId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRMACCOUNTID",
+                      "type" : "Number",
+                      "dbColumnName" : "Mapped With CRM"
+                    } ]
+                  }, {
+                    "apiName" : "contacts",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : false,
+                      "create" : true,
+                      "delete" : false,
+                      "export" : true
+                    },
+                    "moduleName" : "Contacts",
+                    "moduleId" : "3",
+                    "fields" : [ {
+                      "apiName" : "firstName",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "FIRSTNAME",
+                      "type" : "Text",
+                      "dbColumnName" : "First Name"
+                    }, {
+                      "apiName" : "lastName",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "LASTNAME",
+                      "type" : "Text",
+                      "dbColumnName" : "Last Name"
+                    }, {
+                      "apiName" : "email",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "EMAIL",
+                      "type" : "Email",
+                      "dbColumnName" : "Email"
+                    }, {
+                      "apiName" : "accountId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ACCOUNTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Account Name"
+                    }, {
+                      "apiName" : "phone",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PHONE",
+                      "type" : "Phone",
+                      "dbColumnName" : "Phone"
+                    }, {
+                      "apiName" : "mobile",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MOBILE",
+                      "type" : "Phone",
+                      "dbColumnName" : "Mobile"
+                    }, {
+                      "apiName" : "title",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TITLE",
+                      "type" : "Text",
+                      "dbColumnName" : "Title"
+                    }, {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Contact Owner"
+                    }, {
+                      "apiName" : "type",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TYPE",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Type"
+                    }, {
+                      "apiName" : "createdBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "fullName",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CONTACTNAME",
+                      "type" : "Text",
+                      "dbColumnName" : "Full Name"
+                    }, {
+                      "apiName" : "common_status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Text",
+                      "dbColumnName" : "Common Status"
+                    }, {
+                      "apiName" : "salutation",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SALUTATION",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Salutation"
+                    }, {
+                      "apiName" : "isEndUser",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "ISPORTALUSER",
+                      "type" : "Number",
+                      "dbColumnName" : "isPortalUser"
+                    }, {
+                      "apiName" : "street",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MAILINGSTREET",
+                      "type" : "Text",
+                      "dbColumnName" : "Street"
+                    }, {
+                      "apiName" : "city",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MAILINGCITY",
+                      "type" : "Text",
+                      "dbColumnName" : "City"
+                    }, {
+                      "apiName" : "state",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MAILINGSTATE",
+                      "type" : "Text",
+                      "dbColumnName" : "State"
+                    }, {
+                      "apiName" : "zip",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MAILINGZIP",
+                      "type" : "Text",
+                      "dbColumnName" : "Zip"
+                    }, {
+                      "apiName" : "country",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MAILINGCOUNTRY",
+                      "type" : "Text",
+                      "dbColumnName" : "Country"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "twitter",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TWITTER",
+                      "type" : "Text",
+                      "dbColumnName" : "Twitter"
+                    }, {
+                      "apiName" : "facebook",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "FACEBOOK",
+                      "type" : "Text",
+                      "dbColumnName" : "Facebook"
+                    }, {
+                      "apiName" : "crmContactId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRMCONTACTID",
+                      "type" : "Number",
+                      "dbColumnName" : "Mapped With CRM"
+                    }, {
+                      "apiName" : "secondaryEmail",
+                      "isReadOnly" : false,
+                      "isVisible" : false,
+                      "searchColumnName" : "SECONDARYEMAIL",
+                      "type" : "Email",
+                      "dbColumnName" : "Secondary Email"
+                    }, {
+                      "apiName" : "crmContactType",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRM_CONTACT_TYPE",
+                      "type" : "Text",
+                      "dbColumnName" : "CRM Contact Type"
+                    }, {
+                      "apiName" : "potentialsRevenue",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRM_POTENTIALS_REVENUE",
+                      "type" : "Currency",
+                      "dbColumnName" : "Total Revenue"
+                    }, {
+                      "apiName" : "potentialsClosingDate",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRM_POTENTIALS_CLOSINGDATE",
+                      "type" : "Date",
+                      "dbColumnName" : "Closing Date"
+                    }, {
+                      "apiName" : "revenueReceived",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "TOTAL_REVENUE_RECEIVED",
+                      "type" : "Currency",
+                      "dbColumnName" : "Revenue Received"
+                    }, {
+                      "apiName" : "customerSince",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CRM_CUSTOMER_SINCE",
+                      "type" : "Date",
+                      "dbColumnName" : "Customer Since"
+                    } ]
+                  }, {
+                    "apiName" : "taks",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "deleteComment" : true,
+                      "editComment" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Tasksssssssssssssssssssss",
+                    "moduleId" : "6",
+                    "fields" : [ {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Task Owner"
+                    }, {
+                      "apiName" : "subject",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SUBJECT",
+                      "type" : "Text",
+                      "dbColumnName" : "Subject"
+                    }, {
+                      "apiName" : "ticketId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASEID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Request"
+                    }, {
+                      "apiName" : "category",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CATEGORY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Category"
+                    }, {
+                      "apiName" : "dueDate",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DUEDATE",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Due Date"
+                    }, {
+                      "apiName" : "status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Status"
+                    }, {
+                      "apiName" : "priority",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRIORITY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Priority"
+                    }, {
+                      "apiName" : "reminder",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "REMINDAT",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Remind At"
+                    }, {
+                      "apiName" : "creatorId",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "departmentId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Department"
+                    }, {
+                      "apiName" : "teamId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TEAM_ID",
+                      "type" : "Text",
+                      "dbColumnName" : "Team"
+                    }, {
+                      "apiName" : "contactId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CONTACTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Contact Name"
+                    } ]
+                  }, {
+                    "apiName" : "tickets",
+                    "permissions" : {
+                      "mergeTickets" : true,
+                      "changeOwner" : true,
+                      "import" : true,
+                      "handleUnassigned" : true,
+                      "edit" : true,
+                      "deleteComment" : true,
+                      "closeTicket" : true,
+                      "mailReview" : true,
+                      "delete" : true,
+                      "view" : true,
+                      "editComment" : true,
+                      "create" : true,
+                      "addFollowers" : true,
+                      "export" : true,
+                      "mailSend" : true,
+                      "unassignedChangeOwner" : false
+                    },
+                    "moduleName" : "Cases",
+                    "moduleId" : "1",
+                    "fields" : [ {
+                      "apiName" : "departmentId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Department"
+                    }, {
+                      "apiName" : "contactId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CONTACTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Contact Name"
+                    }, {
+                      "apiName" : "email",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "EMAIL",
+                      "type" : "Email",
+                      "dbColumnName" : "Email"
+                    }, {
+                      "apiName" : "phone",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PHONE",
+                      "type" : "Phone",
+                      "dbColumnName" : "Phone"
+                    }, {
+                      "apiName" : "subject",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASESUBJECT",
+                      "type" : "Text",
+                      "dbColumnName" : "Subject"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASE_DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Status"
+                    }, {
+                      "apiName" : "productId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRODUCTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Product Name"
+                    }, {
+                      "apiName" : "assigneeId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Case Owner"
+                    }, {
+                      "apiName" : "createdBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "common_status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Text",
+                      "dbColumnName" : "Common Status"
+                    }, {
+                      "apiName" : "ticketNumber",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASENUMBER",
+                      "type" : "AutoNumber",
+                      "dbColumnName" : "Request Id"
+                    }, {
+                      "apiName" : "isSpam",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "ISSPAM",
+                      "type" : "Number",
+                      "dbColumnName" : "isSpam"
+                    }, {
+                      "apiName" : "threadStatus",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "THREADSTATUS",
+                      "type" : "Number",
+                      "dbColumnName" : "Thread Status"
+                    }, {
+                      "apiName" : "resolution",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "RESOLUTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Resolution"
+                    }, {
+                      "apiName" : "toAddress",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "RECEIPIENTS",
+                      "type" : "Text",
+                      "dbColumnName" : "To Address"
+                    }, {
+                      "apiName" : "customerResponseTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CUST_RESP_TIME",
+                      "type" : "Number",
+                      "dbColumnName" : "Customer Responded Time"
+                    }, {
+                      "apiName" : "threadCount",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "THREAD_COUNT",
+                      "type" : "Number",
+                      "dbColumnName" : "Thread Count"
+                    }, {
+                      "apiName" : "accountId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ACCOUNTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Account Name"
+                    }, {
+                      "apiName" : "dueDate",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DUE_DATE",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Due Date"
+                    }, {
+                      "apiName" : "priority",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRIORITY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Priority"
+                    }, {
+                      "apiName" : "channel",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODE",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Mode"
+                    }, {
+                      "apiName" : "category",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CATEGORY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Category"
+                    }, {
+                      "apiName" : "subCategory",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SUBCATEGORY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Sub Category"
+                    }, {
+                      "apiName" : "closedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CLOSEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Case Closed Time"
+                    }, {
+                      "apiName" : "isOverdue",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "ISOVERDUE",
+                      "type" : "Boolean",
+                      "dbColumnName" : "Is Overdue"
+                    }, {
+                      "apiName" : "isEscalated",
+                      "isReadOnly" : false,
+                      "isVisible" : false,
+                      "searchColumnName" : "ISESCALATED",
+                      "type" : "Boolean",
+                      "dbColumnName" : "Is Escalated"
+                    }, {
+                      "apiName" : "classification",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CLASSIFICATION",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Classification"
+                    }, {
+                      "apiName" : "happinessRating",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SURVEY_RATING",
+                      "type" : "Text",
+                      "dbColumnName" : "Happiness Rating"
+                    }, {
+                      "apiName" : "agentRespondedTime",
+                      "isReadOnly" : false,
+                      "isVisible" : false,
+                      "searchColumnName" : "AGENT_RESPOND_TIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Agent Responded Time"
+                    }, {
+                      "apiName" : "commentCount",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "COMMENT_COUNT",
+                      "type" : "Number",
+                      "dbColumnName" : "Comment Count"
+                    } ]
+                  }, {
+                    "apiName" : "articles",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "deleteComment" : true,
+                      "editComment" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Knowledge Base",
+                    "moduleId" : "2",
+                    "fields" : [ {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SOLUTIONTITLE",
+                      "type" : "Text",
+                      "dbColumnName" : "Solution Title"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ANSWERS",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Answer"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TOPIC_NAME",
+                      "type" : "Text",
+                      "dbColumnName" : "Topic"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Solution Owner"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "ISPUBLIC",
+                      "type" : "Boolean",
+                      "dbColumnName" : "Public"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Status"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Text",
+                      "dbColumnName" : "Common Status"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Department"
+                    }, {
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TAGS",
+                      "type" : "Text",
+                      "dbColumnName" : "Tags"
+                    }, {
+                      "apiName" : "cf_test_field",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SOLUTIONCF51",
+                      "type" : "Number",
+                      "dbColumnName" : "Test field"
+                    } ]
+                  }, {
+                    "apiName" : "products",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Productssssssssssssssssss",
+                    "moduleId" : "7",
+                    "fields" : [ {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMOWNERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Product Owner"
+                    }, {
+                      "apiName" : "productName",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRODUCTNAME",
+                      "type" : "Text",
+                      "dbColumnName" : "Product Name"
+                    }, {
+                      "apiName" : "productCode",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRODUCTCODE",
+                      "type" : "Text",
+                      "dbColumnName" : "Product Code"
+                    }, {
+                      "apiName" : "manufacturer",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MANUFACTURER",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Manufacturer"
+                    }, {
+                      "apiName" : "productCategory",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CATEGORY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Product Category"
+                    }, {
+                      "apiName" : "createdBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "SMCREATORNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : true,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "common_status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Text",
+                      "dbColumnName" : "Common Status"
+                    }, {
+                      "apiName" : "unitPrice",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "UNITPRICE",
+                      "type" : "Currency",
+                      "dbColumnName" : "Unit Price"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "departmentIds",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "Multiselect",
+                      "dbColumnName" : "Department"
+                    } ]
+                  }, {
+                    "apiName" : "calls",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "deleteComment" : true,
+                      "editComment" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Calls",
+                    "moduleId" : "9",
+                    "fields" : [ {
+                      "apiName" : "departmentId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Department"
+                    }, {
+                      "apiName" : "subject",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SUBJECT",
+                      "type" : "Text",
+                      "dbColumnName" : "Subject"
+                    }, {
+                      "apiName" : "direction",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CALLDIRECTION",
+                      "type" : "Text",
+                      "dbColumnName" : "Direction"
+                    }, {
+                      "apiName" : "status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STARTTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Call Status"
+                    }, {
+                      "apiName" : "ticketId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASEID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Request"
+                    }, {
+                      "apiName" : "contactId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CONTACTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Contact Name"
+                    }, {
+                      "apiName" : "priority",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRIORITY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Priority"
+                    }, {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "OWNERID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Call Owner"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "reminder",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "REMINDAT",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Remind me"
+                    }, {
+                      "apiName" : "creatorId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDBY",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "teamId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TEAM_ID",
+                      "type" : "Text",
+                      "dbColumnName" : "Team"
+                    }, {
+                      "apiName" : "cf_url_1",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CALLCF1",
+                      "type" : "URL",
+                      "dbColumnName" : "URL 1"
+                    }, {
+                      "apiName" : "cf_picklist",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CALLCF2",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Picklist"
+                    } ]
+                  }, {
+                    "apiName" : "events",
+                    "permissions" : {
+                      "view" : true,
+                      "import" : true,
+                      "edit" : true,
+                      "deleteComment" : true,
+                      "editComment" : true,
+                      "create" : true,
+                      "delete" : true,
+                      "export" : true
+                    },
+                    "moduleName" : "Events",
+                    "moduleId" : "10",
+                    "fields" : [ {
+                      "apiName" : "departmentId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DEP_ID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Department"
+                    }, {
+                      "apiName" : "subject",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "SUBJECT",
+                      "type" : "Text",
+                      "dbColumnName" : "Subject"
+                    }, {
+                      "apiName" : "category",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CATEGORY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Category"
+                    }, {
+                      "apiName" : "status",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "STATUS",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Status"
+                    }, {
+                      "apiName" : "startTime",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "EVENTSTARTDATETIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Start Time"
+                    }, {
+                      "apiName" : "ticketId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CASEID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Request"
+                    }, {
+                      "apiName" : "contactId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CONTACTNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Contact Name"
+                    }, {
+                      "apiName" : "priority",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "PRIORITY",
+                      "type" : "Picklist",
+                      "dbColumnName" : "Priority"
+                    }, {
+                      "apiName" : "ownerId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "OWNERID",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Event Owner"
+                    }, {
+                      "apiName" : "description",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "DESCRIPTION",
+                      "type" : "Textarea",
+                      "dbColumnName" : "Description"
+                    }, {
+                      "apiName" : "reminder",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "REMINDAT",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Remind me"
+                    }, {
+                      "apiName" : "creatorId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDBY",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Created By"
+                    }, {
+                      "apiName" : "modifiedBy",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIERNAME",
+                      "type" : "LookUp",
+                      "dbColumnName" : "Modified By"
+                    }, {
+                      "apiName" : "createdTime",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "CREATEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Created Time"
+                    }, {
+                      "apiName" : "modifiedTime",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "MODIFIEDTIME",
+                      "type" : "DateTime",
+                      "dbColumnName" : "Modified Time"
+                    }, {
+                      "apiName" : "teamId",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "TEAM_ID",
+                      "type" : "Text",
+                      "dbColumnName" : "Team"
+                    }, {
+                      "apiName" : "cf_country",
+                      "isReadOnly" : false,
+                      "isVisible" : true,
+                      "searchColumnName" : "EVENTCF251",
+                      "type" : "Multiselect",
+                      "dbColumnName" : "Country"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getLastAccessedResponse" : {
+        "description" : "getLastAccessedResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "lastAccessedDepartment" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "lastAccessedDepartment" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "zuidsToUseridsResponseArr" : {
+        "description" : "zuidsToUseridsResponseArr template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./SearchInteg.json#/components/schemas/zuidsToUseridsResponse"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "userId" : 4000000008734,
+                  "zuId" : 4516002
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SearchInteg"
+}

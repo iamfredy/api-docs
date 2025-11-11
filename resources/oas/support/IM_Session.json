@@ -1,0 +1,1397 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "IM_Session",
+    "version" : "1.0.0",
+    "x-clan-group" : "microservices",
+    "x-module-group" : "im"
+  },
+  "paths" : {
+    "/api/v1/im/sessions/metrics" : {
+      "get" : {
+        "tags" : [ "IM_Session" ],
+        "operationId" : "getSessionMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "integrationServiceId",
+          "in" : "query",
+          "description" : "IntegrationService type",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "IntegrationService type",
+            "enum" : [ "TELEGRAM", "TWILIO", "IM_TALK", "LINE", "WECHAT", "WHATSAPP", "FACEBOOKMESSENGER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/channelId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSessionMetrics"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.getSessionMetrics"
+        }
+      }
+    },
+    "/api/v1/im/sessions/{id}/tickets" : {
+      "get" : {
+        "tags" : [ "IM_Session" ],
+        "operationId" : "getIMSessionTickets",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getIMSessionTickets"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.RequestService.getIMSessionTickets"
+        }
+      }
+    },
+    "/api/v1/im/sessions" : {
+      "get" : {
+        "tags" : [ "IM_Session" ],
+        "summary" : "List Sessions",
+        "description" : "This API lists all sessions",
+        "operationId" : "getSessions",
+        "parameters" : [ {
+          "name" : "modifiedAfter",
+          "in" : "query",
+          "description" : "After which modified date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "After which modified date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "query",
+          "description" : "Filter conversations assigned to an agent",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter conversations assigned to an agent",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "contactId",
+          "in" : "query",
+          "description" : "Filter conversations of a contact",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter conversations of a contact",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "profileId",
+          "in" : "query",
+          "description" : "Filter conversations of a profile",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter conversations of a profile",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "assigneeFilter",
+          "in" : "query",
+          "description" : "Assignment status filter for the conversations. Allowed values are @MINE@, @UNASSIGNED@ ,@NONE@ ,@BOT@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Assignment status filter for the conversations. Allowed values are @MINE@, @UNASSIGNED@ ,@NONE@ ,@BOT@",
+            "enum" : [ "MINE", "UNASSIGNED", "NONE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "createdBefore",
+          "in" : "query",
+          "description" : "Before which date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Before which date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "name" : "createdAfter",
+          "in" : "query",
+          "description" : "After which date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "After which date conversations should be included. Enter a date in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "$ref" : "#/components/parameters/channelId"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status filter for the conversations. Allowed values are @OPEN@, @ON_PROGRESS@ ,@ON_HOLD@ ,@BLOCKED@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "description" : "Status filter for the conversations. Allowed values are @OPEN@, @ON_PROGRESS@ ,@ON_HOLD@ ,@BLOCKED@"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSessions"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.InstantMessages.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "apihash" : "8e629b6ea7966969b94a041a8f18d8ff",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.getSessions"
+        }
+      }
+    },
+    "/api/v1/im/sessions/{id}" : {
+      "get" : {
+        "tags" : [ "IM_Session" ],
+        "summary" : "Get a session",
+        "description" : "This API fetches details of an session.",
+        "operationId" : "getSession",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSession"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.InstantMessages.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 25,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "apihash" : "0e7418c8475c4ed4b2201f55f46d991b",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.getSession"
+        }
+      },
+      "patch" : {
+        "tags" : [ "IM_Session" ],
+        "operationId" : "updateSession",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateSession"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSession"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.updateSession"
+        }
+      }
+    },
+    "/api/v1/im/sessions/{id}/pickup" : {
+      "post" : {
+        "tags" : [ "IM_Session" ],
+        "operationId" : "pickupSession",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSession"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 45,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.pickUpSession"
+        }
+      }
+    },
+    "/api/v1/im/sessions/{id}/participants" : {
+      "get" : {
+        "tags" : [ "IM_Session" ],
+        "operationId" : "getSessionParticipants",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSessionParticipants"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "microservices",
+          "module-group" : "im",
+          "apimethod" : "com.zoho.support.restapi.im.IMSessionService.getSessionParticipants"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "singleMetric" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "CREATED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "BLOCKED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ENDED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "MISSED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ON_HOLD" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ON_PROGRESS" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "OPEN" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "BLOCKED", "CREATED", "ENDED", "MISSED", "ON_HOLD", "ON_PROGRESS", "OPEN" ]
+      },
+      "assigneeMetrics" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "MINE" : {
+            "$ref" : "./IM_Session.json#/components/schemas/singleMetric"
+          },
+          "NONE" : {
+            "$ref" : "./IM_Session.json#/components/schemas/singleMetric"
+          }
+        },
+        "required" : [ "MINE", "NONE" ]
+      },
+      "listofTickets" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Ticket.json#/components/schemas/listviewJson"
+        }
+      },
+      "sessionActor" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter conversations of a contact",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "contactName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "botType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "GC", "ZIA" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "externalId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT", "BOT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "botType", "contactId", "contactName", "email", "externalId", "id", "name", "photoURL", "type" ]
+      },
+      "meta" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "DESK_TICKET_ID" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "DESK_TICKET_NUMBER" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "DESK_TICKET_ID", "DESK_TICKET_NUMBER" ]
+      },
+      "getSession" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter conversations assigned to an agent",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "lastActiveTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter conversations of a contact",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "subject" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50000,
+            "minLength" : 0
+          },
+          "unreadMessagesCount" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "channel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "integrationService" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TELEGRAM", "TWILIO", "IM_TALK", "LINE", "WECHAT", "WHATSAPP", "FACEBOOKMESSENGER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "deskAssignee" : {
+            "$ref" : "./IM_Session.json#/components/schemas/sessionActor"
+          },
+          "contactLastActiveTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "actor" : {
+            "$ref" : "./IM_Session.json#/components/schemas/sessionActor"
+          },
+          "meta" : {
+            "$ref" : "./IM_Session.json#/components/schemas/meta"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "replyStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACCEPTED", "CHANNEL_INACTIVE", "SESSION_ENDED", "SESSION_BLOCKED", "SESSION_EXPIRED", "UNASSIGNED", "NOT_AN_ASSIGNEE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "messagesCount" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "agentLastActiveTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CREATED", "OPEN", "ON_PROGRESS", "ON_HOLD", "ENDED", "BLOCKED", "MISSED" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Status filter for the conversations. Allowed values are @OPEN@, @ON_PROGRESS@ ,@ON_HOLD@ ,@BLOCKED@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "actor", "agentId", "agentLastActiveTime", "channel", "contactId", "contactLastActiveTime", "createdTime", "deskAssignee", "id", "integrationService", "lastActiveTime", "messagesCount", "meta", "replyStatus", "status", "subject", "unreadMessagesCount" ]
+      },
+      "listofSessions" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_Session.json#/components/schemas/getSession"
+        }
+      },
+      "sessionParticipant" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "contactName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "externalId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT", "BOT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "contactId", "contactName", "email", "externalId", "id", "name", "photoURL", "type" ]
+      },
+      "listofSessionParticipant" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./IM_Session.json#/components/schemas/sessionParticipant"
+        }
+      }
+    },
+    "responses" : {
+      "getSessionMetrics" : {
+        "description" : "getSessionMetrics template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "kind" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "single.session.metrics" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "assignee" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/assigneeMetrics"
+                }
+              },
+              "required" : [ "assignee", "kind" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getIMSessionTickets" : {
+        "description" : "getIMSessionTickets template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/listofTickets"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSessions" : {
+        "description" : "getSessions template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/listofSessions"
+                },
+                "hasMore" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "data", "hasMore" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "agentId" : "78412824",
+                    "lastActiveTime" : 1711094233000,
+                    "contactId" : "186543000000451259",
+                    "subject" : "This is test 2   Abhishek Aich",
+                    "unreadMessagesCount" : "0",
+                    "channel" : "TEST_WA_CHANNEL_4",
+                    "integrationService" : "WHATSAPP",
+                    "deskAssignee" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "botType" : null,
+                      "contactName" : null,
+                      "name" : "Abhishek Aich",
+                      "externalId" : null,
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler.sales@zoho.com"
+                    },
+                    "contactLastActiveTime" : 1711086669000,
+                    "actor" : {
+                      "photoURL" : null,
+                      "botType" : null,
+                      "contactName" : "Abhishek Aich",
+                      "name" : "Abhishek Aich",
+                      "externalId" : "+918478935387",
+                      "id" : "186543000000451285",
+                      "type" : "ENDUSER",
+                      "email" : null
+                    },
+                    "meta" : {
+                      "DESK_TICKET_ID" : "186543000001662116",
+                      "DESK_TICKET_NUMBER" : "480"
+                    },
+                    "createdTime" : 1711085659000,
+                    "replyStatus" : "SESSION_EXPIRED",
+                    "botId" : null,
+                    "messagesCount" : "10",
+                    "id" : "3942000001423083",
+                    "channelId" : "3942000001423029",
+                    "agentLastActiveTime" : 1711094233000,
+                    "status" : "ON_PROGRESS"
+                  }, {
+                    "agentId" : "78412824",
+                    "lastActiveTime" : 1711094223000,
+                    "contactId" : "186543000000451259",
+                    "subject" : "This is test 2   Abhishek Aich",
+                    "unreadMessagesCount" : "0",
+                    "channel" : "SANDBOX",
+                    "integrationService" : "WHATSAPP",
+                    "deskAssignee" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "botType" : null,
+                      "contactName" : null,
+                      "name" : "Abhishek Aich",
+                      "externalId" : null,
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler.sales@zoho.com"
+                    },
+                    "contactLastActiveTime" : 1711012260000,
+                    "actor" : {
+                      "photoURL" : null,
+                      "botType" : null,
+                      "contactName" : "Abhishek Aich",
+                      "name" : "Abhishek Aich",
+                      "externalId" : "+918478935387",
+                      "id" : "186543000000451285",
+                      "type" : "ENDUSER",
+                      "email" : null
+                    },
+                    "meta" : {
+                      "DESK_TICKET_ID" : "186543000001653193",
+                      "DESK_TICKET_NUMBER" : "477"
+                    },
+                    "createdTime" : 1693819815000,
+                    "replyStatus" : "SESSION_EXPIRED",
+                    "botId" : null,
+                    "messagesCount" : "65",
+                    "id" : "3942000000042104",
+                    "channelId" : "3942000000045001",
+                    "agentLastActiveTime" : 1711094223000,
+                    "status" : "ON_PROGRESS"
+                  }, {
+                    "agentId" : "78412824",
+                    "lastActiveTime" : 1711085558000,
+                    "contactId" : "186543000000451259",
+                    "subject" : "Hi good morning",
+                    "unreadMessagesCount" : "0",
+                    "channel" : "WA_CHANNEL",
+                    "integrationService" : "WHATSAPP",
+                    "deskAssignee" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                      "botType" : null,
+                      "contactName" : null,
+                      "name" : "Abhishek Aich",
+                      "externalId" : null,
+                      "id" : "186543000000190001",
+                      "type" : "AGENT",
+                      "email" : "zykler.sales@zoho.com"
+                    },
+                    "contactLastActiveTime" : 1711083846000,
+                    "actor" : {
+                      "photoURL" : null,
+                      "botType" : null,
+                      "contactName" : "Abhishek Aich",
+                      "name" : "Abhishek Aich",
+                      "externalId" : "+918478935387",
+                      "id" : "186543000000451285",
+                      "type" : "ENDUSER",
+                      "email" : null
+                    },
+                    "meta" : {
+                      "DESK_TICKET_ID" : "186543000001662009",
+                      "DESK_TICKET_NUMBER" : "479"
+                    },
+                    "createdTime" : 1711083846000,
+                    "replyStatus" : "CHANNEL_DELETED",
+                    "botId" : null,
+                    "messagesCount" : "5",
+                    "id" : "3942000001422171",
+                    "channelId" : "3942000001422011",
+                    "agentLastActiveTime" : 1711085558000,
+                    "status" : "ON_PROGRESS"
+                  } ],
+                  "hasMore" : false
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSession" : {
+        "description" : "getSession template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "lastActiveTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "contactId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "subject" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50000,
+                  "minLength" : 0
+                },
+                "unreadMessagesCount" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "channel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "integrationService" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "TELEGRAM", "TWILIO", "IM_TALK", "LINE", "WECHAT", "WHATSAPP", "FACEBOOKMESSENGER" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "deskAssignee" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/sessionActor"
+                },
+                "contactLastActiveTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "actor" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/sessionActor"
+                },
+                "meta" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/meta"
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "replyStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ACCEPTED", "CHANNEL_INACTIVE", "SESSION_ENDED", "SESSION_BLOCKED", "SESSION_EXPIRED", "UNASSIGNED", "NOT_AN_ASSIGNEE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "messagesCount" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "agentLastActiveTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "CREATED", "OPEN", "ON_PROGRESS", "ON_HOLD", "ENDED", "BLOCKED", "MISSED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "actor", "agentId", "agentLastActiveTime", "channel", "contactId", "contactLastActiveTime", "createdTime", "deskAssignee", "id", "integrationService", "lastActiveTime", "messagesCount", "meta", "replyStatus", "status", "subject", "unreadMessagesCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "agentId" : "78412824",
+                  "lastActiveTime" : 1711094233000,
+                  "contactId" : "186543000000451259",
+                  "subject" : "This is test 2   Abhishek Aich",
+                  "unreadMessagesCount" : "0",
+                  "channel" : "TEST_WA_CHANNEL_4",
+                  "integrationService" : "WHATSAPP",
+                  "deskAssignee" : {
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/186543000000190001/photo?orgId=78412359",
+                    "botType" : null,
+                    "contactName" : null,
+                    "name" : "Abhishek Aich",
+                    "externalId" : null,
+                    "id" : "186543000000190001",
+                    "type" : "AGENT",
+                    "email" : "zykler.sales@zoho.com"
+                  },
+                  "contactLastActiveTime" : 1711086669000,
+                  "actor" : {
+                    "photoURL" : null,
+                    "botType" : null,
+                    "contactName" : "Abhishek Aich",
+                    "name" : "Abhishek Aich",
+                    "externalId" : "+918478935387",
+                    "id" : "186543000000451285",
+                    "type" : "ENDUSER",
+                    "email" : null
+                  },
+                  "meta" : {
+                    "DESK_TICKET_ID" : "186543000001662116",
+                    "DESK_TICKET_NUMBER" : "480"
+                  },
+                  "createdTime" : 1711085659000,
+                  "botId" : null,
+                  "messagesCount" : "10",
+                  "id" : "3942000001423083",
+                  "channelId" : "3942000001423029",
+                  "agentLastActiveTime" : 1711094233000,
+                  "status" : "ON_PROGRESS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSessionParticipants" : {
+        "description" : "getSessionParticipants template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./IM_Session.json#/components/schemas/listofSessionParticipant"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "Filter conversations of all channels in given department",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Filter conversations of all channels in given department",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of tickets to fetch",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of tickets to fetch",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the tickets must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which the tickets must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "channelId" : {
+        "name" : "channelId",
+        "in" : "query",
+        "description" : "Filter conversations of a channel",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Filter conversations of a channel",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "updateSession" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Current assignee of this session",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Current status of the session to be set. Possible values are @OPEN@, @ENDED@, @ON_PROGRESS@, @ON_HOLD@, @BLOCKED@",
+                  "enum" : [ "OPEN", "ON_HOLD", "ENDED", "BLOCKED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "agentId", "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "IM_Session"
+}

@@ -1,0 +1,954 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Livecall",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "activity"
+  },
+  "paths" : {
+    "/api/v1/livecalls" : {
+      "post" : {
+        "tags" : [ "Livecall" ],
+        "summary" : "Create live call",
+        "description" : "This API starts a new live call in your help desk portal.",
+        "operationId" : "add",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/addResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.activities.calls.CREATE", "Desk.calls.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "deprecatedScopes" : [ "calls" ]
+            }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "b0902c9ef078af7ecf42f9e572bc5157",
+          "module-group" : "activity",
+          "apimethod" : "com.zoho.support.restapi.LiveCallService.add"
+        }
+      }
+    },
+    "/api/v1/sequentialUnattendedCalls" : {
+      "get" : {
+        "tags" : [ "Livecall" ],
+        "summary" : "Get calls list",
+        "description" : "List of sequential calls missed for the given agent",
+        "operationId" : "unattendedSequentialCallsForAssignee",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/fromTime"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "name" : "assigneeId",
+          "in" : "query",
+          "description" : "assignee id to fetch all missed call sequential calls list",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "assignee id to fetch all missed call sequential calls list",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/unattendedSequentialCallsForAssignee"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.calls.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "9a32e9d52d076d8ea99df62034ea3f3d",
+          "module-group" : "activity",
+          "apimethod" : "com.zoho.support.restapi.LiveCallService.unattendedSequentialCallsForAssignee"
+        }
+      }
+    },
+    "/api/v1/contacts/{contactId}/pushToLiveCall" : {
+      "post" : {
+        "tags" : [ "Livecall" ],
+        "summary" : "Push Contact Info",
+        "description" : "This API push few contact information for the same user through wms",
+        "operationId" : "pushToLiveCall",
+        "parameters" : [ {
+          "name" : "contactId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.calls.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "2f87716b79c36e3e4a927f880863c312",
+          "module-group" : "activity",
+          "apimethod" : "com.zoho.support.restapi.LiveCallService.pushToLiveCall"
+        }
+      }
+    },
+    "/api/v1/sequentialUnattendedCalls/Count" : {
+      "get" : {
+        "tags" : [ "Livecall" ],
+        "summary" : "Get sequential calls unattended users count",
+        "description" : "This api will provide you the count of users who missed the sequential calls over for the given time period. Do not use this API without consulting Telephony Team.",
+        "operationId" : "unattendedSequentialCalls",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/fromTime"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "name" : "assignee",
+          "in" : "query",
+          "description" : "assignee - Key that filters unattended calls by assignee. Values allowed - a valid @assigneeId@. Multiple @assigneeIds@ can be passed as comma-separated values.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "assignee - Key that filters unattended calls by assignee. Values allowed - a valid @assigneeId@. Multiple @assigneeIds@ can be passed as comma-separated values.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/unattendedSequentialCalls"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.calls.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "1eb5354d6a06539c4587b1d7b728f5c2",
+          "module-group" : "activity",
+          "apimethod" : "com.zoho.support.restapi.LiveCallService.unattendedSequentialCalls"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "notifiedClientZuids" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "lastName", "zuid" ]
+      },
+      "notifiedClientZuidsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Livecall.json#/components/schemas/notifiedClientZuids"
+        }
+      },
+      "unattendedSequentialCallsInfoJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "subject" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "subject", "webUrl" ]
+      },
+      "unattendedSequentialCallsContactJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 40,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "phone" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\+\\-\\.\\(\\)\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'\\&\\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "email", "firstName", "id", "lastName", "phone" ]
+      },
+      "unattendedSequentialCallsForAssigneeDataJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "call" : {
+            "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsInfoJson"
+          },
+          "calledTo" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[+0-9-() ]+$"
+          },
+          "calledFrom" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[+0-9-() ]+$"
+          },
+          "contact" : {
+            "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsContactJson"
+          },
+          "callTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        },
+        "required" : [ "call", "callTime", "calledFrom", "calledTo", "contact" ]
+      },
+      "unattendedSequentialCallsForAssigneeData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsForAssigneeDataJson"
+        }
+      },
+      "unattendedSequentialCallsAgentJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "id", "lastName", "photoURL" ]
+      },
+      "unattendedSequentialCallsCountDataJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agent" : {
+            "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsAgentJson"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "agent", "count" ]
+      },
+      "unattendedSequentialCallsCountData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsCountDataJson"
+        }
+      }
+    },
+    "responses" : {
+      "addResponse" : {
+        "description" : "addResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ctiName" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ZDesk_Current_Call", "null", null ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Name of the PBX",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "contactId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the contact associated with the call",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "caseId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the ticket associated with the call",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false,
+                    "entity" : "Tickets"
+                  }
+                },
+                "callRefId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([a-zA-Z0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Call reference ID provided by the Private Branch Exchange (PBX)",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "ctiNumber" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[+0-9-() ]+$",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Phone number of your help desk portal",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "customerNumber" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[+0-9-() ]+$",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Phone number of the contact",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "activityCreated" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "notifiedClientZuids" : {
+                  "$ref" : "./Livecall.json#/components/schemas/notifiedClientZuidsArray"
+                },
+                "callType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "inbound", "outbound" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Direction of the call: @inbound@ or @outbound@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "callState" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ringing" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "activityCreated", "callRefId", "callState", "callType", "caseId", "contactId", "createdTime", "ctiName", "ctiNumber", "customerNumber", "id", "notifiedClientZuids" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "ctiName" : "ZDesk_Current_Call",
+                  "contactId" : "39600000029145589",
+                  "caseId" : "39600000029145889",
+                  "callRefId" : "Td7",
+                  "createdTime" : 1556782464000,
+                  "ctiNumber" : "+18302680444",
+                  "id" : "39600000029146623",
+                  "customerNumber" : "+82123545648",
+                  "activityCreated" : false,
+                  "notifiedClientZuids" : [ {
+                    "firstName" : "",
+                    "lastName" : "Automation",
+                    "zuid" : "55737544"
+                  } ],
+                  "callType" : "outbound",
+                  "callState" : "ringing"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "unattendedSequentialCallsForAssignee" : {
+        "description" : "unattendedSequentialCallsForAssignee template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsForAssigneeData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "call" : {
+                      "subject" : "Inbound Missed Call from (+14083529191)",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/5000000269089",
+                      "id" : "5000000269089"
+                    },
+                    "calledTo" : "+18302680444",
+                    "calledFrom" : "+14083529191",
+                    "contact" : {
+                      "firstName" : null,
+                      "lastName" : "+14083529191",
+                      "phone" : "+14083529191",
+                      "id" : "5000000019389",
+                      "email" : null
+                    },
+                    "callTime" : 1579615027127
+                  }, {
+                    "call" : {
+                      "subject" : "Inbound Missed Call from (+14083529191)",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Calls/dv/5000000269189",
+                      "id" : "5000000269189"
+                    },
+                    "calledTo" : "+18302680444",
+                    "calledFrom" : "+14083529191",
+                    "contact" : {
+                      "firstName" : null,
+                      "lastName" : "+14083529191",
+                      "phone" : "+14083529191",
+                      "id" : "5000000019389",
+                      "email" : null
+                    },
+                    "callTime" : 1579615170029
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "unattendedSequentialCalls" : {
+        "description" : "unattendedSequentialCalls template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Livecall.json#/components/schemas/unattendedSequentialCallsCountData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "agent" : {
+                      "firstName" : "",
+                      "lastName" : "Dinesh",
+                      "photoURL" : null,
+                      "id" : "5000000016082"
+                    },
+                    "count" : "3"
+                  }, {
+                    "agent" : {
+                      "firstName" : "Dinesh",
+                      "lastName" : "thirtyeight",
+                      "photoURL" : null,
+                      "id" : "5000000018032"
+                    },
+                    "count" : "2"
+                  }, {
+                    "agent" : {
+                      "firstName" : "Dinesht ",
+                      "lastName" : "ThirtyNine",
+                      "photoURL" : null,
+                      "id" : "5000000103283"
+                    },
+                    "count" : "1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of unattended calls limit",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of unattended calls limit",
+          "maximum" : 99,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "fromTime" : {
+        "name" : "fromTime",
+        "in" : "query",
+        "description" : "to fetch logs after a specific time",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "object" ],
+          "additionalProperties" : false,
+          "description" : "to fetch logs after a specific time"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the unattended calls must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which the unattended calls must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "endTime" : {
+        "name" : "endTime",
+        "in" : "query",
+        "description" : "to fetch logs before a specific time",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "object" ],
+          "additionalProperties" : false,
+          "description" : "to fetch logs before a specific time"
+        }
+      }
+    },
+    "requestBodies" : {
+      "addRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "ctiName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Name of the PBX",
+                  "enum" : [ "ZDesk_Current_Call" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "contactId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the contact associated with the call",
+                  "pattern" : "([0-9]+)"
+                },
+                "caseId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the ticket associated with the call",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "entity" : "Tickets"
+                  }
+                },
+                "callRefId" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Call reference ID provided by the Private Branch Exchange (PBX)",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([a-zA-Z0-9]+)"
+                },
+                "ctiNumber" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Phone number of your help desk portal",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[+0-9-() ]+$"
+                },
+                "customerNumber" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Phone number of the contact",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[+0-9-() ]+$"
+                },
+                "notifiedClientZuids" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "callType" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Direction of the call: @inbound@ or @outbound@",
+                  "enum" : [ "inbound", "outbound" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "callType", "contactId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "ctiName" : "ZDesk_Current_Call",
+                  "contactId" : "39600000029145589",
+                  "caseId" : "39600000029145889",
+                  "callRefId" : "Td7",
+                  "ctiNumber" : "+18302680444",
+                  "customerNumber" : "+82123545648",
+                  "notifiedClientZuids" : [ "55737544" ],
+                  "callType" : "outbound"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Livecall"
+}

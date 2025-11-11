@@ -1,0 +1,2545 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Community",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "community"
+  },
+  "paths" : {
+    "/api/v1/communityUsers/{communityUserId}/topics/moveToTrash" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash all user topics",
+        "description" : "This API is to trash all the topics of a user",
+        "operationId" : "scheduleTrashAllUserTopics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/communityUserId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleTrashAllUserTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "4cc974ccde38c53c2842c7b7b4a40bed",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleTrashUserTopics"
+        }
+      }
+    },
+    "/api/v1/community/statistics" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get community stats",
+        "description" : "This API fetches the overall statistics related to the community module and displays them on the community dashboard.",
+        "operationId" : "getStats",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getStats"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "606a9689b98df58d915ef541b894e09a",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getStats"
+        }
+      }
+    },
+    "/api/v1/community/trashAllAwaitingComments" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash all comments pending moderation",
+        "description" : "This API moves all comments that are pending moderation to trash of your help desk portal.",
+        "operationId" : "scheduleBulkTrashOfAwaitingComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "fd794f4c50ba2cfa5ef3f821cc03382a",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkTrashOfAwaitingComments"
+        }
+      }
+    },
+    "/api/v1/community/topicResponseTrend" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get topic response trend",
+        "description" : "This API displays the trends of topics and responses.",
+        "operationId" : "getTopicResponseTrend",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/topicType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopicResponseTrend"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "f12af6a9c351c643d984ebbfab853bcc",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicResponseTrend"
+        }
+      }
+    },
+    "/api/v1/community/topicTypeResponsiveness" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get label-wise topic count",
+        "description" : "This API fetches the label-wise break-up of the total number of topics that are of a particular type.",
+        "operationId" : "getTopicTypeResponsiveness",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/topicType_getTopicTypeResponsiveness"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopicTypeResponsivenessResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "368bc48579aed83b47ef55c4ece68553",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicTypeResponsiveness"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/attachments/{attachmentId}/content" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get community topic attachment",
+        "description" : "This API fetches a file attachment from a topic.",
+        "operationId" : "getCommunityTopicAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "$ref" : "#/components/parameters/attachmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "f4da4e88fdc3a0746fd5ce88c6214c45",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.attachments.AttachmentRestService.downloadTopicAttachment"
+        }
+      }
+    },
+    "/api/v1/community/approveAllSpamComments" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Approve all spam comments",
+        "description" : "This API approves all comments that are marked as spam in the user community.",
+        "operationId" : "scheduleBulkApprovalOfSpamComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkApprovalOfSpamComments_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "c35d87349f10889072d9bdfe801d155f",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkApprovalOfSpamComments"
+        }
+      }
+    },
+    "/api/v1/community/topicResponsiveness" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get topic responsiveness stats",
+        "description" : "TThis API fetches statistics related to users responsiveness to topics in the community module.",
+        "operationId" : "getTopicResponsiveness",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/topicType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopicResponsiveness"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "4a24aa498fbe9792b21baa905f08f937",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicResponsiveness"
+        }
+      }
+    },
+    "/api/v1/community/uniqueUsersParticipationTrend" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get unique users participation trend",
+        "description" : "This API displays the trend related to participation of unique users.",
+        "operationId" : "getUniqueUserParticipationTrend",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/topicType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getUniqueUserParticipationTrend"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "33610223a3baba94ef22f94ecc6c8071",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getUniqueUserParticipationTrend"
+        }
+      }
+    },
+    "/api/v1/community/trashAllSpamComments" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash all spam comments",
+        "description" : "This API moves all comments marked as spam to trash of your help desk portal.",
+        "operationId" : "scheduleBulkTrashOfSpamComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkTrashOfSpamComments_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "6940fc84f3509fb2008ebb857619007b",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkTrashOfSpamComments"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/voters/trend" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Topic voters trend",
+        "description" : "To get trend of voters of a topic",
+        "operationId" : "getCommunityTopicVotersTrend",
+        "parameters" : [ {
+          "name" : "startTime",
+          "in" : "query",
+          "description" : "Starting time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Starting time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "name" : "endTime",
+          "in" : "query",
+          "description" : "Ending time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Ending time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        }, {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/topicVoterTrendResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 1800000,
+                  "lock-period" : 900000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "a37b3bc3de14ce4193e90ee2bef1f339",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicVoteTrend"
+        }
+      }
+    },
+    "/api/v1/community/topicTypeTrend" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get topic type trend",
+        "description" : "This API displays the trend related to topic types (announcement, discussion, idea, problem, and question), on the community dashboard.",
+        "operationId" : "getTopicTypeTrend",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/categoryIds"
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopicTypeTrendResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "04c4551119555c62ae08271eb0e14f86",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicTypeTrend"
+        }
+      }
+    },
+    "/api/v1/communityUsers/{communityUserId}/stats" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get community stats of user",
+        "description" : "This API fetches the community-related statistics of a particular user.",
+        "operationId" : "getStatsOfUser",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "#/components/parameters/communityUserId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getStatsOfUser"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d0128de751078dec90e77bc3e78b8d95",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getStatsOfUser"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/moveToTrash" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash community topic",
+        "description" : "This API moves a forum topic to trash of your help desk portal.",
+        "operationId" : "deleteCommunityTopic",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "0b733aedac0725089d8aaf1c99bbbff9",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.posts.TopicRestService.trashTopic"
+        }
+      }
+    },
+    "/api/v1/community/trashAllSpamTopics" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash all spam topics",
+        "description" : "This API moves all topics marked as spam to the trash of your help desk portal.",
+        "operationId" : "scheduleBulkTrashOfSpamTopics",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkTrashOfSpamTopics_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "60c542baef6f952794222609c5a9125a",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkTrashOfSpamTopics"
+        }
+      }
+    },
+    "/api/v1/communityUsers/{communityUserId}/comments/moveToTrash" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Trash all user comments",
+        "description" : "This API is to trash all the comments of a user",
+        "operationId" : "scheduleTrashAllUserComments",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/communityUserId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleTrashAllUserCommentsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "6c3ec7999e02c10d3542f1cf447807b0",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleTrashUserComments"
+        }
+      }
+    },
+    "/api/v1/community/trashAllAwaitingTopics" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : " Trash all topics pending moderation",
+        "description" : "This API moves all topics that are pending moderation to the trash of your help desk portal.",
+        "operationId" : "scheduleBulkTrashOfAwaitingTopics",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkTrashOfAwaitingTopics_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "b640b7e797fce63116819681700f077f",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkTrashOfAwaitingTopics"
+        }
+      }
+    },
+    "/api/v1/community/approveAllSpamTopics" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Approve all spam topics",
+        "description" : "This API approves all topics that are marked as spam in the user community.",
+        "operationId" : "scheduleBulkApprovalOfSpamTopics",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkApprovalOfSpamTopics_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "b53ab79599bdcc2c1a5c426a09a8df56",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkApprovalOfSpamTopics"
+        }
+      }
+    },
+    "/api/v1/community/topContributors" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "List top contributors",
+        "description" : "This API lists a particular number of users who have participated the most in the user community, based on the limit specified.",
+        "operationId" : "getTopContributors",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list",
+            "maximum" : 25,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "to filter agent and end user",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "to filter agent and end user",
+            "enum" : [ "AGENT", "END_USER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopContributors"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "3be3a1058c7766278796a7a6769029b7",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopContributors"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/replies/{replyId}/attachments/{attachmentId}/content" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get community topic reply attachment",
+        "description" : "This API fetches a file attachment from a reply to a topic comment.",
+        "operationId" : "getCommunityTopicReplyAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "name" : "replyId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/attachmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "71ba0d7e250f1e9830be6c658985ac86",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.attachments.AttachmentRestService.downloadReplyAttachment"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/lock" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Lock community topic",
+        "description" : "This API helps lock a forum topic, so that further user actions are restricted.",
+        "operationId" : "lockCommunityTopic",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "1d7a2b780de3ad0c1d8b557c2c13e835",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.posts.TopicRestService.lockTopic"
+        }
+      }
+    },
+    "/api/v1/communityTopics/{topicId}/comments/{commentId}/attachments/{attachmentId}/content" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get community topic comment attachment",
+        "description" : "This API fetches a file attachment from a topic comment.",
+        "operationId" : "getCommunityTopicCommentAttachment",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "name" : "commentId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/attachmentId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ", "Desk.community.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "b79df3394032606734ec9d475d0b12d3",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.attachments.AttachmentRestService.downloadCommentAttachment"
+        }
+      }
+    },
+    "/api/v1/communityUsers/{communityUserId}/topicResponseTrend" : {
+      "get" : {
+        "tags" : [ "Community" ],
+        "summary" : "Get responsiveness trend of user",
+        "description" : "This API displays the trend related to an user's responsiveness in the user community.",
+        "operationId" : "getTopicResponseTrendOfUser",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/startTime"
+        }, {
+          "$ref" : "#/components/parameters/endTime"
+        }, {
+          "$ref" : "#/components/parameters/categoryId"
+        }, {
+          "$ref" : "#/components/parameters/topicType"
+        }, {
+          "$ref" : "#/components/parameters/communityUserId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getTopicResponseTrend"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "a1dd8984adaa36049d4ca24adbe16c31",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.reports.CommunityReportService.getTopicResponseTrendOfUser"
+        }
+      }
+    },
+    "/api/v1/community/approveAllAwaitingComments" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Approve all comments pending moderation",
+        "description" : "This API approves all comments that are pending moderation in the user community.",
+        "operationId" : "scheduleBulkApprovalOfAwaitingComments",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkApprovalOfAwaitingComments_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "7e3928f6af2c17c3c537a5bd7d978fb8",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkApprovalOfAwaitingComments"
+        }
+      }
+    },
+    "/api/v1/community/approveAllAwaitingTopics" : {
+      "post" : {
+        "tags" : [ "Community" ],
+        "summary" : "Approve all topics pending moderation",
+        "description" : "This API approves all topics that are pending moderation in the user community.",
+        "operationId" : "scheduleBulkApprovalOfAwaitingTopics",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/scheduleBulkApprovalOfAwaitingTopics_scheduleBulkApprovalOfAwaitingTopicsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.UPDATE", "Desk.community.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "c8822ba67f826aabdfbdec57a60b7fdf",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.moderation.ModerationService.scheduleBulkApprovalOfAwaitingTopics"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "topicsCount" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ANNOUNCEMENT" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "DISCUSSION" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "IDEA" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "PROBLEM" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "QUESTION" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "ANNOUNCEMENT", "DISCUSSION", "IDEA", "PROBLEM", "QUESTION" ]
+      },
+      "trendDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "date" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "count", "date" ]
+      },
+      "commentsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Community.json#/components/schemas/trendDetails"
+        }
+      },
+      "labelWiseTopicsCount_question" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ANSWERED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "NEEDMOREINFO" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "NOSTATUS" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "UNANSWERED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "WORKINGONIT" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "ANSWERED", "NEEDMOREINFO", "NOSTATUS", "UNANSWERED", "WORKINGONIT" ]
+      },
+      "labelWiseTopicsCount_idea" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "MAYBELATER" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "NOSTATUS" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "IMPLEMENTED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "WILLNOTIMPLEMENT" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "WORKINGONIT" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "UNDERREVIEW" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "IMPLEMENTED", "MAYBELATER", "NOSTATUS", "UNDERREVIEW", "WILLNOTIMPLEMENT", "WORKINGONIT" ]
+      },
+      "labelWiseTopicsCount_problem" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "NOTAPROBLEM" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "UNSOLVED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "ANALYZING" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "TEMPORARYFIX" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "NEEDMOREINFO" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "SOLVED" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "NOSTATUS" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "WORKINGONIT" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "ANALYZING", "NEEDMOREINFO", "NOSTATUS", "NOTAPROBLEM", "SOLVED", "TEMPORARYFIX", "UNSOLVED", "WORKINGONIT" ]
+      },
+      "labelWiseTopicsCount_announcementAndDiscussions" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "NOSTATUS" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "NOSTATUS" ]
+      },
+      "getTopicResponsivenessObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "repliedTopicsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "unrepliedTopicsCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "repliedTopicsCount", "unrepliedTopicsCount" ]
+      },
+      "getTopContributorsObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 400,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "label" : {
+            "$ref" : "./Label.json#/components/schemas/labelMetaResponse"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "contactId", "email", "id", "label", "name", "photoUrl", "type" ]
+      }
+    },
+    "responses" : {
+      "getStats" : {
+        "description" : "getStats template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "uniqueUsersCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "topicsCount" : {
+                  "$ref" : "./Community.json#/components/schemas/topicsCount"
+                },
+                "commentsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "commentsCount", "topicsCount", "uniqueUsersCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "uniqueUsersCount" : "2",
+                  "topicsCount" : {
+                    "ANNOUNCEMENT" : "0",
+                    "DISCUSSION" : "0",
+                    "IDEA" : "0",
+                    "PROBLEM" : "1",
+                    "QUESTION" : "23"
+                  },
+                  "commentsCount" : "21"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTopicResponseTrend" : {
+        "description" : "getTopicResponseTrend template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "comments" : {
+                  "$ref" : "./Community.json#/components/schemas/commentsArr"
+                },
+                "topics" : {
+                  "$ref" : "./Community.json#/components/schemas/commentsArr"
+                }
+              },
+              "required" : [ "comments", "topics" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "comments" : [ {
+                    "date" : "2-Feb-2017",
+                    "count" : "2"
+                  }, {
+                    "date" : "3-Feb-2017",
+                    "count" : "3"
+                  }, {
+                    "date" : "4-Feb-2017",
+                    "count" : "5"
+                  }, {
+                    "date" : "5-Feb-2017",
+                    "count" : "8"
+                  } ],
+                  "topics" : [ {
+                    "date" : "2-Feb-2017",
+                    "count" : "2"
+                  }, {
+                    "date" : "3-Feb-2017",
+                    "count" : "3"
+                  }, {
+                    "date" : "4-Feb-2017",
+                    "count" : "5"
+                  }, {
+                    "date" : "5-Feb-2017",
+                    "count" : "8"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTopicTypeResponsivenessResponse" : {
+        "description" : "getTopicTypeResponsivenessResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "labelWiseTopicsCount" : {
+                    "$ref" : "./Community.json#/components/schemas/labelWiseTopicsCount_question"
+                  }
+                },
+                "required" : [ "labelWiseTopicsCount" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "labelWiseTopicsCount" : {
+                    "$ref" : "./Community.json#/components/schemas/labelWiseTopicsCount_idea"
+                  }
+                },
+                "required" : [ "labelWiseTopicsCount" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "labelWiseTopicsCount" : {
+                    "$ref" : "./Community.json#/components/schemas/labelWiseTopicsCount_problem"
+                  }
+                },
+                "required" : [ "labelWiseTopicsCount" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "labelWiseTopicsCount" : {
+                    "$ref" : "./Community.json#/components/schemas/labelWiseTopicsCount_announcementAndDiscussions"
+                  }
+                },
+                "required" : [ "labelWiseTopicsCount" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "labelWiseTopicsCount" : {
+                    "ANSWERED" : "0",
+                    "NEEDMOREINFO" : "1",
+                    "NOSTATUS" : "22",
+                    "WORKINGONIT" : "0"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTopicResponsiveness" : {
+        "description" : "getTopicResponsiveness template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "topicResponsiveness" : {
+                  "$ref" : "./Community.json#/components/schemas/getTopicResponsivenessObj"
+                }
+              },
+              "required" : [ "topicResponsiveness" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "topicResponsiveness" : {
+                    "repliedTopicsCount" : "3",
+                    "unrepliedTopicsCount" : "21"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getUniqueUserParticipationTrend" : {
+        "description" : "getUniqueUserParticipationTrend template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "uniqueUsersParticipation" : {
+                  "$ref" : "./Community.json#/components/schemas/commentsArr"
+                }
+              },
+              "required" : [ "uniqueUsersParticipation" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "uniqueUsersParticipation" : [ {
+                    "date" : "2-Feb-2017",
+                    "count" : "2"
+                  }, {
+                    "date" : "3-Feb-2017",
+                    "count" : "3"
+                  }, {
+                    "date" : "4-Feb-2017",
+                    "count" : "5"
+                  }, {
+                    "date" : "5-Feb-2017",
+                    "count" : "8"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "topicVoterTrendResponse" : {
+        "description" : "topicVoterTrendResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "topicVoterTrend" : {
+                  "$ref" : "./Community.json#/components/schemas/commentsArr"
+                }
+              },
+              "required" : [ "topicVoterTrend" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "topicVoterTrend" : [ {
+                    "date" : "May-2023",
+                    "count" : "0"
+                  }, {
+                    "date" : "Jun-2023",
+                    "count" : "0"
+                  }, {
+                    "date" : "Jul-2023",
+                    "count" : "0"
+                  }, {
+                    "date" : "Aug-2023",
+                    "count" : "0"
+                  }, {
+                    "date" : "Sep-2023",
+                    "count" : "1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getStatsOfUser" : {
+        "description" : "getStatsOfUser template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "postCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "responseCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "followersCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "followersCount", "postCount", "responseCount" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "postCount" : "8",
+                  "responseCount" : "8",
+                  "followersCount" : "0"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTopContributors" : {
+        "description" : "getTopContributors template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "$ref" : "./Community.json#/components/schemas/getTopContributorsObj"
+              }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "photoUrl" : "https://desk.zoho.com/api/v1/portalUser/1000000022025/photo?orgId=1234567",
+                  "name" : "User 1",
+                  "id" : "1000000022025",
+                  "label" : {
+                    "preferences" : {
+                      "shape" : "RECTANGLE",
+                      "bgColor" : "#23F123",
+                      "textColor" : "#2CA123"
+                    },
+                    "name" : "Admin",
+                    "id" : "6000000158001",
+                    "logoUrl" : "https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132"
+                  },
+                  "email" : "user1@zylker.com"
+                }, {
+                  "photoUrl" : "https://desk.zoho.com/api/v1/agents/1000000012792/photo?orgId=1234567",
+                  "name" : "User 2",
+                  "id" : "1000000012792",
+                  "label" : {
+                    "preferences" : {
+                      "shape" : "RECTANGLE",
+                      "bgColor" : "#23F123",
+                      "textColor" : "#2CA123"
+                    },
+                    "name" : "Admin",
+                    "id" : "6000000158001",
+                    "logoUrl" : "https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132"
+                  },
+                  "email" : "user2@zylker.com"
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTopicTypeTrendResponse" : {
+        "description" : "getTopicTypeTrendResponse Response definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "patternProperties" : {
+                "DISCUSSION|IDEA|PROBLEM|QUESTION|ANNOUNCEMENT" : {
+                  "type" : [ "array", "null" ],
+                  "items" : {
+                    "$ref" : "./Community.json#/components/schemas/trendDetails"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "categoryIds" : {
+        "name" : "categoryIds",
+        "in" : "query",
+        "description" : "IDs of the community categories that must be included. This value can also be empty",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "IDs of the community categories that must be included. This value can also be empty",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      },
+      "topicId" : {
+        "name" : "topicId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "startTime" : {
+        "name" : "startTime",
+        "in" : "query",
+        "description" : "Starting time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Starting time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+        }
+      },
+      "endTime" : {
+        "name" : "endTime",
+        "in" : "query",
+        "description" : "Ending time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Ending time of the time range for which the statistics should be fetched. The value must be expressed according to the GMT time zone.",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+        }
+      },
+      "attachmentId" : {
+        "name" : "attachmentId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "communityUserId" : {
+        "name" : "communityUserId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "categoryId" : {
+        "name" : "categoryId",
+        "in" : "query",
+        "description" : "IDs of the community categories that must be included. This value can also be empty.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "IDs of the community categories that must be included. This value can also be empty.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "topicType" : {
+        "name" : "topicType",
+        "in" : "query",
+        "description" : "Topic type for which the trend must be generated. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@. ",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Topic type for which the trend must be generated. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@. ",
+          "enum" : [ "DISCUSSION", "QUESTION", "IDEA", "ANNOUNCEMENT", "PROBLEM" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "topicType_getTopicTypeResponsiveness" : {
+        "name" : "topicType",
+        "in" : "query",
+        "description" : "Topic type for which the statistics must be fetched. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Topic type for which the statistics must be fetched. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.",
+          "enum" : [ "DISCUSSION", "QUESTION", "IDEA", "ANNOUNCEMENT", "PROBLEM" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "scheduleTrashAllUserTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkApprovalOfSpamComments_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkTrashOfSpamComments_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkTrashOfSpamTopics_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleTrashAllUserCommentsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkTrashOfAwaitingTopics_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkApprovalOfSpamTopics_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkApprovalOfAwaitingComments_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "scheduleBulkApprovalOfAwaitingTopics_scheduleBulkApprovalOfAwaitingTopicsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "categoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the community category",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "categoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "categoryId" : "1000000012755"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Community"
+}

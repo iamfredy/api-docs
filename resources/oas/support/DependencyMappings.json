@@ -1,0 +1,656 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DependencyMappings",
+    "version" : "1.0.0",
+    "x-clan-group" : "layouts",
+    "x-module-group" : "layouts"
+  },
+  "paths" : {
+    "/api/v1/dependencyMappingsCount" : {
+      "get" : {
+        "tags" : [ "DependencyMappings" ],
+        "summary" : "Get Dependency Mappings Count For Layout",
+        "description" : "This API gets dependency mapping count details for a layout.",
+        "operationId" : "getDependencyMappingsCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/layoutId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "./Layout.json#/components/responses/layoutCountDetails"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "7a90d259083525077f71f48b889d7d3c",
+          "module-group" : "layouts",
+          "apimethod" : "com.zoho.support.restapi.DependencyMappingService.getDependencyMappingsCount"
+        }
+      }
+    },
+    "/api/v1/availableDependencyMappings" : {
+      "get" : {
+        "tags" : [ "DependencyMappings" ],
+        "summary" : "Get possible dependency mappings in a layout",
+        "description" : "This API fetches the parent and child fields using which you can configure dependency mappings in a layout.",
+        "operationId" : "getAvailableDepMappings",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/layoutId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getAvailableDepMappings"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "771c0bbe00043217906ac7f2d234b810",
+          "module-group" : "layouts",
+          "apimethod" : "com.zoho.support.restapi.DependencyMappingService.getAvailableDepMappings"
+        }
+      }
+    },
+    "/api/v1/layouts/{layoutId}/fields/{fieldId}/dependentValues" : {
+      "get" : {
+        "tags" : [ "DependencyMappings" ],
+        "operationId" : "getDependentChildValues",
+        "parameters" : [ {
+          "name" : "searchString",
+          "in" : "query",
+          "description" : "Search keyword related to the tag",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Search keyword related to the tag",
+            "maxLength" : 120,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "no of values to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "no of values to be fetched",
+            "maximum" : 500,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "integer" ],
+            "format" : "int32",
+            "description" : "from index",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "parentValue",
+          "in" : "query",
+          "description" : "PickList Value.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "PickList Value.",
+            "maxLength" : 120,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+          }
+        }, {
+          "name" : "parentFieldId",
+          "in" : "query",
+          "description" : "Parent field ID",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Parent field ID",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "layoutId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the layout in which the dependency is mapped",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "fieldId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/dependentChildValues"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "661802d025052ff378cf7c3cda1435f8",
+          "module-group" : "layouts",
+          "apimethod" : "com.zoho.support.restapi.LayoutService.getLayoutFieldPickListValueWithPagination"
+        }
+      }
+    },
+    "/api/v1/dependencyMappings" : {
+      "get" : {
+        "tags" : [ "DependencyMappings" ],
+        "summary" : "List dependency mappings in a layout",
+        "description" : "This API lists the dependency mappings configured in a layout. ",
+        "operationId" : "getDependencyMappingsByLayoutId",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/layoutId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getDependencyMappingsByLayoutIdResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "db85a37eb7e09e9573dfa3d36787b5b2",
+          "module-group" : "layouts",
+          "apimethod" : "com.zoho.support.restapi.DependencyMappingService.getDependencyMappingsByLayoutId"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "picklistJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "allowedValues" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 120,
+              "minLength" : 0,
+              "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+            },
+            "uniqueItems" : false
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "allowedValues", "displayLabel", "id" ]
+      },
+      "picklistJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+        }
+      },
+      "dependentChildValuesJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "actualValue" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 120,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+          }
+        },
+        "required" : [ "actualValue" ]
+      },
+      "dependentChildValuesJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DependencyMappings.json#/components/schemas/dependentChildValuesJSON"
+        }
+      },
+      "dependencyJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "parent" : {
+            "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+          },
+          "mappings" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "patternProperties" : {
+              "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 120,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+                },
+                "uniqueItems" : false
+              }
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "childId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "layoutId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the layout in which the dependency is mapped",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "parentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "child" : {
+            "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+          }
+        },
+        "required" : [ "child", "childId", "id", "layoutId", "mappings", "parent", "parentId" ]
+      },
+      "dependencyJSONArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSON"
+        }
+      }
+    },
+    "responses" : {
+      "getAvailableDepMappings" : {
+        "description" : "getAvailableDepMappings template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "children" : {
+                  "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSONArr"
+                },
+                "parents" : {
+                  "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSONArr"
+                }
+              },
+              "required" : [ "children", "parents" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "children" : [ {
+                    "displayLabel" : "Category",
+                    "allowedValues" : [ "-None-", "Call", "Meeting", "Demo" ],
+                    "id" : "4000000000145"
+                  }, {
+                    "displayLabel" : "Status",
+                    "allowedValues" : [ "Not Started", "Deferred", "In Progress", "Waiting on someone else", "Completed_july1", "Completed_newDept" ],
+                    "id" : "4000000000147"
+                  }, {
+                    "displayLabel" : "Priority",
+                    "allowedValues" : [ "High", "Highest", "Low", "Lowest", "Normal" ],
+                    "id" : "4000000000149"
+                  } ],
+                  "parents" : [ {
+                    "displayLabel" : "Category",
+                    "allowedValues" : [ "-None-", "Call", "Meeting", "Demo" ],
+                    "id" : "4000000000145"
+                  }, {
+                    "displayLabel" : "Status",
+                    "allowedValues" : [ "Not Started", "Deferred", "In Progress", "Waiting on someone else", "Completed_july1", "Completed_newDept" ],
+                    "id" : "4000000000147"
+                  }, {
+                    "displayLabel" : "Priority",
+                    "allowedValues" : [ "High", "Highest", "Low", "Lowest", "Normal" ],
+                    "id" : "4000000000149"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "dependentChildValues" : {
+        "description" : "dependentChildValues template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "allowedValues" : {
+                  "$ref" : "./DependencyMappings.json#/components/schemas/dependentChildValuesJSONArr"
+                }
+              },
+              "required" : [ "allowedValues" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getDependencyMappingsByLayoutIdResponse" : {
+        "description" : "getDependencyMappingsByLayoutIdResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
+                  }
+                },
+                "required" : [ "data" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "parent" : {
+                      "displayLabel" : "Category",
+                      "allowedValues" : [ "General", "Defects" ],
+                      "id" : "4000000000421"
+                    },
+                    "mappings" : {
+                      "General" : [ "Sub General" ],
+                      "Defects" : [ "Sub Defects" ]
+                    },
+                    "id" : "4000000007315",
+                    "childId" : "4000000000423",
+                    "layoutId" : "4000000007177",
+                    "parentId" : "4000000000421",
+                    "child" : {
+                      "displayLabel" : "Sub Category",
+                      "allowedValues" : [ "Sub General", "Sub Defects" ],
+                      "id" : "4000000000423"
+                    }
+                  }, {
+                    "parent" : {
+                      "displayLabel" : "Category",
+                      "allowedValues" : [ "General", "Defects" ],
+                      "id" : "4000000000421"
+                    },
+                    "mappings" : {
+                      "General" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
+                      "Defects" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ]
+                    },
+                    "id" : "4000000031003",
+                    "childId" : "4000000000367",
+                    "layoutId" : "4000000007177",
+                    "parentId" : "4000000000421",
+                    "child" : {
+                      "displayLabel" : "Status",
+                      "allowedValues" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
+                      "id" : "4000000000367"
+                    }
+                  }, {
+                    "parent" : {
+                      "displayLabel" : "Status",
+                      "allowedValues" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
+                      "id" : "4000000000367"
+                    },
+                    "mappings" : {
+                      "newDeptClosed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Open_july" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Escalated" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Open_newDept" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "On Hold" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Closed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Closed1" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "julyDeptClosed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "Open" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ]
+                    },
+                    "id" : "4000000032003",
+                    "childId" : "4000000000409",
+                    "layoutId" : "4000000007177",
+                    "parentId" : "4000000000367",
+                    "child" : {
+                      "displayLabel" : "Mode",
+                      "allowedValues" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
+                      "id" : "4000000000409"
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "layoutId" : {
+        "name" : "layoutId",
+        "in" : "query",
+        "description" : "ID of the layout in which the dependency is mapped",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the layout in which the dependency is mapped",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DependencyMappings"
+}

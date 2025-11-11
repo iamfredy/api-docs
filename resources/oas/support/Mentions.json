@@ -1,0 +1,491 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Mentions",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/mentions" : {
+      "get" : {
+        "tags" : [ "Mentions" ],
+        "summary" : "Get Users by Mention",
+        "description" : "Use this API to get a list of matching users mentioned after the @ symbol.",
+        "operationId" : "getMentions",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for users by first name or last name. The string must contain at least two character",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "String to search for users by first name or last name. The string must contain at least two character",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[A-Za-z0-9_\\-]+$"
+          }
+        }, {
+          "name" : "entityType",
+          "in" : "query",
+          "description" : "Type of the entity. Values allowed are: @kbCategory@, @communityTopics@, @communityComments@ and @communityCategories@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of the entity. Values allowed are: @kbCategory@, @communityTopics@, @communityComments@ and @communityCategories@.",
+            "enum" : [ "communityTopics", "communityComments", "communityCategories", "kbCategory" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "entityId",
+          "in" : "query",
+          "description" : "ID of the entity to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "ID of the entity to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the users must be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the users must be listed",
+            "maximum" : 90,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Type of the user. Values allowed are: @AGENT@, @END_USER@ and @GROUPS@.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of the user. Values allowed are: @AGENT@, @END_USER@ and @GROUPS@.",
+            "enum" : [ "AGENT", "END_USER", "GROUPS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getMentionsData"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ", "Desk.community.READ", "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 70,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "54a3338cdc0c9cb384701428768dba47",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.desk.helpcenter.mentions.MentionRestService.getMentions"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "mentionDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 400,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Type of the user. Values allowed are: @AGENT@, @END_USER@ and @GROUPS@.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "email", "id", "name", "photoUrl", "type", "zuid" ]
+      },
+      "getMentionsDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Mentions.json#/components/schemas/mentionDetails"
+        }
+      },
+      "mentionGroupDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "id", "logoUrl", "name" ]
+      },
+      "getGroupMentionsDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/mentionGroupDetails"
+        }
+      },
+      "mentionsData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "groups" : {
+            "$ref" : "#/components/schemas/getGroupMentionsDataArray"
+          },
+          "users" : {
+            "$ref" : "#/components/schemas/getMentionsDataArray"
+          }
+        },
+        "required" : [ "groups", "users" ]
+      },
+      "offsetDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "offset" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "length" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "length", "offset" ]
+      },
+      "offsetArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/offsetDetails"
+        }
+      },
+      "mentionedUserDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 400,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "offsets" : {
+            "$ref" : "#/components/schemas/offsetArray"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Type of topic. Values allowed are: @ANNOUNCEMENT@, @DISCUSSION@, @IDEA@, @PROBLEM@, and @QUESTION@.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "mentionStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE", "NOT_FOUND", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "mentionStatus", "name", "offsets", "photoUrl", "type", "zuid" ]
+      },
+      "getMentionsUserDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/mentionedUserDetails"
+        }
+      },
+      "mentionedGroupDetails" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "offsets" : {
+            "$ref" : "#/components/schemas/offsetArray"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "mentionStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "INACTIVE", "NOT_FOUND", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          }
+        },
+        "required" : [ "id", "logoUrl", "mentionStatus", "name", "offsets" ]
+      },
+      "getMentionsGroupDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "#/components/schemas/mentionedGroupDetails"
+        }
+      },
+      "mentionedObj" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "groups" : {
+            "$ref" : "#/components/schemas/getMentionsGroupDataArray"
+          },
+          "users" : {
+            "$ref" : "#/components/schemas/getMentionsUserDataArray"
+          }
+        },
+        "required" : [ "groups", "users" ]
+      }
+    },
+    "responses" : {
+      "getMentionsData" : {
+        "description" : "getMentionsData template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "#/components/schemas/mentionsData"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "groups" : [ {
+                      "name" : "Group 1",
+                      "id" : "70000000234971",
+                      "logoUrl" : null
+                    } ],
+                    "users" : [ {
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agents/7000000015971/photo?orgId=123456",
+                      "name" : "user 1",
+                      "id" : "7000000015971",
+                      "label" : {
+                        "preferences" : {
+                          "shape" : "RECTANGLE",
+                          "bgColor" : "#23F123",
+                          "textColor" : "#2CA123"
+                        },
+                        "name" : "Admin",
+                        "id" : "6000000158001",
+                        "logoUrl" : "https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132"
+                      },
+                      "type" : "AGENT",
+                      "email" : "user1@zylker.com"
+                    }, {
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agents/7000000015972/photo?orgId=123456",
+                      "name" : "user 3",
+                      "id" : "7000000015972",
+                      "label" : {
+                        "preferences" : {
+                          "shape" : "RECTANGLE",
+                          "bgColor" : "#23F123",
+                          "textColor" : "#2CA123"
+                        },
+                        "name" : "Admin",
+                        "id" : "6000000158001",
+                        "logoUrl" : "https://desk.zoho.com/portal/api/publicImages/6000000158231?orgId=14132"
+                      },
+                      "type" : "AGENT",
+                      "email" : "user3@zylker.com"
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Mentions"
+}

@@ -1,0 +1,617 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "UserAuthentication",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/web/helpCenter/{id}/migrateToIAM2" : {
+      "post" : {
+        "tags" : [ "UserAuthentication" ],
+        "operationId" : "migrateToIAM2",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "description" : "Type of User Authentication",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of User Authentication",
+            "enum" : [ "SAML", "FEDERATED_LOGIN" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/licenseErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.authentication.HCUserAuthenticationService.disableIDPUrlBackwardCompatability"
+        }
+      }
+    },
+    "/api/web/helpCenter/{id}/smsAuthInitConf" : {
+      "get" : {
+        "tags" : [ "UserAuthentication" ],
+        "operationId" : "getHCSMSInitConf",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/smsAuthInitConfResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.authentication.sms.rest.HCSMSAuthConfRestService.getHCSMSInitConf"
+        }
+      }
+    },
+    "/api/v1/helpCenter/{id}/userAuthentications/{inputType}" : {
+      "patch" : {
+        "tags" : [ "UserAuthentication" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "updateUserAuthenticationStatus",
+        "parameters" : [ {
+          "name" : "inputType",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "SMS" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/statusTemplate"
+        },
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/web/helpCenter/{id}/userAuthInitConfig" : {
+      "get" : {
+        "tags" : [ "UserAuthentication" ],
+        "operationId" : "getUserAuthInitConfig",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "404" : {
+            "$ref" : "../common/Common.json#/components/responses/urlNotFoundErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/userAuthInitCongResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.user.authentication.UserAuthInitConfigRestService.getUserAuthInitConfig"
+        }
+      }
+    },
+    "/api/web/helpCenter/{id}/smsAuthentication/init" : {
+      "post" : {
+        "tags" : [ "UserAuthentication" ],
+        "operationId" : "SMSAuthenticationInit",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/InitPayload"
+        },
+        "responses" : {
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.authentication.sms.rest.HCSMSAuthConfRestService.initSMSAuthentication"
+        }
+      }
+    },
+    "/api/v1/helpCenter/{id}/userAuthentications" : {
+      "get" : {
+        "tags" : [ "UserAuthentication" ],
+        "summary" : "List HelpCenter user authentication types",
+        "description" : "This API lists the user authentication types along with their current status for a particular HelpCenter.",
+        "operationId" : "getListOfUserAuthentication",
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Specifies the status of the user authentication type.The allowed values are @ENABLED@ or @DISABLED@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the status of the user authentication type.The allowed values are @ENABLED@ or @DISABLED@",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "ENABLED|DISABLED"
+          }
+        }, {
+          "$ref" : "#/components/parameters/id"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/data"
+          },
+          "400" : {
+            "$ref" : "../common/Common.json#/components/responses/badRequestErrorResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : false,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "a54461cc431f5f4f10c04581363a4e5f",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.authentication.HCUserAuthenticationService.getUserAuthenticationDetails"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "userAuthenticationJSON" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "SAML|FEDERATED_LOGIN|JWT|SMS"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "ENABLED|DISABLED",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "Specifies the status of the user authentication type.The allowed values are @ENABLED@ or @DISABLED@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "status", "type" ]
+      },
+      "userAuthenticationJSONArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./UserAuthentication.json#/components/schemas/userAuthenticationJSON"
+        }
+      },
+      "userAuthentications" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "userAuthentications" : {
+            "$ref" : "./UserAuthentication.json#/components/schemas/userAuthenticationJSONArray"
+          }
+        },
+        "required" : [ "userAuthentications" ]
+      }
+    },
+    "responses" : {
+      "smsAuthInitConfResponse" : {
+        "description" : "smsAuthInitConfResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "templatesCreationState" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "smsIntegrationStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ENABLED", "DISABLED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "areAuthTemplatesApproved" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "smsIntegrationType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "PHONE_BRIDGE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "zaId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "smsAuthenticationStatus" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ENABLED", "DISABLED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "areAuthTemplatesApproved", "smsAuthenticationStatus", "smsIntegrationStatus", "smsIntegrationType", "templatesCreationState", "zaId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "userAuthInitCongResponse" : {
+        "description" : "userAuthInitCongResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "canForceSMSAuthentication" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "shouldShowMigrateNow" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "canForceSMSAuthentication", "shouldShowMigrateNow" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "data" : {
+        "description" : "data template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./UserAuthentication.json#/components/schemas/userAuthentications"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "userAuthentications" : [ {
+                      "type" : "JWT",
+                      "status" : "DISABLED"
+                    }, {
+                      "type" : "SAML",
+                      "status" : "DISABLED"
+                    }, {
+                      "type" : "SMS",
+                      "status" : "DISABLED"
+                    }, {
+                      "type" : "FEDERATED_LOGIN",
+                      "status" : "ENABLED"
+                    } ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "statusTemplate" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "ENABLED|DISABLED",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      },
+      "InitPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "smsBridgeOrgId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "SMS Bridge Org ID",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "smsBridgeOrgId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "UserAuthentication"
+}

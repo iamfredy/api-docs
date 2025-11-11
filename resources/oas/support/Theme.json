@@ -1,0 +1,152 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Theme",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "helpCenter"
+  },
+  "paths" : {
+    "/api/v1/themes" : {
+      "get" : {
+        "tags" : [ "Theme" ],
+        "summary" : "Get themes list",
+        "description" : "Get themes list",
+        "operationId" : "getAllTheme",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAllTheme"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 10,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "007b675c8f0572c55f7fadce43085cfa",
+          "module-group" : "helpCenter",
+          "apimethod" : "com.zoho.desk.helpcenter.setup.customization.SupportThemeService.getAllTheme"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "themeListJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name" ]
+      },
+      "themeListJsonArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Theme.json#/components/schemas/themeListJson"
+        }
+      }
+    },
+    "responses" : {
+      "getAllTheme" : {
+        "description" : "getAllTheme template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Theme.json#/components/schemas/themeListJsonArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "name" : "DEFAULT",
+                    "id" : "4000000000171"
+                  }, {
+                    "name" : "Materialize",
+                    "id" : "4000000000173"
+                  }, {
+                    "name" : "Flat",
+                    "id" : "4000000000175"
+                  }, {
+                    "name" : "Elegant",
+                    "id" : "4000000000177"
+                  }, {
+                    "name" : "Classic",
+                    "id" : "4000000014007"
+                  }, {
+                    "name" : "Creative",
+                    "id" : "4000000014009"
+                  }, {
+                    "name" : "Minimal",
+                    "id" : "4000000014011"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Theme"
+}

@@ -1,0 +1,1231 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "LicenseInfo",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/licenseinfo" : {
+      "get" : {
+        "tags" : [ "LicenseInfo" ],
+        "summary" : "License Details",
+        "description" : "To get the license details of the given Desk portal",
+        "operationId" : "getLicenseInfo",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getOrganizationResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "automation",
+          "apihash" : "58b0a59f6c53411e899114b981da4e73",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.LicenseService.getLicenseDetails"
+        }
+      }
+    },
+    "/api/v1/license/cancelTrial" : {
+      "post" : {
+        "tags" : [ "LicenseInfo" ],
+        "summary" : "Cancel License Trial Plan",
+        "description" : "This API cancel the trial license plan in your help desk.",
+        "operationId" : "cancelTrial",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "242c1adce039f2425dba5c2fc921e36f",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.LicenseService.cancelTrial"
+        }
+      }
+    },
+    "/api/v1/license/closeBanner" : {
+      "post" : {
+        "tags" : [ "LicenseInfo" ],
+        "summary" : "Close grace period banner",
+        "description" : "This API marks the banner as closed for the current user until the following third day within the grace period. After the plan is canceled, the API permanently marks the banner as closed for the current user.",
+        "operationId" : "closeBanner",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "a4a4d8e43a37a5868137ddaf979a7cd4",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.LicenseService.closeBanner"
+        }
+      }
+    },
+    "/api/v1/license/enableTrial" : {
+      "post" : {
+        "tags" : [ "LicenseInfo" ],
+        "summary" : "Enable License Trial  Plan",
+        "description" : "This API enable other license trail plans in your help desk.",
+        "operationId" : "enableLicenseTrialPlan",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/enableLicenseTrialPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "02ad8066d839c8d9c10c1d515d44376d",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.LicenseService.enableLicenseTrialPlan"
+        }
+      }
+    },
+    "/api/v1/license/trialPlans" : {
+      "get" : {
+        "tags" : [ "LicenseInfo" ],
+        "summary" : "License Trial Plans Details",
+        "description" : "To get the license trial plans details in your help desk",
+        "operationId" : "getLicenseTrialPlans",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getLicenseTrialPlansResp"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "234633b7abc298e4ed5886dac22d444d",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.LicenseService.getLicenseTrialPlans"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "getOrganizationResponse" : {
+        "description" : "getOrganizationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isSnippetAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "productsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "callsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "timeEntryCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "secondaryContactsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "workFlowRuleMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isProductsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "inTrial" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "messagesNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "contactAccountMultiMappingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "licenseCode" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketCloneAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "lightAgentMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isDowngradedFromTrial" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "formulaFieldCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "customButtonCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "deptMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isWebhookAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "chatAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "profileMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "contactsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "goolgleAnalyticsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "roleAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "assignRuleMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isLayoutRulesAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "eventsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "remainingDaysInTrial" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "twilioAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "eventsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "productsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "approvalsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isTimeEntryCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeEntryAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "addResolutionAsKBAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "slaconfigAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "customerHappinessRatingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "createReportFolderAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "articlesSuggestion" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "reportsAnalyticsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "ticketTimelineAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "socialAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketSplitAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "customModuleMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "reportSchedulerCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "paymentsURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 250,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "agentAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "roleMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "webhookTotalCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "eventsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "agentsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "tagsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "zticonfigAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isSearchFacetAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isMassCommentAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "workFlowAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "sendAsEmailAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "reportsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "scheduleReplyAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isManagerDashboardAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "callsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "contactInsightsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "createReportAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isTasksCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "productsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "reviewTicketReplies" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isZiaGptAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "callsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "dataSharingRulesAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "callsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "teamFeedsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "groupsMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "slamaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "accountsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "businessHoursConfigAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "tagsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "tasksCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isLicenseGiven" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "accountsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "ticketHistoryAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "pinnedConversationAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "webhookCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "customModuleNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "customViewAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "macrosAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isCustomButtonAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "assignRuleAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "reportsExportAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "showPaymentBanner" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "threadsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isSkillFeatureAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "eventsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "macrosMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "ztimaxUsersCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "teamsPerDepartment" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "mergeAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "tasksNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "deptAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "communityForums" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "crmIntegAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "autoTimeTrackingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "contractsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "tableViewAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "multiLayoutTotalCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isTicketsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isMultiLayoutAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "manualTimeTrackingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketTemplateAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "productsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "threadsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "dashboardsCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "ticketCollisionAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "deduplicationAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "webFormsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isAccountsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isMassReplyAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeEntryNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "teamsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "dashboardComponentCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "fieldLevelAccessAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "rebrandAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketSharingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "massInviteContactsAsEndUserAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "bulkUpdateAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isZiaAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "gracePeriodDate" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "accountsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isCallsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isGlobalReportsDashboardsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "tasksNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isBlueprintAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "agentMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "createReportScheduleAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isCustomModuleAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "groupsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isAccountSLAAssociationAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isMultiLingualAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeBasedActionllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeTrackingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "attachmentRestrictionAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isValidationRulesAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "agentQueueViewAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "contactsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "expiryDate" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "licenseType" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isMultiLayoutEnabled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isFormulaFieldAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeEntryNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "customModuleNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "contractAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "dashboardsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isRevokeBlueprintAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "contactsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "queueViewAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isEventsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "timeBasedActionMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "messagesNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "followerAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "webFromMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "creteDashboardFolderAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "ticketsCFCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "contractsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "activityTimeTracker" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "cutomEmailTemplatesCreationAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "accountInsightsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "bugIntegAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "contractsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "attachmentMaxSize" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "reportsAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "supportAddon" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "smsaddOnAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "supportAddonDisplayName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "tasksAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isContactsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "departmentsNestedValMaxLimit" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "emailAddressMaxCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "isContractsCFAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isDependencyMappingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "profileAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isSubjectBasedThreadingAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "isDepartmentLevelFieldAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "billingPreferenceAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "createDashboardAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "cusotmerHappinessAllowed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "multiLayoutCount" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "agentsNestedMaxField" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                 "maxFieldsInLayout" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "accountInsightsAllowed", "accountsCFCount", "accountsNestedMaxField", "accountsNestedValMaxLimit", "activityTimeTracker", "addResolutionAsKBAllowed", "agentAllowed", "agentMaxCount", "agentQueueViewAllowed", "agentsNestedMaxField", "agentsNestedValMaxLimit", "approvalsAllowed", "articlesSuggestion", "assignRuleAllowed", "assignRuleMaxCount", "attachmentMaxSize", "attachmentRestrictionAllowed", "autoTimeTrackingAllowed", "billingPreferenceAllowed", "bugIntegAllowed", "bulkUpdateAllowed", "businessHoursConfigAllowed", "callsAllowed", "callsCFCount", "callsNestedMaxField", "callsNestedValMaxLimit", "chatAllowed", "communityForums", "contactAccountMultiMappingAllowed", "contactInsightsAllowed", "contactsCFCount", "contactsNestedMaxField", "contactsNestedValMaxLimit", "contractAllowed", "contractsCFCount", "contractsNestedMaxField", "contractsNestedValMaxLimit", "createDashboardAllowed", "createReportAllowed", "createReportFolderAllowed", "createReportScheduleAllowed", "creteDashboardFolderAllowed", "crmIntegAllowed", "cusotmerHappinessAllowed", "customButtonCount", "customModuleMaxLimit", "customModuleNestedMaxField", "customModuleNestedValMaxLimit", "customViewAllowed", "customerHappinessRatingAllowed", "cutomEmailTemplatesCreationAllowed", "dashboardComponentCount", "dashboardsAllowed", "dashboardsCount", "dataSharingRulesAllowed", "deduplicationAllowed", "departmentsNestedMaxField", "departmentsNestedValMaxLimit", "deptAllowed", "deptMaxCount", "emailAddressMaxCount", "eventsAllowed", "eventsCFCount", "eventsNestedMaxField", "eventsNestedValMaxLimit", "expiryDate", "fieldLevelAccessAllowed", "followerAllowed", "formulaFieldCount", "goolgleAnalyticsAllowed", "gracePeriodDate", "groupsAllowed", "groupsMaxCount", "inTrial", "isAccountSLAAssociationAllowed", "isAccountsCFAllowed", "isBlueprintAllowed", "isCallsCFAllowed", "isContactsCFAllowed", "isContractsCFAllowed", "isCustomButtonAllowed", "isCustomModuleAllowed", "isDepartmentLevelFieldAllowed", "isDependencyMappingAllowed", "isDowngradedFromTrial", "isEventsCFAllowed", "isFormulaFieldAllowed", "isGlobalReportsDashboardsAllowed", "isLayoutRulesAllowed", "isLicenseGiven", "isManagerDashboardAllowed", "isMassCommentAllowed", "isMassReplyAllowed", "isMultiLayoutAllowed", "isMultiLayoutEnabled", "isMultiLingualAllowed", "isProductsCFAllowed", "isRevokeBlueprintAllowed", "isSearchFacetAllowed", "isSkillFeatureAllowed", "isSnippetAllowed", "isSubjectBasedThreadingAllowed", "isTasksCFAllowed", "isTicketsCFAllowed", "isTimeEntryCFAllowed", "isValidationRulesAllowed", "isWebhookAllowed", "isZiaAllowed", "isZiaGptAllowed", "licenseCode", "licenseType", "lightAgentMaxCount", "macrosAllowed", "macrosMaxCount", "manualTimeTrackingAllowed", "massInviteContactsAsEndUserAllowed", "mergeAllowed", "messagesNestedMaxField", "messagesNestedValMaxLimit", "multiLayoutCount", "multiLayoutTotalCount", "paymentsURL", "pinnedConversationAllowed", "productsAllowed", "productsCFCount", "productsNestedMaxField", "productsNestedValMaxLimit", "profileAllowed", "profileMaxCount", "queueViewAllowed", "rebrandAllowed", "remainingDaysInTrial", "reportSchedulerCount", "reportsAllowed", "reportsAnalyticsAllowed", "reportsCount", "reportsExportAllowed", "reviewTicketReplies", "roleAllowed", "roleMaxCount", "scheduleReplyAllowed", "secondaryContactsAllowed", "sendAsEmailAllowed", "showPaymentBanner", "slaconfigAllowed", "slamaxCount", "smsaddOnAllowed", "socialAllowed", "supportAddon", "supportAddonDisplayName", "tableViewAllowed", "tagsAllowed", "tagsCount", "tasksAllowed", "tasksCFCount", "tasksNestedMaxField", "tasksNestedValMaxLimit", "teamFeedsAllowed", "teamsAllowed", "teamsPerDepartment", "threadsNestedMaxField", "threadsNestedValMaxLimit", "ticketCloneAllowed", "ticketCollisionAllowed", "ticketHistoryAllowed", "ticketSharingAllowed", "ticketSplitAllowed", "ticketTemplateAllowed", "ticketTimelineAllowed", "ticketsCFCount", "ticketsNestedMaxField", "ticketsNestedValMaxLimit", "timeBasedActionMaxCount", "timeBasedActionllowed", "timeEntryAllowed", "timeEntryCFCount", "timeEntryNestedMaxField", "timeEntryNestedValMaxLimit", "timeTrackingAllowed", "twilioAllowed", "webFormsAllowed", "webFromMaxCount", "webhookCount", "webhookTotalCount", "workFlowAllowed", "workFlowRuleMaxCount", "zticonfigAllowed", "ztimaxUsersCount", "maxFieldsInLayout" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "cutomReportAllowed" : true,
+                  "reportScheduleAllowed" : true,
+                  "callsCFCount" : "0",
+                  "timeEntryCFCount" : "0",
+                  "secondaryContactsAllowed" : true,
+                  "workFlowRuleMaxCount" : "1000",
+                  "isProductsCFAllowed" : true,
+                  "inTrial" : true,
+                  "ticketCloneAllowed" : true,
+                  "isDowngradedFromTrial" : false,
+                  "formulaFieldCount" : "0",
+                  "customButtonCount" : "50",
+                  "deptMaxCount" : "1000",
+                  "chatAllowed" : true,
+                  "profileMaxCount" : "30",
+                  "contactsCFCount" : "0",
+                  "goolgleAnalyticsAllowed" : true,
+                  "roleAllowed" : true,
+                  "assignRuleMaxCount" : "1000",
+                  "eventsAllowed" : true,
+                  "remainingDaysInTrial" : "30",
+                  "twilioAllowed" : true,
+                  "customDashboardAllowed" : true,
+                  "eventsCFCount" : "0",
+                  "productsCFCount" : "0",
+                  "approvalsAllowed" : true,
+                  "isTimeEntryCFAllowed" : true,
+                  "timeEntryAllowed" : true,
+                  "addResolutionAsKBAllowed" : true,
+                  "slaconfigAllowed" : true,
+                  "customerHappinessRatingAllowed" : true,
+                  "scheduleReportMaxCount" : "100",
+                  "articlesSuggestion" : true,
+                  "ticketTimelineAllowed" : true,
+                  "socialAllowed" : true,
+                  "ticketSplitAllowed" : true,
+                  "customModuleMaxLimit" : 10,
+                  "agentAllowed" : true,
+                  "roleMaxCount" : "250",
+                  "tagsAllowed" : true,
+                  "zticonfigAllowed" : true,
+                  "isSearchFacetAllowed" : false,
+                  "isMassCommentAllowed" : true,
+                  "workFlowAllowed" : true,
+                  "dashBoardMaxCount" : "6",
+                  "sendAsEmailAllowed" : true,
+                  "scheduleReplyAllowed" : true,
+                  "callsAllowed" : true,
+                  "contactInsightsAllowed" : true,
+                  "isTasksCFAllowed" : true,
+                  "productsAllowed" : true,
+                  "reviewTicketReplies" : true,
+                  "isZiaGptAllowed" : false,
+                  "dataSharingRulesAllowed" : false,
+                  "teamFeedsAllowed" : true,
+                  "groupsMaxCount" : "50",
+                  "slamaxCount" : "1000",
+                  "businessHoursConfigAllowed" : true,
+                  "tagsCount" : "10",
+                  "tasksCFCount" : "0",
+                  "isLicenseGiven" : true,
+                  "ticketHistoryAllowed" : true,
+                  "customViewAllowed" : true,
+                  "macrosAllowed" : true,
+                  "isCustomButtonAllowed" : true,
+                  "assignRuleAllowed" : true,
+                  "showPaymentBanner" : true,
+                  "isSkillFeatureAllowed" : false,
+                  "macrosMaxCount" : "1000",
+                  "teamsPerDepartment" : "60",
+                  "ztimaxUsersCount" : "1000",
+                  "mergeAllowed" : true,
+                  "deptAllowed" : true,
+                  "communityForums" : true,
+                  "crmIntegAllowed" : true,
+                  "autoTimeTrackingAllowed" : true,
+                  "contractsCFCount" : "0",
+                  "tableViewAllowed" : true,
+                  "isTicketsCFAllowed" : true,
+                  "isMultiLayoutAllowed" : true,
+                  "ticketTemplateAllowed" : true,
+                  "manualTimeTrackingAllowed" : true,
+                  "ticketCollisionAllowed" : true,
+                  "deduplicationAllowed" : true,
+                  "webFormsAllowed" : true,
+                  "isAccountsCFAllowed" : true,
+                  "isMassReplyAllowed" : true,
+                  "teamsAllowed" : true,
+                  "fieldLevelAccessAllowed" : true,
+                  "rebrandAllowed" : true,
+                  "ticketSharingAllowed" : true,
+                  "massInviteContactsAsEndUserAllowed" : true,
+                  "bulkUpdateAllowed" : true,
+                  "isZiaAllowed" : false,
+                  "gracePeriodDate" : 1511222400000,
+                  "accountsCFCount" : "0",
+                  "isCallsCFAllowed" : true,
+                  "agentMaxCount" : "1000",
+                  "isCustomModuleAllowed" : true,
+                  "groupsAllowed" : true,
+                  "isAccountSLAAssociationAllowed" : true,
+                  "isMultiLingualAllowed" : true,
+                  "timeBasedActionllowed" : true,
+                  "timeTrackingAllowed" : true,
+                  "agentQueueViewAllowed" : true,
+                  "expiryDate" : 1510012800000,
+                  "licenseType" : "ENTERPRISE",
+                  "isFormulaFieldAllowed" : true,
+                  "contractAllowed" : true,
+                  "isRevokeBlueprintAllowed" : true,
+                  "queueViewAllowed" : true,
+                  "isEventsCFAllowed" : true,
+                  "timeBasedActionMaxCount" : "1000",
+                  "followerAllowed" : true,
+                  "webFromMaxCount" : "50",
+                  "ticketsCFCount" : "0",
+                  "activityTimeTracker" : true,
+                  "cutomEmailTemplatesCreationAllowed" : true,
+                  "accountInsightsAllowed" : true,
+                  "bugIntegAllowed" : true,
+                  "attachmentMaxSize" : "40",
+                  "smsaddOnAllowed" : true,
+                  "tasksAllowed" : true,
+                  "isContactsCFAllowed" : true,
+                  "emailAddressMaxCount" : "1000",
+                  "isContractsCFAllowed" : true,
+                  "profileAllowed" : true,
+                  "billingPreferenceAllowed" : true,
+                  "cusotmerHappinessAllowed" : true,
+                  "isSubjectBasedThreadingAllowed" : true,
+                  "isDepartmentLevelFieldAllowed" : true,
+                  "multiLayoutCount" : "20",
+				  "maxFieldsInLayout":"400"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getLicenseTrialPlansResp" : {
+        "description" : "getLicenseTrialPlansResp template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "otherTrialEditions" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "STANDARD", "PROFESSIONAL", "ENTERPRISE", "EXPRESS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "currentTrialEdition" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "STANDARD", "PROFESSIONAL", "ENTERPRISE", "EXPRESS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "currentTrialEdition", "otherTrialEditions" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "otherTrialEditions" : [ "STANDARD", "PROFESSIONAL", "ENTERPRISE", "EXPRESS" ],
+                  "currentTrialEdition" : "ENTERPRISE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "enableLicenseTrialPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "currentTrialEdition" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "STANDARD", "PROFESSIONAL", "ENTERPRISE", "EXPRESS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "currentTrialEdition" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "currentTrialEdition" : "ENTERPRISE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "LicenseInfo"
+}

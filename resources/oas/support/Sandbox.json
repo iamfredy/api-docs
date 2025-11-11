@@ -1,0 +1,981 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Sandbox",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "sandbox"
+  },
+  "paths" : {
+    "/api/v1/sandbox/{sandboxId}/rebuild" : {
+      "post" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Rebuild Sandbox",
+        "description" : "This API rebuild a Sandbox(copy the current Setup config data to Sandbox)",
+        "operationId" : "rebuildSandbox",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "Sandbox_DOSRateLimiter"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "e77ccaaef271d8f6be598df6e32e5438",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.rebuildSandbox"
+        }
+      }
+    },
+    "/api/v1/sandbox/{sandboxId}/activate" : {
+      "post" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Activate Sandbox",
+        "description" : "This API activate a Sandbox",
+        "operationId" : "activateSandbox",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "6347b207218261a82a943ebfd3a80aa9",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.activateSandbox"
+        }
+      }
+    },
+    "/api/v1/sandbox/{sandboxId}/deactivate" : {
+      "post" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Deactivate Sandbox",
+        "description" : "This API deactivate a Sandbox",
+        "operationId" : "deactivateSandbox",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "205b6f4ee4f87173dea13d3be46220dc",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.deactivateSandbox"
+        }
+      }
+    },
+    "/api/v1/sandbox" : {
+      "get" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "List Sandbox",
+        "description" : "This API lists all Sandboxes in a portal.",
+        "operationId" : "getAllSandboxes",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of sandboxes limit",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of sandboxes limit",
+            "maximum" : 50,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the sandbox must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the sandbox must be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Key that filters Sandbox based on their status",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that filters Sandbox based on their status",
+            "enum" : [ "CREATING", "ACTIVE", "REBUILDING", "INACTIVE", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/allSandboxResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "e6cece0125dd4a7f3439a1be22efc8a5",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.getSandboxes"
+        }
+      },
+      "post" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Create Sandbox",
+        "description" : "This API creates a Sandbox.",
+        "operationId" : "addSandbox",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/sandboxAddJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/sandboxResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "08e63ce83cb38beaec50eeec3ad27fd9",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.addSandbox"
+        }
+      }
+    },
+    "/api/v1/sandbox/{sandboxId}" : {
+      "get" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Get Sandbox",
+        "description" : "This API fetches the details of a Sandbox.",
+        "operationId" : "getSandbox",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/sandboxResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "bdf24595a32696510239cd9f9373af54",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.getSandbox"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Sandbox" ],
+        "summary" : "Update Sandbox",
+        "description" : "This API updates a Sandbox.",
+        "operationId" : "updateSandbox",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sandboxId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/sandboxUpdateJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/sandboxResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "d1a97daa90517b15c7b5c6e3bb52cf95",
+          "module-group" : "sandbox",
+          "apimethod" : "com.zoho.support.api.sandbox.SandboxService.updateSandbox"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "sandboxAccessibleToResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "teams" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 1,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "id", "name" ]
+            },
+            "uniqueItems" : false
+          },
+          "agents" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 5,
+              "minProperties" : 5,
+              "properties" : {
+                "firstName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "lastName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "photoURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "agents", "teams" ]
+      },
+      "sandboxResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "creator" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              }
+            },
+            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+          },
+          "modifier" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "properties" : {
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              }
+            },
+            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "accessibleTo" : {
+            "$ref" : "./Sandbox.json#/components/schemas/sandboxAccessibleToResponse"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "CREATING", "ACTIVE", "REBUILDING", "INACTIVE", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that filters Sandbox based on their status",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "sandboxPortalURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "accessibleTo", "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "sandboxPortalURL", "status" ]
+      },
+      "sandboxArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Sandbox.json#/components/schemas/sandboxResponse"
+        }
+      }
+    },
+    "responses" : {
+      "sandboxResponse" : {
+        "description" : "sandboxResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "creator" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    },
+                    "name" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    }
+                  },
+                  "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+                },
+                "modifier" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    },
+                    "name" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    }
+                  },
+                  "required" : [ "firstName", "id", "lastName", "name", "photoURL" ]
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "accessibleTo" : {
+                  "$ref" : "./Sandbox.json#/components/schemas/sandboxAccessibleToResponse"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "CREATING", "ACTIVE", "REBUILDING", "INACTIVE", "DELETED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "sandboxPortalURL" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              },
+              "required" : [ "accessibleTo", "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "sandboxPortalURL", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1689811555000,
+                  "creator" : {
+                    "firstName" : "George",
+                    "lastName" : "McKinson",
+                    "photoURL" : null,
+                    "name" : "George McKinson",
+                    "id" : "5000000015911"
+                  },
+                  "modifier" : {
+                    "firstName" : "George",
+                    "lastName" : "McKinson",
+                    "photoURL" : null,
+                    "name" : "George McKinson",
+                    "id" : "5000000015911"
+                  },
+                  "name" : "Sandbox to test workflows",
+                  "description" : "This Sandbox used to test the workflow rules",
+                  "createdTime" : 1663632355000,
+                  "id" : "10000000117019",
+                  "accessibleTo" : {
+                    "teams" : [ {
+                      "name" : "Activity Team",
+                      "id" : "5000000015811"
+                    }, {
+                      "name" : "Ticket Team",
+                      "id" : "5000000015812"
+                    }, {
+                      "name" : "Telephony Team",
+                      "id" : "5000000015813"
+                    } ],
+                    "agents" : [ {
+                      "firstName" : "George",
+                      "lastName" : "McKinson",
+                      "photoURL" : null,
+                      "name" : "George McKinson",
+                      "id" : "5000000015911"
+                    }, {
+                      "firstName" : "David",
+                      "lastName" : null,
+                      "photoURL" : null,
+                      "name" : "David",
+                      "id" : "5000000015912"
+                    } ]
+                  },
+                  "status" : "ACTIVE",
+                  "sandboxPortalURL" : "https://desk.zoho.com/support/desksandbox/ShowHomePage.do"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "allSandboxResponse" : {
+        "description" : "allSandboxResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Sandbox.json#/components/schemas/sandboxArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1689811555000,
+                    "creator" : {
+                      "firstName" : "George",
+                      "lastName" : "McKinson",
+                      "photoURL" : null,
+                      "name" : "George McKinson",
+                      "id" : "5000000015911"
+                    },
+                    "modifier" : {
+                      "firstName" : "George",
+                      "lastName" : "McKinson",
+                      "photoURL" : null,
+                      "name" : "George McKinson",
+                      "id" : "5000000015911"
+                    },
+                    "name" : "Sandbox to test workflows",
+                    "description" : "This Sandbox used to test the workflow rules",
+                    "createdTime" : 1663632355000,
+                    "id" : "10000000117019",
+                    "accessibleTo" : {
+                      "teams" : [ {
+                        "name" : "Activity Team",
+                        "id" : "5000000015811"
+                      }, {
+                        "name" : "Ticket Team",
+                        "id" : "5000000015812"
+                      }, {
+                        "name" : "Telephony Team",
+                        "id" : "5000000015813"
+                      } ],
+                      "agents" : [ {
+                        "firstName" : "George",
+                        "lastName" : "McKinson",
+                        "photoURL" : null,
+                        "name" : "George McKinson",
+                        "id" : "5000000015911"
+                      }, {
+                        "firstName" : "David",
+                        "lastName" : null,
+                        "photoURL" : null,
+                        "name" : "David",
+                        "id" : "5000000015912"
+                      } ]
+                    },
+                    "status" : "ACTIVE",
+                    "sandboxPortalURL" : "https://desk.zoho.com/support/desksandbox/ShowHomePage.do"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "sandboxId" : {
+        "name" : "sandboxId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "sandboxAddJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0
+                },
+                "teamIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ "5000000015911", "5000000015912" ],
+                  "name" : "Sandbox to test workflow rules",
+                  "description" : "It is used for working with workflow rules event",
+                  "teamIds" : [ "5000000015811", "5000000015812", "5000000015813" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "sandboxUpdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0
+                },
+                "teamIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentIds" : [ "5000000015913" ],
+                  "name" : "Workflow Rule Sandbox",
+                  "description" : "It is used for working with workflow event",
+                  "teamIds" : [ "5000000015814" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Sandbox"
+}

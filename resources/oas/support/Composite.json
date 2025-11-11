@@ -1,0 +1,414 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Composite",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "common"
+  },
+  "paths" : {
+    "/api/v1/batchCall" : {
+      "post" : {
+        "tags" : [ "Composite" ],
+        "summary" : "Composite API",
+        "description" : "In a composite API, the payload consists of the sub-API requests. Each sub-API request must contain its corresponding sub-API name, HTTP method, URL path and payload data.<br/><br/>Sometimes, the payload of the sub-API request might depend on data from other APIs. For instance, in a contact creation API, accountId could be part of the payload. In such a case, you can either pass the value of accountId directly or use a composite API that first fetches the accountId value using an API and places the value in the payload of another API meant for creating contacts. This is made possible through the <code>dependent</code> key. In the payload, specify the API name of the resource as the value for the <code>dependent</code> key and mention the specific data you want to fetch from the response, using a placeholder.<br/><br/> Placeholders are usually presented in this format: <code>$dependentAPI.body:/id</code>. However, if a sub-API request is dependent on a GET sub-API request, the response of the GET API is presented as an array of objects in this format: <code>$dependentAPI.body:/data/0/id</code>,<br>where:<br/><code>data</code> refers to the name of the root (array)<br/><code>0</code> refers to the index number of the first object in the array, and<br/><code>id</code> refers to the field value taken from the object<br/><br/>To get a clearer picture of how to use the <code>dependent</code> key, refer to the sample request and sample response in the right pane.<br/><br/>For now, you can batch a maximum of 10 <code>CREATE, UPDATE, or READ</code> sub-API requests into a composite API. If you try to include more than 10 requests, an <code>INVALID_DATA</code> response is returned.<br/></br/>_Authentication_<br/>Like all other Zoho Desk APIs, composite APIs too use the OAuth method for authenticating users. The OAuth data must contain the scopes of both the main composite API the sub-API requests.",
+        "operationId" : "batchCall",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/batchInput"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/batch"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "612caebf6cb10fc4b93c35d75e36fc75",
+          "module-group" : "common",
+          "apimethod" : "com.zoho.support.restapi.BatchServiceSec.batchCall"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "successKeys" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "headers" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "code" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9]+)"
+          },
+          "body" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          }
+        },
+        "required" : [ "body", "code", "headers", "name" ]
+      },
+      "successData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Composite.json#/components/schemas/successKeys"
+        }
+      },
+      "dependentFailureKeys" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9]+)"
+          },
+          "dependent" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "dependent", "name" ]
+      },
+      "dependentFailureData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Composite.json#/components/schemas/dependentFailureKeys"
+        }
+      },
+      "inputKeys" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "headers" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "method" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "queryParams" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "payload" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "relativePath" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9]+)"
+          }
+        },
+        "required" : [ "headers", "method", "name", "payload", "queryParams", "relativePath" ]
+      },
+      "batchKey" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Composite.json#/components/schemas/inputKeys"
+        }
+      }
+    },
+    "responses" : {
+      "batch" : {
+        "description" : "batch template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Composite.json#/components/schemas/successData"
+                },
+                "dependentFailure" : {
+                  "$ref" : "./Composite.json#/components/schemas/dependentFailureData"
+                }
+              },
+              "required" : [ "data", "dependentFailure" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "headers" : {
+                      "Content-Length" : "1709",
+                      "Content-Type" : "application/json;charset=UTF-8"
+                    },
+                    "code" : 200,
+                    "name" : "contact",
+                    "body" : {
+                      "lastName" : "Steve",
+                      "country" : null,
+                      "modifiedTime" : 1569336530000,
+                      "secondaryEmail" : null,
+                      "city" : null,
+                      "description" : null,
+                      "title" : null,
+                      "type" : null,
+                      "ownerId" : "3477000003853313",
+                      "photoURL" : null,
+                      "twitter" : null,
+                      "isTrashed" : false,
+                      "isDeleted" : false,
+                      "street" : null,
+                      "createdTime" : 1569336530000,
+                      "isEndUser" : false,
+                      "zohoCRMContact" : null,
+                      "state" : null,
+                      "customerHappiness" : {
+                        "okPercentage" : "0",
+                        "goodPercentage" : "0"
+                      },
+                      "id" : "3477000005741053",
+                      "email" : null,
+                      "zip" : null,
+                      "facebook" : null,
+                      "mobile" : null,
+                      "firstName" : null,
+                      "accountId" : "3477000005741041",
+                      "isAnonymous" : false,
+                      "phone" : null,
+                      "webUrl" : "https://desk.zoho.com/support/aruna12/ShowHomePage.do#Contacts/dv/78aa9d773688f36d52ae5b791fcdf53adc91a236738b3d70"
+                    }
+                  }, {
+                    "headers" : {
+                      "Content-Length" : "955",
+                      "Content-Type" : "application/json;charset=UTF-8"
+                    },
+                    "code" : 200,
+                    "name" : "account",
+                    "body" : {
+                      "country" : null,
+                      "modifiedTime" : 1569336529541,
+                      "website" : null,
+                      "code" : null,
+                      "accountName" : "Rogers",
+                      "city" : null,
+                      "associatedSLAIds" : null,
+                      "description" : null,
+                      "industry" : null,
+                      "zohoCRMAccount" : null,
+                      "ownerId" : "3477000003853313",
+                      "isTrashed" : false,
+                      "isDeleted" : false,
+                      "phone" : null,
+                      "street" : null,
+                      "annualrevenue" : null,
+                      "webUrl" : "https://desk.zoho.com/support/aruna12/ShowHomePage.do#Accounts/dv/78aa9d773688f36d395f3521a4c02d7ddc91a236738b3d70",
+                      "createdTime" : 1569336529541,
+                      "state" : null,
+                      "id" : "3477000005741041",
+                      "fax" : null,
+                      "email" : null
+                    }
+                  }, {
+                    "headers" : {
+                      "Content-Length" : "261",
+                      "Content-Type" : "application/json;charset=UTF-8"
+                    },
+                    "code" : 200,
+                    "name" : "product",
+                    "body" : {
+                      "data" : [ {
+                        "unitPrice" : "0.0",
+                        "productCode" : null,
+                        "departmentIds" : [ "3477000000006907" ],
+                        "id" : "3477000000072528",
+                        "productName" : "Demo"
+                      }, {
+                        "unitPrice" : "0.0",
+                        "productCode" : null,
+                        "departmentIds" : [ "3477000000006907" ],
+                        "id" : "3477000000072530",
+                        "productName" : "Example"
+                      } ]
+                    }
+                  }, {
+                    "headers" : {
+                      "Content-Length" : "2689",
+                      "Content-Type" : "application/json;charset=UTF-8"
+                    },
+                    "code" : 200,
+                    "name" : "ticket",
+                    "body" : {
+                      "ticketNumber" : "22202",
+                      "modifiedTime" : 1568888934000,
+                      "sentiment" : null,
+                      "subCategory" : null,
+                      "statusType" : "Open",
+                      "subject" : "Clear Data",
+                      "dueDate" : 1568888929000,
+                      "departmentId" : "3477000000006907",
+                      "channel" : "New one12312121",
+                      "description" : null,
+                      "onholdTime" : null,
+                      "resolution" : null,
+                      "sharedDepartments" : [ ],
+                      "closedTime" : null,
+                      "approvalCount" : "0",
+                      "timeEntryCount" : "0",
+                      "channelRelatedInfo" : null,
+                      "responseDueDate" : 1568888869000,
+                      "isTrashed" : false,
+                      "isDeleted" : false,
+                      "createdTime" : 1568888810000,
+                      "modifiedBy" : "3477000000049001",
+                      "id" : "3477000005736081",
+                      "isResponseOverdue" : true,
+                      "followerCount" : "0",
+                      "email" : null,
+                      "customerResponseTime" : 1568888809000,
+                      "isFollowing" : false,
+                      "productId" : null,
+                      "contactId" : "3477000005736053",
+                      "threadCount" : "0",
+                      "priority" : null,
+                      "classification" : null,
+                      "assigneeId" : null,
+                      "commentCount" : "0",
+                      "taskCount" : "0",
+                      "accountId" : "3477000005736041",
+                      "phone" : null,
+                      "createdBy" : "3477000003853313",
+                      "webUrl" : "https://desk.zoho.com/support/aruna12/ShowHomePage.do#Cases/dv/78aa9d773688f36d668e5e1a20f6fb6edc91a236738b3d70",
+                      "teamId" : null,
+                      "tagCount" : "0",
+                      "attachmentCount" : "0",
+                      "category" : null,
+                      "status" : "Open"
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "batchInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "batch" : {
+                  "$ref" : "./Composite.json#/components/schemas/batchKey"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "batch" : [ {
+                    "method" : "POST",
+                    "payload" : {
+                      "accountId" : "$account.body:/id",
+                      "lastName" : "Steve"
+                    },
+                    "relativePath" : "/api/v1/contacts",
+                    "name" : "contact",
+                    "dependent" : [ "account" ]
+                  }, {
+                    "method" : "POST",
+                    "payload" : {
+                      "accountName" : "Rogers"
+                    },
+                    "relativePath" : "/api/v1/accounts",
+                    "name" : "account"
+                  }, {
+                    "method" : "GET",
+                    "queryParams" : {
+                      "limit" : "2",
+                      "from" : "3"
+                    },
+                    "relativePath" : "/api/v1/products",
+                    "name" : "product"
+                  }, {
+                    "method" : "GET",
+                    "relativePath" : "/api/v1/tickets/3477000005736081",
+                    "name" : "ticket"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Composite"
+}

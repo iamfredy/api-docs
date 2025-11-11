@@ -1,0 +1,3053 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ArticleStatistics",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/articleDashboard/statistics" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get article statistics",
+        "description" : "This API fetches the statistics related to help articles in your Knowledge Base.",
+        "operationId" : "getArticleDashboardStatistics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/rootCategoryIds"
+        }, {
+          "name" : "statsType",
+          "in" : "query",
+          "description" : "Type of statistical data that must be fetched. Values allowed are: ARTICLES_REFERENCED, VOTED_PORTAL_USERS, CREATED_ARTICLES and MODIFIED_ARTICLES",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of statistical data that must be fetched. Values allowed are: ARTICLES_REFERENCED, VOTED_PORTAL_USERS, CREATED_ARTICLES and MODIFIED_ARTICLES",
+            "enum" : [ "ARTICLES_REFERENCED", "VOTED_PORTAL_USERS", "CREATED_ARTICLES", "MODIFIED_ARTICLES" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentIds"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/kbDashboardStatisticsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "163f3dac9c452d6d7784684afa3c4b02",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getKBDashboardStatistics"
+        }
+      }
+    },
+    "/api/v1/articles/trends" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get data related to trend of Knowledge Base",
+        "description" : "This API fetches data related to the overall trend of user actions recorded in your Knowledge Base.",
+        "operationId" : "getKBTrends",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/rootCategoryIds"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/action"
+        }, {
+          "name" : "permission",
+          "in" : "query",
+          "description" : "User visibility permission set for the translation. Values allowed are: !@ALL,@! !@REGISTEREDUSERS@! and !@AGENTS@!.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "User visibility permission set for the translation. Values allowed are: !@ALL,@! !@REGISTEREDUSERS@! and !@AGENTS@!.",
+            "enum" : [ "ALL", "REGISTEREDUSERS", "AGENTS" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User visibility permission set for the translation. Values allowed are: !@ALL,@! !@REGISTEREDUSERS@! and !@AGENTS@!.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/departmentIds"
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/helpcenterIds"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Publishing status of the translation. Values allowed are: Draft, Published, Review, Expired and Unpublished.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Publishing status of the translation. Values allowed are: Draft, Published, Review, Expired and Unpublished.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "Published", "Draft", "Review", "Expired", "Unpublished" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "maxItems" : 4,
+            "minItems" : 0,
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleTrendResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "229372f64a186c9a53160075827971b8",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getKBTrends"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/insights/reset" : {
+      "post" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Reset metrics of a translation in the article",
+        "description" : "This API resets the metrics on a translated version of an article.",
+        "operationId" : "resetArticleTranslationMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/metricsResetPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 80,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "857e1400f15e7c79f0ac8f25e484b10c",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.resetTranslationMetrics"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/insights/reset" : {
+      "post" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Reset metrics of all translations in the article",
+        "description" : "This API resets the metrics on all translated versions of an article.",
+        "operationId" : "resetArticleMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/resetArticleMetrics_metricsResetPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 80,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "8cf22dc1920349c2ee0ed0c089b821a9",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.resetArticleMetrics"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/trends" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get data related to translation trend",
+        "description" : "This API fetches data related to the trend of user actions recorded on a particular translation of a help article.",
+        "operationId" : "getArticleTranslationTrends",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/action"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleTrendResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "e21f9da94f57dbb78e8245490ab7a3f1",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleTranslationTrends"
+        }
+      }
+    },
+    "/api/v1/articles/searchKeywords" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get keyword metrics",
+        "description" : "This API fetches statistics related to keywords used for finding help articles.",
+        "operationId" : "getSearchKeywords",
+        "parameters" : [ {
+          "name" : "duration",
+          "in" : "query",
+          "description" : " Duration about to get the search keywords stats. Allowed Values LAST_24_HRS, LAST_7_DAYS, LAST_30_DAYS, LAST_365_DAYS and yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ. Default value : !@LAST_365_DAYS@!",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : " Duration about to get the search keywords stats. Allowed Values LAST_24_HRS, LAST_7_DAYS, LAST_30_DAYS, LAST_365_DAYS and yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ. Default value : !@LAST_365_DAYS@!",
+            "enum" : [ "weekly", "monthly", "yearly" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Department to get the search keywords count. If departmentId is not given, it considered as all department",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Department to get the search keywords count. If departmentId is not given, it considered as all department",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "name" : "searchMetricsType",
+          "in" : "query",
+          "description" : "Search metrics type. If not given, it will return both failure and popular keywords. Allowed Values !@SUCCESS,@! !@FAILURE@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Search metrics type. If not given, it will return both failure and popular keywords. Allowed Values !@SUCCESS,@! !@FAILURE@!",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "SUCCESS", "FAILURE" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "maxItems" : 2,
+            "minItems" : 1,
+            "uniqueItems" : true
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSearchKeywordsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "dd134cfc0d9c01761411f40dba32d894",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleSearchKeywords"
+        }
+      }
+    },
+    "/api/v1/articles/interactedUsers" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "List users who interacted with your Knowledge Base",
+        "description" : "This API lists a particular number of users who interacted with multiple help articles, based on the limit specified.",
+        "operationId" : "getKBInteractedUsers",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+            "enum" : [ "LIKE", "DISLIKE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/rootCategoryIds"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/departmentIds"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/helpcenterIds"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/interactedUsersResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "597988efab2e4bef8528cddcb84abbd7",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getKBIntercatedUsers"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/trends" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get data related to article trend",
+        "description" : "This API fetches data related to the trend of user actions recorded on a help article and all of its translations.",
+        "operationId" : "getArticleTrends",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/action"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleTrendResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "a82bb972c2cd538da5389ec2505a8393",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleTrends"
+        }
+      }
+    },
+    "/api/v1/articleDashboard/reports/generate" : {
+      "post" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Generate real-time report of top articles",
+        "description" : "This API generates a real-time report of help articles that received the most number of user actions.",
+        "operationId" : "generateTopArticleReport",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/reportGenerationPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "e25ec46d50f42d4481a56a899e552659",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.generateTopArticleEntities"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/insights/flush" : {
+      "post" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Update metrics of all translations in the article",
+        "description" : "This API updates the metrics on all translated versions of an article.",
+        "operationId" : "updateArticleMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/metricsUpdatePayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "52162497a29a0e73b8b2126058c595c2",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.flushArticleMetricsCount"
+        }
+      }
+    },
+    "/api/v1/articleDashboard/reports" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "List top translations",
+        "description" : "This API lists a particular number of top article translations matching a particular criteria, based on the limit specified.",
+        "operationId" : "getTopArticleReport",
+        "parameters" : [ {
+          "name" : "includeActionCounts",
+          "in" : "query",
+          "description" : "Additional information related to the action. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Additional information related to the action. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "TEMPLATE_USAGE", "FEEDBACK" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Additional information related to the action. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@TEMPLATE_USAGE,@! !@COMMENT@! and !@FEEDBACK@!", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "maxItems" : 5,
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of translations to list. The default value is 10 and the maximum value allowed is 50.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of translations to list. The default value is 10 and the maximum value allowed is 50.",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "User action that serves as the condition to apply. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "User action that serves as the condition to apply. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!",
+            "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "TEMPLATE_USAGE", "FEEDBACK" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@TEMPLATE_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/rootCategoryIds"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/departmentIds"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/topArticleReportResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "0934f789c1bd429814523ee2699567cb",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.fetchTopArticleReport"
+        }
+      }
+    },
+    "/api/v1/articleInsights/interactedUsers" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get Recent Insights Interacted users of a translation",
+        "description" : "This API gets article translation insights interacted users based on the filters",
+        "operationId" : "getInsightsInteractedUsers",
+        "parameters" : [ {
+          "name" : "articleId",
+          "in" : "query",
+          "description" : "id of an article to which interacted users need to be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "id of an article to which interacted users need to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are !@LIKE@!,!@DISLIKE@!.,!@VIEW@!.  default value is !@VIEW@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action that the users performed. Values allowed are !@LIKE@!,!@DISLIKE@!.,!@VIEW@!.  default value is !@VIEW@!",
+            "enum" : [ "LIKE", "DISLIKE", "VIEW" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "name" : "locale",
+          "in" : "query",
+          "description" : "language of the article translation to be fetched",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "language of the article translation to be fetched",
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list. The default value is 100 and the maximum value allowed is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list. The default value is 100 and the maximum value allowed is 100.",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/interactedUsersResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "3f86fdc726587e2ebedfc7324cfad4ce",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getRecentArticleInteractedUsers"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/interactedUsers" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get Interacted users of a translation",
+        "description" : "This API lists the users who interacted with a particular translation of a help article, based on the limit specified.",
+        "operationId" : "getArticleTranslationInteractedUsers",
+        "parameters" : [ {
+          "name" : "locale",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+            "enum" : [ "LIKE", "DISLIKE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Type of users. Values allowed are:  !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of users. Values allowed are:  !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/interactedUsersResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "fc9070636bebabff16d9d00d4e929eac",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleTranslationInteractedUsers"
+        }
+      }
+    },
+    "/api/v1/articleDashboard/counts" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get translation statistics",
+        "description" : "This API fetches the statistics related to article translations in your Knowledge Base.",
+        "operationId" : "getArticleTranslationStatistics",
+        "parameters" : [ {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are VIEW, LIKE, DISLIKE, COMMENT, FEEDBACK, TEMPLATE_USAGE and TICKET_USAGE. If you do not pass a value, all actions are included.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Action that the users performed. Values allowed are VIEW, LIKE, DISLIKE, COMMENT, FEEDBACK, TEMPLATE_USAGE and TICKET_USAGE. If you do not pass a value, all actions are included.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "TEMPLATE_USAGE", "FEEDBACK" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@TEMPLATE_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "maxItems" : 6,
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "#/components/parameters/rootCategoryIds"
+        }, {
+          "$ref" : "#/components/parameters/departmentIds"
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleStatisticsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "9cd83711a12665e4eea7b9878e112e05",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleMetricsCounts"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/interactedUsers" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "List users who interacted with an article",
+        "description" : "This API lists a particular number of users who interacted with an article, based on the limit specified.",
+        "operationId" : "getArticleInteractedUsers",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of users to list. The default value is 10 and the maximum value allowed is 100.",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action that the users performed. Values allowed are !@LIKE@! and !@DISLIKE@!. default value is !@LIKE@!",
+            "enum" : [ "LIKE", "DISLIKE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/interactedUsersResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "5e427e27c5f3fae9d44926d63f402b74",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleInteractedUsers"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/insights/flush" : {
+      "post" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Update metrics of a translation in the article",
+        "description" : "This API updates the metrics on a translated version of an article.",
+        "operationId" : "updateArticleTranslationMetrics",
+        "parameters" : [ {
+          "name" : "locale",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateArticleTranslationMetrics_metricsUpdatePayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3600000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d9a99c35441e77afd22fc529308b4f77",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.flushTranslationMetricsCount"
+        }
+      }
+    },
+    "/api/v1/articleInsights/count" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get Recent Insights Interacted users count of a translation",
+        "description" : "This API gets article translation insights interacted user counts based on the filters",
+        "operationId" : "getInsightsInteractedUsersCount",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "count fields need to fetched in API information. Comma separated allowed include fields !@actionCount@!, !@interactedUsersCount@!",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "count fields need to fetched in API information. Comma separated allowed include fields !@actionCount@!, !@interactedUsersCount@!",
+            "enum" : [ "actionCount", "interactedUsersCount" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/action"
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/insightsActionCountJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "283b44d78fb5e9fe2966a1ca016583f5",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleInsightsCount"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/translations/{locale}/interactedUsers/count" : {
+      "get" : {
+        "tags" : [ "ArticleStatistics" ],
+        "summary" : "Get Interacted users count of a translation",
+        "description" : "This API gets article translation interacted user counts based on the filters",
+        "operationId" : "getInteractedUsersCount",
+        "parameters" : [ {
+          "name" : "locale",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        }, {
+          "name" : "action",
+          "in" : "query",
+          "description" : "Action that the users performed. Values allowed are !@LIKE@!,!@DISLIKE@!. default value is !@LIKE@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Action that the users performed. Values allowed are !@LIKE@!,!@DISLIKE@!. default value is !@LIKE@!",
+            "enum" : [ "LIKE", "DISLIKE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          }
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Type of users. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/articleStatisticsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "8aa605343a57fb49f12358614cdcab7b",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleDashboardService.getArticleTranslationInteractedUsersCount"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "dashboardStatisticsData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "statsType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ARTICLES_REFERENCED", "VOTED_PORTAL_USERS", "CREATED_ARTICLES", "MODIFIED_ARTICLES" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "count", "statsType" ]
+      },
+      "dashboardStatisticsDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/dashboardStatisticsData"
+        }
+      },
+      "trendResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "action", "count", "eventTime" ]
+      },
+      "trendList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/trendResponse"
+        }
+      },
+      "actionArray" : {
+        "type" : [ "null", "array" ],
+        "description" : "",
+        "items" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK", "TEMPLATE_USAGE" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : [ { } ]
+        }
+      },
+      "popularKeywordsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "searchkeyword" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "successCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "searchkeyword", "successCount" ]
+      },
+      "popularKeywordsData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/popularKeywordsJson"
+        }
+      },
+      "failureKeywordsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "searchkeyword" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "failureCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "failureCount", "searchkeyword" ]
+      },
+      "failureKeywordsData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/failureKeywordsJson"
+        }
+      },
+      "interactedUserMeta" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 3,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "roleName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "emailId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "END_USER", "AGENT", "TEAM", "TICKET", "ACTIVITY" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "emailId", "firstName", "id", "lastName", "photoURL", "roleName", "type", "webUrl" ]
+      },
+      "interactedUsersData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "LIKE", "DISLIKE", "VIEW" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "user" : {
+            "$ref" : "./ArticleStatistics.json#/components/schemas/interactedUserMeta"
+          }
+        },
+        "required" : [ "action", "user" ]
+      },
+      "interactedUsersDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/interactedUsersData"
+        }
+      },
+      "departmentIds" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "rootCategoryIds" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "timeBoundMetricsResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK", "TEMPLATE_USAGE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "User action that serves as the condition to apply. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "action", "count" ]
+      },
+      "timeBoundMetrics" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/timeBoundMetricsResponse"
+        }
+      },
+      "topArticleReportResponseData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "modifierId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "creatorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "ownerId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Language of the translations.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "translationState" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "OUTDATED", "UP-TO-DATE", "AUTO-TRANSLATE INPROGRESS", "AUTO-TRANSLATE FAILED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isTrashed" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "timeBoundMetrics" : {
+            "$ref" : "./ArticleStatistics.json#/components/schemas/timeBoundMetrics"
+          },
+          "summary" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "owner" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/owner"
+          },
+          "latestVersionStatus" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Published", "Draft", "Review", "Expired", "Unpublished", "Auto-translate Pending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "author" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/author"
+          },
+          "permission" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ALL", "REGISTEREDUSERS", "AGENTS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "authorId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "rootCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "sourceLocale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Language of the translations.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "translationId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "latestVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/createdBy"
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "latestPublishedVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "category" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/category"
+          },
+          "permalink" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 300,
+            "minLength" : 0,
+            "pattern" : "[A-Za-z0-9%\\-+\\/=\\P{InBasicLatin}]+"
+          },
+          "categoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Published", "Draft", "Review", "Expired", "Unpublished", "Auto-translate Pending" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "author", "authorId", "category", "categoryId", "createdBy", "createdTime", "creatorId", "departmentId", "id", "isTrashed", "latestPublishedVersion", "latestVersion", "latestVersionStatus", "locale", "modifiedBy", "modifiedTime", "modifierId", "owner", "ownerId", "permalink", "permission", "rootCategoryId", "sourceLocale", "status", "summary", "timeBoundMetrics", "title", "translationId", "translationState", "webUrl" ]
+      },
+      "topArticleReportResponseDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/topArticleReportResponseData"
+        }
+      },
+      "articleStatisticsData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "count" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "action" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK", "TEMPLATE_USAGE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Action that the users performed. Values allowed are VIEW, LIKE, DISLIKE, COMMENT, FEEDBACK, and TICKET_USAGE. If you do not pass a value, all actions are included.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "action", "count" ]
+      },
+      "articleStatisticsDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/articleStatisticsData"
+        }
+      },
+      "insightsActionCountMetaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "userType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Comma separated property. Type of users, Values allowed are: !@AGENTS,@! !@REGISTERED_USERS@! !@PUBLIC_USERS@! and !@ALL_USERS@! (default).",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "userType" ]
+      },
+      "insightsActionDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleStatistics.json#/components/schemas/insightsActionCountMetaJson"
+        }
+      }
+    },
+    "responses" : {
+      "kbDashboardStatisticsResponse" : {
+        "description" : "kbDashboardStatisticsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/dashboardStatisticsDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "count" : "99",
+                    "statsType" : "ARTICLES_REFERENCED"
+                  }, {
+                    "count" : "75",
+                    "statsType" : "VOTED_PORTAL_USERS"
+                  }, {
+                    "count" : "108",
+                    "statsType" : "CREATED_ARTICLES"
+                  }, {
+                    "count" : "135",
+                    "statsType" : "MODIFIED_ARTICLES"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "articleTrendResponse" : {
+        "description" : "articleTrendResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fromTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "plotUnitType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "hourly" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "userType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Type of users. Values allowed are: AGENTS, REGISTERED_USERS, PUBLIC_USERS, END_USERS and ALL_USERS (default).",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "trends" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/trendList"
+                },
+                "toTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                }
+              },
+              "required" : [ "fromTime", "plotUnitType", "toTime", "trends", "userType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "fromTime" : 1589130000000,
+                  "plotUnitType" : "hourly",
+                  "userType" : "ALL_USERS",
+                  "trends" : [ {
+                    "eventTime" : 1589612548000,
+                    "count" : "12",
+                    "action" : "VIEW"
+                  }, {
+                    "eventTime" : 1589616416000,
+                    "count" : "80",
+                    "action" : "VIEW"
+                  }, {
+                    "eventTime" : 1589619809000,
+                    "count" : "64",
+                    "action" : "VIEW"
+                  }, {
+                    "eventTime" : 1589612541000,
+                    "count" : "10",
+                    "action" : "LIKE"
+                  }, {
+                    "eventTime" : 1589619754000,
+                    "count" : "50",
+                    "action" : "LIKE"
+                  } ],
+                  "toTime" : 1591809067000
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSearchKeywordsResponse" : {
+        "description" : "getSearchKeywordsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "overallSuccessKeywordsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "failureKeywords" : {
+                    "$ref" : "./ArticleStatistics.json#/components/schemas/failureKeywordsData"
+                  },
+                  "popularKeywords" : {
+                    "$ref" : "./ArticleStatistics.json#/components/schemas/popularKeywordsData"
+                  },
+                  "overallFailureKeywordsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "failureKeywords", "overallFailureKeywordsCount", "overallSuccessKeywordsCount", "popularKeywords" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "failureKeywords" : {
+                    "$ref" : "./ArticleStatistics.json#/components/schemas/failureKeywordsData"
+                  },
+                  "overallFailureKeywordsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "failureKeywords", "overallFailureKeywordsCount" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "overallSuccessKeywordsCount" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int32",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "popularKeywords" : {
+                    "$ref" : "./ArticleStatistics.json#/components/schemas/popularKeywordsData"
+                  }
+                },
+                "required" : [ "overallSuccessKeywordsCount", "popularKeywords" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "overallSuccessKeywordsCount" : "11180",
+                  "failureKeywords" : [ {
+                    "searchkeyword" : "Welcome",
+                    "failureCount" : "1"
+                  } ],
+                  "popularKeywords" : [ {
+                    "searchkeyword" : "image",
+                    "successCount" : "1"
+                  } ],
+                  "overallFailureKeywordsCount" : "2500"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "interactedUsersResponse" : {
+        "description" : "interactedUsersResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/interactedUsersDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "action" : "LIKE",
+                    "user" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000000063/photo?orgId=15234553",
+                      "firstName" : "Charlie",
+                      "lastName" : "Stankovic",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/3000000039220",
+                      "emailId" : "charlie@zylker.com",
+                      "id" : "4000000000063",
+                      "type" : "AGENT"
+                    }
+                  }, {
+                    "action" : "LIKE",
+                    "user" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000000065/photo?orgId=15234553",
+                      "firstName" : "Lisa",
+                      "lastName" : "Roseland",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/3000000039255",
+                      "emailId" : "lisa@zylker.com",
+                      "id" : "4000000000065",
+                      "type" : "REGISTERED_USERS"
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "topArticleReportResponse" : {
+        "description" : "topArticleReportResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/topArticleReportResponseDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1588301001000,
+                    "departmentId" : "4000000038148",
+                    "creatorId" : "4000000016508",
+                    "modifierId" : "4000000016508",
+                    "ownerId" : "4000000016508",
+                    "title" : "Tom and jerry end game",
+                    "latestVersionModifierId" : "4000000000060",
+                    "locale" : "en",
+                    "translationState" : "UP-TO-DATE",
+                    "isTrashed" : false,
+                    "createdTime" : 1588300921000,
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "id" : "4000000081313",
+                    "timeBoundMetrics" : [ {
+                      "count" : "809",
+                      "action" : "VIEW"
+                    }, {
+                      "count" : "478",
+                      "action" : "LIKE"
+                    }, {
+                      "count" : "56",
+                      "action" : "DISLIKE"
+                    }, {
+                      "count" : "336",
+                      "action" : "COMMENT"
+                    }, {
+                      "count" : "125",
+                      "action" : "TICKET_USAGE"
+                    }, {
+                      "count" : "15",
+                      "action" : "FEEDBACK"
+                    } ],
+                    "summary" : "Tom and jerry. Its mysterious story",
+                    "owner" : {
+                      "photoURL" : null,
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "latestVersionStatus" : "Published",
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "permission" : "REGISTEREDUSERS",
+                    "authorId" : "4000000016508",
+                    "rootCategoryId" : "4000000081037",
+                    "sourceLocale" : "en",
+                    "translationId" : "4000000081315",
+                    "latestVersion" : "2.0",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/solosolo/ShowHomePage.do#Solutions/dv/4000000081313/en",
+                    "latestPublishedVersion" : "2.0",
+                    "category" : {
+                      "name" : "Cartoon",
+                      "id" : "4000000081052",
+                      "locale" : "en"
+                    },
+                    "permalink" : "tom-jerry",
+                    "categoryId" : "4000000081052",
+                    "latestVersionModifiedBy" : {
+                      "photoURL" : null,
+                      "name" : "will smith",
+                      "id" : "4000000000060",
+                      "status" : "ACTIVE",
+                      "zuid" : "234544"
+                    },
+                    "status" : "Published"
+                  }, {
+                    "modifiedTime" : 1588300893000,
+                    "departmentId" : "4000000038148",
+                    "creatorId" : "4000000016508",
+                    "modifierId" : "4000000016508",
+                    "ownerId" : "4000000016508",
+                    "title" : "Scooby doo",
+                    "locale" : "en",
+                    "translationState" : "UP-TO-DATE",
+                    "isTrashed" : false,
+                    "createdTime" : 1588300855000,
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "id" : "4000000081268",
+                    "timeBoundMetrics" : [ {
+                      "count" : "809",
+                      "action" : "VIEW"
+                    }, {
+                      "count" : "478",
+                      "action" : "LIKE"
+                    }, {
+                      "count" : "56",
+                      "action" : "DISLIKE"
+                    }, {
+                      "count" : "136",
+                      "action" : "COMMENT"
+                    }, {
+                      "count" : "125",
+                      "action" : "TICKET_USAGE"
+                    }, {
+                      "count" : "55",
+                      "action" : "FEEDBACK"
+                    } ],
+                    "summary" : "Scooby doo infinity",
+                    "owner" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "latestVersionStatus" : "Published",
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "permission" : "REGISTEREDUSERS",
+                    "authorId" : "4000000016508",
+                    "rootCategoryId" : "4000000081037",
+                    "sourceLocale" : "en",
+                    "translationId" : "4000000081270",
+                    "latestVersion" : "1.0",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/solosolo/ShowHomePage.do#Solutions/dv/4000000081268/en",
+                    "latestPublishedVersion" : "1.0",
+                    "category" : {
+                      "name" : "Disney",
+                      "id" : "4000000081052",
+                      "locale" : "en"
+                    },
+                    "permalink" : "scooby-doo",
+                    "categoryId" : "4000000081052",
+                    "status" : "Published"
+                  }, {
+                    "modifiedTime" : 1588310888000,
+                    "departmentId" : "4000000038148",
+                    "creatorId" : "4000000016508",
+                    "modifierId" : "4000000016508",
+                    "ownerId" : "4000000016508",
+                    "title" : "Yanni and music",
+                    "locale" : "en",
+                    "translationState" : "UP-TO-DATE",
+                    "isTrashed" : false,
+                    "createdTime" : 1588310873000,
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "id" : "4000000088001",
+                    "timeBoundMetrics" : [ {
+                      "count" : "809",
+                      "action" : "VIEW"
+                    }, {
+                      "count" : "478",
+                      "action" : "LIKE"
+                    }, {
+                      "count" : "56",
+                      "action" : "DISLIKE"
+                    }, {
+                      "count" : "86",
+                      "action" : "COMMENT"
+                    }, {
+                      "count" : "125",
+                      "action" : "TICKET_USAGE"
+                    }, {
+                      "count" : "5",
+                      "action" : "FEEDBACK"
+                    } ],
+                    "summary" : "Yanni and notsolgia exploration",
+                    "owner" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "latestVersionStatus" : "Published",
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "permission" : "REGISTEREDUSERS",
+                    "authorId" : "4000000016508",
+                    "rootCategoryId" : "4000000081037",
+                    "sourceLocale" : "en",
+                    "translationId" : "4000000088003",
+                    "latestVersion" : "1.0",
+                    "createdBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000016508/photo?orgId=292828",
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "234543"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/solosolo/ShowHomePage.do#Solutions/dv/4000000088001/en",
+                    "latestPublishedVersion" : "1.0",
+                    "category" : {
+                      "name" : "Music",
+                      "id" : "4000000081052",
+                      "locale" : "en"
+                    },
+                    "permalink" : "yanni-nostalgia",
+                    "categoryId" : "4000000081052",
+                    "status" : "Published"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "articleStatisticsResponse" : {
+        "description" : "articleStatisticsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/articleStatisticsDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "count" : "478",
+                    "action" : "LIKE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "insightsActionCountJson" : {
+        "description" : "insightsActionCountJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "actionCount" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "interactedUsersCount" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "pattern" : "([0-9]+)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./ArticleStatistics.json#/components/schemas/insightsActionDataArray"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "actionCount" : 191,
+                    "interactedUsersCount" : 1,
+                    "userType" : "AGENTS"
+                  }, {
+                    "actionCount" : 3808,
+                    "interactedUsersCount" : 2001,
+                    "userType" : "REGISTERED_USERS"
+                  }, {
+                    "actionCount" : 35,
+                    "interactedUsersCount" : 0,
+                    "userType" : "PUBLIC_USERS"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "rootCategoryIds" : {
+        "name" : "rootCategoryIds",
+        "in" : "query",
+        "description" : "IDs of the Knowledge Base root categories that must be considered",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "IDs of the Knowledge Base root categories that must be considered",
+          "items" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "IDs of the Knowledge Base root categories that must be considered", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "maxItems" : 10,
+          "minItems" : 1,
+          "uniqueItems" : false
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of trend-related records to list. The default value is 1000 and the maximum value allowed is 18000.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Number of trend-related records to list. The default value is 1000 and the maximum value allowed is 18000.",
+          "maximum" : 10000,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "articleId" : {
+        "name" : "articleId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "action" : {
+        "name" : "action",
+        "in" : "query",
+        "description" : "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT,@! !@TEMPLATE_USAGE@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT,@! !@TEMPLATE_USAGE@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.",
+          "items" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK", "TEMPLATE_USAGE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "User action whose trend-related records must be fetched. Values allowed are: !@LIKE,@! !@TEMPLATE_USAGE,@! !@DISLIKE,@! !@VIEW,@! !@TICKET_USAGE,@! !@COMMENT@! and !@FEEDBACK@!. If you do not pass a value, all actions are included.", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "maxItems" : 6,
+          "uniqueItems" : false
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the trend-related records must be fetched. The default value is 1.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which the trend-related records must be fetched. The default value is 1.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "departmentIds" : {
+        "name" : "departmentIds",
+        "in" : "query",
+        "description" : "IDs of the departments that must be considered",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "IDs of the departments that must be considered",
+          "items" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "IDs of the departments that must be considered", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "maxItems" : 10,
+          "minItems" : 1,
+          "uniqueItems" : false
+        }
+      },
+      "userType" : {
+        "name" : "userType",
+        "in" : "query",
+        "description" : " Type of users. Values allowed are: AGENTS, REGISTERED_USERS, PUBLIC_USERS, END_USERS and ALL_USERS (default).",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : " Type of users. Values allowed are: AGENTS, REGISTERED_USERS, PUBLIC_USERS, END_USERS and ALL_USERS (default).",
+          "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "locale" : {
+        "name" : "locale",
+        "in" : "query",
+        "description" : "Language that must be considered",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Language that must be considered",
+          "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+        }
+      },
+      "helpcenterIds" : {
+        "name" : "helpcenterIds",
+        "in" : "query",
+        "description" : "IDs of the help centers that must be considered.",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "IDs of the help centers that must be considered.",
+          "items" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "IDs of the help centers that must be considered.", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "maxItems" : 20,
+          "minItems" : 0,
+          "uniqueItems" : false
+        }
+      },
+      "timeRange" : {
+        "name" : "timeRange",
+        "in" : "query",
+        "description" : "Period in which the statistics were recorded. Values allowed are: LAST_24_HRS, LAST_7_DAYS, LAST_30_DAYS, LAST_365_DAYS, and yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Period in which the statistics were recorded. Values allowed are: LAST_24_HRS, LAST_7_DAYS, LAST_30_DAYS, LAST_365_DAYS, and yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ",
+          "enum" : [ "LAST_24_HRS", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "actionSource" : {
+        "name" : "actionSource",
+        "in" : "query",
+        "description" : "Channel/medium in which the action was performed. Values allowed are: !@API,@! !@HELPCENTER,@! !@ASAP_WEB,@! !@ASAP_ANDROID,@! !@ASAP_IOS@! and !@AGENT_VIEW@!. If you do not pass a value, all sources are included.",
+        "required" : false,
+        "style" : "simple",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "null", "array" ],
+          "description" : "Channel/medium in which the action was performed. Values allowed are: !@API,@! !@HELPCENTER,@! !@ASAP_WEB,@! !@ASAP_ANDROID,@! !@ASAP_IOS@! and !@AGENT_VIEW@!. If you do not pass a value, all sources are included.",
+          "items" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "API", "HELPCENTER", "ASAP_WEB", "ASAP_ANDROID", "ASAP_IOS", "AGENT_VIEW" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : [ false, false, false, "", false, "Channel/medium in which the action was performed. Values allowed are: !@API,@! !@HELPCENTER,@! !@ASAP_WEB,@! !@ASAP_ANDROID,@! !@ASAP_IOS@! and !@AGENT_VIEW@!. If you do not pass a value, all sources are included.", false, 10, ",", false, false, "0,5", false, false ]
+          },
+          "maxItems" : 6,
+          "uniqueItems" : false
+        }
+      }
+    },
+    "requestBodies" : {
+      "metricsResetPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "action" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/actionArray"
+                }
+              },
+              "required" : [ "action" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "action" : [ "VIEW", "FEEDBACK" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "resetArticleMetrics_metricsResetPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "action" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/actionArray"
+                }
+              },
+              "required" : [ "action" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "action" : [ "VIEW" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "reportGenerationPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "rootCategoryIds" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/rootCategoryIds"
+                },
+                "action" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "User action that must be considered for the report. Values allowed are: LIKE, DISLIKE, VIEW, TICKET_USAGE, COMMENT, and FEEDBACK.",
+                  "enum" : [ "LIKE", "DISLIKE", "VIEW", "COMMENT", "TICKET_USAGE", "FEEDBACK", "TEMPLATE_USAGE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "departmentIds" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/departmentIds"
+                },
+                "locale" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of the help articles",
+                  "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+                },
+                "timeRange" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Period in which the user actions were performed. Values allowed are: LAST_24_HRS, LAST_7_DAYS (default value), LAST_30_DAYS, and LAST_365_DAYS.",
+                  "enum" : [ "LAST_24_HRS", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "action", "locale", "rootCategoryIds", "timeRange" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "action" : "FEEDBACK",
+                  "departmentIds" : [ "1000000013248" ],
+                  "locale" : "en",
+                  "timeRange" : "LAST_365_DAYS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "metricsUpdatePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "action" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/actionArray"
+                },
+                "userType" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Type of users whose metrics must be updated. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS,@! !@PUBLIC_USERS,@! !@END_USERS@! and !@ALL_USERS@!.",
+                  "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "timeRange" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Key that filters metrics added within a specific date and time range. Enter the time range in the formats of: !@LAST_24_HRS,@! !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!",
+                  "enum" : [ "LAST_24_HRS", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "action", "timeRange", "userType" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "action" : [ "COMMENT", "DISLIKE" ],
+                  "userType" : "ALL_USERS",
+                  "timeRange" : "LAST_7_DAYS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateArticleTranslationMetrics_metricsUpdatePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "action" : {
+                  "$ref" : "./ArticleStatistics.json#/components/schemas/actionArray"
+                },
+                "userType" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Type of users whose metrics must be updated. Values allowed are: !@AGENTS,@! !@REGISTERED_USERS,@! !@PUBLIC_USERS,@! !@END_USERS@! and !@ALL_USERS@!.",
+                  "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "timeRange" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Key that filters metrics added within a specific date and time range. Enter the time range in the formats of: !@LAST_24_HRS,@! !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!",
+                  "enum" : [ "LAST_24_HRS", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "action", "timeRange", "userType" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "action" : [ "COMMENT", "DISLIKE" ],
+                  "userType" : "PUBLIC_USERS",
+                  "timeRange" : "LAST_7_DAYS"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ArticleStatistics"
+}

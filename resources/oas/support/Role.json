@@ -1,0 +1,996 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Role",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/roles/{roleId}" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get role",
+        "description" : "This API fetches the details of a particular role.",
+        "operationId" : "getRole",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/roleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/roleResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "67f3c8fecf0547539d4b1a691f579210",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRoleDetails"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Role" ],
+        "summary" : "Update role",
+        "description" : "This API updates details of an existing role.",
+        "operationId" : "updateRole",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/roleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/roleupdateJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/roleResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "57a11555f0559fba7f4a19e6495c4158",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.updateRole"
+        }
+      }
+    },
+    "/api/v1/rolesByIds" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List roles by role IDs",
+        "description" : "This API lists details of the roles whose IDs are passed in the API request.",
+        "operationId" : "getRolesByIds",
+        "parameters" : [ {
+          "name" : "roleIds",
+          "in" : "query",
+          "description" : "Comma separated role ids. Maximum allowed count is 50",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Comma separated role ids. Maximum allowed count is 50",
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ false, "", false, false, false, "Comma separated role ids. Maximum allowed count is 50", false, 10, ",", false, false, "0,5", false, false, "Roles" ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/roleResponseArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "8f09c44990097939a159487373ad10df",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesByIds"
+        }
+      }
+    },
+    "/api/v1/personalRole" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get personal role",
+        "description" : "This API fetches the details of the personal role configured in your help desk. Agents with personal role can view only the tickets assigned to them and unassigned tickets.",
+        "operationId" : "getPersonalRole",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/roleResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 120,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3d92427db456cd8a5fb1df748bc0c3ad",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getPersonalRole"
+        }
+      }
+    },
+    "/api/v1/roles/count" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get role count",
+        "description" : "This API fetches the number of roles configured in your help desk.",
+        "operationId" : "getRoleCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/isDefault"
+        }, {
+          "$ref" : "#/components/parameters/isVisible"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Department.json#/components/responses/deptCountResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7c1e144fe54f4f12f13a969e93b0d6a3",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesCount"
+        }
+      }
+    },
+    "/api/v1/roles/{roleId}/agents" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List agents by role",
+        "description" : "This API lists agents mapped to a particular role.",
+        "operationId" : "getAgentsByRole",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/roleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/roleAssociatedAgent"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c9554f5e3dcaa3b3596782556c5fce47",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getAssociatedAgentIds"
+        }
+      }
+    },
+    "/api/v1/roles/{roleId}/delete" : {
+      "post" : {
+        "tags" : [ "Role" ],
+        "summary" : "Delete role",
+        "description" : "This API deletes a role from your help desk.",
+        "operationId" : "deleteRole",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/roleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteRoleBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE", "Desk.basic.DELETE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3d53c69eb4b4036168238d7e6af03e9d",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.deleteRole"
+        }
+      }
+    },
+    "/api/v1/roles" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List roles",
+        "description" : "This API lists a particular number of roles, based on the limit specified.",
+        "operationId" : "getRoles",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/isDefault"
+        }, {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for roles by name or description. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for roles whose name or description start with the string, 2) *string* - Searches for roles whose name or description contain the string, 3) string -  Searches for roles whose name or description is an exact match for the string",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "String to search for roles by name or description. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for roles whose name or description start with the string, 2) *string* - Searches for roles whose name or description contain the string, 3) string -  Searches for roles whose name or description is an exact match for the string",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of roles to display. The default value is 15 and the maximum value allowed is 500.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of roles to display. The default value is 15 and the maximum value allowed is 500.",
+            "maximum" : 500,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the roles must be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the roles must be listed",
+            "minimum" : 0,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/isVisible"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/roleResponseArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "dcd728edb960fd015cffe4f76e3fb6dd",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesList"
+        }
+      },
+      "post" : {
+        "tags" : [ "Role" ],
+        "summary" : "Create role",
+        "description" : "This API creates a role in your help desk.",
+        "operationId" : "addRole",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/roleJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/roleResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE", "Desk.basic.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "9a1c27583cb4dad53d77e3e3b8d1f2e5",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.createRole"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "roleupdateJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "shareDataWithPeers" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "description", "name", "shareDataWithPeers" ]
+      },
+      "roleJson" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./Role.json#/components/schemas/roleupdateJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "reportsTo" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            }
+          },
+          "required" : [ "reportsTo" ]
+        } ]
+      },
+      "roleResponse" : {
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "./Role.json#/components/schemas/roleJson"
+        }, {
+          "type" : [ "null", "object" ],
+          "properties" : {
+            "isDefault" : {
+              "type" : [ "boolean", "null" ]
+            },
+            "immediateSubRoles" : {
+              "type" : [ "null", "array" ],
+              "items" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "uniqueItems" : false
+            },
+            "id" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "isVisible" : {
+              "type" : [ "boolean", "null" ]
+            }
+          },
+          "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ]
+        } ]
+      },
+      "roleArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Role.json#/components/schemas/roleResponse"
+        }
+      }
+    },
+    "responses" : {
+      "roleResponse" : {
+        "description" : "roleResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Role.json#/components/schemas/roleJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "isDefault" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "immediateSubRoles" : {
+                    "type" : [ "null", "array" ],
+                    "items" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "uniqueItems" : false
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "isVisible" : {
+                    "type" : [ "boolean", "null" ]
+                  }
+                },
+                "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isDefault" : false,
+                  "shareDataWithPeers" : true,
+                  "immediateSubRoles" : [ ],
+                  "name" : "Customer Care Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807,
+                  "id" : "5000000002973",
+                  "isVisible" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "roleResponseArray" : {
+        "description" : "roleResponseArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Role.json#/components/schemas/roleArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isDefault" : true,
+                    "shareDataWithPeers" : true,
+                    "immediateSubRoles" : [ "50000785582324", "50000000779019", "50000001319909" ],
+                    "name" : "CEO",
+                    "description" : "Agent belongs to this role can access all other user's data.",
+                    "reportsTo" : null,
+                    "id" : "50000000008337",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ "50000091844659" ],
+                    "name" : "Manager",
+                    "description" : "Agents belongs to this cannot see admin role users data",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000008339",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "PortalUser",
+                    "description" : "User belongs to this role are portal users they can access their cases and solutions only",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000008341",
+                    "isVisible" : false
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Development Team Member",
+                    "description" : "Development team members from Engineering",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000469017",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Product Team Member",
+                    "description" : "Products Managers",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000551386",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : true,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Sales Team Member",
+                    "description" : "",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000779019",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Personal",
+                    "description" : "Agents belongs to this role can see only unassigned and his/her data",
+                    "reportsTo" : null,
+                    "id" : "50000002634005",
+                    "isVisible" : false
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Marketing Team Member",
+                    "description" : "",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000009610999",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : true,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "LightAgent",
+                    "description" : "Agents belonging to this role can access all user's data.",
+                    "reportsTo" : null,
+                    "id" : "50000565365005",
+                    "isVisible" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "roleAssociatedAgent" : {
+        "description" : "roleAssociatedAgent template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "associatedAgents" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "associatedAgents" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "associatedAgents" : [ "50000000009163", "50000000009300", "50000000010007", "50000000010011", "50000000062391", "50000000062393" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "isDefault" : {
+        "name" : "isDefault",
+        "in" : "query",
+        "description" : "Key that denotes whether the roles must be default roles or custom roles",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "boolean", "null" ],
+          "description" : "Key that denotes whether the roles must be default roles or custom roles"
+        }
+      },
+      "roleId" : {
+        "name" : "roleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "isVisible" : {
+        "name" : "isVisible",
+        "in" : "query",
+        "description" : "Key that filters roles according to their visibility in the UI",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "boolean", "null" ],
+          "description" : "Key that filters roles according to their visibility in the UI"
+        }
+      }
+    },
+    "requestBodies" : {
+      "roleupdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "shareDataWithPeers" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "shareDataWithPeers" : true,
+                  "name" : "Customer Care and Sales Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteRoleBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "transferToRoleId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "transferToRoleId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "transferToRoleId" : "5000000008807"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "roleJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./Role.json#/components/schemas/roleupdateJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "reportsTo" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "name", "shareDataWithPeers" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "shareDataWithPeers" : true,
+                  "name" : "Customer Care Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Role"
+}

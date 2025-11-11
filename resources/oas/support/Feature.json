@@ -1,0 +1,691 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Feature",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "marketplace"
+  },
+  "paths" : {
+    "/api/v1/features" : {
+      "get" : {
+        "tags" : [ "Feature" ],
+        "summary" : "List Features",
+        "description" : "This API gets a list of features in feature framework",
+        "operationId" : "getAllFeatures",
+        "parameters" : [ {
+          "name" : "featureName",
+          "in" : "query",
+          "description" : "Get the given featureName containing features",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Get the given featureName containing features",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9]+$"
+          }
+        }, {
+          "name" : "createdBy",
+          "in" : "query",
+          "description" : "Fetch the feature who installed that",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Fetch the feature who installed that",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of feature to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of feature to fetch",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the feature must be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which the feature must be listed",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "uuId",
+          "in" : "query",
+          "description" : "Get the given featureName containing features",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Get the given featureName containing features",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9/\\+\\=]+)"
+          }
+        }, {
+          "name" : "isInstall",
+          "in" : "query",
+          "description" : "List the features based on isInstall value",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "List the features based on isInstall value"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getAllFeaturesResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "3cc6a3e0621113cb1a3e5bfba84de0fe",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.getFeatures"
+        }
+      },
+      "post" : {
+        "tags" : [ "Feature" ],
+        "summary" : "Install A Feature",
+        "description" : "This API installs provided feature in helpdesk",
+        "operationId" : "installNewFeature",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/featurePayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/featureResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "e1c5336562879d52c4abf667872da211",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.installFeature"
+        }
+      }
+    },
+    "/api/v1/features/{featureId}" : {
+      "get" : {
+        "tags" : [ "Feature" ],
+        "operationId" : "getFeature",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/featureResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.getFeature"
+        }
+      },
+      "put" : {
+        "tags" : [ "Feature" ],
+        "summary" : "Update A Feature",
+        "description" : "This API update provided feature in helpdesk",
+        "operationId" : "updateFeature",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateFeature_featurePayload"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/featureResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "d1dbdbe4120937cda439f7284c52b85e",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.updateFeature"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Feature" ],
+        "summary" : "Delete A Feature",
+        "description" : "This API delete provided feature in helpdesk",
+        "operationId" : "deleteFeature",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/featureId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "238e11d1a386858a0c607a03a3bcd3fb",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.unInstallFeature"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "modifierJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+      },
+      "featureResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "creator" : {
+            "$ref" : "./Feature.json#/components/schemas/modifierJson"
+          },
+          "featureName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9]+$",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Get the given featureName containing features",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Fetch the feature who installed that",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "latestVersion" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modifier" : {
+            "$ref" : "./Feature.json#/components/schemas/modifierJson"
+          },
+          "isInstalled" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "latestHash" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9]+$"
+          },
+          "version" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "uuId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9/\\+\\=]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Get the given featureName containing features",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "createdBy", "creator", "description", "featureName", "id", "isInstalled", "latestHash", "latestVersion", "modifiedBy", "modifier", "uuId", "version" ]
+      },
+      "arrayOfFeatureResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Feature.json#/components/schemas/featureResponse"
+        }
+      }
+    },
+    "responses" : {
+      "featureResponse" : {
+        "description" : "featureResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "creator" : {
+                  "$ref" : "./Feature.json#/components/schemas/modifierJson"
+                },
+                "featureName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9]+$"
+                },
+                "createdBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "latestVersion" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modifier" : {
+                  "$ref" : "./Feature.json#/components/schemas/modifierJson"
+                },
+                "isInstalled" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modifiedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "latestHash" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9]+$"
+                },
+                "version" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "uuId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([a-zA-Z0-9/\\+\\=]+)"
+                }
+              },
+              "required" : [ "createdBy", "creator", "description", "featureName", "id", "isInstalled", "latestHash", "latestVersion", "modifiedBy", "modifier", "uuId", "version" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getAllFeaturesResponse" : {
+        "description" : "getAllFeaturesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Feature.json#/components/schemas/arrayOfFeatureResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "featureName" : "assign",
+                    "createdBy" : "90494000000190001",
+                    "isInstalled" : true,
+                    "description" : "dev env check",
+                    "modifiedBy" : "90494000000190001",
+                    "featureId" : "90494000003095936"
+                  }, {
+                    "featureName" : "ParentChildTicketing",
+                    "createdBy" : "90494000000190001",
+                    "isInstalled" : false,
+                    "description" : "Parent Child Ticketing Feature",
+                    "modifiedBy" : "90494000000190001",
+                    "featureId" : "90494000003095940"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "featureId" : {
+        "name" : "featureId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "featurePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "featureName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Name of the feature",
+                  "enum" : [ "assign" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "featureName" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "featureName" : "assign"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateFeature_featurePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "featureName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Name of the feature",
+                  "enum" : [ "assign" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "featureName" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "featureName" : "assign"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Feature"
+}

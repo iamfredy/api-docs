@@ -1,0 +1,1509 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Records",
+    "version" : "1.0.0",
+    "x-clan-group" : "layouts",
+    "x-module-group" : "customModule"
+  },
+  "paths" : {
+    "/api/v1/records/deleteMany" : {
+      "post" : {
+        "tags" : [ "Records" ],
+        "summary" : "Delete Records",
+        "description" : "This API deletes multiple records permanently.",
+        "operationId" : "deleteMany",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteRecords"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "3b6fa0526939142679c4f06490d6d2dc",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordService.deleteRecords"
+        }
+      }
+    },
+    "/api/v1/records/updateMany" : {
+      "post" : {
+        "tags" : [ "Records" ],
+        "operationId" : "updateMany",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateManyPayload"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "./MassActionResponse.json#/components/responses/massActionListResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "2e9d2d2f362b117f154f790bee588515",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordService.updateMany"
+        }
+      }
+    },
+    "/api/v1/records/count" : {
+      "get" : {
+        "tags" : [ "Records" ],
+        "operationId" : "recordsCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/viewId"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./TicketCount.json#/components/responses/ticketsCountResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "a89f3a29447279d9bd780cad54aebcc1",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordsCountService.getRecordsCount"
+        }
+      }
+    },
+    "/api/v1/records" : {
+      "get" : {
+        "tags" : [ "Records" ],
+        "operationId" : "listRecords",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/viewId"
+        }, {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of records to be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of records to be fetched",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "From index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "From index",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Key that returns the values of mentioned fields (both pre-defined and custom) in your portal. All field types except multi-text are supported. Standard, non-editable fields are supported too. Maximum of 30 fields is supported as comma separated values.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that returns the values of mentioned fields (both pre-defined and custom) in your portal. All field types except multi-text are supported. Standard, non-editable fields are supported too. Maximum of 30 fields is supported as comma separated values.",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "name" : "filter",
+          "in" : "query",
+          "description" : "A filter expression is a query parameter used to filter records from a database based on specific conditions. This filter applies to selected fields within the records and allows you to retrieve only those records that meet the specified criteria. The filter expression is constructed using logical operators, relational operators, and functions to define conditions on one or more fields in the dataset.\n\nA filter expression helps to retrieve specific records from the database by applying conditions to selected fields.\n\nIt uses logical operators (like AND, OR), comparison operators (like =, >, <, >=, <=, !=), and functions (like .contains(), .isEmpty(), .isNotEmpty()) to match records that meet your criteria.\n\nSupported comparison operators:\n<, >, <=, >=, =, !=\n\nSupported functions:\nisEmpty\nisNotEmpty\ncontains\n\nFor example:\n\nproductCode != 12345 AND quantity = 100OR category.contains('electronics') AND discount.isNotEmpty()",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "A filter expression is a query parameter used to filter records from a database based on specific conditions. This filter applies to selected fields within the records and allows you to retrieve only those records that meet the specified criteria. The filter expression is constructed using logical operators, relational operators, and functions to define conditions on one or more fields in the dataset.\n\nA filter expression helps to retrieve specific records from the database by applying conditions to selected fields.\n\nIt uses logical operators (like AND, OR), comparison operators (like =, >, <, >=, <=, !=), and functions (like .contains(), .isEmpty(), .isNotEmpty()) to match records that meet your criteria.\n\nSupported comparison operators:\n<, >, <=, >=, =, !=\n\nSupported functions:\nisEmpty\nisNotEmpty\ncontains\n\nFor example:\n\nproductCode != 12345 AND quantity = 100OR category.contains('electronics') AND discount.isNotEmpty()",
+            "maxLength" : 4500,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/listRecordResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "7d9646cb98085190d556ecd7890e3eee",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordService.getRecords"
+        }
+      },
+      "post" : {
+        "tags" : [ "Records" ],
+        "operationId" : "createRecord",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createRecord_createRecordInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/createRecordResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "f0ffdb804aaace10f6984935c24314f3",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordService.createRecord"
+        }
+      }
+    },
+    "/api/v1/records/{recordId}" : {
+      "get" : {
+        "tags" : [ "Records" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getRecord",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/recordId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getRecordResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      },
+      "patch" : {
+        "tags" : [ "Records" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "editRecord",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/recordId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createRecordInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/editRecordResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/records/moveToTrash" : {
+      "post" : {
+        "tags" : [ "Records" ],
+        "operationId" : "moveToTrash",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/moveToTrash_deleteRecords"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.custommodule.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "layouts",
+          "apihash" : "3b6c270d1bc73018c40f1c911112f6b0",
+          "module-group" : "customModule",
+          "apimethod" : "com.zoho.support.restapi.RecordService.moveRecordsToTrash"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "recordIdsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "agentData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "id", "lastName", "photoURL" ]
+      },
+      "recordResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "owner" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "createdBy" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "cf" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "patternProperties" : {
+              "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              }
+            }
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "cf", "createdBy", "createdTime", "id", "modifiedBy", "modifiedTime", "name", "owner" ]
+      },
+      "arrayOfResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Records.json#/components/schemas/recordResponse"
+        }
+      },
+      "layoutData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          },
+          "layoutName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "id", "layoutName" ]
+      },
+      "departmentData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "departmentName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+            "x-custom-parameters-attributes" : { }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "departmentName", "id" ]
+      },
+      "recordResponseWithAdditionalData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "layout" : {
+            "$ref" : "./Records.json#/components/schemas/layoutData"
+          },
+          "owner" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "cf" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "patternProperties" : {
+              "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                "x-custom-parameters-attributes" : {
+                  "portalname" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  },
+                  "createdTimeRange" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Retrieves the records of the custom module based on the specified created time. The time range can be provided in ISO format !@yyyy-MM-ddThh:mm:ss.SSSZ@! separated by a comma.   for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "_all" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To match throughout the all the fields !@wildcard search@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "orgId" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "allowInvalid" : false,
+                    "importUrl" : false,
+                    "secret" : false,
+                    "decrypt" : false,
+                    "preserveCharsLimit" : 10
+                  },
+                  "field1" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field1=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field10" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field10=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "limit" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The end limit for the number of records to be fetched. For example, limit=30",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field7" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field7=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field6" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field6=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "from" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The index number, starting from which the records must be fetched. For example, from=0.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field9" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field9=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "modifiedTimeRange" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Retrieves the records of the custom module based on the specified modified time. The time range can be provided in ISO format !@yyyy-MM-ddThh:mm:ss.SSSZ@! separated by a comma. for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "sortBy" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "SortBy can be: !@relevance@,!  !@modifiedTime@,!  !@createdTime@,!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field8" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field8=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field3" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field3=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field2" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field2=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field5" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field5=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  },
+                  "field4" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "To find for values in a field, use the format !@field4=Field ApiName:search value@!. This will match the specified search values with the record’s field value and retrieve it. !@wildcard search@! !@empty check@! !@not empty check@!",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              }
+            }
+          },
+          "createdBy" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "isPresence" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "modifiedBy" : {
+            "$ref" : "./Records.json#/components/schemas/agentData"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "department" : {
+            "$ref" : "./Records.json#/components/schemas/departmentData"
+          },
+          "lastActivityTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          }
+        },
+        "required" : [ "cf", "createdBy", "createdTime", "department", "id", "isPresence", "lastActivityTime", "layout", "modifiedBy", "modifiedTime", "owner" ]
+      },
+      "arrayOfrecordResponseWithAdditionalData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Records.json#/components/schemas/recordResponseWithAdditionalData"
+        }
+      },
+      "listRecordResponseWithAdditionalData" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "data" : {
+            "$ref" : "./Records.json#/components/schemas/arrayOfrecordResponseWithAdditionalData"
+          }
+        },
+        "required" : [ "data" ]
+      }
+    },
+    "responses" : {
+      "listRecordResponse" : {
+        "description" : "listRecordResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Records.json#/components/schemas/arrayOfResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "editRecordResponse" : {
+        "description" : "editRecordResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : { }
+                  }
+                },
+                "required" : [ "createdBy", "createdTime", "id", "modifiedBy", "modifiedTime", "owner" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "layout" : {
+                    "$ref" : "./Records.json#/components/schemas/layoutData"
+                  },
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "cf" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "description" : "",
+                    "patternProperties" : {
+                      "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                        "type" : [ "string", "null" ],
+                        "description" : "",
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                        "x-custom-parameters-attributes" : { }
+                      }
+                    },
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "isPresence" : {
+                    "type" : [ "boolean", "null" ],
+                    "description" : "",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "department" : {
+                    "$ref" : "./Records.json#/components/schemas/departmentData"
+                  },
+                  "lastActivityTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  }
+                },
+                "required" : [ "cf", "createdBy", "createdTime", "department", "id", "isPresence", "lastActivityTime", "layout", "modifiedBy", "modifiedTime", "owner" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      },
+      "createRecordResponse" : {
+        "description" : "createRecordResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "createdBy", "createdTime", "id", "modifiedBy", "modifiedTime", "owner" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "layout" : {
+                    "$ref" : "./Records.json#/components/schemas/layoutData"
+                  },
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "cf" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "patternProperties" : {
+                      "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                        "x-custom-parameters-attributes" : {
+                          "cf" : { }
+                        }
+                      }
+                    }
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "isPresence" : {
+                    "type" : [ "boolean", "null" ]
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "department" : {
+                    "$ref" : "./Records.json#/components/schemas/departmentData"
+                  },
+                  "lastActivityTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  }
+                },
+                "required" : [ "cf", "createdBy", "createdTime", "department", "id", "isPresence", "lastActivityTime", "layout", "modifiedBy", "modifiedTime", "owner" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getRecordResponse" : {
+        "description" : "getRecordResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : { }
+                  }
+                },
+                "required" : [ "createdBy", "createdTime", "id", "modifiedBy", "modifiedTime", "owner" ]
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "layout" : {
+                    "$ref" : "./Records.json#/components/schemas/layoutData"
+                  },
+                  "owner" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "cf" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "description" : "",
+                    "patternProperties" : {
+                      "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                        "type" : [ "string", "null" ],
+                        "description" : "",
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                        "x-custom-parameters-attributes" : { }
+                      }
+                    },
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "createdBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "isPresence" : {
+                    "type" : [ "boolean", "null" ],
+                    "description" : "",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "modifiedBy" : {
+                    "$ref" : "./Records.json#/components/schemas/agentData"
+                  },
+                  "id" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : { }
+                  },
+                  "department" : {
+                    "$ref" : "./Records.json#/components/schemas/departmentData"
+                  },
+                  "lastActivityTime" : {
+                    "type" : [ "string", "null" ],
+                    "description" : "",
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))",
+                    "x-custom-parameters-attributes" : { }
+                  }
+                },
+                "required" : [ "cf", "createdBy", "createdTime", "department", "id", "isPresence", "lastActivityTime", "layout", "modifiedBy", "modifiedTime", "owner" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      }
+    },
+    "parameters" : {
+      "recordId" : {
+        "name" : "recordId",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "",
+          "pattern" : "([0-9]+)",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "viewId" : {
+        "name" : "viewId",
+        "in" : "query",
+        "description" : "ID of the view whose record to be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the view whose record to be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "module" : {
+        "name" : "module",
+        "in" : "query",
+        "description" : "API name of the module",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "API name of the module",
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "deleteRecords" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "recordIds" : {
+                  "$ref" : "./Records.json#/components/schemas/recordIdsArray"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "recordIds" : [ "5000000055070", "5000000055072" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateManyPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "isCustomField" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "fieldName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : " Name of the field to update",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                },
+                "ids" : {
+                  "$ref" : "./Records.json#/components/schemas/recordIdsArray"
+                },
+                "fieldValue" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Value in the field",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "createRecordInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "layout" : {
+                  "$ref" : "./Records.json#/components/schemas/layoutData"
+                },
+                "cf" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "description" : "",
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "description" : "",
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    }
+                  },
+                  "x-custom-parameters-attributes" : { }
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      },
+      "createRecord_createRecordInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "layout" : {
+                  "$ref" : "./Records.json#/components/schemas/layoutData"
+                },
+                "cf" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "patternProperties" : {
+                    "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    }
+                  }
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "moveToTrash_deleteRecords" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "recordIds" : {
+                  "$ref" : "./Records.json#/components/schemas/recordIdsArray"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Records"
+}

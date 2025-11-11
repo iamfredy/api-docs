@@ -1,0 +1,317 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Admin Custom Function ReRun API",
+    "description" : "API to re-run custom function executions for specified criteria.",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/admin/cfReRun" : {
+      "post" : {
+        "tags" : [ "Custom Function ReRun" ],
+        "summary" : "Re-run Custom Functions",
+        "description" : "Triggers the re-execution of custom functions based on provided filters.",
+        "operationId" : "adminCustomFunctionReRun",
+        "parameters" : [ ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/CfReRunRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/CfReRunResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attributes" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : "1m",
+                  "lock-period" : 20,
+                  "threshold" : 10
+                }, {
+                  "duration" : "1h",
+                  "lock-period" : 30,
+                  "threshold" : 100
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.CustomFunctionService.cfRerun"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "CfReRunRequestBody" : {
+        "type" : "object",
+        "properties" : {
+          "executionType" : {
+            "type" : "string",
+            "description" : "Execution type. Allowed values: SYNC, ASYNC.",
+            "enum" : [ "SYNC", "ASYNC" ]
+          },
+          "argumentVersion" : {
+            "type" : "string",
+            "description" : "Parameter source. Allowed values: previous, current.",
+            "enum" : [ "previous", "current" ]
+          },
+          "orgId" : {
+            "type" : "string",
+            "description" : "Organization ID."
+          },
+          "userId" : {
+            "type" : "string",
+            "description" : "User ID initiating the re-run."
+          },
+          "departmentId" : {
+            "type" : "string",
+            "description" : "Department ID."
+          },
+          "callId" : {
+            "type" : "array",
+            "description" : "List of call IDs to re-run.",
+            "items" : {
+              "type" : "integer",
+              "description" : ""
+            },
+            "maxItems" : 2000
+          },
+          "customFunctionId" : {
+            "type" : "array",
+            "description" : "List of custom function IDs.",
+            "items" : {
+              "type" : "integer",
+              "description" : ""
+            },
+            "maxItems" : 1000
+          },
+          "entityId" : {
+            "type" : "array",
+            "description" : "List of entity IDs.",
+            "items" : {
+              "type" : "integer",
+              "description" : ""
+            },
+            "maxItems" : 2000
+          },
+          "ruleId" : {
+            "type" : "array",
+            "description" : "List of rule IDs.",
+            "items" : {
+              "type" : "integer",
+              "description" : ""
+            },
+            "maxItems" : 1000
+          },
+          "ruleType" : {
+            "type" : "array",
+            "description" : "Filter by rule type: workflow, blueprint, macro, button.",
+            "items" : {
+              "type" : "string",
+              "description" : "",
+              "enum" : [ "workflow", "blueprint", "macro", "button" ]
+            }
+          },
+          "module" : {
+            "type" : "array",
+            "description" : "Filter by module: tickets, contacts, accounts, tasks, etc.",
+            "items" : {
+              "type" : "string",
+              "description" : "",
+              "enum" : [ "tickets", "contacts", "accounts", "tasks", "timeEntry", "products", "calls", "events" ]
+            }
+          },
+          "status" : {
+            "type" : "array",
+            "description" : "Status of previous executions to rerun.",
+            "items" : {
+              "type" : "string",
+              "description" : "",
+              "enum" : [ "success", "failure", "queued", "inprogress", "released" ]
+            }
+          },
+          "startDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "Start date-time in ISO format (yyyy-MM-dd'T'HH:mm:ss'Z')."
+          },
+          "endDateTime" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "End date-time in ISO format (yyyy-MM-dd'T'HH:mm:ss'Z')."
+          },
+          "from" : {
+            "type" : "integer",
+            "description" : "Starting index for pagination.",
+            "minimum" : 0
+          },
+          "limit" : {
+            "type" : "integer",
+            "description" : "Number of executions to rerun.",
+            "maximum" : 2000,
+            "minimum" : 1
+          },
+          "cv" : {
+            "$ref" : "#/components/schemas/CvFilter"
+          }
+        },
+        "required" : [ "argumentVersion", "endDateTime", "executionType", "from", "limit", "orgId", "startDateTime" ]
+      },
+      "CvFilter" : {
+        "type" : "object",
+        "description" : "",
+        "properties" : {
+          "cvId" : {
+            "type" : "array",
+            "description" : "",
+            "items" : {
+              "type" : "integer",
+              "description" : ""
+            },
+            "maxItems" : 20
+          },
+          "from" : {
+            "type" : "integer",
+            "description" : ""
+          },
+          "limit" : {
+            "type" : "integer",
+            "description" : "",
+            "maximum" : 100,
+            "minimum" : 1
+          }
+        },
+        "required" : [ "cvId", "from", "limit" ]
+      },
+      "BaseActionResponse" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          },
+          "executionStatus" : {
+            "$ref" : "#/components/schemas/ExecutionStatus"
+          }
+        },
+        "required" : [ "message" ]
+      },
+      "ExecutionStatus" : {
+        "type" : "object",
+        "additionalProperties" : true,
+        "properties" : {
+          "batchNo" : {
+            "type" : "integer"
+          },
+          "failedCount" : {
+            "type" : "integer"
+          },
+          "failedCallIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          },
+          "passedCallIds" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer"
+            }
+          },
+          "passedCount" : {
+            "type" : "integer"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "CfReRunResponse" : {
+        "description" : "Re-run execution response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "$ref" : "#/components/schemas/BaseActionResponse"
+              }, {
+                "type" : "object",
+                "properties" : {
+                  "message" : {
+                    "type" : "string",
+                    "examples" : [ "Action execution has been offloaded." ]
+                  }
+                },
+                "required" : [ "message" ]
+              } ]
+            },
+            "examples" : {
+              "Success" : {
+                "summary" : "Execution Completed",
+                "value" : {
+                  "message" : "Action Execution completed for Action ID - 10000000292001",
+                  "executionStatus" : {
+                    "batchNo" : 6679430221,
+                    "failedCount" : 0,
+                    "failedCallIds" : [ ],
+                    "passedCallIds" : [ 10000000323003, 10000000323001 ],
+                    "passedCount" : 2
+                  }
+                }
+              },
+              "ValidationError" : {
+                "summary" : "Invalid Plan",
+                "value" : {
+                  "message" : "Invalid Plan",
+                  "executionStatus" : { }
+                }
+              },
+              "Offloaded" : {
+                "summary" : "Offloaded Execution",
+                "value" : {
+                  "message" : "Action execution has been offloaded."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "CfReRunRequest" : {
+        "description" : "Input payload for re-running custom functions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/CfReRunRequestBody"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "CustomFunctionReRun"
+}

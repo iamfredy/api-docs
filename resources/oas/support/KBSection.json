@@ -1,0 +1,1941 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "KBSection",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/kbSections" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Create a KB section",
+        "description" : "This API creates a section in your helpdesk",
+        "operationId" : "addKBSection",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/createCategoryJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/sectionResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "ca35b5a5724ab5dac8bf9b0fc8b9f19d",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.addASection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/translations/{locale}/permalinks" : {
+      "get" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Get permalinks of a section translation",
+        "description" : "This API fetches permalinks of a sections translation",
+        "operationId" : "getSecondaryPermalinks",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBCategoryPermalink.json#/components/responses/permalinkJsonDataArrayWithOldResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "c885f499edcba7154981ad43ac1db39d",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.getPermalinksOfATranslationOfASection"
+        }
+      },
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Update permalinks of a KB section",
+        "description" : "API updates primary and secondary permalinks of kb sub sections",
+        "operationId" : "updateKBSectionPermalinks",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/permalinkUpdateJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBCategoryPermalink.json#/components/responses/permalinkJsonDataArray"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "bcd8bedc8acf823ed411758be28b13f2",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.updateKBSectionPermalinks"
+        }
+      }
+    },
+    "/api/v1/kbSections/reorder" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Reorder sections",
+        "description" : "This API reorders sections",
+        "operationId" : "reorderSections",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./KBRootCategory.json#/components/requestBodies/reorderRootCategoryJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "3d0dc8771c9488ff41a17c10452edeba",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.reorderSections"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/moveArticlesAndTrash" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Move articles and trash a section",
+        "description" : "This API moves all articles to another section and trashes this section in your helpdesk",
+        "operationId" : "moveAndDeleteSection",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/moveAndDeleteCategoryRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "adff772ebc0e53bdc6e43ca5c9b652d7",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.moveArticlesAndMoveSectionToTrash"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}" : {
+      "get" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Get a KB section",
+        "description" : "This API fetches a section in your helpdesk",
+        "operationId" : "getKBSection",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        },{
+	        "name" : "include",
+	        "in" : "query",
+	        "required" : false,
+	        "style" : "simple",
+	        "explode" : true,
+	        "schema" : {
+	          "type" : [ "null", "array" ],
+	          "items" : {
+	            "type" : [ "string", "null" ],
+	            "enum" : [ "publicArticlesCount", "allArticlesCount", "followersCount", "portalUrl" ],
+	            "maxLength" : 100,
+	            "minLength" : 0,
+	            "x-custom-parameters-attributes" : [ ]
+	          },
+	          "uniqueItems" : true
+	        }
+	      } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/sectionResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d555eb233eba7ca99109b1959ad1d4f8",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.getASection"
+        }
+      },
+      "patch" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Update a KB section",
+        "description" : "This API updates a section in your helpdesk",
+        "operationId" : "updateKBSection",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/commonCategoryJson"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/sectionResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "dfb5efa1339870f348873be464a87564",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.updateASection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/move" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Move a section",
+        "description" : "This API move a section in your helpdesk",
+        "operationId" : "moveASection",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/moveCategoryRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "73391ffe4a67ee6a534dc078df883c2c",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.moveASection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/translations" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Add a translation to a section",
+        "description" : "This API adds a translation a root category in your helpdesk",
+        "operationId" : "addASectionTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addSectionTranslationJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBRootCategoryTranslation.json#/components/responses/rootTranslationResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "264b1c2d0eb0b46bd3347854ac208761",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.addATranslationToSection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/translations/{locale}/permalinks/remove" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Remove a permalink of a section",
+        "description" : "This API removes a permalink of a section translation",
+        "operationId" : "removePermalink",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./KBRootCategory.json#/components/requestBodies/removePermalinkJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "6fb489c72489caf324af700a8f075025",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.removePermalinksOfATranslationOfASection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/translations/{locale}/permalinks/add" : {
+      "post" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Add a permalink to a section",
+        "description" : "This API fadds a permalink to a section translation",
+        "operationId" : "addPermalink",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "./KBRootCategory.json#/components/requestBodies/addPermalinkJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBCategoryPermalink.json#/components/responses/permalinkJsonDataArrayWithOldResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "d33b880b932c283055adfe6bf578af13",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.addPermalinksOfATranslationOfASection"
+        }
+      }
+    },
+    "/api/v1/kbSections/{sectionId}/translations/{locale}" : {
+      "patch" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Update a translation of a section",
+        "description" : "This API edits a translation of a section in your helpdesk",
+        "operationId" : "editASectionTranslation",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/sectionId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/editSectionTranslationJson"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBRootCategoryTranslation.json#/components/responses/rootTranslationResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "221190e2ec1fd242e59cbd0299a4a3a8",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.updateATranslationToSection"
+        }
+      }
+    },
+    "/api/v1/kbRootCategories/{rootCategoryId}/sections" : {
+      "get" : {
+        "tags" : [ "KBSection" ],
+        "summary" : "Get kb section list",
+        "description" : "API fetches all kb sections under the given root category",
+        "operationId" : "listAllSections",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Include params are !@portalUrl,@! !@publicArticlesCount,@! !@allArticlesCount@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Include params are !@portalUrl,@! !@publicArticlesCount,@! !@allArticlesCount@!",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "publicArticlesCount", "allArticlesCount" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Include params are !@portalUrl,@! !@publicArticlesCount,@! !@allArticlesCount@!", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "name" : "visibility",
+          "in" : "query",
+          "description" : "Visibility of the category. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@NONE@! ",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Visibility of the category. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@NONE@! ",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "NONE" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "isTrashed",
+          "in" : "query",
+          "description" : "Is category trashed flag",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Is category trashed flag"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of sections to return. Default value will be 30",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of sections to return. Default value will be 30",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort order of the categories. Allowed values : !@name,@! !@order@!",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort order of the categories. Allowed values : !@name,@! !@order@!",
+            "enum" : [ "name", "order" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Offset value. Default value will be 1",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Offset value. Default value will be 1",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "parentCategoryId",
+          "in" : "query",
+          "description" : "To fetch sections under given parent categoryId",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "To fetch sections under given parent categoryId",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Status of the category. Values - !@SHOW_IN_HELPCENTER,@! !@HIDE_IN_HELPCENTER,@! !@DISABLED@!",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Status of the category. Values - !@SHOW_IN_HELPCENTER,@! !@HIDE_IN_HELPCENTER,@! !@DISABLED@!",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ false, false, false, "", false, "Status of the category. Values - !@SHOW_IN_HELPCENTER,@! !@HIDE_IN_HELPCENTER,@! !@DISABLED@!", false, 10, ",", false, false, "0,5", false, false ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "rootCategoryId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/listAllSectionsResponse"
+          },
+          "401" : {
+            "$ref" : "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 5,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "e80d0bd94eea44569cf39ea6e969c027",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.getKbSections"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "addSectionTranslationJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Section Name",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        },
+        "required" : [ "locale", "name" ]
+      },
+      "addSectionTranslationJsonArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBSection.json#/components/schemas/addSectionTranslationJson"
+        }
+      },
+      "commonCategoryJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "visibility" : {
+            "type" : [ "string", "null" ],
+            "description" : "Visibility of the section. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@NONE@!,!@PRIVATE_IP@! ",
+            "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "translations" : {
+            "$ref" : "./KBSection.json#/components/schemas/addSectionTranslationJsonArray"
+          },
+          "groupIds" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)",
+              "x-custom-parameters-attributes" : [ { } ]
+            },
+            "uniqueItems" : false
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "Section Name",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ipAddresses" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)(/(?:[012]?[0-9]|3[012]))?)|\\*)$",
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : false
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "description" : "Status of the section",
+            "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "groupIds", "ipAddresses", "name", "status", "translations", "visibility" ]
+      },
+      "sectionResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "isFollowing" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "visibility" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Visibility of the category. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@NONE@! ",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "description" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]*"
+          },
+          "groups" : {
+            "$ref" : "./KbCategory.json#/components/schemas/groupJsonArr"
+          },
+          "logoUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "rootCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "isTrashed" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Is category trashed flag",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "createdBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+          },
+          "translations" : {
+            "$ref" : "./KBRootCategory.json#/components/schemas/rootTranslationResponseJsonArr"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+          },
+          "parentCategoryId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To fetch sections under given parent categoryId",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "ipAddresses" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)(\\/(?:[012]?[0-9]|3[012]))?)|\\*)$"
+            },
+            "uniqueItems" : false
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "order" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Status of the category. Values - !@SHOW_IN_HELPCENTER,@! !@HIDE_IN_HELPCENTER,@! !@DISABLED@!",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "createdBy", "createdTime", "description", "groups", "id", "ipAddresses", "isFollowing", "isTrashed", "logoUrl", "modifiedBy", "modifiedTime", "name", "order", "parentCategoryId", "rootCategoryId", "status", "translations", "visibility" ]
+      },
+      "sectionData" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./KBSection.json#/components/schemas/sectionResponse"
+        }
+      }
+    },
+    "responses" : {
+      "sectionResponse" : {
+        "description" : "sectionResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "isFollowing" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "visibility" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Visibility of the section. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@PRIVATE_IP@!,!@NONE@! ",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]*",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "A short description of the section",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "groups" : {
+                  "$ref" : "./KbCategory.json#/components/schemas/groupJsonArr"
+                },
+                "logoUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "rootCategoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "isTrashed" : {
+                  "type" : [ "boolean", "null" ]
+                },
+                "createdBy" : {
+                  "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+                },
+                "translations" : {
+                  "$ref" : "./KBRootCategory.json#/components/schemas/rootTranslationResponseJsonArr"
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Section Name",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "modifiedBy" : {
+                  "$ref" : "./ArticleTranslation.json#/components/schemas/modifiedBy"
+                },
+                "parentCategoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "ipAddresses" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)(\\/(?:[012]?[0-9]|3[012]))?)|\\*)$",
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "order" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Status of the section",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+				"publicArticlesCount" : {
+					"$ref" : "./KBRootCategory.json#/components/schemas/countData"
+				},
+				"allArticlesCount" : {
+					"$ref" : "./KBRootCategory.json#/components/schemas/countData"
+				},
+				"followersCount" : {
+					"$ref" : "./KBRootCategory.json#/components/schemas/countData"
+				},
+				"portalUrl" : {
+					"$ref" : "./KBRootCategory.json#/components/schemas/urlData"
+				}
+              },
+              "required" : [ "createdBy", "createdTime", "description", "groups", "id", "ipAddresses", "isFollowing", "isTrashed", "logoUrl", "modifiedBy", "modifiedTime", "name", "order", "parentCategoryId", "rootCategoryId", "status", "translations", "visibility" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1578359714000,
+                  "isFollowing" : true,
+                  "visibility" : "ALL_USERS",
+                  "description" : "Section 1 description",
+                  "groups" : [ ],
+                  "logoUrl" : "https://desk.zoho.com/support/App/build/fonts/certificate.svg",
+                  "rootCategoryId" : "5000000066427",
+                  "isTrashed" : false,
+                  "createdBy" : {
+                    "photoURL" : null,
+                    "name" : "Zylker",
+                    "id" : "5000000015867",
+                    "status" : "ACTIVE",
+                    "zuid" : "343224"
+                  },
+                  "translations" : [ {
+                    "modifiedTime" : 1578359714000,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "name" : "Zylker",
+                      "id" : "5000000015867",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "name" : "For Agents",
+                    "description" : "Section 1 description",
+                    "createdTime" : 1578359714000,
+                    "modifiedBy" : {
+                      "photoURL" : null,
+                      "name" : "Zylker",
+                      "id" : "5000000015867",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "id" : "5000000341019",
+                    "permalink" : "for-agents",
+                    "locale" : "en",
+                    "categoryId" : "5000000341017"
+                  } ],
+                  "name" : "For Agents",
+                  "createdTime" : 1578359714000,
+                  "parentCategoryId" : "5000000340014",
+                  "modifiedBy" : {
+                    "photoURL" : null,
+                    "name" : "Zylker",
+                    "id" : "5000000015867",
+                    "status" : "ACTIVE",
+                    "zuid" : "343224"
+                  },
+                  "id" : "5000000341017",
+                  "status" : "SHOW_IN_HELPCENTER",
+                  "order" : "2"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "listAllSectionsResponse" : {
+        "description" : "listAllSectionsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "publicArticlesCount" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "allArticlesCount" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int32",
+                          "pattern" : "([0-9]+)"
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./KBSection.json#/components/schemas/sectionData"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1593593278000,
+                    "visibility" : "ALL_USERS",
+                    "allArticlesCount" : "12",
+                    "groups" : [ {
+                      "name" : "personalized members",
+                      "id" : "40000009150332",
+                      "logoUrl" : null
+                    } ],
+                    "rootCategoryId" : "4000000081037",
+                    "publicArticlesCount" : "8",
+                    "isTrashed" : false,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "translations" : [ {
+                      "modifiedTime" : 1593593278000,
+                      "createdBy" : {
+                        "photoURL" : null,
+                        "name" : "Charlie",
+                        "id" : "4000000016508",
+                        "status" : "ACTIVE",
+                        "zuid" : "343224"
+                      },
+                      "portalUrl" : "https://desk.zoho.com/portal/vincent/en/kb/terminus/technical/systematic-analysis",
+                      "name" : "Systematic analysis",
+                      "createdTime" : 1593593278000,
+                      "description" : "Deep technical analysis to generate report",
+                      "modifiedBy" : {
+                        "photoURL" : null,
+                        "name" : "Charlie",
+                        "id" : "4000000016508",
+                        "status" : "ACTIVE",
+                        "zuid" : "343224"
+                      },
+                      "id" : "4000002861003",
+                      "permalink" : "systematic-analysis",
+                      "locale" : "en",
+                      "categoryId" : "4000002861001"
+                    } ],
+                    "name" : "Systematic analysis",
+                    "createdTime" : 1593593278000,
+                    "modifiedBy" : {
+                      "photoURL" : null,
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "parentCategoryId" : "4000002852130",
+                    "id" : "4000002861001",
+                    "status" : "SHOW_IN_HELPCENTER",
+                    "order" : "1"
+                  }, {
+                    "modifiedTime" : 1593593281000,
+                    "visibility" : "ALL_USERS",
+                    "allArticlesCount" : "29",
+                    "groups" : [ {
+                      "name" : "personalized members",
+                      "id" : "40000009150332",
+                      "logoUrl" : null
+                    } ],
+                    "rootCategoryId" : "4000000081037",
+                    "publicArticlesCount" : "17",
+                    "isTrashed" : false,
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "translations" : [ {
+                      "modifiedTime" : 1593593281000,
+                      "createdBy" : {
+                        "photoURL" : null,
+                        "name" : "Charlie",
+                        "id" : "4000000016508",
+                        "status" : "ACTIVE",
+                        "zuid" : "343224"
+                      },
+                      "portalUrl" : "https://desk.zoho.com/portal/vincent/en/kb/terminus/technical/varsity-analysis",
+                      "name" : "Varsity analysis",
+                      "createdTime" : 1593593281000,
+                      "description" : "Get into statistical analysis",
+                      "modifiedBy" : {
+                        "photoURL" : null,
+                        "name" : "Charlie",
+                        "id" : "4000000016508",
+                        "status" : "ACTIVE",
+                        "zuid" : "343224"
+                      },
+                      "id" : "4000002861213",
+                      "permalink" : "varsity-analysis",
+                      "locale" : "en",
+                      "categoryId" : "4000002861211"
+                    } ],
+                    "name" : "Varsity analysis",
+                    "createdTime" : 1593593281000,
+                    "modifiedBy" : {
+                      "photoURL" : null,
+                      "name" : "Charlie",
+                      "id" : "4000000016508",
+                      "status" : "ACTIVE",
+                      "zuid" : "343224"
+                    },
+                    "parentCategoryId" : "4000002852130",
+                    "id" : "4000002861211",
+                    "status" : "SHOW_IN_HELPCENTER",
+                    "order" : "1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "sectionId" : {
+        "name" : "sectionId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "locale" : {
+        "name" : "locale",
+        "in" : "path",
+        "description" : "Locale of the kb section translation. If no locale is given, all the locale translations will be returned",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Locale of the kb section translation. If no locale is given, all the locale translations will be returned",
+          "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "createCategoryJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./KBSection.json#/components/schemas/commonCategoryJson"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "parentCategoryId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "description" : "Parent id (either section or rootCategoryId) below which we need to create a section",
+                    "pattern" : "([0-9]+)"
+                  }
+                }
+              }, {
+                "type" : "object",
+                "required" : [ "groupIds", "ipAddresses", "name", "parentCategoryId", "status", "translations", "visibility" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "articlePermission" : "ALL",
+                  "translations" : [ {
+                    "name" : "For Agents",
+                    "description" : "Section 1 description",
+                    "locale" : "en-us",
+                    "permalink" : "for-agents"
+                  } ],
+                  "name" : "For Agents",
+                  "description" : "Section 1 description",
+                  "parentCategoryId" : 5000000340014,
+                  "logoId" : "10",
+                  "status" : "SHOW_IN_HELPCENTER"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "permalinkUpdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "primaryPermalink" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Primary permalink of a translation",
+                  "maxLength" : 300,
+                  "minLength" : 0,
+                  "pattern" : "[a-z0-9\\/%\\-\\P{InBasicLatin}]+"
+                },
+                "secondaryPermalinks" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "primaryPermalink" : "cleaner",
+                  "secondaryPermalinks" : [ "onida", "samsung" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "moveAndDeleteCategoryRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "targetCategoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Category Id to which articles need to be moved",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "targetCategoryId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "targetCategoryId" : "5000000326009"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "moveCategoryRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "parentCategoryId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "Parent Id",
+                  "pattern" : "([0-9]+)"
+                },
+                "position" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "description" : "Position of child",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "parentCategoryId", "position" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "parentCategoryId" : "5000000066427",
+                  "position" : "1"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addSectionTranslationJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Section Name",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "locale" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Language of the translation",
+                  "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+                }
+              },
+              "required" : [ "locale", "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "name" : "New Translation",
+                  "description" : "New Description",
+                  "permalink" : "new-translation-pl",
+                  "locale" : "pl"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "commonCategoryJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "visibility" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Visibility of the section. Values allowed are !@AGENTS@!, !@GROUP_USERS@!, !@ALL_USERS@!,!@PRIVATE_IP@!,!@NONE@! ",
+                  "enum" : [ "ALL_USERS", "AGENTS", "GROUP_USERS", "PRIVATE_IP", "NONE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "translations" : {
+                  "$ref" : "./KBSection.json#/components/schemas/addSectionTranslationJsonArray"
+                },
+                "groupIds" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  },
+                  "uniqueItems" : false
+                },
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Section Name",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ipAddresses" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "^((?:(?:(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)\\.){3}(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)|\\*)(/(?:[012]?[0-9]|3[012]))?)|\\*)$",
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Status of the section",
+                  "enum" : [ "SHOW_IN_HELPCENTER", "HIDE_IN_HELPCENTER" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "articlePermission" : "REGISTEREDUSERS",
+                  "translations" : [ {
+                    "name" : "section name updated",
+                    "locale" : "pl-pl"
+                  } ],
+                  "status" : "HIDE_IN_HELPCENTER"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "editSectionTranslationJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "name" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Name",
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "name" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "name" : "New Translation edited",
+                  "description" : "New Description edited",
+                  "permalink" : "new-translation-pl"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "KBSection"
+}

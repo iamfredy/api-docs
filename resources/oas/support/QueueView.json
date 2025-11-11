@@ -1,0 +1,335 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "QueueView",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/ticketsByQueue" : {
+      "get" : {
+        "summary" : "List tickets by queue",
+        "description" : "This API fetches tickets by provided queue slot for provided queue mode.",
+        "operationId" : "getRequestByQueue",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/slot"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/viewId"
+        }, {
+          "$ref" : "#/components/parameters/include"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Ticket.json#/components/responses/ticketListViewArray"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "cookie-auth" : [ ]
+        }, {
+          "org-oauth" : [ ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/ticketsByAgentQueue" : {
+      "get" : {
+        "tags" : [ "Tickets By Agent Queue" ],
+        "summary" : "Get Tickets By Agent Queue",
+        "description" : "This API fetches provided agents tickets by provided queue slot for provided queue mode.",
+        "operationId" : "getRequestByAgentQueue",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/slot"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/agentId"
+        }, {
+          "$ref" : "#/components/parameters/include"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Ticket.json#/components/responses/ticketListViewArray"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ],
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "f22f63745e688aeb940e89bcf5ec11cb",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.RequestService.getRequestByAgentQueue"
+        }
+      }
+    },
+    "/api/v1/ticketsByTeamQueue" : {
+      "get" : {
+        "tags" : [ "List tickets by team queue" ],
+        "summary" : "Get Tickets By Agent Queue",
+        "description" : "This API fetches provided teams tickets by provided queue slot for provided queue mode.",
+        "operationId" : "getRequestByTeamQueue",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "$ref" : "#/components/parameters/mode"
+        }, {
+          "$ref" : "#/components/parameters/slot"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/teamId"
+        }, {
+          "$ref" : "#/components/parameters/include"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "./Ticket.json#/components/responses/ticketListViewArray"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/unprocessableEntityErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ],
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "f22f63745e688aeb940e89bcf5ec11cb",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.RequestService.getRequestByTeamQueue"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : { },
+    "responses" : { },
+    "parameters" : {
+      "agentId" : {
+        "name" : "agentId",
+        "in" : "query",
+        "description" : "ID of the agent to apply while fetching the resources",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the agent to apply while fetching the resources",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the tickets must be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Index number, starting from which the tickets must be listed",
+          "maximum" : 0,
+          "minimum" : 0
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of tickets to fetch",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "Number of tickets to fetch",
+          "maximum" : 50,
+          "minimum" : 1
+        }
+      },
+      "mode" : {
+        "name" : "mode",
+        "in" : "query",
+        "description" : "Queue mode for which the ticket should be fetched.Values allowed are: status, priority, crmContactType, dueInMinutes",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Queue mode for which the ticket should be fetched.Values allowed are: @status@, @priority@, @crmContactType@, @dueInMinutes@.",
+          "enum" : [ "status", "crmContactType", "priority", "dueInMinutes" ],
+          "maxLength" : 10,
+          "minLength" : 0
+        }
+      },
+      "teamId" : {
+        "name" : "teamId",
+        "in" : "query",
+        "description" : "ID of the team to apply while fetching the resources",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the team to apply while fetching the resources",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department from which the tickets must be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the department from which the tickets must be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "viewId" : {
+        "name" : "viewId",
+        "in" : "query",
+        "description" : "ID of the view to apply while fetching the resources",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the view to apply while fetching the resources",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "include" : {
+        "name" : "include",
+        "in" : "query",
+        "description" : "Additional information related to the tickets. Values allowed are: contacts, products, departments, team, isRead and assignee. You can pass multiple values by separating them with commas in the API request.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Additional information related to the tickets. Values allowed are: @contacts@, @products@, @departments@, @team@, @isRead@ and @assignee@. You can pass multiple values by separating them with commas in the API request.",
+          "enum" : [ "contacts", "isRead", "assignee", "team" ],
+          "maxLength" : 10,
+          "minLength" : 0
+        }
+      },
+      "slot" : {
+        "name" : "slot",
+        "in" : "query",
+        "description" : "Slots based on the queue mode for which the ticket should be fetched. Values allowed for dueInMinutes modes are overDue, 5, 10, 15, 30, 45, 60, 90, 120, 180, 360, 540, 720, 1080, 1440, 2880, noDue, and onhold. Values allowed for crmContactType mode are unmapped, contacts_leads, potentials, and customers. values allowed for status and priority modes are Status and priority of the ticket. Includes the custom statuses and priorities configured in your help desk",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Slots based on the queue mode for which the ticket should be fetched. Values allowed for @dueInMinutes@ modes are @overDue@, @5@, @10@, @15@, @30@, @45@, @60@, @90@, @120@, @180@, @360@, @540@, @720@, @1080@, @1440@, @2880@, @noDue@, and @onhold@. Values allowed for @crmContactType@ mode are @unmapped@, @contacts_leads@, @potentials@, and @customers@. values allowed for @status@ and @priority@ modes are Status and priority of the ticket. Includes the custom statuses and priorities configured in your help desk",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "QueueView"
+}

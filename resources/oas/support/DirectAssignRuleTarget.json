@@ -1,0 +1,232 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DirectAssignRuleTarget",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/directAssignmentRules/{ruleId}/targets/{targetId}" : {
+      "get" : {
+        "tags" : [ "DirectAssignRuleTarget" ],
+        "summary" : "Get direct assignment rule target",
+        "description" : "To get a particular target in a direct assignment rule",
+        "operationId" : "getDARTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "ruleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/targetJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 1200000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "240950360b5fe4c36d7fb6b2fa334beb",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.DirectAssignRulesService.getDirectAssignRuleTarget"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "fieldConditionsArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/automationCriteriaResponse"
+        }
+      },
+      "criteriaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "fieldConditions" : {
+            "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/fieldConditionsArr"
+          },
+          "pattern" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[andor()0-9\\s]*"
+          }
+        },
+        "required" : [ "fieldConditions", "pattern" ]
+      },
+      "targetJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "agentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "targetId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "criteria" : {
+            "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/criteriaJson"
+          },
+          "teamId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "fromDepartmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "toDepartmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "agentId", "criteria", "fromDepartmentId", "targetId", "teamId", "toDepartmentId" ]
+      },
+      "targetList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/targetJson"
+        }
+      }
+    },
+    "responses" : {
+      "targetJson" : {
+        "description" : "targetJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "targetId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "criteria" : {
+                  "$ref" : "./DirectAssignRuleTarget.json#/components/schemas/criteriaJson"
+                },
+                "teamId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "fromDepartmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "toDepartmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "agentId", "criteria", "fromDepartmentId", "targetId", "teamId", "toDepartmentId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "targetId" : 4000000009530,
+                  "criteria" : {
+                    "fieldConditions" : [ {
+                      "condition" : "is open",
+                      "fieldName" : "Priority",
+                      "fieldModule" : "tickets",
+                      "value" : [ "Low" ]
+                    } ],
+                    "pattern" : "(1)"
+                  },
+                  "teamId" : 4000000008730,
+                  "fromDepartmentId" : 4000000007745,
+                  "toDepartmentId" : 4000000008900
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "DirectAssignRuleTarget"
+}

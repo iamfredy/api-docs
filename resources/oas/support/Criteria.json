@@ -1,0 +1,1014 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Criteria",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/cvCriteriaFields" : {
+      "get" : {
+        "tags" : [ "Criteria" ],
+        "summary" : "List Criteria Fields For Custom View",
+        "description" : "This API lists the fields allowed in criteria for specified modules in customview.Availale pre-defined values may contain @${EMPTY}@,@${NOTEMPTY}@,@${OPEN}@,@${ONHOLD}@,@${CLOSED}@,@${CURRENTTIME}@.Available types are @Text@,@Date@,@DateTime@,@Text@,@Boolean@,@Arithmetic@.",
+        "operationId" : "getCustomViewCriteria",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contracts@, @products@,@activities@,@calls@,@events@  and @Custom modules@.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Allowed values are : @tickets@, @tasks@,@contacts@, @accounts@,@contracts@, @products@,@activities@,@calls@,@events@  and @Custom modules@.",
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "products", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "entity" : "Criteria"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "Allowed values are : @Valid Department Id@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Allowed values are : @Valid Department Id@.",
+            "pattern" : "([0-9]+)",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Criteria"
+            }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getCustomViewCriteriaResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "f195524d0ae6737febf289c55efd47bc",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.CriteriaService.getCustomViewCriteria"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "automationCriteriaResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayValue" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          },
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "fieldName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldModule" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contracts", "accounts", "contacts", "products", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "value" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "oneOf" : [ {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+              }, {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+                },
+                "uniqueItems" : false
+              } ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "condition", "displayValue", "fieldModule", "fieldName", "value" ]
+      },
+      "availableConditionJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "i18NCondition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "value" : {
+            "type" : [ "null", "array" ],
+            "description" : "",
+            "items" : {
+              "description" : "",
+              "oneOf" : [ {
+                "type" : [ "string", "null" ],
+                "description" : "",
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+              }, {
+                "type" : [ "null", "array" ],
+                "description" : "",
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+                },
+                "uniqueItems" : false
+              } ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "condition", "i18NCondition", "value" ]
+      },
+      "availableConditionArr" : {
+        "type" : [ "null", "array" ],
+        "description" : "",
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/availableConditionJson"
+        }
+      },
+      "primitiveConditionJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "conditionType" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NCondition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "url" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "required" : [ "condition", "conditionType", "i18NCondition", "url" ]
+      },
+      "primitiveConditionJsonWithoutURL" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "conditionType" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NCondition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          }
+        },
+        "required" : [ "condition", "conditionType", "i18NCondition" ]
+      },
+      "primitiveConditionJsonWithAllowedValues" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "allowedValues" : {
+            "type" : [ "null", "array" ],
+            "description" : "",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "description" : "",
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[0-9a-zA-Z_\\-\\&\\.\\$\\@\\^\\(\\)\\{\\}\\~\\=\\-\\|\\*\\+\\?\\[\\]\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+            },
+            "uniqueItems" : false
+          },
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          },
+          "conditionType" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NCondition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(.*|null|undefined)"
+          }
+        },
+        "required" : [ "allowedValues", "condition", "conditionType", "i18NCondition" ]
+      },
+      "primitiveConditionArr" : {
+        "type" : [ "null", "array" ],
+        "description" : "",
+        "items" : {
+          "description" : "",
+          "oneOf" : [ {
+            "$ref" : "./Criteria.json#/components/schemas/primitiveConditionJson"
+          }, {
+            "$ref" : "./Criteria.json#/components/schemas/primitiveConditionJsonWithoutURL"
+          }, {
+            "$ref" : "./Criteria.json#/components/schemas/primitiveConditionJsonWithAllowedValues"
+          } ]
+        }
+      },
+      "criteriaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "availableConditions" : {
+            "$ref" : "./Criteria.json#/components/schemas/availableConditionArr"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldName" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldLabel" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "i18NLabel" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "primitiveConditions" : {
+            "$ref" : "./Criteria.json#/components/schemas/primitiveConditionArr"
+          },
+          "id" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldType" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "Text", "URL", "Textarea", "Email", "Phone", "Multiselect", "Date", "DateTime", "Number", "Checkbox", "Percent", "Decimal", "Currency", "Picklist", "LookUp", "Lookup", "AutoNumber", "Boolean", "Fax", "Formula", "formula" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "availableConditions", "fieldLabel", "fieldName", "fieldType", "i18NLabel", "id", "primitiveConditions", "type" ]
+      },
+      "fieldDetailsArr" : {
+        "type" : [ "null", "array" ],
+        "description" : "",
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/criteriaJson"
+        }
+      },
+      "criteriaFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "Tickets", "Contacts", "Accounts", "Tasks", "Solutions", "Products", "Contracts", "Calls - Call Information", "Events - Event Information", "Activities", "TimeEntry", "Cases", "Calls", "Events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "enum" : [ "tickets", "contacts", "products", "accounts", "tasks", "social", "articles", "community", "timeEntry", "contracts", "topics", "departments", "agents", "category", "attachments", "solutions", "reports", "kbCategory", "dashboards", "chat", "calls", "events", "activities" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fieldDetails" : {
+            "$ref" : "./Criteria.json#/components/schemas/fieldDetailsArr"
+          }
+        },
+        "required" : [ "displayLabel", "fieldDetails", "name" ]
+      },
+      "criteriaFieldsArr" : {
+        "type" : [ "null", "array" ],
+        "description" : "",
+        "items" : {
+          "$ref" : "./Criteria.json#/components/schemas/criteriaFieldsJson"
+        }
+      },
+      "criteriaFieldsObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "description" : "",
+        "properties" : {
+          "criteriaFields" : {
+            "$ref" : "./Criteria.json#/components/schemas/criteriaFieldsArr"
+          }
+        },
+        "required" : [ "criteriaFields" ]
+      }
+    },
+    "responses" : {
+      "getCustomViewCriteriaResponse" : {
+        "description" : "getCustomViewCriteriaResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "criteriaFields" : {
+                  "$ref" : "./Criteria.json#/components/schemas/criteriaFieldsArr"
+                }
+              },
+              "required" : [ "criteriaFields" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "criteriaFields" : [ {
+                    "displayLabel" : "Activities",
+                    "name" : "activities",
+                    "fieldDetails" : [ {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Subject",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Category",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is MISSED",
+                        "value" : [ "${MISSED}" ]
+                      }, {
+                        "condition" : "is OPEN",
+                        "value" : [ "${OPEN}" ]
+                      }, {
+                        "condition" : "is ON HOLD",
+                        "value" : [ "${ONHOLD}" ]
+                      }, {
+                        "condition" : "is CLOSED",
+                        "value" : [ "${CLOSED}" ]
+                      }, {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      } ],
+                      "fieldLabel" : "Status",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Request",
+                      "type" : "lookup"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Contact Name",
+                      "type" : "lookup"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Owner",
+                      "type" : "user"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Priority",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Description",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Remind me",
+                      "type" : "dateTime"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Created By",
+                      "type" : "user"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Modified By",
+                      "type" : "user"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Created Time",
+                      "type" : "dateTime"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Modified Time",
+                      "type" : "dateTime"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "=",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<>",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<=",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : ">",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : ">=",
+                        "value" : [ "${CUSTOM}" ]
+                      } ],
+                      "fieldLabel" : "Age In Days",
+                      "type" : "integer"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "Calls", "Tasks", "Events" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "Calls", "Tasks", "Events" ]
+                      } ],
+                      "fieldLabel" : "Activity Type",
+                      "type" : "text"
+                    } ]
+                  }, {
+                    "displayLabel" : "Tasks",
+                    "name" : "tasks",
+                    "fieldDetails" : [ {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Due Date",
+                      "type" : "dateTime"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Category",
+                      "type" : "text"
+                    } ]
+                  }, {
+                    "displayLabel" : "Calls - Call Information",
+                    "name" : "calls",
+                    "fieldDetails" : [ {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "Inbound", "Outbound" ]
+                      } ],
+                      "fieldLabel" : "Direction",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      } ],
+                      "fieldLabel" : "Start Time",
+                      "type" : "dateTime"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "=",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<>",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "<=",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : ">",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : ">=",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Duration",
+                      "type" : "integer"
+                    } ]
+                  }, {
+                    "displayLabel" : "Events - Event Information",
+                    "name" : "events",
+                    "fieldDetails" : [ {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "starts with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "contains",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "doesn't contain",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "ends with",
+                        "value" : [ "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Category",
+                      "type" : "text"
+                    }, {
+                      "availableConditions" : [ {
+                        "condition" : "is",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "isn't",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is after",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "is before",
+                        "value" : [ "${CURRENTTIME}", "${CUSTOM}" ]
+                      }, {
+                        "condition" : "between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "not between",
+                        "value" : [ [ "${CURRENTTIME}", "${CUSTOM}" ], [ "${CURRENTTIME}", "${CUSTOM}" ] ]
+                      }, {
+                        "condition" : "is empty",
+                        "value" : [ "${EMPTY}" ]
+                      }, {
+                        "condition" : "is not empty",
+                        "value" : [ "${NOTEMPTY}" ]
+                      } ],
+                      "fieldLabel" : "Start Time",
+                      "type" : "dateTime"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Criteria"
+}

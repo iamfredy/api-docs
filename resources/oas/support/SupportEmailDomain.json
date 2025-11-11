@@ -1,0 +1,293 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "SupportEmailDomain",
+    "version" : "1.0.0",
+    "x-clan-group" : "mail",
+    "x-module-group" : "mail"
+  },
+  "paths" : {
+    "/api/v1/supportEmailDomain" : {
+      "get" : {
+        "tags" : [ "SupportEmailDomain" ],
+        "summary" : "Get SupportEmailAddress SubDomain",
+        "description" : "This API fetches the subdomain of the support email address.",
+        "operationId" : "getSupportEmailAddressDomain",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getSupportEmailDomainResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 100,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "mail",
+          "apihash" : "682909a8d449116e32d7894f1159d9cd",
+          "module-group" : "mail",
+          "apimethod" : "com.zoho.support.restapi.SupportEmailDomainService.getSupportEmailAddressDomain"
+        }
+      },
+      "put" : {
+        "tags" : [ "SupportEmailDomain" ],
+        "summary" : "Update SupportEmailAddress SubDomain",
+        "description" : "This API updates the subdomain (the \"~mycompany~\" part) of the support email address.!!1. Only the primary contact of the organization can update the subdomain of the support email address.!2. The new support email address will be support@zylker.com.!3. The updated support email address will be used for fetching emails, henceforth. So make sure that you update the new address in the forwarding configurations of your mailbox.!4. The new support email address is applicable only for the default department.!5. All existing email aliases along with the old support email address will be permanently deleted from your account.<br/>6. Emails forwarded to the old support address will not be fetched in.",
+        "operationId" : "updateSupportEmailAddressDomain",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateSupportEmailPayload"
+        },
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/updateSupportEmailDomainResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 100,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 1800000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "mail",
+          "apihash" : "83cfc881d3dc7eea69cd02f6a17ff1ad",
+          "module-group" : "mail",
+          "apimethod" : "com.zoho.support.restapi.SupportEmailDomainService.updateSupportEmailAddressDomain"
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "getSupportEmailDomainResponse" : {
+        "description" : "getSupportEmailDomainResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "updatedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "supportEmailDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "oldDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "oldDomain", "supportEmailDomain", "updatedBy", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "updatedTime" : 1383564067000,
+                  "updatedBy" : "4000000007089",
+                  "supportEmailDomain" : "zylkernew.zohodesk.com",
+                  "oldDomain" : "zylker.zohodesk.com"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "updateSupportEmailDomainResponse" : {
+        "description" : "updateSupportEmailDomainResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "updatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "updatedBy" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "supportEmailDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Name of the new email subdomain",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "oldDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "oldDomain", "supportEmailDomain", "updatedBy", "updatedTime" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "updatedTime" : 1383564067000,
+                  "updatedBy" : "4000000007089",
+                  "supportEmailDomain" : "zylkernew.zohodesk.com",
+                  "oldDomain" : "zylker.zohodesk.com"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "updateSupportEmailPayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "supportEmailDomain" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "[a-z0-9]+"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "supportEmailDomain" : "zylkernew"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "SupportEmailDomain"
+}

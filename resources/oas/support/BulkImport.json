@@ -1,0 +1,2797 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "BulkImport",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "import"
+  },
+  "paths" : {
+    "/api/v1/bulkImport/{bulkImportId}" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport",
+        "description" : "This API fetches an BulkImport request from your help desk portal.",
+        "operationId" : "bulkImportRead",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ecf6d515636ff0ba5bde4c0ecc0ac7d2",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getBulkImport"
+        }
+      },
+      "delete" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Delete Bulk Import Request",
+        "description" : "This API deletes a Bulk Import Request before the Import is initiated",
+        "operationId" : "bulkImportDelete",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "d751dcb9ea63095e8a939b813a73becc",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.deleteImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/availableFields" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport Desk Fields",
+        "description" : "This API gets desk fields in data Import request.",
+        "operationId" : "bulkImportAvailableFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportAvailableFieldList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "501b0c5f68591af41095cb176774825b",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getDestinationFields"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/sampleData" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport Sample Data",
+        "description" : "This API fetches sample data for a bulk import request, including headers and sample records for specified modules.",
+        "operationId" : "getBulkImportSampleData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "#/components/parameters/modules"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportSampleDataResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "oAuth2" : [ "imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getSampleData"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/addMoreData" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "bulkImportAddMoreData",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/bulkImportAddMoreData"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/stop" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Stop Data Import",
+        "description" : "This API stop the data import.",
+        "operationId" : "bulkImportStop",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "5265139df8ba9ef62cc6274e7211ef44",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.stopImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/history" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport history",
+        "description" : "This API fetches the overall history of an BulkImport.",
+        "operationId" : "bulkImportHistory",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportHistories"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "739ae3d6153a3b078e731271209441cf",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getBulkImportHistory"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/retry" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Retry Data Import",
+        "description" : "This API retry the data import.",
+        "operationId" : "bulkImportRetry",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c476c12abe08083f02524dc71631d6e5",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.retryImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/configuration" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport configuration",
+        "description" : "This API fetches the configuration for ui.",
+        "operationId" : "bulkImportConfiguration",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportConfig"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "16b5eb6c317b8f57596f8aeb2273bbf5",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getBulkImportConfiguration"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/history/{historyId}/revert" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Revert Bulk Import",
+        "description" : "This API reverts data that belongs to a particular bulkimport history.",
+        "operationId" : "bulkImportRevert",
+        "parameters" : [ {
+          "name" : "historyId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./Import.json#/components/responses/importRevertResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ff4a07c55d27f0c508de13977e483415",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.bulkImportRevert"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/mapFiles" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "BulkImport File Mapping",
+        "description" : "This API helps you to match csv files in the zip corresponding to its modules",
+        "operationId" : "saveFiles",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/Mapping-FInal"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/BulkImportFiles"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "cf74938263a351e9bdfe2cd0f470c23a",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.saveFiles"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/resume" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Resume Data Import",
+        "description" : "This API resume data import.",
+        "operationId" : "bulkImportResume",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "fb7b2320893a055da41c59d73ea2ea2b",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.resumeImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/moveForward" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Data Import Move Forward",
+        "description" : "This API helps advance the import request from its current state and continues the import process. It applies only to requests in the WAITING or DRAFTED status.",
+        "operationId" : "bulkImportMoveForward",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ],
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "6a8c7ccdab7aae4e87f5cad74f9f90d8",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.forward"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/mapFields" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get BulkImport Map Fields",
+        "description" : "This API gets source fields in data Import request.",
+        "operationId" : "bulkImportMapFields",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportFieldMappingRequest"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "874e61cd28e8a484bab15786d0cc062e",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getFields"
+        }
+      },
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Submit Mappings",
+        "description" : "This API submit or draft the field mapping.",
+        "operationId" : "bulkImportSubmitMappings",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/module"
+        }, {
+          "name" : "isDraft",
+          "in" : "query",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/bulkImportFieldMappingRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportFieldMappingRequest"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "074e1e510f8acada111dac94ba8ab589",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.saveFields"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/files" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Get Files Supported for an Import",
+        "description" : "This API get the files to be imported.",
+        "operationId" : "bulkImportFiles",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/BulkImportFiles"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c431789b05e9c14900b1f7a6dfa4d2e4",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getFiles"
+        }
+      }
+    },
+    "/api/v1/bulkImport" : {
+      "get" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "List BulkImport",
+        "description" : "This API lists a range of BulkImport, based on the limit specified. ",
+        "operationId" : "bulkImportList",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        }, {
+          "$ref" : "#/components/parameters/optionalModules"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "8ece83bd604dcf9ea6b0033281d779ad",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.getBulkImportList"
+        }
+      },
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Create BulkImport",
+        "description" : "This API creates BulkImport in your help desk portal.",
+        "operationId" : "bulkImportCreate",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/bulkImportCreate"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "156a9589b56ef19684417847feed11f6",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.addBulkImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/start" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Start Data Import",
+        "description" : "This API start the data import.",
+        "operationId" : "bulkImportStart",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "67d3dd78155f5bb133b57780f1cd006e",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.startImport"
+        }
+      }
+    },
+    "/api/v1/bulkImport/{bulkImportId}/backward" : {
+      "post" : {
+        "tags" : [ "BulkImport" ],
+        "summary" : "Moves Stage Backward Data Import",
+        "description" : "This API moves state from back statage data import.",
+        "operationId" : "bulkImportMoveBack",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/bulkImportId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/bulkImportObject"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.imports.CUSTOM" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 120000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "77bec0105300ad0d716ea01b6bdb2d6d",
+          "module-group" : "import",
+          "apimethod" : "com.zoho.support.restapi.BulkImportService.backward"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "module" : {
+        "type" : [ "array", "null" ],
+        "description" : "Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules",
+        "items" : {
+          "type" : [ "string", "null" ],
+          "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "articles" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        },
+        "style" : "simple",
+        "explode" : true
+      },
+      "bulkImportAvailableField" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isCustomField" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "isUnique" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "findBy" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "displayLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "apiName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "apiName", "displayLabel" ]
+            },
+            "uniqueItems" : false
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "TEXT", "TEXTAREA", "PICKLIST", "EMAIL", "PHONE", "URL", "MULTISELECT", "NUMBER", "PERCENT", "DECIMAL", "CURRENCY", "DATE", "DATETIME", "BOOLEAN", "ID", "LIST_ID", "EXTID", "LOOKUP", "MULTI_LOOKUP" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "maxLength" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "isMandatory" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "required" : [ "apiName", "displayLabel", "findBy", "isCustomField", "isMandatory", "isUnique", "maxLength", "type" ]
+      },
+      "bulkImportAvailableFields" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./BulkImport.json#/components/schemas/bulkImportAvailableField"
+        }
+      },
+      "bulkImportSampleDataModule" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "module" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "headers" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "label" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0
+                },
+                "columnKey" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 50,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "columnKey", "label" ]
+            }
+          },
+          "data" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 1000,
+                "minLength" : 0
+              }
+            }
+          }
+        },
+        "required" : [ "data", "headers", "module" ]
+      },
+      "bulkImportHistory" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "file" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 4,
+            "minProperties" : 3,
+            "properties" : {
+              "sizeInBytes" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "downloadUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 2000,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+              },
+              "id" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "downloadUrl", "id", "name", "sizeInBytes" ]
+          },
+          "consolidatedReportUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "bulkImportId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "batchStatus" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 6,
+              "minProperties" : 6,
+              "properties" : {
+                "completedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "module" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "displayLabel" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "apiName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "apiName", "displayLabel" ]
+                },
+                "initiatedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "importRecordSummary" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 5,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "total" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "created" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "failed" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "updated" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "skipped" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int32",
+                      "pattern" : "([0-9]+)"
+                    }
+                  },
+                  "required" : [ "created", "failed", "skipped", "total", "updated" ]
+                },
+                "reportUrl" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "completedTime", "importRecordSummary", "initiatedTime", "module", "reportUrl", "status" ]
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "batchStatus", "bulkImportId", "consolidatedReportUrl", "createdTime", "file", "id", "modifiedTime" ]
+      },
+      "bulkImportHistoryList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./BulkImport.json#/components/schemas/bulkImportHistory"
+        }
+      },
+      "Mapping" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "articles" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "fileNames" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "string", "null" ],
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "uniqueItems" : false
+          }
+        },
+        "required" : [ "fileNames", "module" ]
+      },
+      "Mapping_Array" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./BulkImport.json#/components/schemas/Mapping"
+        }
+      },
+      "bulkImportObject" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "processInStage" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "PREPROCESS_DATA", "MAP_FIELD", "SETUP", "IMPORT_DATA", "GENERATE_REPORT", "IMPORTED", "REVIEW", "FILE_MAPPING", "ADD_MORE_DATA" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To Filter by processInStage. The process in Stage involves multiple stages of data import requests which have the following stages: @PREPROCESS_DATA@, @MAP_FIELD@, @SETUP@, @IMPORT_DATA@, @GENERATE_REPORT@, and @IMPORTED@. ",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "file" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 4,
+            "minProperties" : 3,
+            "properties" : {
+              "sizeInBytes" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "downloadUrl" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 2000,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+              },
+              "id" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "required" : [ "downloadUrl", "id", "name", "sizeInBytes" ]
+          },
+          "createdBy" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 6,
+            "minProperties" : 5,
+            "properties" : {
+              "photoURL" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              },
+              "firstName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "name" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "email" : {
+                "type" : [ "string", "null" ],
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "required" : [ "email", "firstName", "id", "lastName", "name", "photoURL" ]
+          },
+          "failureReason" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "modules" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "properties" : {
+                "displayLabel" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "apiName" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "apiName", "displayLabel" ]
+            },
+            "uniqueItems" : false
+          },
+          "isResidual" : {
+            "type" : [ "boolean", "null" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To check whether the bulk import is residual or not.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "QUEUED", "IN_PROGRESS", "RESUME", "WAITING", "STOP", "DRAFT", "COMPLETED", "FAILED", "COMPLETED_WITH_FAILURE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "To Filter by status. The status describes what is going on in the stage. The following are the possible statuses are @QUEUED@, @IN_PROGRESS@, @RESUME@, @WAITING@, @STOP@, @COMPLETED@, @FAILED@ and @COMPLETED_WITH_FAILURE@.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "createdBy", "createdTime", "failureReason", "file", "id", "modifiedTime", "modules", "processInStage", "status" ]
+      },
+      "bulkImportObjectList" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./BulkImport.json#/components/schemas/bulkImportObject"
+        }
+      }
+    },
+    "responses" : {
+      "bulkImportObject" : {
+        "description" : "bulkImportObject template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "processInStage" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "PREPROCESS_DATA", "MAP_FIELD", "SETUP", "IMPORT_DATA", "GENERATE_REPORT", "IMPORTED", "REVIEW", "FILE_MAPPING", "ADD_MORE_DATA" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The process in Stage involves multiple stages of data import requests which have the following stages: @PREPROCESS_DATA@, @MAP_FIELD@, @SETUP@, @IMPORT_DATA@, @GENERATE_REPORT@, and @IMPORTED@. ",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "file" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 4,
+                  "minProperties" : 3,
+                  "properties" : {
+                    "sizeInBytes" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "downloadUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 2000,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                    },
+                    "id" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "required" : [ "downloadUrl", "id", "name", "sizeInBytes" ]
+                },
+                "createdBy" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 6,
+                  "minProperties" : 5,
+                  "properties" : {
+                    "photoURL" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    },
+                    "firstName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "lastName" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 50,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "email" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    }
+                  },
+                  "required" : [ "email", "firstName", "id", "lastName", "name", "photoURL" ]
+                },
+                "failureReason" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the data import request",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "displayLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "apiName", "displayLabel" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "QUEUED", "IN_PROGRESS", "RESUME", "WAITING", "STOP", "DRAFT", "COMPLETED", "FAILED", "COMPLETED_WITH_FAILURE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The status describes what is going on in the stage. The following are the possible statuses are @QUEUED@, @IN_PROGRESS@, @RESUME@, @WAITING@, @STOP@, @COMPLETED@, @FAILED@ and @COMPLETED_WITH_FAILURE@.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "createdBy", "createdTime", "failureReason", "file", "id", "modifiedTime", "modules", "processInStage", "status" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1676979023000,
+                  "processInStage" : "IMPORTED",
+                  "file" : {
+                    "sizeInBytes" : "24325",
+                    "name" : "Data.zip",
+                    "id" : "4000000047001"
+                  },
+                  "createdBy" : {
+                    "photoURL" : null,
+                    "firstName" : "Markov",
+                    "lastName" : "Stark",
+                    "name" : "Markov Stark",
+                    "id" : "4000000000351",
+                    "email" : "markantony@mark.com"
+                  },
+                  "failureReason" : "No Failure",
+                  "departmentId" : "4000000107001",
+                  "createdTime" : 1676978714000,
+                  "id" : "4000000081001",
+                  "modules" : [ {
+                    "displayLabel" : "Accounts",
+                    "apiName" : "accounts"
+                  } ],
+                  "status" : "COMPLETED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportAvailableFieldList" : {
+        "description" : "bulkImportAvailableFieldList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./BulkImport.json#/components/schemas/bulkImportAvailableFields"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Firstname",
+                    "apiName" : "firstName",
+                    "isCustomField" : false,
+                    "isUnique" : false,
+                    "findBy" : null,
+                    "type" : "TEXT",
+                    "maxLength" : "40",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Lastname",
+                    "apiName" : "lastName",
+                    "isCustomField" : false,
+                    "isUnique" : false,
+                    "findBy" : null,
+                    "type" : "TEXT",
+                    "maxLength" : "200",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Email",
+                    "apiName" : "email",
+                    "isCustomField" : false,
+                    "isUnique" : false,
+                    "findBy" : null,
+                    "type" : "EMAIL",
+                    "maxLength" : "255",
+                    "isMandatory" : false
+                  }, {
+                    "displayLabel" : "Contact External Id",
+                    "apiName" : "contactExtId",
+                    "isCustomField" : false,
+                    "isUnique" : true,
+                    "findBy" : null,
+                    "type" : "EXTID",
+                    "maxLength" : "100",
+                    "isMandatory" : true
+                  }, {
+                    "displayLabel" : "Account",
+                    "apiName" : "accountLookup",
+                    "isCustomField" : false,
+                    "isUnique" : false,
+                    "findBy" : [ {
+                      "displayLabel" : "Account ID",
+                      "apiName" : "accountId"
+                    }, {
+                      "displayLabel" : "Account External ID",
+                      "apiName" : "accountExtId"
+                    }, {
+                      "displayLabel" : "Account Name",
+                      "apiName" : "accountName"
+                    } ],
+                    "type" : "LOOKUP",
+                    "maxLength" : "100",
+                    "isMandatory" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportSampleDataResponse" : {
+        "description" : "bulkImportSampleDataResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "importId" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "sampleData" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "$ref" : "./BulkImport.json#/components/schemas/bulkImportSampleDataModule"
+                  }
+                }
+              },
+              "required" : [ "importId", "sampleData" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "importId" : "5000000086001",
+                  "sampleData" : [ {
+                    "headers" : [ {
+                      "label" : "ID",
+                      "columnKey" : "col1"
+                    }, {
+                      "label" : "Product Owner",
+                      "columnKey" : "col2"
+                    }, {
+                      "label" : "Product Name",
+                      "columnKey" : "col3"
+                    }, {
+                      "label" : "Product Code",
+                      "columnKey" : "col4"
+                    }, {
+                      "label" : "Manufacturer",
+                      "columnKey" : "col5"
+                    }, {
+                      "label" : "Product Category",
+                      "columnKey" : "col6"
+                    } ],
+                    "data" : [ {
+                      "col1" : "99587000005130006",
+                      "col2" : "99587000000190001",
+                      "col3" : "Imported product ksk",
+                      "col4" : "7",
+                      "col5" : "",
+                      "col6" : "Hardware"
+                    }, {
+                      "col1" : "99587000005130026",
+                      "col2" : "99587000000190001",
+                      "col3" : "Hello import",
+                      "col4" : "goat",
+                      "col5" : "",
+                      "col6" : "Software"
+                    } ],
+                    "module" : "products"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportHistories" : {
+        "description" : "bulkImportHistories template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./BulkImport.json#/components/schemas/bulkImportHistoryList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "importHistory" : [ {
+                    "file" : {
+                      "sizeInBytes" : "14630",
+                      "name" : "Accounts.zip",
+                      "downloadUrl" : null,
+                      "id" : "4000000065001"
+                    },
+                    "consolidatedReportUrl" : "https://desk.zohotest.com",
+                    "bulkImportId" : "4000000066003",
+                    "id" : "1",
+                    "batchStatus" : [ {
+                      "completedTime" : 1675671336000,
+                      "module" : {
+                        "displayLabel" : "Accounts",
+                        "apiName" : "accounts"
+                      },
+                      "initiatedTime" : 1675667736000,
+                      "importRecordSummary" : {
+                        "total" : "100",
+                        "created" : "100",
+                        "failed" : "0",
+                        "updated" : "0",
+                        "skipped" : "0"
+                      },
+                      "reportUrl" : null,
+                      "status" : "COMPLETED"
+                    } ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportConfig" : {
+        "description" : "bulkImportConfig template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "feature" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "supportedModules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "displayLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "apiName", "displayLabel" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "uploads" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "maxProperties" : 3,
+                  "minProperties" : 3,
+                  "properties" : {
+                    "eventId" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "xService" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "uploadUrl" : {
+                      "type" : [ "string", "null" ],
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "(^(ht|f)tp(s?)\\://[0-9a-zA-Z][-.\\w]*(:[0-9])*(/?)([a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\+=&amp;%\\$#_\\[\\]@!\\(\\)\\*;~]*)?$)|[*]"
+                    }
+                  },
+                  "required" : [ "eventId", "uploadUrl", "xService" ]
+                }
+              },
+              "required" : [ "feature", "supportedModules", "uploads" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "feature" : "BULK_IMPORT",
+                  "supportedModules" : [ {
+                    "displayLabel" : "Accounts",
+                    "apiName" : "accounts"
+                  }, {
+                    "displayLabel" : "Contacts",
+                    "apiName" : "contacts"
+                  }, {
+                    "displayLabel" : "Tickets",
+                    "apiName" : "tickets"
+                  }, {
+                    "displayLabel" : "Products",
+                    "apiName" : "products"
+                  }, {
+                    "displayLabel" : "Tasks",
+                    "apiName" : "tasks"
+                  }, {
+                    "displayLabel" : "Events",
+                    "apiName" : "events"
+                  }, {
+                    "displayLabel" : "Calls",
+                    "apiName" : "calls"
+                  }, {
+                    "displayLabel" : "ArticleTranslations",
+                    "apiName" : "articles"
+                  } ],
+                  "uploads" : {
+                    "eventId" : "f9d6b7db4aa4327fc131cc2bc0adb751c0fc32be39fe0d2cdd3643bf868c1d0b",
+                    "xService" : "desk",
+                    "uploadUrl" : "https://upload.zoho.com/upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "BulkImportFiles" : {
+        "description" : "BulkImportFiles template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "supportedFiles" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "properties" : {
+                      "displayLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "files" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 2,
+                          "minProperties" : 2,
+                          "properties" : {
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "sizeInBytes" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            }
+                          },
+                          "required" : [ "fileName", "fileSizeInBytes" ]
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "apiName", "displayLabel", "files" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "unsupportedFiles" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "fileName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "fileSizeInBytes" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      }
+                    },
+                    "required" : [ "fileName", "fileSizeInBytes" ]
+                  },
+                  "uniqueItems" : false
+                },
+                "fileId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "virusPresent" : {
+                  "type" : [ "boolean", "null" ]
+                }
+              },
+              "required" : [ "fileId", "supportedFiles", "unsupportedFiles", "virusPresent" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "supportedFiles" : [ {
+                    "displayLabel" : "Accounts",
+                    "apiName" : "accounts",
+                    "files" : [ {
+                      "sizeInBytes" : 323434,
+                      "name" : "Accounts_1.csv"
+                    }, {
+                      "sizeInBytes" : 435343,
+                      "name" : "Accounts.csv"
+                    } ]
+                  } ],
+                  "unsupportedFiles" : [ {
+                    "sizeInBytes" : 34321,
+                    "name" : "Contacts_1.csv"
+                  }, {
+                    "sizeInBytes" : 54346,
+                    "name" : "Products.csv"
+                  }, {
+                    "sizeInBytes" : 432523,
+                    "name" : "_Products.csv"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportFieldMappingRequest" : {
+        "description" : "bulkImportFieldMappingRequest template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "mappings" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "properties" : {
+                      "id" : {
+                        "type" : [ "string", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "isSearchable" : {
+                        "type" : "boolean"
+                      },
+                      "sourceFieldType" : {
+                        "type" : "string"
+                      },
+                      "sourceField" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationFieldType" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "", "TEXT", "TEXTAREA", "PICKLIST", "EMAIL", "PHONE", "URL", "MULTISELECT", "NUMBER", "PERCENT", "DECIMAL", "CURRENCY", "DATE", "DATETIME", "BOOLEAN", null ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "isExists" : {
+                        "type" : [ "boolean", "null" ],
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "findBy" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationFieldLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationField" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "dataTypeFormat" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "required" : [ "dataTypeFormat", "destinationField", "destinationFieldLabel", "destinationFieldType", "findBy", "isExists", "sourceField" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "findBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The API name of a unique field or ID of a record. The system uses the value of this field to find the existing records",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "operation" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "INSERT", "UPSERT", "UPDATE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The Operation to perform on the record that matched. Allowed values are @INSERT@ only inserts record if not exists, @UPDATE@ only updates record if exists, @UPSERT@ insert record if not exists otherwise updates records",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "findBy", "mappings", "operation" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : {
+                    "mappings" : [ {
+                      "sourceField" : "lastName",
+                      "isExists" : true,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : "TEXT",
+                      "findBy" : null,
+                      "destinationFieldLabel" : "Lastname",
+                      "id" : "4000000047193",
+                      "isSearchable" : false,
+                      "destinationField" : "lastName"
+                    }, {
+                      "sourceField" : "firstName",
+                      "isExists" : true,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : "TEXT",
+                      "findBy" : null,
+                      "destinationFieldLabel" : "Firstname",
+                      "id" : "4000000047195",
+                      "isSearchable" : false,
+                      "destinationField" : "firstName"
+                    }, {
+                      "sourceField" : "phoneNumber",
+                      "isExists" : false,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : null,
+                      "findBy" : null,
+                      "destinationFieldLabel" : null,
+                      "id" : "4000000047197",
+                      "isSearchable" : false,
+                      "destinationField" : null
+                    }, {
+                      "sourceField" : "contactExtId",
+                      "isExists" : true,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : "TEXT",
+                      "findBy" : null,
+                      "destinationFieldLabel" : "Contact External Id",
+                      "id" : "4000000047199",
+                      "isSearchable" : true,
+                      "destinationField" : "contactExtId"
+                    }, {
+                      "sourceField" : "emailId",
+                      "isExists" : true,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : "EMAIL",
+                      "findBy" : null,
+                      "destinationFieldLabel" : "Email",
+                      "id" : "4000000047201",
+                      "isSearchable" : false,
+                      "destinationField" : "email"
+                    }, {
+                      "sourceField" : "accountExtId",
+                      "isExists" : true,
+                      "sourceType" : "MEDIUM_TEXT",
+                      "destinationType" : "ID",
+                      "findBy" : "accountExtId",
+                      "destinationFieldLabel" : "Account",
+                      "id" : "4000000047203",
+                      "isSearchable" : false,
+                      "destinationField" : "accountLookup"
+                    } ],
+                    "findBy" : "contactExtId",
+                    "operation" : "INSERT"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "bulkImportList" : {
+        "description" : "bulkImportList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./BulkImport.json#/components/schemas/bulkImportObjectList"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1677827879000,
+                    "processInStage" : "MAP_FIELD",
+                    "file" : {
+                      "sizeInBytes" : "24325",
+                      "name" : "Data.zip",
+                      "id" : "1892000000032001"
+                    },
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Markov",
+                      "lastName" : "Stark",
+                      "name" : "Markov Stark",
+                      "id" : "4000000000351",
+                      "email" : "markantony@mark.com"
+                    },
+                    "failureReason" : "No Failure",
+                    "departmentId" : "4000000107001",
+                    "createdTime" : 1677827697000,
+                    "id" : "4000000108001",
+                    "modules" : [ {
+                      "displayLabel" : "Accounts",
+                      "apiName" : "accounts"
+                    } ],
+                    "status" : "WAITING"
+                  }, {
+                    "modifiedTime" : 1676979023000,
+                    "processInStage" : "IMPORTED",
+                    "file" : {
+                      "sizeInBytes" : "24325",
+                      "name" : "Data.zip",
+                      "id" : "1892000000032001"
+                    },
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Markov",
+                      "lastName" : "Stark",
+                      "name" : "Markov Stark",
+                      "id" : "4000000000351",
+                      "email" : "markantony@mark.com"
+                    },
+                    "failureReason" : "No Failure",
+                    "departmentId" : "4000000107001",
+                    "createdTime" : 1677827697000,
+                    "id" : "4000000108001",
+                    "modules" : [ {
+                      "displayLabel" : "Accounts",
+                      "apiName" : "accounts"
+                    } ],
+                    "status" : "WAITING"
+                  }, {
+                    "modifiedTime" : 1676979023000,
+                    "processInStage" : "IMPORTED",
+                    "file" : {
+                      "sizeInBytes" : "24325",
+                      "name" : "Data.zip",
+                      "id" : "1892000000032001"
+                    },
+                    "createdBy" : {
+                      "photoURL" : null,
+                      "firstName" : "Markov",
+                      "lastName" : "Stark",
+                      "name" : "Markov Stark",
+                      "id" : "4000000000351",
+                      "email" : "markantony@mark.com"
+                    },
+                    "failureReason" : "No Failure",
+                    "departmentId" : "4000000107001",
+                    "createdTime" : 1676978714000,
+                    "id" : "4000000081001",
+                    "modules" : [ {
+                      "displayLabel" : "Accounts",
+                      "apiName" : "accounts"
+                    } ],
+                    "status" : "COMPLETED"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "module" : {
+        "name" : "module",
+        "in" : "query",
+        "description" : "Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules",
+          "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "articles" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "modules" : {
+        "name" : "modules",
+        "in" : "query",
+        "description" : "Api Name of the module to be migrated, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "$ref" : "#/components/schemas/module"
+        }
+      },
+      "optionalModules" : {
+        "name" : "modules",
+        "in" : "query",
+        "description" : "To Filter by module value, Allowed modules are @accounts@, @contacts@, @tickets@, @tasks@, @calls@, @events@, @products@, @articles@ and custom modules",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "$ref" : "#/components/schemas/module"
+        }
+      },
+      "bulkImportId" : {
+        "name" : "bulkImportId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "bulkImportAddMoreData" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "fileId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "",
+                  "pattern" : "([0-9]+)",
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "fileId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : { }
+      },
+      "Mapping-FInal" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "addMappings" : {
+                  "$ref" : "./BulkImport.json#/components/schemas/Mapping_Array"
+                },
+                "removeMappings" : {
+                  "$ref" : "./BulkImport.json#/components/schemas/Mapping_Array"
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "addMappings" : [ {
+                    "module" : "accounts",
+                    "fileNames" : [ "Actualaccount.csv" ]
+                  } ],
+                  "removeMappings" : [ {
+                    "module" : "accounts",
+                    "fileNames" : [ "Accounts_1.csv" ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "bulkImportFieldMappingRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "mappings" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 6,
+                    "minProperties" : 6,
+                    "properties" : {
+                      "sourceField" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationFieldType" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "", "TEXT", "TEXTAREA", "PICKLIST", "EMAIL", "PHONE", "URL", "MULTISELECT", "NUMBER", "PERCENT", "DECIMAL", "CURRENCY", "DATE", "DATETIME", "BOOLEAN" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "isExists" : {
+                        "type" : [ "boolean", "null" ],
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "findBy" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationFieldLabel" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      },
+                      "destinationField" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "required" : [ "destinationField", "destinationFieldLabel", "destinationFieldType", "findBy", "isExists", "sourceField" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "findBy" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "operation" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "INSERT", "UPSERT", "UPDATE" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "mappings" : [ {
+                    "sourceField" : "lastName",
+                    "isExists" : true,
+                    "destinationField" : "lastName"
+                  }, {
+                    "sourceField" : "accountExtId",
+                    "isExists" : true,
+                    "findBy" : "accountExtId",
+                    "destinationField" : "accountLookUp"
+                  }, {
+                    "sourceField" : "firstName",
+                    "isExists" : true,
+                    "destinationField" : "firstName"
+                  }, {
+                    "sourceField" : "contactExtId",
+                    "isExists" : true,
+                    "destinationField" : "contactExtId"
+                  }, {
+                    "sourceField" : "emailId",
+                    "isExists" : true,
+                    "destinationField" : "email"
+                  } ],
+                  "findBy" : "contactExtId",
+                  "operation" : "INSERT"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "bulkImportCreate" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "modules" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "accounts", "contacts", "tickets", "tasks", "calls", "events", "products", "articles" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                },
+                "fileId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "departmentId", "fileId", "modules" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "departmentId" : "4000000046001",
+                  "modules" : [ "accounts" ],
+                  "fileId" : "4000000047001"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "BulkImport"
+}

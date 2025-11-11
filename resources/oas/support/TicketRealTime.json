@@ -1,0 +1,178 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "TicketRealTime",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "views"
+  },
+  "paths" : {
+    "/api/v1/realTime/fieldNameMapping": {
+      "get": {
+        "summary": "Get RealTime Key Mapping",
+        "description": "To get compressed format of api keys to compute messages received in real time. If the client has registered WMS, then messages can be received in real time.",
+        "tags": [ "ticketRealTime" ],
+        "operationId": "getRealTimeKeys",
+		"x-audience" : [ "company-internal"] ,
+        "parameters": [
+          {
+            "$ref" : "../common/Common.json#/components/parameters/orgId"
+          },{
+            "$ref" : "#/components/parameters/module"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getRealTimeKeysResponse"
+          },
+          "422": {
+            "$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "8088d46bcd1c7ba844d610c97705449a",
+          "module-group" : "views",
+          "apimethod" : "com.zoho.support.restapi.TicketCollisionService.getRealTimeFieldNameMapping"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas": {
+      "TicketRealTime": {
+        "type": "object",
+        "description": "Compressed format of ticket field keys used in real-time message computation.",
+        "additionalProperties": {
+          "type": "string"
+        },
+        "example": {
+          "modifiedTime": "mt",
+          "subCategory": "sc",
+          "statusType": "stty",
+          "blueprint.state.dueDate": "bpsdd",
+          "subject": "sub",
+          "product.id": "pid",
+          "dueDate": "dd",
+          "departmentId": "did",
+          "channel": "ch",
+          "onholdTime": "oht",
+          "sharedCount": "scnt",
+          "closedTime": "ct",
+          "lastThread.direction": "ltdir",
+          "product.productName": "pn",
+          "isTrashed": "del",
+          "lastThread.channel": "ltch",
+          "createdTime": "crt",
+          "assignee.photoURL": "asphoto",
+          "id": "id",
+          "isResponseOverdue": "rdue",
+          "contact.account.id": "aid",
+          "contact.account.accountName": "an",
+          "customerResponseTime": "cusrt",
+          "productId": "pid",
+          "contactId": "cid",
+          "threadCount": "tcnt",
+          "contact.crmContactType": "crmty",
+          "department.name": "dn",
+          "priority": "pri",
+          "classification": "cla",
+          "team.name": "tn",
+          "commentCount": "ccnt",
+          "contact.type": "cty",
+          "accountId": "aid",
+          "lastThread.isForward": "ltfw",
+          "phone": "ph",
+          "isSpam": "spam",
+          "status": "st",
+          "lastThread.isDraft": "ltdf",
+          "contact.firstName": "cfn",
+          "entitySkills": "skl",
+          "ticketNumber": "tno",
+          "sentiment": "sen",
+          "contact.lastName": "cln",
+          "assignee.id": "asid",
+          "blueprint.id": "bpId",
+          "responseDueDate": "rdd",
+          "channelId": "chid",
+          "email": "mail",
+          "channelCode": "chc",
+          "layoutId": "lid",
+          "assigneeId": "asid",
+          "assignee.firstName": "asfn",
+          "due": "due",
+          "teamId": "tid",
+          "assignee.lastName": "asln",
+          "team.id": "tid",
+          "department.id": "did",
+          "contact.id": "cid",
+          "category": "c"
+        }
+      }
+    },
+    "responses": {
+      "getRealTimeKeysResponse": {
+        "description": "Successfully retrieved the TicketRealTime key mapping.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/TicketRealTime"
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "module" : {
+        "name": "module",
+        "in": "query",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "enum": [ "tickets" ]
+        },
+        "description": "Name of the module to fetch mapping keys for."
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "TicketRealTime"
+}

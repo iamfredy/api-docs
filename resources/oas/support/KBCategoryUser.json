@@ -1,0 +1,241 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "KBCategoryUser",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/kbRootCategories/{rootCategoryId}/users" : {
+      "get" : {
+        "tags" : [ "KBCategoryUser" ],
+        "summary" : "Get users of a category",
+        "description" : "This API fetches the list of users associated with a specified root category",
+        "operationId" : "getCategoryUsers",
+        "parameters" : [ {
+          "name" : "isReviewOwner",
+          "in" : "query",
+          "description" : "Checks whether the user is a review owner. If the value is: <br> <ul><li> \"<b>true</b>\" - it returns a list of users who are reviewers. </li> <li> \"<b>false</b>\" - it returns a list of users who are non-reviewers. </li></ul> <br> <p><b>Note:</b> If this param is not provided, all users associated with a specific root category will be listed.</p>",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Checks whether the user is a review owner. If the value is: <br> <ul><li> \"<b>true</b>\" - it returns a list of users who are reviewers. </li> <li> \"<b>false</b>\" - it returns a list of users who are non-reviewers. </li></ul> <br> <p><b>Note:</b> If this param is not provided, all users associated with a specific root category will be listed.</p>"
+          }
+        }, {
+          "name" : "isModerator",
+          "in" : "query",
+          "description" : "Checks whether the user is a moderator. If the value is: <br> <ul><li> \"<b>true</b>\" - it returns a list of users who are moderators. </li> <li> \"<b>false</b>\" - it returns a list of users who are non-moderators. </li></ul> <br> <p><b>Note:</b> If this param is not provided, all users associated with a specific root category will be listed.</p>",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "boolean", "null" ],
+            "description" : "Checks whether the user is a moderator. If the value is: <br> <ul><li> \"<b>true</b>\" - it returns a list of users who are moderators. </li> <li> \"<b>false</b>\" - it returns a list of users who are non-moderators. </li></ul> <br> <p><b>Note:</b> If this param is not provided, all users associated with a specific root category will be listed.</p>"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of objects",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of objects",
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Offset value",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Offset value",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort order of the owners. Allowed values : firstName, lastName",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Sort order of the owners. Allowed values : firstName, lastName",
+            "enum" : [ "firstName", "lastName" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "searchValue",
+          "in" : "query",
+          "description" : "Search string",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Search string",
+            "maxLength" : 50,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Key that filters agents based on their activation status: @ACTIVE@ or @DISABLED@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that filters agents based on their activation status: @ACTIVE@ or @DISABLED@",
+            "enum" : [ "ACTIVE", "DISABLED", "DELETED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/rootCategoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBRootCategory.json#/components/responses/categoryUsersDataJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "05dcf26d5e216c71264cdf1bf24187ae",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.getCategoryUsers"
+        }
+      }
+    },
+    "/api/v1/kbRootCategories/{rootCategoryId}/users/{categoryUserId}" : {
+      "get" : {
+        "tags" : [ "KBCategoryUser" ],
+        "operationId" : "getACategoryUser",
+        "parameters" : [ {
+          "name" : "categoryUserId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/rootCategoryId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "./KBRootCategory.json#/components/responses/categoryUsers"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 25,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "50e6f23ddbd75b9266f46be0dc4619d6",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.kbcategory.rest.KbCategoryService.getCategoryUser"
+        }
+      }
+    }
+  },
+  "components" : {
+    "parameters" : {
+      "rootCategoryId" : {
+        "name" : "rootCategoryId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "KBCategoryUser"
+}

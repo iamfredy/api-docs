@@ -1,0 +1,314 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "PBXPreference",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "telephony"
+  },
+  "paths" : {
+    "/api/v1/pbx/{pbxName}/preferences" : {
+      "get" : {
+        "tags" : [ "PBXPreference" ],
+        "summary" : "Get PBX Preferences",
+        "description" : "This API fetches the preference details of a currently enabled PBX in your Zoho Desk portal.",
+        "operationId" : "getPBXPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/pbxName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getPBXPreferenceResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "9c3027daf858064c34829e62eb423edb",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBXPreference.PBXPreferenceService.getPBXPreference"
+        }
+      },
+      "patch" : {
+        "tags" : [ "PBXPreference" ],
+        "summary" : "Update PBX Preferences",
+        "description" : "This API updates the preference details of a currently enabled PBX in your Zoho Desk portal.",
+        "operationId" : "updatePBXPreference",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/pbxName"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/pbxPreferencePayLoad"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getPBXPreferenceResponse"
+          },
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "e12f60ac8dcfdf58d242f277d12094d3",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.config.PBXPreference.PBXPreferenceService.updatePreference"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "pbxPreferenceResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "missedCallDepartment" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "departmentId" : {
+                "type" : [ "string", "null", "integer" ],
+                "format" : "int64",
+                "pattern" : "([0-9]+)"
+              },
+              "enabled" : {
+                "type" : [ "boolean", "null" ]
+              }
+            },
+            "required" : [ "departmentId", "enabled" ]
+          },
+          "createTicketOnMissedCall" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "callDirection" : {
+                "type" : [ "string", "null" ],
+                "enum" : [ "All", "Inbound", "Outbound" ],
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "enabled" : {
+                "type" : [ "boolean", "null" ]
+              }
+            },
+            "required" : [ "callDirection", "enabled" ]
+          }
+        },
+        "required" : [ "createTicketOnMissedCall", "missedCallDepartment" ]
+      }
+    },
+    "responses" : {
+      "getPBXPreferenceResponse" : {
+        "description" : "getPBXPreferenceResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "preferences" : {
+                  "$ref" : "./PBXPreference.json#/components/schemas/pbxPreferenceResponse"
+                }
+              },
+              "required" : [ "preferences" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "preferences" : {
+                    "missedCallDepartment" : {
+                      "departmentId" : null,
+                      "enabled" : false
+                    },
+                    "createTicketOnMissedCall" : {
+                      "callDirection" : "Inbound",
+                      "enabled" : true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "pbxName" : {
+        "name" : "pbxName",
+        "in" : "path",
+        "description" : "",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([a-zA-Z0-9.\\-\\s]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "pbxPreferencePayLoad" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "missedCallDepartment" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "description" : "",
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "departmentId" : {
+                      "type" : [ "string", "null", "integer" ],
+                      "format" : "int64",
+                      "description" : "",
+                      "pattern" : "([0-9]+)"
+                    },
+                    "enabled" : {
+                      "type" : [ "boolean", "null" ],
+                      "description" : ""
+                    }
+                  },
+                  "required" : [ "departmentId", "enabled" ]
+                },
+                "createTicketOnMissedCall" : {
+                  "type" : [ "null", "object" ],
+                  "additionalProperties" : false,
+                  "description" : "",
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "properties" : {
+                    "callDirection" : {
+                      "type" : [ "string", "null" ],
+                      "description" : "",
+                      "enum" : [ "All", "Inbound", "Outbound" ],
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "enabled" : {
+                      "type" : [ "boolean", "null" ],
+                      "description" : ""
+                    }
+                  },
+                  "required" : [ "callDirection", "enabled" ]
+                }
+              },
+              "required" : [ "createTicketOnMissedCall", "missedCallDepartment" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "missedCallDepartment" : {
+                    "departmentId" : null,
+                    "enabled" : false
+                  },
+                  "createTicketOnMissedCall" : {
+                    "callDirection" : "Inbound",
+                    "enabled" : true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "PBXPreference"
+}

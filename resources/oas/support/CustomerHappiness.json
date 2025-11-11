@@ -1,0 +1,464 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CustomerHappiness",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "paths" : {
+    "/api/v1/customerHappiness/generateLink" : {
+      "post" : {
+        "tags" : [ "CustomerHappiness" ],
+        "summary" : "Generate link for receiving customer feedback rating",
+        "description" : "This API generates a URL using which you can get a customer feedback rating from the user.",
+        "operationId" : "generateLink",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/generateLinkInput"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/generateLinkOutput"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "959eaa7ae017b13c327131f9a6af8d28",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.CustomerRatingService.generateSurveyLink"
+        }
+      }
+    },
+    "/api/v1/customerHappiness/export" : {
+      "get" : {
+        "tags" : [ "CustomerHappiness" ],
+        "summary" : "Export customer feedback",
+        "description" : "API to export customer feedback data",
+        "operationId" : "exportCHR",
+        "parameters" : [ {
+          "name" : "duration",
+          "in" : "query",
+          "description" : "Period from which the customer happiness rating must be fetched. Values allowed are: @TODAY@, @THIS_WEEK@, @LAST_WEEK@, @THIS_MONTH@, @LAST_MONTH@, @LAST_7_DAYS@, @YESTERDAY@, @LAST_1_HOUR@, @CUSTOM_IN_DATE@, @LAST_100_RATINGS@, @LAST24HOURS@ and @LAST_30_DAYS@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Period from which the customer happiness rating must be fetched. Values allowed are: @TODAY@, @THIS_WEEK@, @LAST_WEEK@, @THIS_MONTH@, @LAST_MONTH@, @LAST_7_DAYS@, @YESTERDAY@, @LAST_1_HOUR@, @CUSTOM_IN_DATE@, @LAST_100_RATINGS@, @LAST24HOURS@ and @LAST_30_DAYS@",
+            "enum" : [ "TODAY", "THIS_MONTH", "THIS_WEEK", "LAST_MONTH", "LAST_WEEK", "LAST_7_DAYS", "LAST_30_DAYS", "YESTERDAY", "LAST_1_HOUR", "LAST24HOURS", "CUSTOM_IN_DATE", "LAST_100_RATINGS" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Allowed values are :  @contacts@, @tickets@, @agents@. You can include both by separating them with a comma in the query param.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Allowed values are :  @contacts@, @tickets@, @agents@. You can include both by separating them with a comma in the query param.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "contacts", "tickets", "agents" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : false
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "query",
+          "description" : "Filter that returns the customer-happiness list for a particular agent",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "Filter that returns the customer-happiness list for a particular agent",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "endDate",
+          "in" : "query",
+          "description" : "end date time",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "end date time",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-([12][0-9]{3})$"
+          }
+        }, {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of ratings to be displayed in the list",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of ratings to be displayed in the list",
+            "maximum" : 1000,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "rating",
+          "in" : "query",
+          "description" : "Segregate the list based on the type of rating. Allowed values are @good@, @ok@, or @bad@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Segregate the list based on the type of rating. Allowed values are @good@, @ok@, or @bad@",
+            "enum" : [ "good", "bad", "ok" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The starting index from which the list should be displayed based on the time of receiving customer feedback",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The starting index from which the list should be displayed based on the time of receiving customer feedback",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "startDate",
+          "in" : "query",
+          "description" : "start date time",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "start date time",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^(0?[1-9]|[12][0-9]|3[01])-(0?[1-9]|1[012])-([12][0-9]{3})$"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "200" : {
+            "$ref" : "../common/Common.json#/components/responses/fileResponse"
+          },
+          "403" : {
+            "$ref" : "../common/Common.json#/components/responses/forbiddenErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "8947b840121b655bc964a9e2ef24d448",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.CustomerRatingService.export"
+        }
+      }
+    },
+    "/api/v1/customerHappinessLinkHolder" : {
+      "get" : {
+        "tags" : [ "CustomerHappiness" ],
+        "summary" : "Get the customer feedback placeholder link",
+        "description" : "This API provides an html placeholder to insert the customer feedback link into the reply mail. The link, when clicked by the email recipient, leads them to a feedback form where they can provide their feedback.",
+        "operationId" : "GetCustomerHappinessLinkHolder",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/departmentId"
+        }, {
+          "name" : "languageCode",
+          "in" : "query",
+          "description" : "Localization languageCode of Customer Happiness page to be displayed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Localization languageCode of Customer Happiness page to be displayed",
+            "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/LinkHolderResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "1707de35ef4423e8f00bc04b5e25c39b",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.CustomerRatingService.getSmileLinkHolder"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "customerHappiness" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "badCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "goodCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "okCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "badCount", "goodCount", "okCount" ]
+      }
+    },
+    "responses" : {
+      "generateLinkOutput" : {
+        "description" : "generateLinkOutput template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "link" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 500,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                }
+              },
+              "required" : [ "link" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "link" : "https://desk.zoho.com/support/SurveyForm?gid=edbsnf591cca16e4ead04c5b0ffb0afd22869&thd=edbsn13ea07c268a86e189307418ea7ef4922ff7a2cddce13d49063b43633ee865c83&uid=edbsn7a0b45a6a2b684b342c9c23c5613e4cf&aid=edbsn23c81c1ad2e350d127a07b83237d1eec8e57a89d07e61a52f00a1880e3305f5f&did=edbsna66cd60b037628690ed4548c0c4522620d464ccfee87d1db1aecc931c550175b&sop=1"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "LinkHolderResponse" : {
+        "description" : "LinkHolderResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "linkHolder" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 10000,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "linkHolder" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "linkHolder" : "<div title=\"link:::\"></div><a href=\"javascript:void(0)\">How would you rate our customer service?</a><br/><div  style=\"line-height: 16px; cursor: pointer; float: left; color:#666; margin: 15px 10px 10px 0; background: #f5f5f5; border-radius: 50px; font-size: 13px; min-width: 100px; padding: 5px 10px 5px 5px;\"><img width=\"24\" height=\"24\" align=\"left\" style=\"margin-right:5px;background: transparent\" src=\"https://static.zohocdn.com/desk/app/images/emo-g.27152b145e7c33304a9b.png\" alt=\"\" ><div style=\"float: left; margin-top: 4px;\">Good</div> </div><div  style=\"line-height: 16px; cursor: pointer; float: left; color:#666; margin: 15px 10px 10px 0; background: #f5f5f5; border-radius: 50px; font-size: 13px; min-width: 100px; padding: 5px 10px 5px 5px;\"><img width=\"24\" height=\"24\" align=\"left\" style=\"margin-right:5px;background: transparent\" src=\"https://static.zohocdn.com/desk/app/images/emo-y.2c45cbbe146a58f59ee0.png\" alt=\"\"><div style=\"float: left; margin-top: 4px;\">Okay</div> </div><div  style=\"line-height: 16px; cursor: pointer; float: left; color:#666; margin: 15px 10px 10px 0; background: #f5f5f5; border-radius: 50px; font-size: 13px; min-width: 100px; padding: 5px 10px 5px 5px;\"><img width=\"24\" height=\"24\" align=\"left\" style=\"margin-right:5px;background: transparent\" src=\"https://static.zohocdn.com/desk/app/images/emo-r.8d4f8a095a2c3e1be1ab.png\" alt=\"\"><div style=\"float: left; margin-top: 4px;\">Bad</div> </div><div style=\"clear:both\"></div><div title=\"link:::\"></div></div>"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "Mandatory param to fetch the customer-happiness list for a given ID of the department. You can also provide department as @allDepartment@ to fetch customer happiness from all departments",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "Mandatory param to fetch the customer-happiness list for a given ID of the department. You can also provide department as @allDepartment@ to fetch customer happiness from all departments",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "generateLinkInput" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "agentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "languageCode" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "aa", "ab", "ae", "af-ZA", "ak", "am", "an", "ar-EG", "as-IN", "av", "ay", "az-AZ", "ba", "be-BY", "bg-BG", "bh-IN", "bi", "bm", "bn-IN", "bo", "br", "bs-BA", "ca-ES", "ce", "ch", "co", "cr", "cs-CZ", "cu", "cv", "cy", "da-DK", "de-DE", "dv-MV", "dz", "ee", "el-GR", "en-US", "eo", "es-ES", "et-EE", "eu-ES", "fa-IR", "ff", "fi-FI", "fj", "fo-FO", "fr-FR", "fy", "ga", "gd", "gl-ES", "gn", "gu-IN", "gv", "ha", "he-IL", "hi-IN", "ho", "hr-HR", "ht", "hu-HU", "hy-AM", "hz", "ia", "id-ID", "ie", "ig", "ii", "ik", "io", "is-IS", "it-IT", "iu", "ja-JP", "jv", "ka-GE", "kg", "ki", "kj", "kk-KZ", "kl", "km", "kn-IN", "ko-KR", "kr", "ks", "ku", "kv", "kw", "ky-KZ", "la", "lb", "lg", "li", "ln", "lo", "lt-LT", "lu", "lv-LV", "mg", "mh", "mi-NZ", "mk-MK", "ml-IN", "mn-MN", "mr-IN", "ms-MY", "mt-MT", "my-MM", "na", "nb-NO", "nd", "ne", "ng", "nl-NL", "nn-NO", "no", "nr", "nv", "ny", "oc", "oj", "om", "or", "os", "pa-IN", "pi", "pl-PL", "ps-AR", "pt-PT", "qu-BO", "rm", "rn", "ro-RO", "ru-RU", "rw", "sa-IN", "sc", "sd", "se-NO", "sg", "si", "sk-SK", "sl-SI", "sm", "sn", "so", "sq-AL", "sr-SP", "ss", "st", "su", "sv-SE", "sw-KE", "ta-IN", "te-IN", "tg", "th-TH", "ti", "tk", "tl-PH", "tn-ZA", "to", "tr-TR", "ts", "tt-RU", "tw", "ty", "ug", "uk-UA", "ur-PK", "uz-UZ", "ve", "vi-VN", "vo", "wa", "wo", "xh-ZA", "yi", "yo", "za", "zh-CN", "zu-ZA", "fr-CA", "en-GB", "zh-TW", "pt-BR" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "agentId", "ticketId" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "agentId" : "5000000084581",
+                  "ticketId" : "5000000084864"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CustomerHappiness"
+}

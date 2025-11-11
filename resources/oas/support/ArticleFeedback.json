@@ -1,0 +1,1314 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ArticleFeedback",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "kb"
+  },
+  "paths" : {
+    "/api/v1/articles/{articleId}/translations/{locale}/feedbacks" : {
+      "get" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "List feedback comments on article translation",
+        "description" : "This API lists a particular number of comments received on a translation of an article, based on the limit defined.",
+        "operationId" : "getArticleTranslationFeedbacks",
+        "parameters" : [ {
+          "name" : "createdTimeRange",
+          "in" : "query",
+          "description" : "Key that filters comments created within a specific date and time range. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Key that filters comments created within a specific date and time range. Enter the dates in the ISO date format of 'yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ'",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null"
+          }
+        }, {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Key that sorts the comments based on a specific attribute: createdTime. To sort the comments in descending order, append a '-' before the value",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Key that sorts the comments based on a specific attribute: createdTime. To sort the comments in descending order, append a '-' before the value",
+            "enum" : [ "createdTime" ]
+          }
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/articleFeedbacksWithLocale"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "f8dfd08fffc1b3054c2c2abd7991d9d8",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.getTranslationFeedbacks"
+        }
+      },
+      "post" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "Create a Feedback for article translation",
+        "description" : "This API create a feedback for a translation of an article",
+        "operationId" : "createFeedback",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addTranslationFeedbackRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/feedbackResponseWithContact"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "2aeff9ebf71751a991969e7102eb5205",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.addATranslationFeedback"
+        }
+      }
+    },
+    "/api/v1/articleFeedbacks/{feedbackId}" : {
+      "get" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "Get details of feedback comment",
+        "description" : "This API fetches the details of a particular feedback comment.",
+        "operationId" : "getArticleFeedback",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feedbackId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/feedbackResponseWithLocale"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "6af032136c94559e53686e281d26036b",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.getATranslationFeedback"
+        }
+      },
+      "delete" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "Delete feedback comment",
+        "description" : "This API deletes a particular feedback comment from an article.",
+        "operationId" : "deleteArticleFeedback",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feedbackId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "34eb5356d1892442278c8cbc70607e8b",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.deleteTranslationFeedback"
+        }
+      },
+      "patch" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "Update resolution status of feedback comment",
+        "description" : "This API updates the resolution status of a feedback comment received for an article.",
+        "operationId" : "updateTranslationFeedback",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feedbackId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateFeedbackRequestBody"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/feedbackResponseWithLocale"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "0b19474bf13cf513d3880da7c31ae69c",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.updateTranslationFeedback"
+        }
+      }
+    },
+    "/api/v1/articleFeedbacks" : {
+      "get" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "List feedback comments",
+        "description" : "This API lists a particular number of comments received on an article, based on the limit defined.",
+        "operationId" : "getArticleFeedbacks",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "name" : "rootCategoryIds",
+          "in" : "query",
+          "description" : "Filter article feedback comments based on rootCategoryIds",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "description" : "Filter article feedback comments based on rootCategoryIds",
+            "items" : {
+              "type" : [ "string", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "maxItems" : 20,
+            "minItems" : 1,
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Key that sorts the comments based on a specific attribute: createdTime. To sort the comments in descending order, append a '-' before the value.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Key that sorts the comments based on a specific attribute: createdTime. To sort the comments in descending order, append a '-' before the value.",
+            "enum" : [ "createdTime" ]
+          }
+        }, {
+          "name" : "departmentIds",
+          "in" : "query",
+          "description" : "Filter article feedback comments based on department ids",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "description" : "Filter article feedback comments based on department ids",
+            "items" : {
+              "type" : [ "string", "integer" ],
+              "format" : "int64",
+              "pattern" : "([0-9]+)"
+            },
+            "maxItems" : 20,
+            "minItems" : 1,
+            "uniqueItems" : false
+          }
+        }, {
+          "$ref" : "#/components/parameters/locale"
+        }, {
+          "name" : "timeRange",
+          "in" : "query",
+          "description" : "Key that filters comments created within a specific date and time range. Enter the time limit in the formats of !@LAST_24_HRS,@! !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!. Default value : LAST_7_DAYS.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "string",
+            "description" : "Key that filters comments created within a specific date and time range. Enter the time limit in the formats of !@LAST_24_HRS,@! !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!. Default value : LAST_7_DAYS.",
+            "enum" : [ "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ]
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/articleFeedbacksWithLocale"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "28c7b090eae49b4852da6a138b249a7d",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.getTranslationFeedbackList"
+        }
+      }
+    },
+    "/api/v1/articles/{articleId}/feedbacks" : {
+      "get" : {
+        "tags" : [ "ArticleFeedback" ],
+        "operationId" : "getFeedbacksOfAnArticle",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/limit"
+        }, {
+          "$ref" : "#/components/parameters/from"
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Key that sorts the feedbacks based on a specific attribute: !@createdTime@!. Add - to sort descending",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Key that sorts the feedbacks based on a specific attribute: !@createdTime@!. Add - to sort descending",
+            "enum" : [ "createdTime" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/articleId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/articleFeedbacksWithLocale"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.articles.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "74532e22de6658c63cc5ca90dff4ab03",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleFeedbackService.getSolutionFeedbacks"
+        }
+      }
+    },
+    "/api/v1/articleFeedbacks/{feedbackId}/addAsTicket" : {
+      "post" : {
+        "tags" : [ "ArticleFeedback" ],
+        "summary" : "Convert feedback comment into ticket",
+        "description" : "This API adds a feedback comment as a ticket in your help desk portal and assigns it to the author of the article.",
+        "operationId" : "convertFeedbackToTicket",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/feedbackId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addFeedbackTicketRequestBody"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/addAsTicketResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 10,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "8a45b96645e77d3970927648d095f210",
+          "module-group" : "kb",
+          "apimethod" : "com.zoho.desk.helpcenter.articles.rest.support.ArticleTranslationFeedbackService.addFeedbackAsTicket"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "contactResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENT", "END_USER" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "type", "webUrl" ]
+      },
+      "author" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "ACTIVE", "DISABLED", "LICENSE_DOWNGRADED", "DELETED", "ANONYMIZED", "CLOSED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "status", "zuid" ]
+      },
+      "articleTranslationResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "author" : {
+            "$ref" : "./ArticleFeedback.json#/components/schemas/author"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "title" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "locale" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+          }
+        },
+        "required" : [ "author", "id", "locale", "title", "webUrl" ]
+      },
+      "feedbackResponseWithLocale" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "contactId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "content" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Feedback content shared for the translation of an article",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "xss" : "antisamyfilter_custom",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "article" : {
+            "$ref" : "./ArticleFeedback.json#/components/schemas/articleTranslationResponse"
+          },
+          "ticketId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "RESOLVED", "UNRESOLVED" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "article", "contactId", "content", "createdTime", "id", "status", "ticketId" ]
+      },
+      "feedbacksDataWithLocale" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ArticleFeedback.json#/components/schemas/feedbackResponseWithLocale"
+        }
+      },
+      "actorResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "zuid" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "name", "photoURL", "status", "zuid" ]
+      },
+      "ticketResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ticketNumber" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "deletedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "deletedBy" : {
+            "$ref" : "./ArticleFeedback.json#/components/schemas/actorResponse"
+          }
+        },
+        "required" : [ "deletedBy", "deletedTime", "id", "ticketNumber", "webUrl" ]
+      }
+    },
+    "responses" : {
+      "feedbackResponseWithContact" : {
+        "description" : "feedbackResponseWithContact template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./ArticleFeedback.json#/components/schemas/feedbackResponseWithLocale"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "contact" : {
+                    "$ref" : "./ArticleFeedback.json#/components/schemas/contactResponse"
+                  }
+                },
+                "required" : [ "contact" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "contactId" : "1000000198001",
+                  "contact" : {
+                    "photoURL" : null,
+                    "role" : "CEO",
+                    "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/1000000198001",
+                    "name" : "Zylker Agent",
+                    "id" : "1000000198001",
+                    "type" : "AGENT"
+                  },
+                  "createdTime" : 1647416094683,
+                  "id" : "1000000199220",
+                  "ticketId" : null,
+                  "content" : "Kudos for the article Team",
+                  "article" : {
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/22372000000000063/photo?orgId=15224553",
+                      "name" : "Charlie",
+                      "id" : "22372000000000063",
+                      "status" : "ACTIVE"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/22372000001370011",
+                    "id" : "22372000001370011",
+                    "locale" : "en",
+                    "title" : "Pricing details"
+                  },
+                  "status" : "UNRESOLVED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "articleFeedbacksWithLocale" : {
+        "description" : "articleFeedbacksWithLocale template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "ticket" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "ticketNumber" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int32",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "webUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 500,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "deletedTime" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                            },
+                            "deletedBy" : {
+                              "type" : [ "null", "object" ],
+                              "additionalProperties" : false,
+                              "maxProperties" : 5,
+                              "minProperties" : 5,
+                              "properties" : {
+                                "photoURL" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                                },
+                                "name" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "type" : [ "string", "null", "integer" ],
+                                  "format" : "int64",
+                                  "pattern" : "([0-9]+)"
+                                },
+                                "status" : {
+                                  "type" : [ "string", "null" ],
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                },
+                                "zuid" : {
+                                  "type" : [ "string", "null", "integer" ],
+                                  "format" : "int32",
+                                  "pattern" : "([0-9]+)"
+                                }
+                              },
+                              "required" : [ "id", "name", "photoURL", "status", "zuid" ]
+                            }
+                          },
+                          "required" : [ "deletedBy", "deletedTime", "id", "ticketNumber", "webUrl" ]
+                        },
+                        "contact" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "webUrl" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 500,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "name" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "type" : {
+                              "type" : [ "string", "null" ],
+                              "enum" : [ "AGENT", "END_USER" ],
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            }
+                          },
+                          "required" : [ "id", "name", "photoURL", "type", "webUrl" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./ArticleFeedback.json#/components/schemas/feedbacksDataWithLocale"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "feedbackResponseWithLocale" : {
+        "description" : "feedbackResponseWithLocale template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "contactId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "createdTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 255,
+                  "minLength" : 0
+                },
+                "article" : {
+                  "$ref" : "./ArticleFeedback.json#/components/schemas/articleTranslationResponse"
+                },
+                "ticketId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "RESOLVED", "UNRESOLVED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Resolution status of the feedback comment. Values allowed are: !@UNRESOLVED@! and !@RESOLVED@!.",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "required" : [ "article", "contactId", "content", "createdTime", "id", "status", "ticketId" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "contactId" : "22372000001386025",
+                  "createdTime" : 1538927724000,
+                  "id" : "22372000001386045",
+                  "ticketId" : "22372000001389007",
+                  "content" : "Please add pricing details in tabular columns",
+                  "article" : {
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/22372000000000063/photo?orgId=15224553",
+                      "name" : "Charlie",
+                      "id" : "22372000000000063",
+                      "status" : "ACTIVE",
+                      "zuid" : "15224552"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/22372000001370011",
+                    "id" : "22372000001370011",
+                    "locale" : "en",
+                    "title" : "Pricing details"
+                  },
+                  "status" : "RESOLVED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "addAsTicketResponse" : {
+        "description" : "addAsTicketResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : false,
+              "allOf" : [ {
+                "$ref" : "./ArticleFeedback.json#/components/schemas/feedbackResponseWithLocale"
+              }, {
+                "type" : [ "null", "object" ],
+                "properties" : {
+                  "ticket" : {
+                    "$ref" : "./ArticleFeedback.json#/components/schemas/ticketResponse"
+                  }
+                },
+                "required" : [ "ticket" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "ticket" : {
+                    "ticketNumber" : "163",
+                    "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Cases/dv/b34f0de640d72a1d8d1a6f7ca800abb8f3148ec5bcd90913",
+                    "id" : "22372000001389007",
+                    "deletedTime" : 1538908040000,
+                    "deletedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agent/22372000000761001/photo",
+                      "name" : "Zylker",
+                      "id" : "22372000000761001",
+                      "status" : "ACTIVE",
+                      "zuid" : "15223452"
+                    }
+                  },
+                  "contactId" : "22372000001386025",
+                  "createdTime" : 1538927724000,
+                  "id" : "22372000001386045",
+                  "ticketId" : "22372000001389007",
+                  "content" : "Please add pricing details in tabular columns",
+                  "article" : {
+                    "author" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/22372000000000063/photo?orgId=15224553",
+                      "name" : "Charlie",
+                      "id" : "22372000000000063",
+                      "status" : "ACTIVE",
+                      "zuid" : "15224552"
+                    },
+                    "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Solutions/dv/22372000001370011",
+                    "id" : "22372000001370011",
+                    "locale" : "en",
+                    "title" : "Pricing details"
+                  },
+                  "status" : "RESOLVED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "articleId" : {
+        "name" : "articleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of comments to list. Default value is 10.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "integer" ],
+          "format" : "int32",
+          "description" : "Number of comments to list. Default value is 10.",
+          "maximum" : 50,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "feedbackId" : {
+        "name" : "feedbackId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which the comments must be fetched. Default value is 1.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "integer" ],
+          "format" : "int32",
+          "description" : "Index number, starting from which the comments must be fetched. Default value is 1.",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "locale" : {
+        "name" : "locale",
+        "in" : "path",
+        "description" : "Locale of an article translation in which feedback comments to be fetched",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : "string",
+          "description" : "Locale of an article translation in which feedback comments to be fetched",
+          "enum" : [ "en", "ja", "zh", "es", "de", "fr", "tr", "ru", "pt", "it", "nl", "da", "sv", "pl", "ar", "he", "af", "cs", "fr-ca", "bg", "fi", "el", "hu", "id", "nb", "ro", "th", "uk", "vi", "ur", "hi", "te", "kn", "ta", "mr", "ko", "fa", "bn", "gu", "ms", "ml", "en-gb", "sk", "hr", "sl", "zh_TW", "zh-tw", "ca", "ka", "kk", "my", "km", "pt-br" ],
+          "pattern" : "([a-zA-Z]{2,4}([-_][a-zA-Z]{2})?)"
+        }
+      }
+    },
+    "requestBodies" : {
+      "addTranslationFeedbackRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "content" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Feedback content shared for the translation of an article",
+                  "maxLength" : 255,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "xss" : "antisamyfilter_custom"
+                  }
+                }
+              },
+              "required" : [ "content" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "content" : "Kudos for the article Team"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addFeedbackTicketRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "departmentId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the department in which the ticket must be created. If you do not pass a value for this key, the departmentId value set in the knowledge base category preferences is considered. If no departmentId value is set in these preferences either, the ticket is created in any of the departments associated with the KB category to which the article belongs.",
+                  "pattern" : "([0-9]+)",
+                  "x-audience" : [ "company-internal" ]
+                },
+                "assigneeId" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "description" : "ID of the user to whom the ticket must be assigned. If you do not pass a value for this key, the assigneeId value set in the knowledge base category preferences is considered. If no assigneeId value is set in the preferences either, the ticket is left unassigned.",
+                  "pattern" : "([0-9]+)",
+                  "x-audience" : [ "company-internal" ]
+                },
+                "tags" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "[a-z0-9_\\-+%\\P{InBasicLatin}\\s]+"
+                  },
+                  "uniqueItems" : false
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateFeedbackRequestBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "status" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "Resolution status of the feedback comment. Values allowed are: !@UNRESOLVED@! and !@RESOLVED@!.",
+                  "enum" : [ "RESOLVED", "UNRESOLVED" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "status" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "RESOLVED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ArticleFeedback"
+}

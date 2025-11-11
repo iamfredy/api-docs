@@ -1,0 +1,282 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Onboarding",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "paths" : {
+    "/api/v1/onboardingStatus" : {
+      "get" : {
+        "tags" : [ "Onboarding" ],
+        "summary" : "Get Onboarding status",
+        "description" : "This API fetches details of all the onbording items with their status",
+        "operationId" : "getItems",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/itemsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "5e5c2f0d138cabd3565b5036754e89d7",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.OnboardingService.getOnboardingList"
+        }
+      }
+    },
+    "/api/v1/onboardingStatus/markPending" : {
+      "post" : {
+        "tags" : [ "Onboarding" ],
+        "summary" : "Mark onboarding items as pending",
+        "description" : "This API updates the given onboarding items as Pending",
+        "operationId" : "markPending",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/itemsObject"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "8cb0a2b9183011a9d248e9735ff43bc0",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.OnboardingService.markPending"
+        }
+      }
+    },
+    "/api/v1/onboardingStatus/markComplete" : {
+      "post" : {
+        "tags" : [ "Onboarding" ],
+        "summary" : "Complete onbording items",
+        "description" : "This API updates the given onboarding items as completed",
+        "operationId" : "markComplete",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/markComplete_itemsObject"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "204" : {
+            "$ref" : "../common/Common.json#/components/responses/emptyResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "af1e2abb8e1ddeeb39c273c3cc0dd58b",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.OnboardingService.markComplete"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "itemsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "type" : [ "string", "null" ],
+          "maxLength" : 30,
+          "minLength" : 0,
+          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+        }
+      }
+    },
+    "responses" : {
+      "itemsResponse" : {
+        "description" : "itemsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "pending" : {
+                  "$ref" : "./Onboarding.json#/components/schemas/itemsArray"
+                },
+                "completed" : {
+                  "$ref" : "./Onboarding.json#/components/schemas/itemsArray"
+                }
+              },
+              "required" : [ "completed", "pending" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "pending" : [ "BluePrint", "Ticket" ],
+                  "completed" : [ "Welcome" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "requestBodies" : {
+      "itemsObject" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "items" : {
+                  "$ref" : "./Onboarding.json#/components/schemas/itemsArray"
+                }
+              },
+              "required" : [ "items" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "items" : [ "BluePrint" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "markComplete_itemsObject" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "items" : {
+                  "$ref" : "./Onboarding.json#/components/schemas/itemsArray"
+                }
+              },
+              "required" : [ "items" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "items" : [ "Ticket" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Onboarding"
+}

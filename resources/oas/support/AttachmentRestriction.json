@@ -1,0 +1,786 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AttachmentRestriction",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "paths" : {
+    "/api/v1/attachmentRestrictions" : {
+      "get" : {
+        "tags" : [ "AttachmentRestriction" ],
+        "summary" : "List attachment file type restriction configurations",
+        "description" : "This API lists the attachment file type restrictions configured for all <em>userTypes</em>.",
+        "operationId" : "getAttachmentRestrictionConfigurations",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Includes additional information about attachment file type restrictions. The allowed value is @modifiedBy@.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "null", "array" ],
+            "description" : "Includes additional information about attachment file type restrictions. The allowed value is @modifiedBy@.",
+            "items" : {
+              "type" : [ "string", "null" ],
+              "enum" : [ "modifiedBy" ],
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : [ ]
+            },
+            "uniqueItems" : true
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/attachmentConfigurationListView"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "a2fdf0260141fdc80a658f5fabbd9cc4",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.AttachmentRestrictionService.getAttachmentRestrictionConfigurations"
+        }
+      },
+      "patch" : {
+        "tags" : [ "AttachmentRestriction" ],
+        "summary" : "Update attachment file type restriction",
+        "description" : "<p>This API updates the <em>accessType</em> of attachment file type restriction configured for a <em>userType</em>.</p><p>Note: Updating the <em>accessType</em> will replace the older restriction setup with the new setup.</p>",
+        "operationId" : "updateAttachmentRestrictionConfigurations",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/updateAttachmentRestrictionConfiguration"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/attachmentRestriction"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "146db25236ea101c6bf3cf6abd1f2d32",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.AttachmentRestrictionService.updateAttachmentRestrictionConfigurations"
+        }
+      }
+    },
+    "/api/v1/attachmentRestrictions/deleteExtensions" : {
+      "post" : {
+        "tags" : [ "AttachmentRestriction" ],
+        "summary" : "Delete configured extensions",
+        "description" : "<p>This API deletes the configured file extensions from the attachment file type restrictions associated with a user type.</p><p>For example, If a user has @SELECTIVE_RESTRICTION@ privilege and a file type extension (such as .zip) has been previously added, deleting this file type extension will allow the user to attach .zip files in the future.</p>",
+        "operationId" : "deleteExtensions",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/deleteExtensionsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/deleteExtensionsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "b2215c406f8c2487724f8a85c9aeca74",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.AttachmentRestrictionService.deleteExtensions"
+        }
+      }
+    },
+    "/api/v1/attachmentRestrictions/extensions" : {
+      "get" : {
+        "tags" : [ "AttachmentRestriction" ],
+        "summary" : "Get the list of extensions ",
+        "description" : "This API fetches a list of file type extensions that are blocked or allowed based on the configured attachment restriction settings.",
+        "operationId" : "getExtensions",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of extensions to be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of extensions to be fetched.",
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "The initial position of the index number from which the extensions should be obtained.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "The initial position of the index number from which the extensions should be obtained.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getExtensionsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "69bd09d24467218f613156e784430e6d",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.AttachmentRestrictionService.getExtensions"
+        }
+      },
+      "post" : {
+        "tags" : [ "AttachmentRestriction" ],
+        "summary" : "Add file type extensions to the configured attachment restriction",
+        "description" : "<p>This API adds a list of attachment file type extensions for a particular <em>userType</em>. The file type extensions can be either blocked or permitted, depending on the configured <em>accessType</em> for attachment restriction.<p>Note: Adding a new file type extension will only affect future attachments and will not have any impact on previously configured file formats.</p>",
+        "operationId" : "addExtensions",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/userType"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/addExtensionsRequest"
+        },
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/addExtensionsResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "dd20715359899e4f1f790a85eb7b2a14",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.AttachmentRestrictionService.addExtensions"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "attachmentRestriction" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accessType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "FULL_PERMISSION", "FULL_RESTRICTION", "SELECTIVE_PERMISSION", "SELECTIVE_RESTRICTION" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "modifiedById" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "userType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENT", "CONTACT" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "accessType", "id", "modifiedById", "modifiedTime", "userType" ]
+      },
+      "data" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./AttachmentRestriction.json#/components/schemas/attachmentRestriction"
+        }
+      }
+    },
+    "responses" : {
+      "attachmentRestriction" : {
+        "description" : "attachmentRestriction template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accessType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "FULL_PERMISSION", "FULL_RESTRICTION", "SELECTIVE_PERMISSION", "SELECTIVE_RESTRICTION" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "The type of access for the attachment restriction setup. The allowed values are @FULL_PERMISSION@, @FULL_RESTRICTION@, @SELECTIVE_PERMISSION@, or @SELECTIVE_RESTRICTION@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modifiedTime" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "modifiedById" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "id" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "userType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "AGENT", "CONTACT" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "required" : [ "accessType", "id", "modifiedById", "modifiedTime", "userType" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "accessType" : "SELECTIVE_RESTRICTION",
+                  "modifiedTime" : 1695110330195,
+                  "modifiedById" : "5000000000351",
+                  "id" : "5000000205005",
+                  "userType" : "AGENT"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "deleteExtensionsResponse" : {
+        "description" : "deleteExtensionsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "extensionsProcessed" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                },
+                "skipped" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "reason" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "ENTITY_ALREADY_FOUND", "ENTITY_NOT_FOUND", "INVALID", "SYSTEM_RESTRICTED" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "extensions" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "extensions", "reason" ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "extensionsProcessed", "skipped" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "extensionsProcessed" : [ "png", "jpg" ],
+                  "skipped" : {
+                    "reason" : "ENTITY_NOT_FOUND",
+                    "extensions" : [ "xpj" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "addExtensionsResponse" : {
+        "description" : "addExtensionsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "extensionsProcessed" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                },
+                "skipped" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 2,
+                    "minProperties" : 2,
+                    "properties" : {
+                      "reason" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "ENTITY_ALREADY_FOUND", "ENTITY_NOT_FOUND", "INVALID", "SYSTEM_RESTRICTED" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "extensions" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "extensions", "reason" ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "extensionsProcessed", "skipped" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "extensionsProcessed" : [ "xpj" ],
+                  "skipped" : {
+                    "reason" : "ENTITY_ALREADY_FOUND",
+                    "extensions" : [ "jpg", "png", "rar", "txt", "zbr", "zip" ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getExtensionsResponse" : {
+        "description" : "getExtensionsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ "jpg", "png", "rar", "txt", "zbr", "zip" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "attachmentConfigurationListView" : {
+        "description" : "attachmentConfigurationListView template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "data" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "object",
+                      "properties" : {
+                        "modifiedBy" : {
+                          "type" : [ "null", "object" ],
+                          "additionalProperties" : false,
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "properties" : {
+                            "photoURL" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "firstName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "type" : [ "string", "null", "integer" ],
+                              "format" : "int64",
+                              "pattern" : "([0-9]+)"
+                            },
+                            "email" : {
+                              "type" : [ "string", "null" ],
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "data" : {
+                    "$ref" : "./AttachmentRestriction.json#/components/schemas/data"
+                  }
+                },
+                "required" : [ "data" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "accessType" : "FULL_ALLOWANCE",
+                    "modifiedTime" : 1695110330195,
+                    "modifiedById" : "5000000000351",
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/5000000000351/photo?orgId=16452135",
+                      "firstName" : "Nirmal",
+                      "lastName" : "Kumar",
+                      "id" : "5000000000351",
+                      "email" : "nirmalkumar.rs@zylker.com"
+                    },
+                    "id" : "5000000205005",
+                    "userType" : "AGENT"
+                  }, {
+                    "accessType" : "FULL_ALLOWANCE",
+                    "modifiedTime" : 1695110330195,
+                    "modifiedById" : "5000000000351",
+                    "modifiedBy" : {
+                      "photoURL" : "https://desk.zoho.com/api/v1/agents/5000000000351/photo?orgId=16452135",
+                      "firstName" : "Nirmal",
+                      "lastName" : "Kumar",
+                      "id" : "5000000000351",
+                      "email" : "nirmalkumar.rs@zylker.com"
+                    },
+                    "id" : "5000000205007",
+                    "userType" : "CONTACT"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "userType" : {
+        "name" : "userType",
+        "in" : "query",
+        "description" : "The type of user for whom the file type extensions to be listed. The allowed values are @AGENT@, or @CONTACT@.",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "The type of user for whom the file type extensions to be listed. The allowed values are @AGENT@, or @CONTACT@.",
+          "enum" : [ "AGENT", "CONTACT" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      }
+    },
+    "requestBodies" : {
+      "updateAttachmentRestrictionConfiguration" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "accessType" : {
+                  "type" : [ "string", "null" ],
+                  "enum" : [ "FULL_PERMISSION", "FULL_RESTRICTION", "SELECTIVE_PERMISSION", "SELECTIVE_RESTRICTION" ],
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accessType" : "SELECTIVE_RESTRICTION"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteExtensionsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "extensions" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "extensions" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "extensions" : [ "png", "jpg", "xpj" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addExtensionsRequest" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "extensions" : {
+                  "type" : [ "null", "array" ],
+                  "items" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : [ ]
+                  },
+                  "uniqueItems" : false
+                }
+              },
+              "required" : [ "extensions" ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "extensions" : [ "png", "jpg", "zip", "txt", "rar", "zbr", "xpj" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AttachmentRestriction"
+}

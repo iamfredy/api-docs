@@ -1,0 +1,369 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "TicketMetrics",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "paths" : {
+    "/api/v1/tickets/{ticketId}/statusLifeCycle" : {
+      "get" : {
+        "tags" : [ "TicketMetrics" ],
+        "summary" : "Get ticket statusLifeCycle",
+        "description" : "This API gives status LifeCycle details of a ticket",
+        "operationId" : "getStatusLifeCycle",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ticketId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getStatusLifeCycle"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "cfa843311acfdd491f2b14bf334a6456",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getTicketStatusLifeCycle"
+        }
+      }
+    },
+    "/api/v1/tickets/{ticketId}/slaMetrics" : {
+      "get" : {
+        "tags" : [ "TicketMetrics" ],
+        "summary" : "Get ticket SLA metrics",
+        "description" : "This API slaMetrics details of a ticket",
+        "operationId" : "getSLAMetrics",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/ticketId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getSLAMetrics"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "27d7ea911bf20d5ee79175666a2bd350",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.getSLAMetrics"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ticketAssignee" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "id", "lastName" ]
+      },
+      "ticketModifiedBy" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "id", "lastName" ]
+      },
+      "statusLifeCycleJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "duration" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "statusType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Open", "Closed", "On Hold" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "$ref" : "./TicketMetrics.json#/components/schemas/ticketModifiedBy"
+          },
+          "assignee" : {
+            "$ref" : "./TicketMetrics.json#/components/schemas/ticketAssignee"
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          }
+        },
+        "required" : [ "assignee", "duration", "eventTime", "modifiedBy", "status", "statusType" ]
+      },
+      "statusLifeCycleArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./TicketMetrics.json#/components/schemas/statusLifeCycleJson"
+        }
+      },
+      "slaMetricsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "statusType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "Open", "Closed", "On Hold" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "breachTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "((^([0-9]*):([0-5][0-9]) hrs$)|null|undefined)"
+          },
+          "eventTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "assignee" : {
+            "$ref" : "./TicketMetrics.json#/components/schemas/ticketAssignee"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "First Response Violation", "Response Violation", "Resolution Violation", "First Response Success", "Response Success", "Resolution Success" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          }
+        },
+        "required" : [ "assignee", "breachTime", "eventTime", "status", "statusType", "type" ]
+      },
+      "slaMetricsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./TicketMetrics.json#/components/schemas/slaMetricsJson"
+        }
+      }
+    },
+    "responses" : {
+      "getStatusLifeCycle" : {
+        "description" : "getStatusLifeCycle template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "statusLifeCycle" : {
+                  "$ref" : "./TicketMetrics.json#/components/schemas/statusLifeCycleArray"
+                }
+              },
+              "required" : [ "statusLifeCycle" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "statusLifeCycle" : [ {
+                    "duration" : "00:19 hrs",
+                    "statusType" : "Open",
+                    "eventTime" : 1542707837000,
+                    "modifiedBy" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "assignee" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "status" : "Open"
+                  }, {
+                    "duration" : null,
+                    "statusType" : "Closed",
+                    "eventTime" : "2018-11-20T010:57:17.000Z",
+                    "modifiedBy" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "assignee" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "status" : "Closed"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSLAMetrics" : {
+        "description" : "getSLAMetrics template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "slaMetrics" : {
+                  "$ref" : "./TicketMetrics.json#/components/schemas/slaMetricsArray"
+                }
+              },
+              "required" : [ "slaMetrics" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "slaMetrics" : [ {
+                    "breachTime" : "00:01 hrs",
+                    "statusType" : "Open",
+                    "eventTime" : 1542707837000,
+                    "assignee" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "type" : "FIRST_RESPONSE_VIOLATED",
+                    "status" : "Open"
+                  }, {
+                    "breachTime" : "00:02 hrs",
+                    "statusType" : "Open",
+                    "eventTime" : 1542707837000,
+                    "assignee" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "type" : "RESPONSE_VIOLATED",
+                    "status" : "Developer Ticket"
+                  }, {
+                    "breachTime" : "00:03 hrs",
+                    "statusType" : "Closed",
+                    "eventTime" : 1542707837000,
+                    "assignee" : {
+                      "firstName" : "xxx",
+                      "lastName" : "yy",
+                      "id" : "30570000000107033"
+                    },
+                    "type" : "RESOLUTION_VIOLATED",
+                    "status" : "Developer Ticket"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "ticketId" : {
+        "name" : "ticketId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "TicketMetrics"
+}

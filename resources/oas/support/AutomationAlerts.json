@@ -1,0 +1,868 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AutomationAlerts",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "automation"
+  },
+  "paths" : {
+    "/api/v1/automationAlerts/{alertId}" : {
+      "get" : {
+        "tags" : [ "AutomationAlerts" ],
+        "summary" : "Get Automation Alert",
+        "description" : "get a particular automation alert",
+        "operationId" : "getAlert",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to alerts. Values allowed are @emailtemplate@, @createdBy@, @modifiedBy@. You can include all these values by separating them with commas in the API request.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Secondary information related to alerts. Values allowed are @emailtemplate@, @createdBy@, @modifiedBy@. You can include all these values by separating them with commas in the API request.",
+            "enum" : [ "emailtemplate", "createdBy", "modifiedBy" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "alertId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/alertJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 100,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "51fc5530f44f6084ce27d375eb322f33",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.AutomationAlertService.get"
+        }
+      }
+    },
+    "/api/v1/automationAlerts" : {
+      "get" : {
+        "tags" : [ "AutomationAlerts" ],
+        "summary" : "List all Automation Alerts",
+        "description" : "get all automation alerts for a particular departmentid and module",
+        "operationId" : "getAlerts",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to alerts. Values allowed are @emailtemplate@, @createdBy@, @modifiedBy@. You can include all these values by separating them with commas in the API request.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Secondary information related to alerts. Values allowed are @emailtemplate@, @createdBy@, @modifiedBy@. You can include all these values by separating them with commas in the API request.",
+            "enum" : [ "emailtemplate", "createdBy", "modifiedBy" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ",",
+              "entity" : "Include"
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which the alerts should be listed",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "description" : "department for which the alerts should be listed",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "description" : "module for which the alerts should be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "module for which the alerts should be listed",
+            "enum" : [ "tickets", "tasks", "contacts", "accounts", "products", "calls", "events" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "number of alerts to be retrieved @DEFAULT 50@ allowed limit between 1-50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "number of alerts to be retrieved @DEFAULT 50@ allowed limit between 1-50",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index @DEFAULT 1@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "from index @DEFAULT 1@",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/alertList"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1800000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "0f71902469cc75908d09a9864f4843df",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.support.restapi.AutomationAlertService.getAlertsInDept"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "alertJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "modifiedTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "createdBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "recipients" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "maxProperties" : 8,
+            "minProperties" : 8,
+            "properties" : {
+              "notifyContact" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "additionalRecipients" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null" ],
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                },
+                "uniqueItems" : false
+              },
+              "notifyRecordCreator" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "teams" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "notifyRecordOwner" : {
+                "type" : [ "boolean", "null" ]
+              },
+              "roles" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "agents" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              },
+              "roleSubOrdinates" : {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int64",
+                  "pattern" : "([0-9]+)"
+                },
+                "uniqueItems" : false
+              }
+            },
+            "required" : [ "additionalRecipients", "agents", "notifyContact", "notifyRecordCreator", "notifyRecordOwner", "roleSubOrdinates", "roles", "teams" ]
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "tickets", "tasks", "contacts", "accounts", "products", "calls", "events" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "module for which the alerts should be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "departmentId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 32000,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "emailTemplateId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "modifiedBy" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "alertId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "alertId", "createdBy", "createdTime", "departmentId", "emailTemplateId", "modifiedBy", "modifiedTime", "module", "name", "recipients" ]
+      }
+    },
+    "responses" : {
+      "alertJson" : {
+        "description" : "alertJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "object",
+                "properties" : {
+                  "creator" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "lastName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "firstName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                  },
+                  "emailTemplate" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 4,
+                    "minProperties" : 4,
+                    "properties" : {
+                      "templateName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 250,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "recordType" : {
+                        "type" : [ "string", "null" ],
+                        "enum" : [ "tickets", "tasks", "contacts", "accounts", "products", "solutions", "calls", "events" ],
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "departmentId" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "templateId" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      }
+                    },
+                    "required" : [ "departmentId", "recordType", "templateId", "templateName" ]
+                  },
+                  "modifier" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "properties" : {
+                      "lastName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "firstName" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "id" : {
+                        "type" : [ "string", "null", "integer" ],
+                        "format" : "int64",
+                        "pattern" : "([0-9]+)"
+                      },
+                      "email" : {
+                        "type" : [ "string", "null" ],
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                  }
+                }
+              }, {
+                "type" : [ "null", "object" ],
+                "additionalProperties" : false,
+                "properties" : {
+                  "modifiedTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "createdBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "recipients" : {
+                    "type" : [ "null", "object" ],
+                    "additionalProperties" : false,
+                    "maxProperties" : 8,
+                    "minProperties" : 8,
+                    "properties" : {
+                      "notifyContact" : {
+                        "type" : [ "boolean", "null" ]
+                      },
+                      "additionalRecipients" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "notifyRecordCreator" : {
+                        "type" : [ "boolean", "null" ]
+                      },
+                      "teams" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "notifyRecordOwner" : {
+                        "type" : [ "boolean", "null" ]
+                      },
+                      "roles" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "agents" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      },
+                      "roleSubOrdinates" : {
+                        "type" : [ "null", "array" ],
+                        "items" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "uniqueItems" : false
+                      }
+                    },
+                    "required" : [ "additionalRecipients", "agents", "notifyContact", "notifyRecordCreator", "notifyRecordOwner", "roleSubOrdinates", "roles", "teams" ]
+                  },
+                  "module" : {
+                    "type" : [ "string", "null" ],
+                    "enum" : [ "tickets", "tasks", "contacts", "accounts", "products", "calls", "events" ],
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "departmentId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "name" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 32000,
+                    "minLength" : 0,
+                    "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                  },
+                  "emailTemplateId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "createdTime" : {
+                    "type" : [ "string", "null" ],
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  },
+                  "alertId" : {
+                    "type" : [ "string", "null", "integer" ],
+                    "format" : "int64",
+                    "pattern" : "([0-9]+)"
+                  }
+                },
+                "required" : [ "alertId", "createdBy", "createdTime", "departmentId", "emailTemplateId", "modifiedBy", "modifiedTime", "module", "name", "recipients" ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1497879292000,
+                  "creator" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "emailTemplate" : {
+                    "templateName" : "Notify agent on assigning a ticket",
+                    "recordType" : "tickets",
+                    "departmentId" : "4000000007245",
+                    "templateId" : "4000000007305"
+                  },
+                  "module" : "tickets",
+                  "modifier" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "departmentId" : "4000000007245",
+                  "createdBy" : "4000000009086",
+                  "recipients" : {
+                    "additionalRecipients" : [ "silvya@zylker.com" ],
+                    "notifyRecordCreator" : false,
+                    "teams" : [ "4000000007245" ],
+                    "notifyRecordOwner" : true,
+                    "roles" : [ "4000000008686" ],
+                    "groups" : [ "4000000021001" ],
+                    "notifyRecordContact" : true,
+                    "agents" : [ "4000000009086" ]
+                  },
+                  "name" : "Developers Notification for new issue",
+                  "createdTime" : 1497879292000,
+                  "emailTemplateId" : "4000000007305",
+                  "modifiedBy" : "4000000009086",
+                  "alertId" : "4000000019007"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "alertList" : {
+        "description" : "alertList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "type" : "array",
+                "items" : {
+                  "type" : "object",
+                  "properties" : {
+                    "creator" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : true,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "lastName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "firstName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "photoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "email" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                    },
+                    "emailTemplate" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 4,
+                      "minProperties" : 4,
+                      "properties" : {
+                        "templateName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 250,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "recordType" : {
+                          "type" : [ "string", "null" ],
+                          "enum" : [ "tickets", "tasks", "contacts", "accounts", "products", "solutions", "calls", "events" ],
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "departmentId" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "templateId" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        }
+                      },
+                      "required" : [ "departmentId", "recordType", "templateId", "templateName" ]
+                    },
+                    "modifier" : {
+                      "type" : [ "null", "object" ],
+                      "additionalProperties" : false,
+                      "maxProperties" : 5,
+                      "minProperties" : 5,
+                      "properties" : {
+                        "lastName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "firstName" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 50,
+                          "minLength" : 0
+                        },
+                        "photoURL" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "id" : {
+                          "type" : [ "string", "null", "integer" ],
+                          "format" : "int64",
+                          "pattern" : "([0-9]+)"
+                        },
+                        "email" : {
+                          "type" : [ "string", "null" ],
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "required" : [ "email", "firstName", "id", "lastName", "photoURL" ]
+                    }
+                  }
+                }
+              }, {
+                "type" : [ "null", "array" ],
+                "items" : {
+                  "$ref" : "./AutomationAlerts.json#/components/schemas/alertJson"
+                }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : [ {
+                  "modifiedTime" : 1497879292000,
+                  "creator" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "emailTemplate" : {
+                    "templateName" : "Notify agent on assigning a ticket",
+                    "recordType" : "tickets",
+                    "departmentId" : "4000000007245",
+                    "templateId" : "4000000007305"
+                  },
+                  "module" : "tickets",
+                  "modifier" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "departmentId" : "4000000007245",
+                  "createdBy" : "4000000009086",
+                  "recipients" : {
+                    "additionalRecipients" : [ "silvya@zylker.com" ],
+                    "notifyRecordCreator" : false,
+                    "teams" : [ "4000000007245" ],
+                    "notifyRecordOwner" : true,
+                    "roles" : [ "4000000008686" ],
+                    "groups" : [ "4000000021001" ],
+                    "notifyRecordContact" : true,
+                    "agents" : [ "4000000009086" ]
+                  },
+                  "name" : "Developers Notification for new issue",
+                  "createdTime" : 1497879292000,
+                  "emailTemplateId" : "4000000007305",
+                  "modifiedBy" : "4000000009086",
+                  "alertId" : "4000000019007"
+                }, {
+                  "modifiedTime" : 1497879512000,
+                  "creator" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "emailTemplate" : {
+                    "templateName" : "Notify agent on assigning a ticket",
+                    "recordType" : "tickets",
+                    "departmentId" : "4000000007245",
+                    "templateId" : "4000000007305"
+                  },
+                  "module" : "tickets",
+                  "modifier" : {
+                    "firstName" : "dasca",
+                    "lastName" : "vins",
+                    "photoURL" : "https://desk.zoho.com/api/v1/agents/4000000009086/photo?orgId=298902",
+                    "id" : "4000000009086",
+                    "email" : "jack@zylker.com"
+                  },
+                  "departmentId" : "4000000007245",
+                  "createdBy" : "4000000009086",
+                  "recipients" : {
+                    "notifyRecordOwner" : true,
+                    "agents" : [ "4000000009086" ]
+                  },
+                  "name" : "Tickets are yet to be closed - Alert",
+                  "createdTime" : 1497879512000,
+                  "emailTemplateId" : "4000000007305",
+                  "modifiedBy" : "4000000009086",
+                  "alertId" : "4000000019013"
+                } ]
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "AutomationAlerts"
+}

@@ -1,0 +1,238 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "QueryStore",
+    "version" : "1.0.0"
+  },
+  "paths" : { },
+  "components" : {
+    "schemas" : {
+      "fieldList" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "fieldLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "module" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "fieldLabel", "module" ]
+      },
+      "primitiveJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayKey" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "key" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayKey", "key" ]
+      },
+      "primitiveArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./QueryStore.json#/components/schemas/primitiveJson"
+        }
+      },
+      "value" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "primitive" : {
+            "$ref" : "./QueryStore.json#/components/schemas/primitiveArray"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "type" ]
+      },
+      "criteriaFieldsTemplate" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "field" : {
+            "$ref" : "./QueryStore.json#/components/schemas/fieldList"
+          },
+          "secondaryCondition" : {
+            "type" : [ "string", "null" ],
+            "pattern" : "[<>]=?|==|!="
+          },
+          "unit" : {
+            "type" : [ "string", "null" ],
+            "pattern" : "MINUTES|HOURS|DAYS"
+          },
+          "value" : {
+            "$ref" : "./QueryStore.json#/components/schemas/value"
+          }
+        },
+        "required" : [ "condition", "field", "value" ]
+      },
+      "criteriaFieldsArrayTemplate" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./QueryStore.json#/components/schemas/criteriaFieldsTemplate"
+        }
+      },
+      "criteriaObject" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/criteriaFieldsJson",
+          "criteriaPattern" : {
+            "type" : [ "string" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        } ],
+        "required" : [ "criteriaPattern" ]
+      },
+      "criteriaFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "criteriaFields" : {
+            "$ref" : "./QueryStore.json#/components/schemas/criteriaFieldsArrayTemplate"
+          }
+        },
+        "required" : [ "criteriaFields" ]
+      },
+      "createSavedFilterPayloadPrimitive" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "key" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "key" ]
+      },
+      "createSavedFilterPayloadPrimitiveArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterPayloadPrimitive"
+        }
+      },
+      "createSavedFilterPayloadValue" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "primitive" : {
+            "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterPayloadPrimitiveArray"
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          }
+        },
+        "required" : [ "primitive", "type" ]
+      },
+      "createSavedFilterPayloadCriteriaFieldsJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : { }
+          },
+          "field" : {
+            "type" : [ "null", "object" ],
+            "additionalProperties" : false,
+            "description" : "",
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "properties" : {
+              "apiName" : {
+                "type" : [ "string", "null" ],
+                "description" : "",
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+                "x-custom-parameters-attributes" : { }
+              },
+              "module" : {
+                "type" : [ "string", "null" ],
+                "description" : "",
+                "maxLength" : 100,
+                "minLength" : 0,
+                "x-custom-parameters-attributes" : { }
+              }
+            },
+            "required" : [ "apiName", "module" ],
+            "x-custom-parameters-attributes" : { }
+          },
+          "value" : {
+            "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterPayloadValue"
+          }
+        },
+        "required" : [ "condition", "field", "value" ]
+      },
+      "createSavedFilterPayloadCriteriaaFieldsArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterPayloadCriteriaFieldsJson"
+        }
+      },
+      "createSavedFilterCriteriaFieldsPayLoad" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "criteriaFields" : {
+            "$ref" : "./QueryStore.json#/components/schemas/createSavedFilterPayloadCriteriaaFieldsArray"
+          }
+        },
+        "required" : [ "criteriaFields" ]
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "QueryStore"
+}

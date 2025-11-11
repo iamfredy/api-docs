@@ -1,0 +1,903 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Microsoft PowerBI",
+		"version": "1.0.0",
+		"x-clan-group": "integration",
+		"x-module-group": "integration"
+	},
+	"paths": {
+		"/api/v1/integ/powerbi/accounts": {
+			"get": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "List PowerBI Accounts",
+				"description": "Retrieve a list of PowerBI accounts.",
+				"operationId": "listPowerBIAccounts",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					},
+					{
+						"$ref": "#/components/parameters/powerbi_accountId"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/listPowerBIAccountsResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.READ"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "ReadAPI_Standard_UserPolicy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.getAccounts"
+				}
+			}
+		},
+		"/api/v1/integ/powerbi/workspaces": {
+			"get": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "List PowerBI Workspaces",
+				"description": "Retrieve a list of PowerBI workspaces.",
+				"operationId": "listPowerBIWorkspaces",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					},
+					{
+						"$ref": "#/components/parameters/powerbi_accountId_mandatory"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/listPowerBIWorkspacesResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.READ"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "ReadAPI_Standard_UserPolicy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.getWorkspaces"
+				}
+			}
+		},
+		"/api/v1/integ/powerbi": {
+			"get": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Get PowerBI Integration",
+				"description": "This endpoint is used for retrieving PowerBI integration details.",
+				"operationId": "getPowerBIIntegration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getPowerBIIntegrationResponse"
+					},
+					"204": {
+						"$ref": "../common/Common.json#/components/responses/emptyResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					}
+				},
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "ReadAPI_Standard_UserPolicy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "762775295c44fdcd1a7e54724ecc5d68",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.getIntegration"
+				}
+			},
+			"post": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Create PowerBI Integration",
+				"description": "This endpoint is used for creating a PowerBI integration with account and workspace details.",
+				"operationId": "createPowerBIIntegration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"accountId": {
+										"type": "string",
+										"description": "Unique identifier for the PowerBI account"
+									},
+									"workspaceId": {
+										"type": "string",
+										"description": "Unique identifier for the PowerBI workspace"
+									},
+									"emailId": {
+										"type": "string",
+										"description": "Email address associated with the PowerBI account"
+									},
+									"workspaceName": {
+										"type": "string",
+										"description": "Name of the PowerBI workspace"
+									}
+								},
+								"required": [
+									"accountId",
+									"workspaceId",
+									"emailId",
+									"workspaceName"
+								]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getPowerBIIntegrationResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.CREATE"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "WriteAPI_Standard_UserPolicy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "1190c2627fda7502fb73e7ffb7206335",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.createIntegration"
+				}
+			},
+			"patch": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Update PowerBI Integration",
+				"description": "This endpoint is used for updating an existing PowerBI integration.",
+				"operationId": "updatePowerBIIntegration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"accountId": {
+										"type": "string",
+										"description": "Unique identifier for the PowerBI account"
+									},
+									"workspaceId": {
+										"type": "string",
+										"description": "Unique identifier for the PowerBI workspace"
+									},
+									"emailId": {
+										"type": "string",
+										"description": "Email address associated with the PowerBI account"
+									},
+									"workspaceName": {
+										"type": "string",
+										"description": "Name of the PowerBI workspace"
+									},
+									"status": {
+										"type": "string",
+										"description": "Status of the PowerBI integration",
+										"enum": [
+											"true",
+											"false"
+										]
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getPowerBIIntegrationResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.UPDATE"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "UpdateSingleRecord_Policy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "ed35e990961bbef8ea4daa78afc77cac",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.updateIntegration"
+				}
+			},
+			"delete": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Delete PowerBI Integration",
+				"description": "This endpoint is used for deleting a PowerBI integration.",
+				"operationId": "deletePowerBIIntegration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"responses": {
+					"204": {
+						"$ref": "../common/Common.json#/components/responses/emptyResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "DeleteSingleRecord_Policy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+						}
+					},
+					"clan-group": "integration",
+					"apihash": "4e3d168f80ae1a6b6452d2a3250fd772",
+					"module-group": "integration",
+					"apimethod": "com.zoho.support.restapi.PowerBIService.deleteIntegration"
+				}
+			}
+		},
+		"/api/v1/integ/powerbi/configuration": {
+			"get": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Get PowerBI Integration Configuration",
+				"description": "This endpoint is used for retrieving the configuration details of PowerBI integration.",
+				"operationId": "getPowerBIIntegrationConfiguration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getPowerBIIntegrationConfigurationResponse"
+					},
+					"204": {
+						"$ref": "../common/Common.json#/components/responses/emptyResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.READ"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "ReadAPI_Standard_UserPolicy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+							"type": "iam-oauth2-schema",
+							"scopes": [
+								"integrations.READ"
+							]
+						}
+					}
+				}
+			},
+			"patch": {
+				"tags": [ "Microsoft_PowerBI" ],
+				"summary": "Update PowerBI Integration Configuration",
+				"description": "This endpoint is used for updating the configuration details of PowerBI integration.",
+				"operationId": "updatePowerBIIntegrationConfiguration",
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"tickets": {
+										"type": "array",
+										"description": "List of ticket fields that can be mapped to PowerBI",
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 0,
+                                            "maxLength": 75
+                                        },
+                                        "uniqueItems": true
+									},
+									"teams": {
+										"type": "array",
+										"description": "List of team fields that can be mapped to PowerBI",
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 0,
+                                            "maxLength": 75
+                                        },
+                                        "uniqueItems": true
+									},
+									"solutions": {
+										"type": "array",
+										"description": "List of solution fields that can be mapped to PowerBI",
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 0,
+                                            "maxLength": 75
+                                        },
+                                        "uniqueItems": true
+									},
+									"topics": {
+										"type": "array",
+										"description": "List of topic fields that can be mapped to PowerBI",
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 0,
+                                            "maxLength": 75
+                                        },
+                                        "uniqueItems": true
+									},
+									"products": {
+										"type": "array",
+										"description": "List of product fields that can be mapped to PowerBI",
+                                        "items": {
+                                            "type": "string",
+                                            "minLength": 0,
+                                            "maxLength": 75
+                                        },
+                                        "uniqueItems": true
+									},
+									"agents": {
+										"type": "array",
+										"description": "List of agent fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"calls": {
+										"type": "array",
+										"description": "List of call fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"accounts": {
+										"type": "array",
+										"description": "List of account fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"timeEntry": {
+										"type": "array",
+										"description": "List of time entry fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"departments": {
+										"type": "array",
+										"description": "List of department fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"contacts": {
+										"type": "array",
+										"description": "List of contact fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"tasks": {
+										"type": "array",
+										"description": "List of task fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									},
+									"events": {
+										"type": "array",
+										"description": "List of event fields that can be mapped to PowerBI",
+										"items": {
+											"type": "string",
+											"minLength": 0,
+											"maxLength": 75
+										},
+										"uniqueItems": true
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getPowerBIIntegrationConfigurationResponse"
+					},
+					"204": {
+						"$ref": "../common/Common.json#/components/responses/emptyResponse"
+					},
+					"401": {
+						"$ref": "../common/Common.json#/components/responses/unauthorizedErrorResponse"
+					},
+					"403": {
+						"$ref": "../common/Common.json#/components/responses/forbiddenErrorResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					}
+				},
+				"security": [
+					{
+						"iam-oauth2-schema": [
+							"integrations.UPDATE"
+						]
+					}
+				],
+				"x-audience": [
+					"company-internal"
+				],
+				"x-custom-url-attribute": {
+					"security": {
+						"throttle": {
+							"policy": "UpdateSingleRecord_Policy"
+						},
+						"extraparams": {
+							"disable": true,
+							"ignore": false
+						},
+						"authentication": {
+							"type": "iam-oauth2-schema",
+							"scopes": [
+								"integrations.UPDATE"
+							]
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"responses": {
+			"listPowerBIAccountsResponse": {
+				"description": "List of PowerBI accounts",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PowerBIAccount"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"listPowerBIWorkspacesResponse": {
+				"description": "List of PowerBI workspaces",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"data": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/PowerBIWorkspace"
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			"getPowerBIIntegrationResponse": {
+				"description": "PowerBI integration details",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"accountId": {
+									"type": "string",
+									"description": "Unique identifier for the PowerBI account"
+								},
+								"additionalSpecId": {
+									"type": "string",
+									"description": "Additional specification identifier for the PowerBI account"
+								},
+								"integId": {
+									"type": "string",
+									"description": "Integration identifier for the PowerBI account"
+								},
+								"emailId": {
+									"type": "string",
+									"format": "email",
+									"description": "Email address associated with the PowerBI account"
+								},
+								"workspaceName": {
+									"type": "string",
+									"description": "Name of the PowerBI workspace"
+								},
+								"workspaceId": {
+									"type": "string",
+									"description": "Unique identifier for the PowerBI workspace"
+								},
+								"status": {
+									"type": "string",
+									"description": "Status of the PowerBI integration",
+									"enum": [
+										"true",
+										"false"
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"getPowerBIIntegrationConfigurationResponse": {
+				"description": "PowerBI integration configuration details",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": "object",
+							"properties": {
+								"tickets": {
+									"type": "array",
+									"description": "List of ticket fields that can be mapped to PowerBI"
+								},
+								"teams": {
+									"type": "array",
+									"description": "List of team fields that can be mapped to PowerBI"
+								},
+								"solutions": {
+									"type": "array",
+									"description": "List of solution fields that can be mapped to PowerBI"
+								},
+								"topics": {
+									"type": "array",
+									"description": "List of topic fields that can be mapped to PowerBI"
+								},
+								"products": {
+									"type": "array",
+									"description": "List of product fields that can be mapped to PowerBI"
+								},
+								"agents": {
+									"type": "array",
+									"description": "List of agent fields that can be mapped to PowerBI"
+								},
+								"calls": {
+									"type": "array",
+									"description": "List of call fields that can be mapped to PowerBI"
+								},
+								"accounts": {
+									"type": "array",
+									"description": "List of account fields that can be mapped to PowerBI"
+								},
+								"timeEntry": {
+									"type": "array",
+									"description": "List of time entry fields that can be mapped to PowerBI"
+								},
+								"departments": {
+									"type": "array",
+									"description": "List of department fields that can be mapped to PowerBI"
+								},
+								"contacts": {
+									"type": "array",
+									"description": "List of contact fields that can be mapped to PowerBI"
+								},
+								"tasks": {
+									"type": "array",
+									"description": "List of task fields that can be mapped to PowerBI"
+								},
+								"events": {
+									"type": "array",
+									"description": "List of event fields that can be mapped to PowerBI"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"parameters": {
+			"powerbi_accountId": {
+				"name": "accountId",
+				"in": "query",
+				"required": false,
+				"schema": {
+					"type": "string",
+					"pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+				}
+			},
+			"powerbi_accountId_mandatory": {
+				"name": "accountId",
+				"in": "query",
+				"required": true,
+				"schema": {
+					"type": "string",
+					"pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"
+				}
+			}
+		},
+		"schemas": {
+			"PowerBIAccount": {
+				"type": "object",
+				"properties": {
+					"accountId": {
+						"type": "string",
+						"description": "Unique identifier for the PowerBI account"
+					},
+					"authorizedTime": {
+						"type": "string",
+						"description": "Timestamp when the account was authorized"
+					},
+					"validConnection": {
+						"type": "boolean",
+						"description": "Indicates if the connection to the PowerBI account is valid"
+					},
+					"accountType": {
+						"type": "string",
+						"description": "Type of the PowerBI account",
+						"enum": [
+							"organisations",
+							"personal"
+						]
+					},
+					"authorizedScopes": {
+						"type": "string",
+						"description": "Space-separated list of authorized scopes for the PowerBI account"
+					},
+					"emailId": {
+						"type": "string",
+						"format": "email",
+						"description": "Email address associated with the PowerBI account"
+					},
+					"identityPlatform": {
+						"type": "string",
+						"description": "Identity platform for the account",
+						"enum": [
+							"international",
+							"us",
+							"china"
+						]
+					}
+				},
+				"required": [
+					"accountId",
+					"authorizedTime",
+					"validConnection",
+					"accountType",
+					"authorizedScopes",
+					"emailId",
+					"identityPlatform"
+				]
+			},
+			"PowerBIWorkspace": {
+				"type": "object",
+				"properties": {
+					"isReadOnly": {
+						"type": "boolean",
+						"description": "Indicates if the workspace is read-only"
+					},
+					"name": {
+						"type": "string",
+						"description": "Name of the PowerBI workspace"
+					},
+					"id": {
+						"type": "string",
+						"description": "Unique identifier for the PowerBI workspace"
+					},
+					"isOnDedicatedCapacity": {
+						"type": "boolean",
+						"description": "Indicates if the workspace is on dedicated capacity"
+					},
+					"type": {
+						"type": "string",
+						"description": "Type of the PowerBI workspace"
+					}
+				}
+			}
+		},
+		"securitySchemes" : {
+			"cookie-auth" : {
+				"$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+			},
+			"org-oauth" : {
+				"$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+			},
+			"iam-oauth2-schema" : {
+				"$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+			}
+		}
+	},
+	"x-entity": "Microsoft_PowerBI"
+}

@@ -1,0 +1,573 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ActiveCalls",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "telephony"
+  },
+  "paths" : {
+    "/api/v1/activePhoneCalls" : {
+      "get" : {
+        "tags" : [ "ActiveCalls" ],
+        "summary" : "Get the active PhoneCalls",
+        "description" : "This API gives active PhoneCalls(Inprogress and Inqueue)",
+        "operationId" : "getCalls",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "contact name or number by which the active phone calls will be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "contact name or number by which the active phone calls will be listed",
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "#/components/parameters/ivrMenuId"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of active phone calls to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Number of active phone calls to fetch",
+            "maximum" : 99,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which active phone calls has to be fetched.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Index number, starting from which active phone calls has to be fetched.",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "state",
+          "in" : "query",
+          "description" : "State of the active phone calls. It should be either !@INPROGRESS@! or !@INQUEUE@!",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "State of the active phone calls. It should be either !@INPROGRESS@! or !@INQUEUE@!",
+            "enum" : [ "INPROGRESS", "INQUEUE" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getCalls"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.activities.calls.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "4d25572bb8ba41116111bcfbca4412e6",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.callbar.activecalls.ActiveCallsService.getCalls"
+        }
+      }
+    },
+    "/api/v1/activePhoneCallsCount" : {
+      "get" : {
+        "tags" : [ "ActiveCalls" ],
+        "summary" : "Get the active PhoneCalls Count",
+        "description" : "This API gives active PhoneCalls Count(Inprogress and Inqueue)",
+        "operationId" : "getCount",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/number"
+        }, {
+          "$ref" : "#/components/parameters/ivrMenuId"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getCount"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.activities.calls.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "07c040acc8095a7a9991eb74395190bf",
+          "module-group" : "telephony",
+          "apimethod" : "com.zoho.desk.telephony.callbar.activecalls.ActiveCallsService.getCount"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "owner" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "firstName", "id", "lastName", "photoURL" ]
+      },
+      "ticket" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "ticketNumber" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "id", "ticketNumber", "webUrl" ]
+      },
+      "account" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "accountName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "accountName", "id", "webUrl" ]
+      },
+      "contact" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "firstName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 40,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "photoURL" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "phone" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\+\\-\\.\\(\\)\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "webUrl" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "mobile" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 50,
+            "minLength" : 0,
+            "pattern" : "[0-9a-zA-Z_\\+\\-\\.\\(\\)\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "customerHappiness" : {
+            "$ref" : "./Contact.json#/components/schemas/customerHappiness"
+          },
+          "isSpam" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "x-dynamic-enum" : true
+          },
+          "account" : {
+            "$ref" : "./ActiveCalls.json#/components/schemas/account"
+          },
+          "email" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 255,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'\\&\\~]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "required" : [ "account", "customerHappiness", "email", "firstName", "id", "isSpam", "lastName", "mobile", "phone", "photoURL", "type", "webUrl" ]
+      },
+      "data" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "owner" : {
+            "$ref" : "./ActiveCalls.json#/components/schemas/owner"
+          },
+          "aliasName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ticket" : {
+            "$ref" : "./ActiveCalls.json#/components/schemas/ticket"
+          },
+          "ivrName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "contact" : {
+            "$ref" : "./ActiveCalls.json#/components/schemas/contact"
+          },
+          "callRefId" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "from" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Index number, starting from which active phone calls has to be fetched.",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "to" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "state" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "INPROGRESS", "INQUEUE" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "State of the active phone calls. It should be either !@INPROGRESS@! or !@INQUEUE@!",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "direction" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "INBOUND", "OUTBOUND" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "aliasName", "callRefId", "contact", "createdTime", "direction", "from", "id", "ivrName", "owner", "state", "ticket", "to" ]
+      },
+      "dataArr" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ActiveCalls.json#/components/schemas/data"
+        }
+      }
+    },
+    "responses" : {
+      "getCalls" : {
+        "description" : "getCalls template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ActiveCalls.json#/components/schemas/dataArr"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "owner" : {
+                      "photoURL" : null,
+                      "firstName" : "Edwin",
+                      "lastName" : "Pattudurai",
+                      "id" : "40000012312"
+                    },
+                    "aliasName" : "US Number",
+                    "ticket" : {
+                      "ticketNumber" : "123",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Cases/dv/137605000003037170",
+                      "id" : "40000012312"
+                    },
+                    "ivrName" : "Support",
+                    "contact" : {
+                      "firstName" : null,
+                      "lastName" : "Pattu",
+                      "photoURL" : null,
+                      "phone" : "14562378790",
+                      "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Contacts/dv/137605000003037456",
+                      "mobile" : "9876543210",
+                      "id" : "40000012312",
+                      "isSpam" : false,
+                      "customerHappiness" : {
+                        "badPercentage" : "22",
+                        "okPercentage" : "31",
+                        "goodPercentage" : "47"
+                      },
+                      "type" : "paidUser",
+                      "email" : "pattu@zylker.com",
+                      "account" : {
+                        "accountName" : "ABC Company",
+                        "webUrl" : "https://desk.zoho.com/support/zylker/ShowHomePage.do#Accounts/dv/137605000003037134",
+                        "id" : "40000012312"
+                      }
+                    },
+                    "callRefId" : "CA10001",
+                    "createdTime" : 1574433984000,
+                    "from" : "9876543210",
+                    "id" : "40000012345",
+                    "to" : "1234765890",
+                    "state" : "INPROGRESS",
+                    "direction" : "INBOUND"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getCount" : {
+        "description" : "getCount template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "INQUEUE" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                },
+                "INPROGRESS" : {
+                  "type" : [ "string", "null", "integer" ],
+                  "format" : "int32",
+                  "pattern" : "([0-9]+)"
+                }
+              },
+              "required" : [ "INPROGRESS", "INQUEUE" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "INQUEUE" : "4",
+                  "INPROGRESS" : "12"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "number" : {
+        "name" : "number",
+        "in" : "query",
+        "description" : "Phone number from which all the active phone calls will be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Phone number from which all the active phone calls will be listed",
+          "maxLength" : 100,
+          "minLength" : 0,
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "ivrMenuId" : {
+        "name" : "ivrMenuId",
+        "in" : "query",
+        "description" : "ID of the parent ivrMenu from which all the active phone calls will be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "ID of the parent ivrMenu from which all the active phone calls will be listed",
+          "pattern" : "([0-9]+)"
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ActiveCalls"
+}

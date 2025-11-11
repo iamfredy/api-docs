@@ -1,0 +1,584 @@
+{
+	"openapi": "3.1.0",
+	"info": {
+		"title": "Client Events",
+		"version": "1.0.0",
+		"x-clan-group": "clientEvents",
+		"x-module-group": "clientEvents"
+	},
+	"paths": {
+		"/api/v1/clientEvents": {
+			"post": {
+				"tags": [
+					"ClientEvents"
+				],
+				"summary": "Create a client event",
+				"description": "With the help of this API, we can create a client event in a portal.",
+				"operationId": "createClientEvent",
+                "x-audience" : [ "company-internal"] ,
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/createClientEventPayload"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/clientEventResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					},
+					"500": {
+						"$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"ClientEvents"
+				],
+				"summary": "Get all client events",
+				"description": "With the help of this API, we can get all client events in a portal.",
+				"operationId": "getClientEvents",
+                "x-audience" : [ "company-internal"] ,
+				"parameters": [
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": [
+								"string",
+								"null",
+								"integer"
+							],
+							"format": "int32",
+							"description": "The number of client events that need to be fetched.",
+							"maximum": 100,
+							"minimum": 1,
+							"pattern": "([0-9]+)",
+							"x-custom-parameters-attributes": {}
+						}
+					},
+					{
+						"name": "from",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": [
+								"string",
+								"null",
+								"integer"
+							],
+							"format": "int32",
+							"description": "The starting index number from which the client events should be fetched.",
+							"pattern": "([0-9]+)",
+							"x-custom-parameters-attributes": {}
+						}
+					},
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/getClientEventsResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					},
+					"500": {
+						"$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+					}
+				}
+			}
+		},
+		"/api/v1/clientEvents/{clientEventId}": {
+			"get": {
+				"tags": [
+					"ClientEvents"
+				],
+				"summary": "Get a client event",
+				"description": "With the help of this API, we can get a specific client event in a portal.",
+				"operationId": "getClientEvent",
+                "x-audience" : [ "company-internal"] ,
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/clientEventId"
+					},
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/clientEventResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					},
+					"500": {
+						"$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+					}
+				}
+			},
+			"patch": {
+				"tags": [
+					"ClientEvents"
+				],
+				"summary": "Update a client event",
+				"description": "With the help of this API, we can update a client event in a portal.",
+				"operationId": "updateClientEvent",
+                "x-audience" : [ "company-internal"] ,
+				"parameters": [
+					{
+						"$ref": "#/components/parameters/clientEventId"
+					},
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/updateClientEventPayload"
+				},
+				"responses": {
+					"200": {
+						"$ref": "#/components/responses/clientEventResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					},
+					"500": {
+						"$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+					}
+				}
+			}
+		},
+		"/api/v1/clientEvents/deleteMany": {
+			"post": {
+				"tags": [
+					"ClientEvents"
+				],
+				"summary": "Delete multiple client events",
+				"description": "With the help of this API, we can delete multiple client events in a portal.",
+				"operationId": "deleteClientEvents",
+                "x-audience" : [ "company-internal"] ,
+				"parameters": [
+					{
+						"$ref": "../common/Common.json#/components/parameters/orgId"
+					}
+				],
+				"requestBody": {
+					"$ref": "#/components/requestBodies/deleteClientEventsPayload"
+				},
+				"responses": {
+					"204": {
+						"$ref": "../common/Common.json#/components/responses/emptyResponse"
+					},
+					"422": {
+						"$ref": "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+					},
+					"500": {
+						"$ref": "../common/Common.json#/components/responses/internalErrorResponse"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"eventPayloadProperty": {
+				"type": [
+					"object",
+					"null"
+				],
+				"additionalProperties": false,
+				"properties": {
+					"apiName": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "API name of the payload property.",
+						"maxLength": 100,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"displayLabel": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Display label for the payload property.",
+						"maxLength": 255,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"readOnly": {
+						"type": [
+							"boolean",
+							"null"
+						],
+						"description": "Whether the payload property is read-only.",
+						"x-custom-parameters-attributes": {}
+					},
+					"isMandatory": {
+						"type": [
+							"boolean",
+							"null"
+						],
+						"description": "Whether the payload property is mandatory.",
+						"x-custom-parameters-attributes": {}
+					},
+					"type": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Type of the payload property.",
+						"maxLength": 100,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"maxLength": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Maximum length allowed for the payload property.",
+						"maxLength": 10,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"defaultValue": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Default value of the payload property.",
+						"maxLength": 255,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"showToHelpCenter": {
+						"type": [
+							"boolean",
+							"null"
+						],
+						"description": "Whether to show this property in help center.",
+						"x-custom-parameters-attributes": {}
+					}
+				},
+				"required": [
+					"displayLabel",
+					"type"
+				]
+			},
+			"arrayOfEventPayloadProperties": {
+				"type": [
+					"array",
+					"null"
+				],
+				"items": {
+					"$ref": "#/components/schemas/eventPayloadProperty"
+				}
+			},
+			"clientEventPayload": {
+				"type": [
+					"object",
+					"null"
+				],
+				"additionalProperties": false,
+				"properties": {
+					"name": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Name of the client event.",
+						"maxLength": 100,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"displayLabel": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Display label for the client event.",
+						"maxLength": 255,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"payload": {
+						"$ref": "#/components/schemas/arrayOfEventPayloadProperties"
+					}
+				},
+				"required": [
+					"name",
+					"displayLabel",
+					"payload"
+				]
+			},
+			"updateClientEventPayload": {
+				"type": [
+					"object",
+					"null"
+				],
+				"additionalProperties": false,
+				"properties": {
+					"name": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Name of the client event.",
+						"maxLength": 100,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"displayLabel": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Display label for the client event.",
+						"maxLength": 255,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"payload": {
+						"$ref": "#/components/schemas/arrayOfEventPayloadProperties"
+					}
+				},
+				"required": [
+					"name",
+					"displayLabel",
+					"payload"
+				]
+			},
+			"clientEventResponseSchema": {
+				"type": [
+					"object",
+					"null"
+				],
+				"additionalProperties": false,
+				"properties": {
+					"id": {
+						"type": [
+							"string",
+							"null",
+							"integer"
+						],
+						"format": "int64",
+						"description": "Unique identifier for the client event.",
+						"pattern": "([0-9]+)",
+						"x-custom-parameters-attributes": {}
+					},
+					"name": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Name of the client event.",
+						"maxLength": 100,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"displayLabel": {
+						"type": [
+							"string",
+							"null"
+						],
+						"description": "Display label for the client event.",
+						"maxLength": 255,
+						"minLength": 0,
+						"x-custom-parameters-attributes": {}
+					},
+					"payload": {
+						"$ref": "#/components/schemas/arrayOfEventPayloadProperties"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"displayLabel",
+					"payload"
+				]
+			},
+			"arrayOfClientEventsResponse": {
+				"type": [
+					"array",
+					"null"
+				],
+				"items": {
+					"$ref": "#/components/schemas/clientEventResponseSchema"
+				}
+			},
+			"deleteClientEventsPayload": {
+				"type": [
+					"object",
+					"null"
+				],
+				"additionalProperties": false,
+				"properties": {
+					"eventIdsJson": {
+						"type": [
+							"array",
+							"null"
+						],
+						"description": "Array of client event IDs to be deleted.",
+						"items": {
+							"type": [
+								"string",
+								"null",
+								"integer"
+							],
+							"format": "int64",
+							"pattern": "([0-9]+)",
+							"x-custom-parameters-attributes": {}
+						},
+						"x-custom-parameters-attributes": {}
+					}
+				},
+				"required": [
+					"eventIdsJson"
+				]
+			}
+		},
+		"parameters": {
+			"clientEventId": {
+				"name": "clientEventId",
+				"in": "path",
+				"required": true,
+				"schema": {
+					"type": [
+						"string",
+						"null",
+						"integer"
+					],
+					"format": "int64",
+					"description": "Client event id",
+					"pattern": "([0-9]+)",
+					"x-custom-parameters-attributes": {}
+				}
+			}
+		},
+		"requestBodies": {
+			"createClientEventPayload": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/clientEventPayload"
+						},
+						"examples": {
+							"Valid requestBody Definition": {
+								"value": {
+									"name": "TARGET#EVENT",
+									"displayLabel": "TARGET_EVENT",
+									"payload": [
+										{
+											"apiName": "recordsIds",
+											"displayLabel": "recordsIds",
+											"readOnly": false,
+											"isMandatory": false,
+											"type": "Text",
+											"maxLength": "255",
+											"defaultValue": "recordsIds",
+											"showToHelpCenter": true
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"updateClientEventPayload": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/updateClientEventPayload"
+						},
+						"examples": {
+							"Valid requestBody Definition": {
+								"value": {
+									"name": "TARGET#EVENT",
+									"displayLabel": "TARGET_EVENT",
+									"payload": [
+										{
+											"apiName": "recordsIds",
+											"displayLabel": "recordsIds",
+											"readOnly": false,
+											"isMandatory": false,
+											"type": "Text",
+											"maxLength": "255",
+											"defaultValue": "recordsIds",
+											"showToHelpCenter": true
+										}
+									]
+								}
+							}
+						}
+					}
+				}
+			},
+			"deleteClientEventsPayload": {
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/deleteClientEventsPayload"
+						},
+						"examples": {
+							"Valid requestBody Definition": {
+								"value": {
+									"eventIdsJson": []
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"responses": {
+			"clientEventResponse": {
+				"description": "Client Event Response Template Definition",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/clientEventResponseSchema"
+						}
+					}
+				},
+				"x-custom-response-attributes": {}
+			},
+			"getClientEventsResponse": {
+				"description": "Get Client Events Response Template Definition",
+				"content": {
+					"application/json": {
+						"schema": {
+							"type": [
+								"object",
+								"null"
+							],
+							"additionalProperties": false,
+							"properties": {
+								"data": {
+									"$ref": "#/components/schemas/arrayOfClientEventsResponse"
+								}
+							},
+							"required": [
+								"data"
+							]
+						}
+					}
+				},
+				"x-custom-response-attributes": {}
+			}
+		}
+	},
+	"x-entity": "ClientEvents"
+}

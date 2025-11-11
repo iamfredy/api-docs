@@ -1,0 +1,335 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Resources",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "marketplace"
+  },
+  "paths" : {
+    "/api/v1/features/{featureId}/resources" : {
+      "get" : {
+        "tags" : [ "Resources" ],
+        "operationId" : "getInstalledFeatureResource",
+        "parameters" : [ {
+          "name" : "featureId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/invalidDataErrorResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/getInstalledFeatureResourceResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.getInstallFeatureResources"
+        }
+      }
+    },
+    "/api/v1/resource/fileNames" : {
+      "get" : {
+        "tags" : [ "Resources" ],
+        "summary" : "List Features File Name",
+        "description" : "This API gets a list of resource file name in feature framework",
+        "operationId" : "getResourceFileNames",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getResourceFileNamesResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "trusted",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "f0e4cf5f9876df12cfba294ef04c57c8",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.features.core.FeatureService.getFeatureFileNames"
+        }
+      }
+    },
+    "/api/v1/features/{uuId}" : {
+      "get" : {
+        "tags" : [ "Resources" ],
+        "summary" : "",
+        "description" : "",
+        "operationId" : "getFeatureByUUID",
+        "parameters" : [ {
+          "name" : "uuId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "",
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([a-zA-Z0-9/\\+\\=]+)",
+            "x-custom-parameters-attributes" : { }
+          }
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/getFeatureByUUIDResponse"
+          },
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          }
+        },
+        "x-audience" : [ "company-internal" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "featureResourceResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "resourceId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "apiName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "resourceName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "sourceScopeId" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int64",
+            "pattern" : "([0-9]+)"
+          },
+          "source" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "type" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "apiName", "id", "resourceId", "resourceName", "source", "sourceScopeId", "type" ]
+      },
+      "arrayOfFeatureResourceResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Resources.json#/components/schemas/featureResourceResponse"
+        }
+      },
+      "resourceFileNamesResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "displayLabel" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z]+\\.json"
+          },
+          "resourceType" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "required" : [ "displayLabel", "name", "resourceType" ]
+      },
+      "arrayOfResourceFileNamesResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./Resources.json#/components/schemas/resourceFileNamesResponse"
+        }
+      }
+    },
+    "responses" : {
+      "getInstalledFeatureResourceResponse" : {
+        "description" : "getInstalledFeatureResourceResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Resources.json#/components/schemas/arrayOfFeatureResourceResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getResourceFileNamesResponse" : {
+        "description" : "getResourceFileNamesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./Resources.json#/components/schemas/arrayOfResourceFileNamesResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "name" : "fields.json",
+                    "resourceType" : "fields"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getFeatureByUUIDResponse" : {
+        "description" : "getFeatureByUUIDResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "featureName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9]+$",
+                  "x-custom-parameters-attributes" : { }
+                },
+                "displayName" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                },
+                "description" : {
+                  "type" : [ "string", "null" ],
+                  "description" : "",
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : { }
+                }
+              },
+              "required" : [ "description", "displayName", "featureName" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : { }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : { }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "Resources"
+}

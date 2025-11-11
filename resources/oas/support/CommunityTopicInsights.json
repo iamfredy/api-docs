@@ -1,0 +1,310 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CommunityTopicInsights",
+    "version" : "1.0.0",
+    "x-clan-group" : "helpCenter",
+    "x-module-group" : "community"
+  },
+  "paths" : {
+    "/api/v1/communityTopicsInsights/interactedUsers" : {
+      "get" : {
+        "tags" : [ "CommunityTopicInsights" ],
+        "summary" : "Get Topic Interacted Users List",
+        "description" : "This API gets the list of users (from the last 2 years) who have recently interacted with a particular topic in the community.",
+        "operationId" : "getTopicViewedUserList",
+        "parameters" : [ {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Specifies the maximum number of users to be fetched and listed. The default value is 1, and the maximum value allowed is 100.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Specifies the maximum number of users to be fetched and listed. The default value is 1, and the maximum value allowed is 100.",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Represents an index number from which the list of users should be fetched. . The default value is 1.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "description" : "Represents an index number from which the list of users should be fetched. . The default value is 1.",
+            "minimum" : 1,
+            "pattern" : "([0-9]+)"
+          }
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "./CommunityTopic.json#/components/responses/listAllCommunityTopicFollowers"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "5dd86f9522337ed00b703d3d6d4d2505",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.posts.stats.TopicDashboardRestService.getRecentTopicInteractedUsers"
+        }
+      }
+    },
+    "/api/v1/communityTopicsInsights/count" : {
+      "get" : {
+        "tags" : [ "CommunityTopicInsights" ],
+        "summary" : "Get Topic Insights Count",
+        "description" : "This API gets the count of users (from the last 2 years) who have recently  viewed a particular  topic in the community.",
+        "operationId" : "getTopicViewUsersCount",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Specifies the count fields to be included in the API response. This is a comma-separated property. Allowed count fields are: !@actionCount@!, !@interactedUsersCount@!",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the count fields to be included in the API response. This is a comma-separated property. Allowed count fields are: !@actionCount@!, !@interactedUsersCount@!",
+            "enum" : [ "actionCount", "interactedUsersCount" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/topicId"
+        }, {
+          "name" : "userType",
+          "in" : "query",
+          "description" : "Specifies the type of users. This is a comma separated properties. Allowed values are: !@AGENTS@! !@REGISTERED_USERS@! !@PUBLIC_USERS@! !@END_USERS@! and !@ALL_USERS@! (default).",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : [ "string", "null" ],
+            "description" : "Specifies the type of users. This is a comma separated properties. Allowed values are: !@AGENTS@! !@REGISTERED_USERS@! !@PUBLIC_USERS@! !@END_USERS@! and !@ALL_USERS@! (default).",
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "$ref" : "#/components/parameters/timeRange"
+        }, {
+          "$ref" : "#/components/parameters/actionSource"
+        }, {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "422" : {
+            "$ref" : "../common/Common.json#/components/responses/multipleUnprocessEntityResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/insightsActionCountJson"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.forums.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "helpCenter",
+          "apihash" : "602824b0b2d67688035983243c6364a9",
+          "module-group" : "community",
+          "apimethod" : "com.zoho.desk.helpcenter.community.posts.stats.TopicDashboardRestService.getTopicInsightsCount"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "insightsActionCountMetaJson" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "actionCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "interactedUsersCount" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          },
+          "userType" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "AGENTS", "REGISTERED_USERS", "PUBLIC_USERS", "END_USERS", "ALL_USERS" ],
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Specifies the type of users. This is a comma separated properties. Allowed values are: !@AGENTS@! !@REGISTERED_USERS@! !@PUBLIC_USERS@! !@END_USERS@! and !@ALL_USERS@! (default).",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "split" : ",",
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "required" : [ "actionCount", "interactedUsersCount", "userType" ]
+      },
+      "insightsActionDataArray" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./CommunityTopicInsights.json#/components/schemas/insightsActionCountMetaJson"
+        }
+      }
+    },
+    "responses" : {
+      "insightsActionCountJson" : {
+        "description" : "insightsActionCountJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./CommunityTopicInsights.json#/components/schemas/insightsActionDataArray"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "actionCount" : "7",
+                    "interactedUsersCount" : "3",
+                    "userType" : "ALL_USERS"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : {
+      "topicId" : {
+        "name" : "topicId",
+        "in" : "query",
+        "description" : "id of an topic for which the list of interacted users need to be fetched",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null", "integer" ],
+          "format" : "int64",
+          "description" : "id of an topic for which the list of interacted users need to be fetched",
+          "pattern" : "([0-9]+)"
+        }
+      },
+      "timeRange" : {
+        "name" : "timeRange",
+        "in" : "query",
+        "description" : "Specifies the time period during which the interactions occured. Allowed values are: !@LAST_24_HRS,@!     !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Specifies the time period during which the interactions occured. Allowed values are: !@LAST_24_HRS,@!     !@LAST_7_DAYS,@! !@LAST_30_DAYS,@! !@LAST_365_DAYS@! and !@yyyy-MM-ddThh:mm:ss.SSSZ,yyyy-MM-ddThh:mm:ss.SSSZ@!",
+          "enum" : [ "LAST_24_HRS", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_365_DAYS" ],
+          "maxLength" : 100,
+          "minLength" : 0
+        }
+      },
+      "actionSource" : {
+        "name" : "actionSource",
+        "in" : "query",
+        "description" : "Specifies the channel/medium through which the actions (interactions) were performed. Allowed values are: !@API,@! !@HELPCENTER,@! !@ASAP_WEB,@! !@ASAP_ANDROID,@! !@ASAP_IOS@! and !@AGENT_VIEW@! Note: If the value is not passed, all the sources will be included by default.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "type" : [ "string", "null" ],
+          "description" : "Specifies the channel/medium through which the actions (interactions) were performed. Allowed values are: !@API,@! !@HELPCENTER,@! !@ASAP_WEB,@! !@ASAP_ANDROID,@! !@ASAP_IOS@! and !@AGENT_VIEW@! Note: If the value is not passed, all the sources will be included by default.",
+          "enum" : [ "API", "HELPCENTER", "ASAP_WEB", "ASAP_ANDROID", "ASAP_IOS", "AGENT_VIEW" ],
+          "maxLength" : 100,
+          "minLength" : 0,
+          "x-custom-parameters-attributes" : {
+            "split" : ","
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "CommunityTopicInsights"
+}

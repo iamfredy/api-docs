@@ -1,0 +1,129 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ExtensionOrg",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "marketplace"
+  },
+  "paths" : {
+    "/marketplace/accessibleOrganizations" : {
+      "get" : {
+        "tags" : [ "ExtensionOrg" ],
+        "operationId" : "myAccessibleOrganizations",
+        "parameters" : [ {
+          "$ref" : "../common/Common.json#/components/parameters/orgId"
+        } ],
+        "responses" : {
+          "500" : {
+            "$ref" : "../common/Common.json#/components/responses/internalErrorResponse"
+          },
+          "200" : {
+            "$ref" : "#/components/responses/organizationAPIResponse"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.extension.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "ip-validations" : "internal",
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.support.restapi.MarketPlaceServices.getAccessibleOrganizations"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "myAccessibleOrganizationResponse" : {
+        "type" : [ "null", "object" ],
+        "additionalProperties" : false,
+        "properties" : {
+          "portalName" : {
+            "type" : [ "string", "null" ],
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "hasPermission" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "edition" : {
+            "type" : [ "string", "null" ],
+            "enum" : [ "FREE", "NEW_FREE", "PROFESSIONAL", "ENTERPRISE", "CRMPLUS", "SERVICEPLUS", "ZOHOONE", "ZOHOONE_STANDARD", "FREE_2019", "STANDARD", "EXPRESS", "PROFESSIONAL_2019", "ENTERPRISE_2019" ],
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "type" : [ "string", "null", "integer" ],
+            "format" : "int32",
+            "pattern" : "([0-9]+)"
+          }
+        },
+        "required" : [ "edition", "hasPermission", "id", "portalName" ]
+      },
+      "arrayOfResponse" : {
+        "type" : [ "null", "array" ],
+        "items" : {
+          "$ref" : "./ExtensionOrg.json#/components/schemas/myAccessibleOrganizationResponse"
+        }
+      }
+    },
+    "responses" : {
+      "organizationAPIResponse" : {
+        "description" : "organizationAPIResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : [ "null", "object" ],
+              "additionalProperties" : false,
+              "properties" : {
+                "data" : {
+                  "$ref" : "./ExtensionOrg.json#/components/schemas/arrayOfResponse"
+                }
+              },
+              "required" : [ "data" ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      }
+    },
+    "parameters" : { },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/cookie-auth"
+      },
+      "org-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/org-oauth"
+      },
+      "jwt-oauth" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/jwt-oauth"
+      },
+      "iam-oauth2-schema" : {
+        "$ref" : "../common/Common.json#/components/securitySchemes/iam-oauth2-schema"
+      }
+    }
+  },
+  "x-entity" : "ExtensionOrg"
+}
