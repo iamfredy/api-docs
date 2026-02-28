@@ -1,0 +1,2916 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "TicketApprovals",
+    "version" : "1.0.0",
+    "x-clan-group" : "tickets",
+    "x-module-group" : "tickets"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/tickets/{ticketId}/approvals" : {
+      "get" : {
+        "tags" : [ "TicketApprovals" ],
+        "summary" : "List approvals",
+        "description" : "This API lists the approvals submitted in your help desk.",
+        "operationId" : "getTicketApprovals",
+        "parameters" : [ {
+          "name" : "ticketId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "listApprovalsResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "required" : [ "data" ],
+                    "properties" : {
+                      "data" : {
+                        "items" : {
+                          "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                          "properties" : {
+                            "approver" : {
+                              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                              "properties" : {
+                                "firstName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "lastName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "photoURL" : {
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "email" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "requester" : {
+                              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                              "properties" : {
+                                "firstName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "lastName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "photoURL" : {
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "email" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "requestedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                            },
+                            "subject" : {
+                              "maxLength" : 1000,
+                              "minLength" : 0
+                            },
+                            "description" : {
+                              "maxLength" : 65535,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "status" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "Approved", "Rejected", "Pending" ],
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "Key that filters the approvals by status",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "processedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                            }
+                          },
+                          "additionalProperties" : { }
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  }, {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "errorCode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                      },
+                      "message" : {
+                        "maxLength" : 255,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "approver" : {
+                          "firstName" : "",
+                          "lastName" : "raj",
+                          "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                          "id" : "4000000015001",
+                          "email" : "carol@zylker.com"
+                        },
+                        "requester" : {
+                          "firstName" : "",
+                          "lastName" : "saran",
+                          "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                          "id" : "4000000012629",
+                          "email" : "carol@zylker.com"
+                        },
+                        "requestedTime" : 1466514974000,
+                        "subject" : "Testing",
+                        "description" : "testing",
+                        "id" : "1892000001054081",
+                        "status" : "Approved",
+                        "processedTime" : 1517998355000
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "665b14fdfec671cff68367952467c07a",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.RequestService.getApprovals"
+        }
+      },
+      "post" : {
+        "tags" : [ "TicketApprovals" ],
+        "summary" : "Create approval",
+        "description" : "This API creates an approval in your help desk.",
+        "operationId" : "createTicketApproval",
+        "parameters" : [ {
+          "name" : "ticketId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "approverIds", "subject" ],
+                "properties" : {
+                  "approverIds" : {
+                    "uniqueItems" : true,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64",
+                      "x-custom-parameters-attributes" : [ { } ]
+                    }
+                  },
+                  "subject" : {
+                    "maxLength" : 1000,
+                    "minLength" : 0
+                  },
+                  "description" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "approverIds" : [ "1892000000042001" ],
+                    "subject" : "New approval",
+                    "description" : "new app desc"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "addApprovalResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "required" : [ "approvals" ],
+                    "properties" : {
+                      "approvals" : {
+                        "items" : {
+                          "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                          "properties" : {
+                            "approver" : {
+                              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                              "properties" : {
+                                "firstName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "lastName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "photoURL" : {
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "email" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "requester" : {
+                              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                              "properties" : {
+                                "firstName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "lastName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "photoURL" : {
+                                  "maxLength" : 200,
+                                  "minLength" : 0,
+                                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "email" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "requestedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                            },
+                            "subject" : {
+                              "maxLength" : 1000,
+                              "minLength" : 0
+                            },
+                            "description" : {
+                              "maxLength" : 65535,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "status" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "Approved", "Rejected", "Pending" ],
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "Key that filters the approvals by status",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "processedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                            }
+                          },
+                          "additionalProperties" : false
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  }, {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "errorCode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                      },
+                      "message" : {
+                        "maxLength" : 255,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "approvals" : [ {
+                        "approver" : {
+                          "firstName" : "saran",
+                          "lastName" : "raj",
+                          "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                          "id" : "4000000015001",
+                          "email" : null
+                        },
+                        "requester" : {
+                          "firstName" : "aravind",
+                          "lastName" : "a",
+                          "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                          "id" : "4000000012629",
+                          "email" : null
+                        },
+                        "requestedTime" : 1466514974000,
+                        "subject" : "Testing",
+                        "description" : "testing",
+                        "id" : "1892000001054081",
+                        "status" : "PENDING",
+                        "processedTime" : null
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "0bd534a66f8554ca624792fd7668568b",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.RequestService.addApproval"
+        }
+      }
+    },
+    "/api/v1/tickets/{ticketId}/approvals/{approvalId}" : {
+      "get" : {
+        "tags" : [ "TicketApprovals" ],
+        "summary" : "Get approval",
+        "description" : "This API fetches the details of an approval.",
+        "operationId" : "getTicketApproval",
+        "parameters" : [ {
+          "name" : "approvalId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "ticketId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "getApprovalResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                    "properties" : {
+                      "approver" : {
+                        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                        "properties" : {
+                          "firstName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "lastName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "photoURL" : {
+                            "maxLength" : 200,
+                            "minLength" : 0,
+                            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "email" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "requester" : {
+                        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                        "properties" : {
+                          "firstName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "lastName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "photoURL" : {
+                            "maxLength" : 200,
+                            "minLength" : 0,
+                            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "email" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "requestedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                      },
+                      "subject" : {
+                        "maxLength" : 1000,
+                        "minLength" : 0
+                      },
+                      "description" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "status" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Approved", "Rejected", "Pending" ]
+                      },
+                      "processedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                      }
+                    },
+                    "additionalProperties" : { }
+                  }, {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "errorCode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                      },
+                      "message" : {
+                        "maxLength" : 255,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "approver" : {
+                        "firstName" : "saran",
+                        "lastName" : "raj",
+                        "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                        "id" : "4000000015001",
+                        "email" : null
+                      },
+                      "requester" : {
+                        "firstName" : "aravind",
+                        "lastName" : "a",
+                        "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                        "id" : "4000000012629",
+                        "email" : null
+                      },
+                      "requestedTime" : 1466514974000,
+                      "subject" : "Testing",
+                      "processedTime " : 1517998355000,
+                      "description" : "testing",
+                      "id" : "1892000001054081",
+                      "status" : "Rejected"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "f5cf686ad5bac4ad4a6ba6a6dfc2313c",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.RequestService.getApproval"
+        }
+      },
+      "patch" : {
+        "tags" : [ "TicketApprovals" ],
+        "summary" : "Update approval",
+        "description" : "This API updates the details of an existing ticket approval.",
+        "operationId" : "updateTicketApproval",
+        "parameters" : [ {
+          "name" : "approvalId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "ticketId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "status" ],
+                "properties" : {
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "Approved", "Rejected" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "status" : "Approved/Rejected"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "updateApprovalResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                    "properties" : {
+                      "approver" : {
+                        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                        "properties" : {
+                          "firstName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "lastName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "photoURL" : {
+                            "maxLength" : 200,
+                            "minLength" : 0,
+                            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "email" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "requester" : {
+                        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                        "properties" : {
+                          "firstName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "lastName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "photoURL" : {
+                            "maxLength" : 200,
+                            "minLength" : 0,
+                            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "email" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "requestedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "[a-zA-Z_/\\-\\+0-9]*",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Time when the approval was requested ",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "subject" : {
+                        "maxLength" : 1000,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Subject of the approval",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "description" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Description of the approval",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "ID of the approval",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "status" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Approved", "Rejected", "Pending" ],
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Status of the approval",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "processedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "[a-zA-Z_/\\-\\+0-9]*",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Time when the approval was processed",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  }, {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "errorCode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                      },
+                      "message" : {
+                        "maxLength" : 255,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "approver" : {
+                        "firstName" : "saran",
+                        "lastName" : "raj",
+                        "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                        "id" : "4000000015001",
+                        "email" : null
+                      },
+                      "requester" : {
+                        "firstName" : "aravind",
+                        "lastName" : "a",
+                        "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                        "id" : "4000000012629",
+                        "email" : null
+                      },
+                      "requesterId" : "1892000000042001",
+                      "requestedTime" : 1466514974000,
+                      "approverId" : "1892000000042001",
+                      "subject" : "Testing",
+                      "description" : "testing",
+                      "id" : "1892000001054081",
+                      "status" : "Approved",
+                      "processedTime" : 1517998355000
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "tickets",
+          "apihash" : "02f9ea58298714bb7f19aca3e4376b55",
+          "module-group" : "tickets",
+          "apimethod" : "com.zoho.support.restapi.RequestService.updateApproval"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "approvalActor" : {
+        "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+        "properties" : {
+          "firstName" : {
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "lastName" : {
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "photoURL" : {
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "email" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "approvalDetails" : {
+        "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+        "properties" : {
+          "approver" : {
+            "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+            "properties" : {
+              "firstName" : {
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "maxLength" : 200,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "email" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "additionalProperties" : false
+          },
+          "requester" : {
+            "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+            "properties" : {
+              "firstName" : {
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "lastName" : {
+                "maxLength" : 50,
+                "minLength" : 0
+              },
+              "photoURL" : {
+                "maxLength" : 200,
+                "minLength" : 0,
+                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "email" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+              }
+            },
+            "additionalProperties" : false
+          },
+          "requestedTime" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+          },
+          "subject" : {
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "description" : {
+            "maxLength" : 65535,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "Approved", "Rejected", "Pending" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that filters the approvals by status",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "processedTime" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "listApprovalsData" : {
+        "items" : {
+          "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+          "properties" : {
+            "approver" : {
+              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+              "properties" : {
+                "firstName" : {
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "lastName" : {
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "photoURL" : {
+                  "maxLength" : 200,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "email" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "requester" : {
+              "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+              "properties" : {
+                "firstName" : {
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "lastName" : {
+                  "maxLength" : 50,
+                  "minLength" : 0
+                },
+                "photoURL" : {
+                  "maxLength" : 200,
+                  "minLength" : 0,
+                  "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "email" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "requestedTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+            },
+            "subject" : {
+              "maxLength" : 1000,
+              "minLength" : 0
+            },
+            "description" : {
+              "maxLength" : 65535,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "status" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "Approved", "Rejected", "Pending" ],
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Key that filters the approvals by status",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "processedTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "listApprovalsResponse" : {
+        "description" : "listApprovalsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "required" : [ "data" ],
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                      "properties" : {
+                        "approver" : {
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                          "properties" : {
+                            "firstName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "photoURL" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "email" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "requester" : {
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                          "properties" : {
+                            "firstName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "photoURL" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "email" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "requestedTime" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                        },
+                        "subject" : {
+                          "maxLength" : 1000,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 65535,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "Approved", "Rejected", "Pending" ],
+                          "x-custom-parameters-attributes" : {
+                            "removeExif" : false,
+                            "filterMatchedContent" : false,
+                            "antivirus" : false,
+                            "replacementString" : "",
+                            "allowInvalid" : false,
+                            "descrption" : "Key that filters the approvals by status",
+                            "secret" : false,
+                            "preserveCharsLimit" : 10,
+                            "trim" : false,
+                            "internalParam" : false,
+                            "preserveChars" : "0,5",
+                            "importUrl" : false,
+                            "decrypt" : false
+                          }
+                        },
+                        "processedTime" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              }, {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "errorCode" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                  },
+                  "message" : {
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "approver" : {
+                      "firstName" : "",
+                      "lastName" : "raj",
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                      "id" : "4000000015001",
+                      "email" : "carol@zylker.com"
+                    },
+                    "requester" : {
+                      "firstName" : "",
+                      "lastName" : "saran",
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                      "id" : "4000000012629",
+                      "email" : "carol@zylker.com"
+                    },
+                    "requestedTime" : 1466514974000,
+                    "subject" : "Testing",
+                    "description" : "testing",
+                    "id" : "1892000001054081",
+                    "status" : "Approved",
+                    "processedTime" : 1517998355000
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getApprovalResponse" : {
+        "description" : "getApprovalResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                "properties" : {
+                  "approver" : {
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                    "properties" : {
+                      "firstName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "lastName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "email" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "additionalProperties" : false
+                  },
+                  "requester" : {
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                    "properties" : {
+                      "firstName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "lastName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "email" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "additionalProperties" : false
+                  },
+                  "requestedTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                  },
+                  "subject" : {
+                    "maxLength" : 1000,
+                    "minLength" : 0
+                  },
+                  "description" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0
+                  },
+                  "id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "Approved", "Rejected", "Pending" ]
+                  },
+                  "processedTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                  }
+                },
+                "additionalProperties" : { }
+              }, {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "errorCode" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                  },
+                  "message" : {
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "approver" : {
+                    "firstName" : "saran",
+                    "lastName" : "raj",
+                    "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                    "id" : "4000000015001",
+                    "email" : null
+                  },
+                  "requester" : {
+                    "firstName" : "aravind",
+                    "lastName" : "a",
+                    "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                    "id" : "4000000012629",
+                    "email" : null
+                  },
+                  "requestedTime" : 1466514974000,
+                  "subject" : "Testing",
+                  "processedTime " : 1517998355000,
+                  "description" : "testing",
+                  "id" : "1892000001054081",
+                  "status" : "Rejected"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "addApprovalResponse" : {
+        "description" : "addApprovalResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "required" : [ "approvals" ],
+                "properties" : {
+                  "approvals" : {
+                    "items" : {
+                      "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                      "properties" : {
+                        "approver" : {
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                          "properties" : {
+                            "firstName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "photoURL" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "email" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "requester" : {
+                          "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                          "properties" : {
+                            "firstName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "photoURL" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "email" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "requestedTime" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                        },
+                        "subject" : {
+                          "maxLength" : 1000,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 65535,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "Approved", "Rejected", "Pending" ],
+                          "x-custom-parameters-attributes" : {
+                            "removeExif" : false,
+                            "filterMatchedContent" : false,
+                            "antivirus" : false,
+                            "replacementString" : "",
+                            "allowInvalid" : false,
+                            "descrption" : "Key that filters the approvals by status",
+                            "secret" : false,
+                            "preserveCharsLimit" : 10,
+                            "trim" : false,
+                            "internalParam" : false,
+                            "preserveChars" : "0,5",
+                            "importUrl" : false,
+                            "decrypt" : false
+                          }
+                        },
+                        "processedTime" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[a-zA-Z_/\\-\\+0-9]*"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              }, {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "errorCode" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                  },
+                  "message" : {
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "approvals" : [ {
+                    "approver" : {
+                      "firstName" : "saran",
+                      "lastName" : "raj",
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                      "id" : "4000000015001",
+                      "email" : null
+                    },
+                    "requester" : {
+                      "firstName" : "aravind",
+                      "lastName" : "a",
+                      "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                      "id" : "4000000012629",
+                      "email" : null
+                    },
+                    "requestedTime" : 1466514974000,
+                    "subject" : "Testing",
+                    "description" : "testing",
+                    "id" : "1892000001054081",
+                    "status" : "PENDING",
+                    "processedTime" : null
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "updateApprovalResponse" : {
+        "description" : "updateApprovalResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "required" : [ "approver", "description", "id", "processedTime", "requestedTime", "requester", "status", "subject" ],
+                "properties" : {
+                  "approver" : {
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                    "properties" : {
+                      "firstName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "lastName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "email" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "additionalProperties" : false
+                  },
+                  "requester" : {
+                    "required" : [ "email", "firstName", "id", "lastName", "photoURL" ],
+                    "properties" : {
+                      "firstName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "lastName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "email" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "additionalProperties" : false
+                  },
+                  "requestedTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "[a-zA-Z_/\\-\\+0-9]*",
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Time when the approval was requested ",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "subject" : {
+                    "maxLength" : 1000,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Subject of the approval",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "description" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Description of the approval",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64",
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "ID of the approval",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "Approved", "Rejected", "Pending" ],
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Status of the approval",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "processedTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "[a-zA-Z_/\\-\\+0-9]*",
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "Time when the approval was processed",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              }, {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "errorCode" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "URL_NOT_FOUND", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "INTERNAL_SERVER_ERROR", "EMPTY_PAYLOAD" ]
+                  },
+                  "message" : {
+                    "maxLength" : 255,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "approver" : {
+                    "firstName" : "saran",
+                    "lastName" : "raj",
+                    "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000015001/photo",
+                    "id" : "4000000015001",
+                    "email" : null
+                  },
+                  "requester" : {
+                    "firstName" : "aravind",
+                    "lastName" : "a",
+                    "photoUrl" : "https://desk.zoho.com/api/v1/agent/4000000012629/photo",
+                    "id" : "4000000012629",
+                    "email" : null
+                  },
+                  "requesterId" : "1892000000042001",
+                  "requestedTime" : 1466514974000,
+                  "approverId" : "1892000000042001",
+                  "subject" : "Testing",
+                  "description" : "testing",
+                  "id" : "1892000001054081",
+                  "status" : "Approved",
+                  "processedTime" : 1517998355000
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "approvalId" : {
+        "name" : "approvalId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "ticketId" : {
+        "name" : "ticketId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "addApproval" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "approverIds", "subject" ],
+              "properties" : {
+                "approverIds" : {
+                  "uniqueItems" : true,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64",
+                    "x-custom-parameters-attributes" : [ { } ]
+                  }
+                },
+                "subject" : {
+                  "maxLength" : 1000,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "maxLength" : 65535,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "approverIds" : [ "1892000000042001" ],
+                  "subject" : "New approval",
+                  "description" : "new app desc"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateApproval" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "status" ],
+              "properties" : {
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "Approved", "Rejected" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "Approved/Rejected"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "TicketApprovals"
+}

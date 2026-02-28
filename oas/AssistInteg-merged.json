@@ -1,0 +1,2040 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AssistInteg",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/zohoAssist/permissions" : {
+      "get" : {
+        "tags" : [ "AssistInteg" ],
+        "summary" : "Check Permission for an agent",
+        "description" : "This API fetches the license details for an Agent to conduct Remote Session",
+        "operationId" : "checkPermission",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "checkPermissionResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "oneOf" : [ {
+                    "required" : [ "features", "license_type", "role" ],
+                    "properties" : {
+                      "features" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "role" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Agent", "Admin", "SuperAdmin" ]
+                      },
+                      "license_type" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                      }
+                    },
+                    "additionalProperties" : { }
+                  }, {
+                    "required" : [ "daysLeft", "features", "license_type", "role" ],
+                    "properties" : {
+                      "features" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "role" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Agent", "Admin", "SuperAdmin" ]
+                      },
+                      "license_type" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                      },
+                      "daysLeft" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "licenseType" : "TRIAL",
+                      "features" : [ "SCHEDULE_SESSION", "TWO_WAY_SCREEN_SHARING", "REMOTE_SUPPORT" ],
+                      "role" : "SuperAdmin",
+                      "daysLeft" : "78"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "35fab5d48893f35e3f1eafd7582723d3",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.AssistService.checkPermission"
+        }
+      }
+    },
+    "/api/v1/lens/orgInfo" : {
+      "get" : {
+        "tags" : [ "AssistInteg" ],
+        "summary" : "Get Lens Org Info",
+        "description" : "This API fetches the org details for Zoho lens",
+        "operationId" : "getLensOrgInfo",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "lensOrgInfoJSON template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "current_license", "service_id", "storage_code", "technician_code", "zsoid" ],
+                        "properties" : {
+                          "service_id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "storage_code" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "STORAGE" ]
+                          },
+                          "zsoid" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "technician_code" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "TECHNICIAN" ]
+                          },
+                          "current_license" : {
+                            "required" : [ "days_left", "edition", "license_type", "pay_cycle", "storage_count", "technician_count" ],
+                            "properties" : {
+                              "technician_count" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int32"
+                              },
+                              "pay_cycle" : {
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "enum" : [ "MONTH", "YEAR", "" ]
+                              },
+                              "storage_count" : {
+                                "pattern" : "([0-9]*)",
+                                "format" : "int32"
+                              },
+                              "days_left" : {
+                                "pattern" : "([0-9]*)",
+                                "format" : "int32"
+                              },
+                              "license_type" : {
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                              },
+                              "edition" : {
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        },
+                        "additionalProperties" : { }
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "service_id" : "68123456",
+                        "storage_code" : "STORAGE",
+                        "zsoid" : "67482767",
+                        "technician_code" : "TECHNICIAN",
+                        "current_license" : {
+                          "technician_count" : 10,
+                          "storage_count" : 5,
+                          "pay_cycle" : "YEAR|MONTH",
+                          "days_left" : 15,
+                          "license_type" : "TRIAL|LICENSED",
+                          "edition" : "PROFESSIONAL"
+                        }
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "afc1e53d12e44aed3c5a0dec9e0d8fdf",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.AssistService.getLensOrgInfo"
+        }
+      }
+    },
+    "/api/v1/lens/licenseInfo" : {
+      "get" : {
+        "tags" : [ "AssistInteg" ],
+        "summary" : "Get Lens License Info",
+        "description" : "This API fetches the license details for Zoho lens",
+        "operationId" : "getLensLicenseInfo",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "lensLicenseInfoJSON template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "editions" ],
+                  "properties" : {
+                    "editions" : {
+                      "items" : {
+                        "required" : [ "addons", "edition", "store_plan_id" ],
+                        "properties" : {
+                          "store_plan_id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "addons" : {
+                            "items" : {
+                              "oneOf" : [ {
+                                "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+                                "properties" : {
+                                  "monthly_price" : {
+                                    "additionalProperties" : false
+                                  },
+                                  "store_addon_types" : {
+                                    "maxLength" : 100,
+                                    "minLength" : 0,
+                                    "enum" : [ "TECH", "FS", "MSDK" ]
+                                  },
+                                  "store_addon_id" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  },
+                                  "yearly_price" : {
+                                    "additionalProperties" : false
+                                  }
+                                },
+                                "additionalProperties" : false
+                              }, {
+                                "required" : [ "store_addon_id", "store_addon_types" ],
+                                "properties" : {
+                                  "store_addon_types" : {
+                                    "maxLength" : 100,
+                                    "minLength" : 0,
+                                    "enum" : [ "TECH", "FS", "MSDK" ]
+                                  },
+                                  "store_addon_id" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "additionalProperties" : false
+                              } ]
+                            }
+                          },
+                          "edition" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "editions" : [ {
+                        "store_plan_id" : "820100",
+                        "addons" : [ {
+                          "store_addon_types" : "MSDK",
+                          "store_addon_id" : "820206"
+                        } ],
+                        "edition" : "FREE"
+                      }, {
+                        "store_plan_id" : "820101",
+                        "addons" : [ {
+                          "monthly_price" : {
+                            "EUR" : {
+                              "slot5" : 13,
+                              "slot4" : 14,
+                              "slot3" : 15,
+                              "slot2" : 16,
+                              "slot1" : 17
+                            },
+                            "GBP" : {
+                              "slot5" : 10,
+                              "slot4" : 12,
+                              "slot3" : 13,
+                              "slot2" : 14,
+                              "slot1" : 15
+                            }
+                          },
+                          "store_addon_types" : "TECH",
+                          "store_addon_id" : "820201",
+                          "yearly_price" : {
+                            "EUR" : {
+                              "slot5" : 132,
+                              "slot4" : 144,
+                              "slot3" : 150,
+                              "slot2" : 156,
+                              "slot1" : 168
+                            },
+                            "GBP" : {
+                              "slot5" : 108,
+                              "slot4" : 120,
+                              "slot3" : 132,
+                              "slot2" : 144,
+                              "slot1" : 156
+                            }
+                          }
+                        }, {
+                          "store_addon_types" : "MSDK",
+                          "store_addon_id" : "820206"
+                        } ],
+                        "edition" : "STANDARD"
+                      }, {
+                        "store_plan_id" : "820102",
+                        "addons" : [ {
+                          "monthly_price" : {
+                            "EUR" : {
+                              "slot5" : 18,
+                              "slot4" : 20,
+                              "slot3" : 21,
+                              "slot2" : 22,
+                              "slot1" : 23
+                            },
+                            "GBP" : {
+                              "slot5" : 15,
+                              "slot4" : 16,
+                              "slot3" : 17,
+                              "slot2" : 18,
+                              "slot1" : 20
+                            }
+                          },
+                          "store_addon_types" : "TECH",
+                          "store_addon_id" : "820202",
+                          "yearly_price" : {
+                            "EUR" : {
+                              "slot5" : 180,
+                              "slot4" : 192,
+                              "slot3" : 204,
+                              "slot2" : 216,
+                              "slot1" : 228
+                            },
+                            "GBP" : {
+                              "slot5" : 156,
+                              "slot4" : 156,
+                              "slot3" : 168,
+                              "slot2" : 180,
+                              "slot1" : 192
+                            }
+                          }
+                        }, {
+                          "monthly_price" : {
+                            "EUR" : "0.92",
+                            "GBP" : "1"
+                          },
+                          "store_addon_types" : "FS",
+                          "store_addon_id" : "820203",
+                          "yearly_price" : {
+                            "EUR" : "11",
+                            "GBP" : "10.8"
+                          }
+                        }, {
+                          "store_addon_types" : "MSDK",
+                          "store_addon_id" : "820206"
+                        } ],
+                        "edition" : "PROFESSIONAL"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "c3e63cb68e38205845852ed1e7a6a523",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.AssistService.getLensLicenseInfo"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "curLicenseKeys" : {
+        "required" : [ "days_left", "edition", "license_type", "pay_cycle", "storage_count", "technician_count" ],
+        "properties" : {
+          "technician_count" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "pay_cycle" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "MONTH", "YEAR", "" ]
+          },
+          "storage_count" : {
+            "pattern" : "([0-9]*)",
+            "format" : "int32"
+          },
+          "days_left" : {
+            "pattern" : "([0-9]*)",
+            "format" : "int32"
+          },
+          "license_type" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+          },
+          "edition" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "lensOrgParentsKeys" : {
+        "required" : [ "current_license", "service_id", "storage_code", "technician_code", "zsoid" ],
+        "properties" : {
+          "service_id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "storage_code" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "STORAGE" ]
+          },
+          "zsoid" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "technician_code" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "TECHNICIAN" ]
+          },
+          "current_license" : {
+            "required" : [ "days_left", "edition", "license_type", "pay_cycle", "storage_count", "technician_count" ],
+            "properties" : {
+              "technician_count" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int32"
+              },
+              "pay_cycle" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "MONTH", "YEAR", "" ]
+              },
+              "storage_count" : {
+                "pattern" : "([0-9]*)",
+                "format" : "int32"
+              },
+              "days_left" : {
+                "pattern" : "([0-9]*)",
+                "format" : "int32"
+              },
+              "license_type" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+              },
+              "edition" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+              }
+            },
+            "additionalProperties" : false
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "lensOrgInfoArr" : {
+        "items" : {
+          "required" : [ "current_license", "service_id", "storage_code", "technician_code", "zsoid" ],
+          "properties" : {
+            "service_id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "storage_code" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "STORAGE" ]
+            },
+            "zsoid" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "technician_code" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "TECHNICIAN" ]
+            },
+            "current_license" : {
+              "required" : [ "days_left", "edition", "license_type", "pay_cycle", "storage_count", "technician_count" ],
+              "properties" : {
+                "technician_count" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "pay_cycle" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "MONTH", "YEAR", "" ]
+                },
+                "storage_count" : {
+                  "pattern" : "([0-9]*)",
+                  "format" : "int32"
+                },
+                "days_left" : {
+                  "pattern" : "([0-9]*)",
+                  "format" : "int32"
+                },
+                "license_type" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                },
+                "edition" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+                }
+              },
+              "additionalProperties" : false
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "commonAddOnJsonObject" : {
+        "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+        "properties" : {
+          "monthly_price" : {
+            "additionalProperties" : { }
+          },
+          "store_addon_types" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "TECH", "FS", "MSDK" ]
+          },
+          "store_addon_id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "yearly_price" : {
+            "additionalProperties" : { }
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "msdkAddOnJsonObject" : {
+        "required" : [ "store_addon_id", "store_addon_types" ],
+        "properties" : {
+          "store_addon_types" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "TECH", "FS", "MSDK" ]
+          },
+          "store_addon_id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "addonsArr" : {
+        "items" : {
+          "oneOf" : [ {
+            "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+            "properties" : {
+              "monthly_price" : {
+                "additionalProperties" : false
+              },
+              "store_addon_types" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "TECH", "FS", "MSDK" ]
+              },
+              "store_addon_id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "yearly_price" : {
+                "additionalProperties" : false
+              }
+            },
+            "additionalProperties" : false
+          }, {
+            "required" : [ "store_addon_id", "store_addon_types" ],
+            "properties" : {
+              "store_addon_types" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "TECH", "FS", "MSDK" ]
+              },
+              "store_addon_id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            },
+            "additionalProperties" : false
+          } ]
+        }
+      },
+      "lensLicInfoKeys" : {
+        "required" : [ "addons", "edition", "store_plan_id" ],
+        "properties" : {
+          "store_plan_id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "addons" : {
+            "items" : {
+              "oneOf" : [ {
+                "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+                "properties" : {
+                  "monthly_price" : {
+                    "additionalProperties" : false
+                  },
+                  "store_addon_types" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "TECH", "FS", "MSDK" ]
+                  },
+                  "store_addon_id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "yearly_price" : {
+                    "additionalProperties" : false
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "required" : [ "store_addon_id", "store_addon_types" ],
+                "properties" : {
+                  "store_addon_types" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "TECH", "FS", "MSDK" ]
+                  },
+                  "store_addon_id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "additionalProperties" : false
+              } ]
+            }
+          },
+          "edition" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "licenseInfoArr" : {
+        "items" : {
+          "required" : [ "addons", "edition", "store_plan_id" ],
+          "properties" : {
+            "store_plan_id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "addons" : {
+              "items" : {
+                "oneOf" : [ {
+                  "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+                  "properties" : {
+                    "monthly_price" : {
+                      "additionalProperties" : false
+                    },
+                    "store_addon_types" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "TECH", "FS", "MSDK" ]
+                    },
+                    "store_addon_id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "yearly_price" : {
+                      "additionalProperties" : false
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "required" : [ "store_addon_id", "store_addon_types" ],
+                  "properties" : {
+                    "store_addon_types" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "TECH", "FS", "MSDK" ]
+                    },
+                    "store_addon_id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : false
+                } ]
+              }
+            },
+            "edition" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "checkPermissionResponse" : {
+        "description" : "checkPermissionResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "oneOf" : [ {
+                "required" : [ "features", "license_type", "role" ],
+                "properties" : {
+                  "features" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "role" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "Agent", "Admin", "SuperAdmin" ]
+                  },
+                  "license_type" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "required" : [ "daysLeft", "features", "license_type", "role" ],
+                "properties" : {
+                  "features" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "role" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "Agent", "Admin", "SuperAdmin" ]
+                  },
+                  "license_type" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                  },
+                  "daysLeft" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int32"
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "licenseType" : "TRIAL",
+                  "features" : [ "SCHEDULE_SESSION", "TWO_WAY_SCREEN_SHARING", "REMOTE_SUPPORT" ],
+                  "role" : "SuperAdmin",
+                  "daysLeft" : "78"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "lensOrgInfoJSON" : {
+        "description" : "lensOrgInfoJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "current_license", "service_id", "storage_code", "technician_code", "zsoid" ],
+                    "properties" : {
+                      "service_id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "storage_code" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "STORAGE" ]
+                      },
+                      "zsoid" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "technician_code" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "TECHNICIAN" ]
+                      },
+                      "current_license" : {
+                        "required" : [ "days_left", "edition", "license_type", "pay_cycle", "storage_count", "technician_count" ],
+                        "properties" : {
+                          "technician_count" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "pay_cycle" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "MONTH", "YEAR", "" ]
+                          },
+                          "storage_count" : {
+                            "pattern" : "([0-9]*)",
+                            "format" : "int32"
+                          },
+                          "days_left" : {
+                            "pattern" : "([0-9]*)",
+                            "format" : "int32"
+                          },
+                          "license_type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "TRIAL", "FREE", "LICENSED" ]
+                          },
+                          "edition" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "service_id" : "68123456",
+                    "storage_code" : "STORAGE",
+                    "zsoid" : "67482767",
+                    "technician_code" : "TECHNICIAN",
+                    "current_license" : {
+                      "technician_count" : 10,
+                      "storage_count" : 5,
+                      "pay_cycle" : "YEAR|MONTH",
+                      "days_left" : 15,
+                      "license_type" : "TRIAL|LICENSED",
+                      "edition" : "PROFESSIONAL"
+                    }
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "lensLicenseInfoJSON" : {
+        "description" : "lensLicenseInfoJSON template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "editions" ],
+              "properties" : {
+                "editions" : {
+                  "items" : {
+                    "required" : [ "addons", "edition", "store_plan_id" ],
+                    "properties" : {
+                      "store_plan_id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "addons" : {
+                        "items" : {
+                          "oneOf" : [ {
+                            "required" : [ "monthly_price", "store_addon_id", "store_addon_types", "yearly_price" ],
+                            "properties" : {
+                              "monthly_price" : {
+                                "additionalProperties" : false
+                              },
+                              "store_addon_types" : {
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "enum" : [ "TECH", "FS", "MSDK" ]
+                              },
+                              "store_addon_id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "yearly_price" : {
+                                "additionalProperties" : false
+                              }
+                            },
+                            "additionalProperties" : false
+                          }, {
+                            "required" : [ "store_addon_id", "store_addon_types" ],
+                            "properties" : {
+                              "store_addon_types" : {
+                                "maxLength" : 100,
+                                "minLength" : 0,
+                                "enum" : [ "TECH", "FS", "MSDK" ]
+                              },
+                              "store_addon_id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          } ]
+                        }
+                      },
+                      "edition" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "FREE", "STANDARD", "PROFESSIONAL" ]
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "editions" : [ {
+                    "store_plan_id" : "820100",
+                    "addons" : [ {
+                      "store_addon_types" : "MSDK",
+                      "store_addon_id" : "820206"
+                    } ],
+                    "edition" : "FREE"
+                  }, {
+                    "store_plan_id" : "820101",
+                    "addons" : [ {
+                      "monthly_price" : {
+                        "EUR" : {
+                          "slot5" : 13,
+                          "slot4" : 14,
+                          "slot3" : 15,
+                          "slot2" : 16,
+                          "slot1" : 17
+                        },
+                        "GBP" : {
+                          "slot5" : 10,
+                          "slot4" : 12,
+                          "slot3" : 13,
+                          "slot2" : 14,
+                          "slot1" : 15
+                        }
+                      },
+                      "store_addon_types" : "TECH",
+                      "store_addon_id" : "820201",
+                      "yearly_price" : {
+                        "EUR" : {
+                          "slot5" : 132,
+                          "slot4" : 144,
+                          "slot3" : 150,
+                          "slot2" : 156,
+                          "slot1" : 168
+                        },
+                        "GBP" : {
+                          "slot5" : 108,
+                          "slot4" : 120,
+                          "slot3" : 132,
+                          "slot2" : 144,
+                          "slot1" : 156
+                        }
+                      }
+                    }, {
+                      "store_addon_types" : "MSDK",
+                      "store_addon_id" : "820206"
+                    } ],
+                    "edition" : "STANDARD"
+                  }, {
+                    "store_plan_id" : "820102",
+                    "addons" : [ {
+                      "monthly_price" : {
+                        "EUR" : {
+                          "slot5" : 18,
+                          "slot4" : 20,
+                          "slot3" : 21,
+                          "slot2" : 22,
+                          "slot1" : 23
+                        },
+                        "GBP" : {
+                          "slot5" : 15,
+                          "slot4" : 16,
+                          "slot3" : 17,
+                          "slot2" : 18,
+                          "slot1" : 20
+                        }
+                      },
+                      "store_addon_types" : "TECH",
+                      "store_addon_id" : "820202",
+                      "yearly_price" : {
+                        "EUR" : {
+                          "slot5" : 180,
+                          "slot4" : 192,
+                          "slot3" : 204,
+                          "slot2" : 216,
+                          "slot1" : 228
+                        },
+                        "GBP" : {
+                          "slot5" : 156,
+                          "slot4" : 156,
+                          "slot3" : 168,
+                          "slot2" : 180,
+                          "slot1" : 192
+                        }
+                      }
+                    }, {
+                      "monthly_price" : {
+                        "EUR" : "0.92",
+                        "GBP" : "1"
+                      },
+                      "store_addon_types" : "FS",
+                      "store_addon_id" : "820203",
+                      "yearly_price" : {
+                        "EUR" : "11",
+                        "GBP" : "10.8"
+                      }
+                    }, {
+                      "store_addon_types" : "MSDK",
+                      "store_addon_id" : "820206"
+                    } ],
+                    "edition" : "PROFESSIONAL"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "AssistInteg"
+}

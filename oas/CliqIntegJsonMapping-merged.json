@@ -1,0 +1,3576 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "CliqIntegJsonMapping",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "integration"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/cliq/channels" : {
+      "get" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Get cliq public channels list",
+        "description" : "This api provides the list of public channels",
+        "operationId" : "getChannelsList",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "channelJsonResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "channels", "has_more", "next_token" ],
+                  "properties" : {
+                    "channels" : {
+                      "items" : {
+                        "required" : [ "id", "image_url", "level", "name", "status", "uniqueName" ],
+                        "properties" : {
+                          "uniqueName" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "level" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "organization", "private" ]
+                          },
+                          "image_url" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "replacementString" : "",
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "allowInvalid" : false,
+                              "descrption" : "The channels will be retrieved based on the name provided",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          },
+                          "id" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "status" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "has_more" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "next_token" : {
+                      "maxLength" : 300,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "A pointer from which the channels will be fetched",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "channels" : [ {
+                        "uniqueName" : "desk integration",
+                        "level" : "organization",
+                        "image_url" : "http://cliq.zoho.com/channel/T4000000040005_41312792_1498572169593/photo.do",
+                        "name" : "#desk integration",
+                        "id" : "O1345000000004009",
+                        "status" : "pending"
+                      }, {
+                        "uniqueName" : "desk integration",
+                        "level" : "team",
+                        "image_url" : "http://cliq.zoho.com/channel/T4000000040005_415342792_1498572169593/photo.do",
+                        "name" : "#cliq integration",
+                        "id" : "O1324192310004009",
+                        "status" : "created"
+                      } ],
+                      "has_more" : "false",
+                      "next_token" : "bdfeecaf65c8942ed874151cd588ec0e21e4c26a5ef21771fc7c67640fa55e793c0ddee855083bbe3dffa4596c6cdb0673d4d43bb8ba77964ee8885b63cdc392"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "4310c834742015151cb6ad01d8827965",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.getChannelsList"
+        }
+      },
+      "post" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Create a cliq channel",
+        "description" : "To create cliq channel from desk",
+        "operationId" : "createChannel",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "level", "name" ],
+                "properties" : {
+                  "level" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Level of the channel",
+                    "enum" : [ "organization", "private" ]
+                  },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Name of the channel"
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "level" : "team",
+                    "name" : "Desk Integration Channel"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "createChannelResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "id", "image_url", "level", "name", "uniqueName" ],
+                  "properties" : {
+                    "uniqueName" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "level" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "organization", "private" ],
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Level of the channel",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "image_url" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Name of the channel",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "id" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "uniqueName" : "desk integration",
+                      "level" : "organization",
+                      "image_url" : "http://cliq.zoho.com/channel/T4000000040005_415342792_1498572169593/photo.do",
+                      "name" : "#desk integration",
+                      "id" : "O1345000000004009"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "70a746b4121a6406973512a6c502984f",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.createCliqChannel"
+        }
+      }
+    },
+    "/api/v1/cliq/configuration" : {
+      "get" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Get cliq configuration details",
+        "description" : "This api provides details about cliq configuration",
+        "operationId" : "getConfiguration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "configJsonResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "defaultChannel", "departmentChannelMapping", "installedVersion", "latestVersion", "notificationPreference", "notifyVia", "status" ],
+                  "properties" : {
+                    "latestVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "notificationPreference" : {
+                      "required" : [ "isAgentDirectMessageEnabled", "notifyOnce" ],
+                      "properties" : {
+                        "notifyOnce" : {
+                          "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+                          "properties" : {
+                            "ticketCommentAdded" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketStatusUpdatedTo" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "customerFeedbackReceived" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketClosed" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketMoved" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCommentMentions" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketResolution" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketReopened" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketBlueprintUpdated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketAssigneeChanged" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketEscalated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCreated" : {
+                              "enum" : [ "true", "false" ]
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "isAgentDirectMessageEnabled" : {
+                          "enum" : [ "true", "false" ]
+                        }
+                      },
+                      "additionalProperties" : { }
+                    },
+                    "notifyVia" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "This enables you to choose the mode via which the notifications should get pushed to cliq.Allowed values are defaultChannel and customMapping",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "installedVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Version of cliq to be integrated",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "departmentChannelMapping" : {
+                      "items" : {
+                        "required" : [ "channelId", "departmentId", "status" ],
+                        "properties" : {
+                          "departmentId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "channelId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "status" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "defaultChannel" : {
+                      "required" : [ "id", "uniqueName" ],
+                      "properties" : {
+                        "uniqueName" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : { }
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Status of cliq integration, It can be either enabled or disabled",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "notificationPreference" : {
+                        "notifyOnce" : {
+                          "ticketCommentAdded" : "true",
+                          "ticketStatusUpdatedTo" : [ "Open", "InProgress", "Closed" ],
+                          "customerFeedbackReceived" : "true",
+                          "callCreated" : "true",
+                          "taskReminder" : "true",
+                          "callCompleted" : "true",
+                          "ticketClosed" : "false",
+                          "ticketMoved" : "false",
+                          "eventCompleted" : "true",
+                          "ticketCommentMentions" : "true",
+                          "ticketCreated" : "true",
+                          "ticketResolution" : "true",
+                          "ticketReopened" : "false",
+                          "taskCreated" : "true",
+                          "ticketBlueprintUpdated" : "true",
+                          "taskCompleted" : "true",
+                          "callReminder" : "true",
+                          "eventReminder" : "true",
+                          "ticketAssigneeChanged" : "true",
+                          "ticketEscalated" : "true",
+                          "eventCreated" : "true"
+                        },
+                        "isAgentDirectMessageEnabled" : "true"
+                      },
+                      "notifyVia" : "defaultChannel",
+                      "installedVersion" : "1.0",
+                      "departmentChannelMapping" : [ {
+                        "departmentId" : "63148054672682313",
+                        "channelId" : "78912000000261323",
+                        "status" : "enabled"
+                      }, {
+                        "departmentId" : "63148129000278893",
+                        "channelId" : "98123000000269873",
+                        "status" : "enabled"
+                      } ],
+                      "defaultChannel" : {
+                        "uniqueName" : "Desk Support",
+                        "id" : "98123000000269873"
+                      },
+                      "status" : "enabled"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "71c5900dd48e71b77ec12d304c6d4fb9",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.getCliqConfiguration"
+        }
+      },
+      "post" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Create desk cliq integration",
+        "description" : "This api integrates desk with cliq",
+        "operationId" : "createIntegration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "status" ],
+                "properties" : {
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Status of cliq integration, It can be either enabled or disabled",
+                    "enum" : [ "enabled", "disabled" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "status" : "enabled"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "configJsonResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "defaultChannel", "departmentChannelMapping", "installedVersion", "latestVersion", "notificationPreference", "notifyVia", "status" ],
+                  "properties" : {
+                    "latestVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "notificationPreference" : {
+                      "required" : [ "isAgentDirectMessageEnabled", "notifyOnce" ],
+                      "properties" : {
+                        "notifyOnce" : {
+                          "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+                          "properties" : {
+                            "ticketCommentAdded" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketStatusUpdatedTo" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "customerFeedbackReceived" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketClosed" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketMoved" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCommentMentions" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketResolution" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketReopened" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketBlueprintUpdated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketAssigneeChanged" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketEscalated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCreated" : {
+                              "enum" : [ "true", "false" ]
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "isAgentDirectMessageEnabled" : {
+                          "enum" : [ "true", "false" ]
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "notifyVia" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "This enables you to choose the mode via which the notifications should get pushed to cliq.Allowed values are defaultChannel and customMapping",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "installedVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Version of cliq to be integrated",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "departmentChannelMapping" : {
+                      "items" : {
+                        "required" : [ "channelId", "departmentId", "status" ],
+                        "properties" : {
+                          "departmentId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "channelId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "status" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "defaultChannel" : {
+                      "required" : [ "id", "uniqueName" ],
+                      "properties" : {
+                        "uniqueName" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Status of cliq integration, It can be either enabled or disabled",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "notificationPreference" : {
+                        "notifyOnce" : {
+                          "ticketCommentAdded" : "true",
+                          "ticketStatusUpdatedTo" : [ "Open", "InProgress", "Closed" ],
+                          "customerFeedbackReceived" : "true",
+                          "callCreated" : "true",
+                          "taskReminder" : "true",
+                          "callCompleted" : "true",
+                          "ticketClosed" : "false",
+                          "ticketMoved" : "false",
+                          "eventCompleted" : "true",
+                          "ticketCommentMentions" : "true",
+                          "ticketCreated" : "true",
+                          "ticketResolution" : "true",
+                          "ticketReopened" : "false",
+                          "taskCreated" : "true",
+                          "ticketBlueprintUpdated" : "true",
+                          "taskCompleted" : "true",
+                          "callReminder" : "true",
+                          "eventReminder" : "true",
+                          "ticketAssigneeChanged" : "true",
+                          "ticketEscalated" : "true",
+                          "eventCreated" : "true"
+                        },
+                        "isAgentDirectMessageEnabled" : "true"
+                      },
+                      "notifyVia" : "defaultChannel",
+                      "installedVersion" : "1.0",
+                      "departmentChannelMapping" : [ {
+                        "departmentId" : "63148054672682313",
+                        "channelId" : "78912000000261323",
+                        "status" : "enabled"
+                      }, {
+                        "departmentId" : "63148129000278893",
+                        "channelId" : "98123000000269873",
+                        "status" : "enabled"
+                      } ],
+                      "defaultChannel" : {
+                        "uniqueName" : "Desk Support",
+                        "id" : "98123000000269873"
+                      },
+                      "status" : "enabled"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "90840e1eff84be869d7e585e94500894",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.createCliqIntegration"
+        }
+      },
+      "delete" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Remove cliq integration",
+        "description" : "This api removes the desk-cliq integration",
+        "operationId" : "deleteIntegration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "No content"
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "9da2088f106a74fe9b2a33b04827ad50",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.removeCliqIntegration"
+        }
+      },
+      "patch" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Update cliq integration configuration",
+        "description" : "This api updates the cliq integration details",
+        "operationId" : "updateIntegration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "properties" : {
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Status of cliq integration, It can be either enabled or disabled",
+                    "enum" : [ "enabled", "disabled" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "status" : "enabled"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "configJsonResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "defaultChannel", "departmentChannelMapping", "installedVersion", "latestVersion", "notificationPreference", "notifyVia", "status" ],
+                  "properties" : {
+                    "latestVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "notificationPreference" : {
+                      "required" : [ "isAgentDirectMessageEnabled", "notifyOnce" ],
+                      "properties" : {
+                        "notifyOnce" : {
+                          "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+                          "properties" : {
+                            "ticketCommentAdded" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketStatusUpdatedTo" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "customerFeedbackReceived" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketClosed" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketMoved" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCommentMentions" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketResolution" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketReopened" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCreated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketBlueprintUpdated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "taskCompleted" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "callReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventReminder" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketAssigneeChanged" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "ticketEscalated" : {
+                              "enum" : [ "true", "false" ]
+                            },
+                            "eventCreated" : {
+                              "enum" : [ "true", "false" ]
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "isAgentDirectMessageEnabled" : {
+                          "enum" : [ "true", "false" ]
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "notifyVia" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "This enables you to choose the mode via which the notifications should get pushed to cliq.Allowed values are defaultChannel and customMapping",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "installedVersion" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Version of cliq to be integrated",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "departmentChannelMapping" : {
+                      "items" : {
+                        "required" : [ "channelId", "departmentId", "status" ],
+                        "properties" : {
+                          "departmentId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "channelId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "status" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "defaultChannel" : {
+                      "required" : [ "id", "uniqueName" ],
+                      "properties" : {
+                        "uniqueName" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "replacementString" : "",
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "allowInvalid" : false,
+                        "descrption" : "Status of cliq integration, It can be either enabled or disabled",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "notificationPreference" : {
+                        "notifyOnce" : {
+                          "ticketCommentAdded" : "true",
+                          "ticketStatusUpdatedTo" : [ "Open", "InProgress", "Closed" ],
+                          "customerFeedbackReceived" : "true",
+                          "callCreated" : "true",
+                          "taskReminder" : "true",
+                          "callCompleted" : "true",
+                          "ticketClosed" : "false",
+                          "ticketMoved" : "false",
+                          "eventCompleted" : "true",
+                          "ticketCommentMentions" : "true",
+                          "ticketCreated" : "true",
+                          "ticketResolution" : "true",
+                          "ticketReopened" : "false",
+                          "taskCreated" : "true",
+                          "ticketBlueprintUpdated" : "true",
+                          "taskCompleted" : "true",
+                          "callReminder" : "true",
+                          "eventReminder" : "true",
+                          "ticketAssigneeChanged" : "true",
+                          "ticketEscalated" : "true",
+                          "eventCreated" : "true"
+                        },
+                        "isAgentDirectMessageEnabled" : "true"
+                      },
+                      "notifyVia" : "defaultChannel",
+                      "installedVersion" : "1.0",
+                      "departmentChannelMapping" : [ {
+                        "departmentId" : "63148054672682313",
+                        "channelId" : "78912000000261323",
+                        "status" : "enabled"
+                      }, {
+                        "departmentId" : "63148129000278893",
+                        "channelId" : "98123000000269873",
+                        "status" : "enabled"
+                      } ],
+                      "defaultChannel" : {
+                        "uniqueName" : "Desk Support",
+                        "id" : "98123000000269873"
+                      },
+                      "status" : "enabled"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "67e7e999cd5dbcea3fb0bc5d0e267341",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.updateCliqConfiguration"
+        }
+      }
+    },
+    "/api/v1/cliq/notify" : {
+      "post" : {
+        "tags" : [ "CliqIntegJsonMapping" ],
+        "summary" : "Send mail of conflict users",
+        "description" : "Cliq can't be integrated if any of the agent in the desk organization are associated with multiple desk portals.This api sends mail of such conflict users",
+        "operationId" : "sendMailForConflictUser",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 86400000,
+                  "lock-period" : 3000000,
+                  "threshold" : 50,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "c4d28e541f99648d8a21fab3ad8d3a40",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.CliqService.sendMailForConflictUsers"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "channelFieldJson" : {
+        "required" : [ "id", "image_url", "level", "name", "status", "uniqueName" ],
+        "properties" : {
+          "uniqueName" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "level" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "organization", "private" ]
+          },
+          "image_url" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "name" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "replacementString" : "",
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "allowInvalid" : false,
+              "descrption" : "The channels will be retrieved based on the name provided",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "id" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "channelJsonArray" : {
+        "items" : {
+          "required" : [ "id", "image_url", "level", "name", "status", "uniqueName" ],
+          "properties" : {
+            "uniqueName" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "level" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "organization", "private" ]
+            },
+            "image_url" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "replacementString" : "",
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "allowInvalid" : false,
+                "descrption" : "The channels will be retrieved based on the name provided",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "id" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "status" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "departmentChannelMappingJson" : {
+        "required" : [ "channelId", "departmentId", "status" ],
+        "properties" : {
+          "departmentId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "channelId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "departmentChannelMappingJsonArray" : {
+        "items" : {
+          "required" : [ "channelId", "departmentId", "status" ],
+          "properties" : {
+            "departmentId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "channelId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "status" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "notifyOnceJson" : {
+        "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+        "properties" : {
+          "ticketCommentAdded" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketStatusUpdatedTo" : {
+            "uniqueItems" : false,
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "customerFeedbackReceived" : {
+            "enum" : [ "true", "false" ]
+          },
+          "callCreated" : {
+            "enum" : [ "true", "false" ]
+          },
+          "taskReminder" : {
+            "enum" : [ "true", "false" ]
+          },
+          "callCompleted" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketClosed" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketMoved" : {
+            "enum" : [ "true", "false" ]
+          },
+          "eventCompleted" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketCommentMentions" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketCreated" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketResolution" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketReopened" : {
+            "enum" : [ "true", "false" ]
+          },
+          "taskCreated" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketBlueprintUpdated" : {
+            "enum" : [ "true", "false" ]
+          },
+          "taskCompleted" : {
+            "enum" : [ "true", "false" ]
+          },
+          "callReminder" : {
+            "enum" : [ "true", "false" ]
+          },
+          "eventReminder" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketAssigneeChanged" : {
+            "enum" : [ "true", "false" ]
+          },
+          "ticketEscalated" : {
+            "enum" : [ "true", "false" ]
+          },
+          "eventCreated" : {
+            "enum" : [ "true", "false" ]
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "notificationPreferenceJson" : {
+        "required" : [ "isAgentDirectMessageEnabled", "notifyOnce" ],
+        "properties" : {
+          "notifyOnce" : {
+            "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+            "properties" : {
+              "ticketCommentAdded" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketStatusUpdatedTo" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "customerFeedbackReceived" : {
+                "enum" : [ "true", "false" ]
+              },
+              "callCreated" : {
+                "enum" : [ "true", "false" ]
+              },
+              "taskReminder" : {
+                "enum" : [ "true", "false" ]
+              },
+              "callCompleted" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketClosed" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketMoved" : {
+                "enum" : [ "true", "false" ]
+              },
+              "eventCompleted" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketCommentMentions" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketCreated" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketResolution" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketReopened" : {
+                "enum" : [ "true", "false" ]
+              },
+              "taskCreated" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketBlueprintUpdated" : {
+                "enum" : [ "true", "false" ]
+              },
+              "taskCompleted" : {
+                "enum" : [ "true", "false" ]
+              },
+              "callReminder" : {
+                "enum" : [ "true", "false" ]
+              },
+              "eventReminder" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketAssigneeChanged" : {
+                "enum" : [ "true", "false" ]
+              },
+              "ticketEscalated" : {
+                "enum" : [ "true", "false" ]
+              },
+              "eventCreated" : {
+                "enum" : [ "true", "false" ]
+              }
+            },
+            "additionalProperties" : false
+          },
+          "isAgentDirectMessageEnabled" : {
+            "enum" : [ "true", "false" ]
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "defaultChannelJson" : {
+        "required" : [ "id", "uniqueName" ],
+        "properties" : {
+          "uniqueName" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "channelJsonResponse" : {
+        "description" : "channelJsonResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "channels", "has_more", "next_token" ],
+              "properties" : {
+                "channels" : {
+                  "items" : {
+                    "required" : [ "id", "image_url", "level", "name", "status", "uniqueName" ],
+                    "properties" : {
+                      "uniqueName" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "level" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "organization", "private" ]
+                      },
+                      "image_url" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "replacementString" : "",
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "allowInvalid" : false,
+                          "descrption" : "The channels will be retrieved based on the name provided",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "id" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "status" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                },
+                "has_more" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "next_token" : {
+                  "maxLength" : 300,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "A pointer from which the channels will be fetched",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "channels" : [ {
+                    "uniqueName" : "desk integration",
+                    "level" : "organization",
+                    "image_url" : "http://cliq.zoho.com/channel/T4000000040005_41312792_1498572169593/photo.do",
+                    "name" : "#desk integration",
+                    "id" : "O1345000000004009",
+                    "status" : "pending"
+                  }, {
+                    "uniqueName" : "desk integration",
+                    "level" : "team",
+                    "image_url" : "http://cliq.zoho.com/channel/T4000000040005_415342792_1498572169593/photo.do",
+                    "name" : "#cliq integration",
+                    "id" : "O1324192310004009",
+                    "status" : "created"
+                  } ],
+                  "has_more" : "false",
+                  "next_token" : "bdfeecaf65c8942ed874151cd588ec0e21e4c26a5ef21771fc7c67640fa55e793c0ddee855083bbe3dffa4596c6cdb0673d4d43bb8ba77964ee8885b63cdc392"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "configJsonResponse" : {
+        "description" : "configJsonResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "defaultChannel", "departmentChannelMapping", "installedVersion", "latestVersion", "notificationPreference", "notifyVia", "status" ],
+              "properties" : {
+                "latestVersion" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "notificationPreference" : {
+                  "required" : [ "isAgentDirectMessageEnabled", "notifyOnce" ],
+                  "properties" : {
+                    "notifyOnce" : {
+                      "required" : [ "callCompleted", "callCreated", "callReminder", "customerFeedbackReceived", "eventCompleted", "eventCreated", "eventReminder", "taskCompleted", "taskCreated", "taskReminder", "ticketAssigneeChanged", "ticketBlueprintUpdated", "ticketClosed", "ticketCommentAdded", "ticketCommentMentions", "ticketCreated", "ticketEscalated", "ticketMoved", "ticketReopened", "ticketResolution", "ticketStatusUpdatedTo" ],
+                      "properties" : {
+                        "ticketCommentAdded" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketStatusUpdatedTo" : {
+                          "uniqueItems" : false,
+                          "items" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "customerFeedbackReceived" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "callCreated" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "taskReminder" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "callCompleted" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketClosed" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketMoved" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "eventCompleted" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketCommentMentions" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketCreated" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketResolution" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketReopened" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "taskCreated" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketBlueprintUpdated" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "taskCompleted" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "callReminder" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "eventReminder" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketAssigneeChanged" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "ticketEscalated" : {
+                          "enum" : [ "true", "false" ]
+                        },
+                        "eventCreated" : {
+                          "enum" : [ "true", "false" ]
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "isAgentDirectMessageEnabled" : {
+                      "enum" : [ "true", "false" ]
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "notifyVia" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "This enables you to choose the mode via which the notifications should get pushed to cliq.Allowed values are defaultChannel and customMapping",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "installedVersion" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "Version of cliq to be integrated",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "departmentChannelMapping" : {
+                  "items" : {
+                    "required" : [ "channelId", "departmentId", "status" ],
+                    "properties" : {
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "channelId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "status" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                },
+                "defaultChannel" : {
+                  "required" : [ "id", "uniqueName" ],
+                  "properties" : {
+                    "uniqueName" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "Status of cliq integration, It can be either enabled or disabled",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "notificationPreference" : {
+                    "notifyOnce" : {
+                      "ticketCommentAdded" : "true",
+                      "ticketStatusUpdatedTo" : [ "Open", "InProgress", "Closed" ],
+                      "customerFeedbackReceived" : "true",
+                      "callCreated" : "true",
+                      "taskReminder" : "true",
+                      "callCompleted" : "true",
+                      "ticketClosed" : "false",
+                      "ticketMoved" : "false",
+                      "eventCompleted" : "true",
+                      "ticketCommentMentions" : "true",
+                      "ticketCreated" : "true",
+                      "ticketResolution" : "true",
+                      "ticketReopened" : "false",
+                      "taskCreated" : "true",
+                      "ticketBlueprintUpdated" : "true",
+                      "taskCompleted" : "true",
+                      "callReminder" : "true",
+                      "eventReminder" : "true",
+                      "ticketAssigneeChanged" : "true",
+                      "ticketEscalated" : "true",
+                      "eventCreated" : "true"
+                    },
+                    "isAgentDirectMessageEnabled" : "true"
+                  },
+                  "notifyVia" : "defaultChannel",
+                  "installedVersion" : "1.0",
+                  "departmentChannelMapping" : [ {
+                    "departmentId" : "63148054672682313",
+                    "channelId" : "78912000000261323",
+                    "status" : "enabled"
+                  }, {
+                    "departmentId" : "63148129000278893",
+                    "channelId" : "98123000000269873",
+                    "status" : "enabled"
+                  } ],
+                  "defaultChannel" : {
+                    "uniqueName" : "Desk Support",
+                    "id" : "98123000000269873"
+                  },
+                  "status" : "enabled"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "createChannelResponse" : {
+        "description" : "createChannelResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "id", "image_url", "level", "name", "uniqueName" ],
+              "properties" : {
+                "uniqueName" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "level" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "organization", "private" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "Level of the channel",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "image_url" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "replacementString" : "",
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "allowInvalid" : false,
+                    "descrption" : "Name of the channel",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "id" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "uniqueName" : "desk integration",
+                  "level" : "organization",
+                  "image_url" : "http://cliq.zoho.com/channel/T4000000040005_415342792_1498572169593/photo.do",
+                  "name" : "#desk integration",
+                  "id" : "O1345000000004009"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "IntegUpdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "status" ],
+              "properties" : {
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Status of cliq integration, It can be either enabled or disabled",
+                  "enum" : [ "enabled", "disabled" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "enabled"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "channelCreateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "level", "name" ],
+              "properties" : {
+                "level" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Level of the channel",
+                  "enum" : [ "organization", "private" ]
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Name of the channel"
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "level" : "team",
+                  "name" : "Desk Integration Channel"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateIntegration_IntegUpdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "properties" : {
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Status of cliq integration, It can be either enabled or disabled",
+                  "enum" : [ "enabled", "disabled" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "status" : "enabled"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "CliqIntegJsonMapping"
+}

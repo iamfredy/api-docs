@@ -1,0 +1,4339 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "DashboardFolder",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/dashboardFolders" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetAllDashboardFolders",
+        "description" : "To get the list of dashboard folders",
+        "operationId" : "getAllDashboardFolders",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for dashboardFolder by name.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "String to search for dashboardFolder by name.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which dashboard folders have to be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "department for which dashboard folders have to be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)",
+            "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which dashboards folder must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which dashboards folder must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "category",
+          "in" : "query",
+          "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+            "enum" : [ "ALL", "CUSTOMIZABLE" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "dashboardFolderList template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data", "totalCount" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "additionalProperties" : { },
+                        "allOf" : [ {
+                          "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                          "properties" : {
+                            "isEditable" : { },
+                            "accessibility" : {
+                              "maxProperties" : 5,
+                              "minProperties" : 5,
+                              "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                              "properties" : {
+                                "teams" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "roles" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "type" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                                },
+                                "rolesAndSubordinates" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "agents" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "isCustomizable" : { },
+                            "departmentId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64",
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "department for which dashboard folders have to be listed",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "isSystemGenerated" : { },
+                            "name" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "dashboardsCount" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            }
+                          },
+                          "additionalProperties" : false
+                        }, {
+                          "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                          "properties" : {
+                            "isEditable" : { },
+                            "accessibility" : {
+                              "maxProperties" : 5,
+                              "minProperties" : 5,
+                              "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                              "properties" : {
+                                "teams" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "roles" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "type" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                                },
+                                "rolesAndSubordinates" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                },
+                                "agents" : {
+                                  "uniqueItems" : false,
+                                  "items" : {
+                                    "pattern" : "([0-9]+)",
+                                    "format" : "int64"
+                                  }
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "isCustomizable" : { },
+                            "departmentId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64",
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "department for which dashboard folders have to be listed",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "isSystemGenerated" : { },
+                            "name" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "dashboardsCount" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            }
+                          }
+                        } ]
+                      }
+                    },
+                    "totalCount" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "isEditable" : false,
+                        "accessibility" : {
+                          "teams" : null,
+                          "roles" : null,
+                          "type" : "allAgents",
+                          "rolesAndSubordinates" : null,
+                          "agents" : null
+                        },
+                        "isCustomizable" : false,
+                        "departmentId" : null,
+                        "isSystemGenerated" : true,
+                        "name" : "Popular Dashboards",
+                        "id" : "4000000000209",
+                        "dashboardsCount" : "4"
+                      }, {
+                        "isEditable" : false,
+                        "accessibility" : {
+                          "teams" : null,
+                          "roles" : null,
+                          "type" : "allAgents",
+                          "rolesAndSubordinates" : null,
+                          "agents" : null
+                        },
+                        "isCustomizable" : false,
+                        "departmentId" : null,
+                        "isSystemGenerated" : true,
+                        "name" : "Time Based Dashboards",
+                        "id" : "4000000000213",
+                        "dashboardsCount" : "3"
+                      }, {
+                        "isEditable" : false,
+                        "accessibility" : {
+                          "teams" : null,
+                          "roles" : null,
+                          "type" : "allAgents",
+                          "rolesAndSubordinates" : null,
+                          "agents" : null
+                        },
+                        "isCustomizable" : true,
+                        "departmentId" : "4000000012994",
+                        "isSystemGenerated" : true,
+                        "name" : "Public Dashboards",
+                        "id" : "4000000012992",
+                        "dashboardsCount" : "5"
+                      }, {
+                        "isEditable" : true,
+                        "accessibility" : {
+                          "teams" : null,
+                          "roles" : null,
+                          "type" : "restrictedAccess",
+                          "rolesAndSubordinates" : null,
+                          "agents" : [ "4000000016416" ]
+                        },
+                        "isCustomizable" : true,
+                        "departmentId" : "4000000012994",
+                        "isSystemGenerated" : false,
+                        "name" : "RequestDashboardsForReports",
+                        "id" : "4000000021031",
+                        "dashboardsCount" : "0"
+                      } ],
+                      "totalCount" : "4"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "18a4383cf0110626511cda04ec4cbb43",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getAllDashboarFolders"
+        }
+      },
+      "post" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "addDashboardFolder",
+        "description" : "This API is used to create dashboard folder",
+        "operationId" : "addDashboardFolder",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "accessibility", "name" ],
+                "properties" : {
+                  "accessibility" : {
+                    "oneOf" : [ {
+                      "required" : [ "type" ],
+                      "properties" : {
+                        "type" : {
+                          "enum" : [ "onlyMe", "allAgents" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "agents", "type" ],
+                      "properties" : {
+                        "type" : {
+                          "enum" : [ "restrictedAccess" ]
+                        },
+                        "agents" : {
+                          "items" : {
+                            "format" : "int64"
+                          }
+                        }
+                      }
+                    } ]
+                  },
+                  "departmentId" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "accessibility" : {
+                      "type" : "restrictedAccess",
+                      "agents" : [ "4000000016416" ]
+                    },
+                    "departmentId" : 4000000012994,
+                    "name" : "RequestDashboards"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "dashboardFolderObject template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "department for which dashboard folders have to be listed",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }, {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : { }
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isEditable" : true,
+                      "accessibility" : {
+                        "teams" : null,
+                        "roles" : null,
+                        "type" : "restrictedAccess",
+                        "rolesAndSubordinates" : null,
+                        "agents" : [ "4000000016416" ]
+                      },
+                      "isCustomizable" : true,
+                      "departmentId" : "4000000012994",
+                      "isSystemGenerated" : false,
+                      "name" : "RequestDashboards",
+                      "id" : "4000000027059",
+                      "dashboardsCount" : "0"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c46e6e4b04a19fd7cefe9d4b1f23ce57",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.addDashboardFolder"
+        }
+      }
+    },
+    "/api/v1/dashboards/exportOverview" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "Export Ticket Overview Dashboard",
+        "description" : "To export ticket overview data",
+        "operationId" : "exportOverviewData",
+        "parameters" : [ {
+          "name" : "duration",
+          "in" : "query",
+          "description" : "Duration for export data",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Duration for export data",
+            "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which dashboard folders have to be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "department for which dashboard folders have to be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "fileType",
+          "in" : "query",
+          "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+            "enum" : [ "CSV", "XLS" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Url Not Found Error Response" : {
+                    "value" : {
+                      "errorCode" : "URL_NOT_FOUND",
+                      "message" : "The URL you requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "File response",
+            "content" : {
+              "application/octet-stream" : {
+                "schema" : {
+                  "format" : "binary"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Unprocessable Entity Error Response" : {
+                    "value" : {
+                      "errorCode" : "UNPROCESSABLE_ENTITY",
+                      "message" : "The value passed for the 'from' query parameter is invalid."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "c871879c05dac8cfd31dd382b4a2316d",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.exportOverviewData"
+        }
+      }
+    },
+    "/api/v1/dashboardFolders/{id}" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetDashboardFolder",
+        "description" : "To get a specific dashboard folder",
+        "operationId" : "getDashboardFolder",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "dashboardFolderObject template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "department for which dashboard folders have to be listed",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }, {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isEditable" : true,
+                      "accessibility" : {
+                        "teams" : null,
+                        "roles" : null,
+                        "type" : "restrictedAccess",
+                        "rolesAndSubordinates" : null,
+                        "agents" : [ "4000000016416" ]
+                      },
+                      "isCustomizable" : true,
+                      "departmentId" : "4000000012994",
+                      "isSystemGenerated" : false,
+                      "name" : "RequestDashboards",
+                      "id" : "4000000027059",
+                      "dashboardsCount" : "0"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "ff45056338c25e7b5b3dcd5b203a4a10",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getDashboardFolder"
+        }
+      },
+      "patch" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "updateDashboardFolder",
+        "description" : "To update a dashboard folder data",
+        "operationId" : "updateDashboardFolder",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "accessibility", "name" ],
+                "properties" : {
+                  "accessibility" : {
+                    "oneOf" : [ {
+                      "required" : [ "type" ],
+                      "properties" : {
+                        "type" : {
+                          "enum" : [ "onlyMe", "allAgents" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "agents", "type" ],
+                      "properties" : {
+                        "type" : {
+                          "enum" : [ "restrictedAccess" ]
+                        },
+                        "agents" : {
+                          "items" : {
+                            "format" : "int64"
+                          }
+                        }
+                      }
+                    } ]
+                  },
+                  "departmentId" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "accessibility" : {
+                      "type" : "restrictedAccess",
+                      "agents" : [ "4000000016416" ]
+                    },
+                    "departmentId" : 4000000012994,
+                    "name" : "RequestDashboardsForTickets"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "dashboardFolderObject template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "department for which dashboard folders have to be listed",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }, {
+                    "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                    "properties" : {
+                      "isEditable" : { },
+                      "accessibility" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                        "properties" : {
+                          "teams" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "roles" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                          },
+                          "rolesAndSubordinates" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "agents" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "isCustomizable" : { },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isSystemGenerated" : { },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "dashboardsCount" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isEditable" : true,
+                      "accessibility" : {
+                        "teams" : null,
+                        "roles" : null,
+                        "type" : "restrictedAccess",
+                        "rolesAndSubordinates" : null,
+                        "agents" : [ "4000000016416" ]
+                      },
+                      "isCustomizable" : true,
+                      "departmentId" : "4000000012994",
+                      "isSystemGenerated" : false,
+                      "name" : "RequestDashboards",
+                      "id" : "4000000027059",
+                      "dashboardsCount" : "0"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "852f682d39fd23efebb1733bfd35c5a9",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.updateDashboardFolder"
+        }
+      }
+    },
+    "/api/v1/dashboards" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "GetAllDashboards",
+        "description" : "To get the list of all dashboards",
+        "operationId" : "getAllDashboards",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which dashboard folders have to be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "department for which dashboard folders have to be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)",
+            "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which dashboards folder must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which dashboards folder must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "category",
+          "in" : "query",
+          "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+            "enum" : [ "ALL", "CUSTOMIZABLE" ]
+          }
+        }, {
+          "name" : "folderId",
+          "in" : "query",
+          "description" : "ID of the folder for which dashboards should be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "ID of the folder for which dashboards should be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "dashboardList template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "dashboardsCount", "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "dashboardFolder", "description", "displayLabel", "id", "isCustomizable", "isDefault", "isEditable", "isFavorite", "isSystemGenerated", "lastAccessedBy", "lastAccessedTime", "modifiedBy", "modifiedTime", "name" ],
+                        "properties" : {
+                          "displayLabel" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "modifiedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "isSystemGenerated" : { },
+                          "description" : {
+                            "maxLength" : 65535,
+                            "minLength" : 0
+                          },
+                          "dashboardFolder" : {
+                            "maxProperties" : 3,
+                            "minProperties" : 3,
+                            "required" : [ "departmentId", "id", "name" ],
+                            "properties" : {
+                              "departmentId" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "lastAccessedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "isDefault" : { },
+                          "isEditable" : { },
+                          "isCustomizable" : { },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "modifiedBy" : {
+                            "maxProperties" : 5,
+                            "minProperties" : 5,
+                            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                            "properties" : {
+                              "firstName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "lastName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "photoURL" : {
+                                "maxLength" : 200,
+                                "minLength" : 0,
+                                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "lastAccessedBy" : {
+                            "maxProperties" : 5,
+                            "minProperties" : 5,
+                            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                            "properties" : {
+                              "firstName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "lastName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "photoURL" : {
+                                "maxLength" : 200,
+                                "minLength" : 0,
+                                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "isFavorite" : { }
+                        },
+                        "additionalProperties" : { }
+                      }
+                    },
+                    "dashboardsCount" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "displayLabel" : "SLA Dashboards",
+                        "modifiedTime" : null,
+                        "isSystemGenerated" : true,
+                        "description" : null,
+                        "dashboardFolder" : {
+                          "departmentId" : null,
+                          "name" : "Popular Dashboards",
+                          "id" : "4000000000209"
+                        },
+                        "lastAccessedTime" : "2022-08-05T12:43:05.730Z",
+                        "isDefault" : false,
+                        "isEditable" : false,
+                        "isCustomizable" : false,
+                        "name" : "slaDashboard",
+                        "modifiedBy" : null,
+                        "id" : "4000000012872",
+                        "lastAccessedBy" : {
+                          "photoURL" : "https://desk.zoho.com/api/v1/agents/27185000000097005/photo?orgId=54587981",
+                          "firstName" : "N",
+                          "lastName" : "Priyanka",
+                          "name" : "N Priyanka",
+                          "id" : "27185000000097005"
+                        }
+                      } ],
+                      "dashboardsCount" : "1"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "fe8ac549b82d9f7fb472ea41470e2eb0",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.getAllDashboards"
+        }
+      }
+    },
+    "/api/v1/dashboards/search" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "ToSearchAllDashboards",
+        "description" : "To search the list of all dashboards",
+        "operationId" : "searchDashboards",
+        "parameters" : [ {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for dashboardFolder by name.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "String to search for dashboardFolder by name.",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which dashboard folders have to be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "department for which dashboard folders have to be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 50,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)",
+            "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which dashboards folder must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which dashboards folder must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "type",
+          "in" : "query",
+          "description" : "dashboards search in which reports should be shown @ALL@ @SYSTEM@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "dashboards search in which reports should be shown @ALL@ @SYSTEM@",
+            "enum" : [ "ALL", "SYSTEM" ],
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "dashboardList template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "dashboardsCount", "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "dashboardFolder", "description", "displayLabel", "id", "isCustomizable", "isDefault", "isEditable", "isFavorite", "isSystemGenerated", "lastAccessedBy", "lastAccessedTime", "modifiedBy", "modifiedTime", "name" ],
+                        "properties" : {
+                          "displayLabel" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "modifiedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "isSystemGenerated" : { },
+                          "description" : {
+                            "maxLength" : 65535,
+                            "minLength" : 0
+                          },
+                          "dashboardFolder" : {
+                            "maxProperties" : 3,
+                            "minProperties" : 3,
+                            "required" : [ "departmentId", "id", "name" ],
+                            "properties" : {
+                              "departmentId" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "lastAccessedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "isDefault" : { },
+                          "isEditable" : { },
+                          "isCustomizable" : { },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "modifiedBy" : {
+                            "maxProperties" : 5,
+                            "minProperties" : 5,
+                            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                            "properties" : {
+                              "firstName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "lastName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "photoURL" : {
+                                "maxLength" : 200,
+                                "minLength" : 0,
+                                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "lastAccessedBy" : {
+                            "maxProperties" : 5,
+                            "minProperties" : 5,
+                            "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                            "properties" : {
+                              "firstName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "lastName" : {
+                                "maxLength" : 50,
+                                "minLength" : 0
+                              },
+                              "photoURL" : {
+                                "maxLength" : 200,
+                                "minLength" : 0,
+                                "pattern" : "(^(ht|f)tp(s?)\\://[-.\\w]*(/?)([a-zA-Z0-9\\-\\.\\?\\,\\:\\'/\\\\+=&amp;%\\$#_@]*)?$)"
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "isFavorite" : { }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "dashboardsCount" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "displayLabel" : "SLA Dashboards",
+                        "modifiedTime" : null,
+                        "isSystemGenerated" : true,
+                        "description" : null,
+                        "dashboardFolder" : {
+                          "departmentId" : null,
+                          "name" : "Popular Dashboards",
+                          "id" : "4000000000209"
+                        },
+                        "lastAccessedTime" : "2022-08-05T12:43:05.730Z",
+                        "isDefault" : false,
+                        "isEditable" : false,
+                        "isCustomizable" : false,
+                        "name" : "slaDashboard",
+                        "modifiedBy" : null,
+                        "id" : "4000000012872",
+                        "lastAccessedBy" : {
+                          "photoURL" : "https://desk.zoho.com/api/v1/agents/27185000000097005/photo?orgId=54587981",
+                          "firstName" : "N",
+                          "lastName" : "Priyanka",
+                          "name" : "N Priyanka",
+                          "id" : "27185000000097005"
+                        }
+                      } ],
+                      "dashboardsCount" : "1"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "4b937cfd0c6eb21b570eee976298aea6",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardFolderService.searchDashboards"
+        }
+      }
+    },
+    "/api/v1/dashboards/exportTimeData" : {
+      "get" : {
+        "tags" : [ "DashboardFolder" ],
+        "summary" : "Export Ticket Time for response and resolution Dashboard",
+        "description" : "To export ticket response and resolution time data",
+        "operationId" : "exportTimeData",
+        "parameters" : [ {
+          "name" : "duration",
+          "in" : "query",
+          "description" : "Duration for export data",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Duration for export data",
+            "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH" ]
+          }
+        }, {
+          "name" : "metricType",
+          "in" : "query",
+          "description" : "Export Data in which time should be shown.This value can be @FIRSTRESPONSE@ @RESPONSE@ @RESOLUTION@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Export Data in which time should be shown.This value can be @FIRSTRESPONSE@ @RESPONSE@ @RESOLUTION@",
+            "enum" : [ "FIRSTRESPONSE", "RESPONSE", "RESOLUTION" ]
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "query",
+          "description" : "list of agent ids separated by commas.When agentId is not given,data for all agents is given",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "list of agent ids separated by commas.When agentId is not given,data for all agents is given",
+            "format" : "int64",
+            "x-custom-parameters-attributes" : {
+              "split" : ","
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "department for which dashboard folders have to be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "department for which dashboard folders have to be listed",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "fileType",
+          "in" : "query",
+          "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+            "enum" : [ "CSV", "XLS" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Url Not Found Error Response" : {
+                    "value" : {
+                      "errorCode" : "URL_NOT_FOUND",
+                      "message" : "The URL you requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "File response",
+            "content" : {
+              "application/octet-stream" : {
+                "schema" : {
+                  "format" : "binary"
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Unprocessable Entity Error Response" : {
+                    "value" : {
+                      "errorCode" : "UNPROCESSABLE_ENTITY",
+                      "message" : "The value passed for the 'from' query parameter is invalid."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.tickets.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "8f4ec88837515e0dd676e21358b0b595",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.DashboardService.exportTimeData"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "folderJson" : {
+        "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+        "properties" : {
+          "isEditable" : { },
+          "accessibility" : {
+            "maxProperties" : 5,
+            "minProperties" : 5,
+            "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+            "properties" : {
+              "teams" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "roles" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "type" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+              },
+              "rolesAndSubordinates" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "agents" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              }
+            },
+            "additionalProperties" : { }
+          },
+          "isCustomizable" : { },
+          "departmentId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "department for which dashboard folders have to be listed",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "isSystemGenerated" : { },
+          "name" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "dashboardsCount" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "dashboardFolderObject" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+          "properties" : {
+            "isEditable" : { },
+            "accessibility" : {
+              "maxProperties" : 5,
+              "minProperties" : 5,
+              "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+              "properties" : {
+                "teams" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "roles" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "type" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                },
+                "rolesAndSubordinates" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "agents" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                }
+              },
+              "additionalProperties" : false
+            },
+            "isCustomizable" : { },
+            "departmentId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64",
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "department for which dashboard folders have to be listed",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "isSystemGenerated" : { },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "dashboardsCount" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            }
+          },
+          "additionalProperties" : false
+        }, {
+          "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+          "properties" : {
+            "isEditable" : { },
+            "accessibility" : {
+              "maxProperties" : 5,
+              "minProperties" : 5,
+              "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+              "properties" : {
+                "teams" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "roles" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "type" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                },
+                "rolesAndSubordinates" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "agents" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "isCustomizable" : { },
+            "departmentId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64",
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "department for which dashboard folders have to be listed",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "isSystemGenerated" : { },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "dashboardsCount" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            }
+          }
+        } ]
+      },
+      "dashboardFolderArr" : {
+        "items" : {
+          "additionalProperties" : false,
+          "allOf" : [ {
+            "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+            "properties" : {
+              "isEditable" : { },
+              "accessibility" : {
+                "maxProperties" : 5,
+                "minProperties" : 5,
+                "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                "properties" : {
+                  "teams" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "roles" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "type" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                  },
+                  "rolesAndSubordinates" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "agents" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  }
+                },
+                "additionalProperties" : false
+              },
+              "isCustomizable" : { },
+              "departmentId" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64",
+                "x-custom-parameters-attributes" : {
+                  "removeExif" : false,
+                  "filterMatchedContent" : false,
+                  "antivirus" : false,
+                  "replacementString" : "",
+                  "allowInvalid" : false,
+                  "descrption" : "department for which dashboard folders have to be listed",
+                  "secret" : false,
+                  "preserveCharsLimit" : 10,
+                  "trim" : false,
+                  "internalParam" : false,
+                  "preserveChars" : "0,5",
+                  "importUrl" : false,
+                  "decrypt" : false
+                }
+              },
+              "isSystemGenerated" : { },
+              "name" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "dashboardsCount" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int32"
+              }
+            },
+            "additionalProperties" : false
+          }, {
+            "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+            "properties" : {
+              "isEditable" : { },
+              "accessibility" : {
+                "maxProperties" : 5,
+                "minProperties" : 5,
+                "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                "properties" : {
+                  "teams" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "roles" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "type" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                  },
+                  "rolesAndSubordinates" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "agents" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  }
+                },
+                "additionalProperties" : false
+              },
+              "isCustomizable" : { },
+              "departmentId" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64",
+                "x-custom-parameters-attributes" : {
+                  "removeExif" : false,
+                  "filterMatchedContent" : false,
+                  "antivirus" : false,
+                  "replacementString" : "",
+                  "allowInvalid" : false,
+                  "descrption" : "department for which dashboard folders have to be listed",
+                  "secret" : false,
+                  "preserveCharsLimit" : 10,
+                  "trim" : false,
+                  "internalParam" : false,
+                  "preserveChars" : "0,5",
+                  "importUrl" : false,
+                  "decrypt" : false
+                }
+              },
+              "isSystemGenerated" : { },
+              "name" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "dashboardsCount" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int32"
+              }
+            }
+          } ]
+        }
+      },
+      "accessibilityFormatForRequest" : {
+        "oneOf" : [ {
+          "required" : [ "type" ],
+          "properties" : {
+            "type" : {
+              "enum" : [ "onlyMe", "allAgents" ]
+            }
+          }
+        }, {
+          "required" : [ "agents", "type" ],
+          "properties" : {
+            "type" : {
+              "enum" : [ "restrictedAccess" ]
+            },
+            "agents" : {
+              "items" : {
+                "format" : "int64"
+              }
+            }
+          }
+        } ]
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "dashboardFolderList" : {
+        "description" : "dashboardFolderList template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data", "totalCount" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                      "properties" : {
+                        "isEditable" : { },
+                        "accessibility" : {
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                          "properties" : {
+                            "teams" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "roles" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "type" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                            },
+                            "rolesAndSubordinates" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "agents" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "isCustomizable" : { },
+                        "departmentId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64",
+                          "x-custom-parameters-attributes" : {
+                            "removeExif" : false,
+                            "filterMatchedContent" : false,
+                            "antivirus" : false,
+                            "replacementString" : "",
+                            "allowInvalid" : false,
+                            "descrption" : "department for which dashboard folders have to be listed",
+                            "secret" : false,
+                            "preserveCharsLimit" : 10,
+                            "trim" : false,
+                            "internalParam" : false,
+                            "preserveChars" : "0,5",
+                            "importUrl" : false,
+                            "decrypt" : false
+                          }
+                        },
+                        "isSystemGenerated" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "dashboardsCount" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int32"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                      "properties" : {
+                        "isEditable" : { },
+                        "accessibility" : {
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                          "properties" : {
+                            "teams" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "roles" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "type" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                            },
+                            "rolesAndSubordinates" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "agents" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            }
+                          },
+                          "additionalProperties" : false
+                        },
+                        "isCustomizable" : { },
+                        "departmentId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64",
+                          "x-custom-parameters-attributes" : {
+                            "removeExif" : false,
+                            "filterMatchedContent" : false,
+                            "antivirus" : false,
+                            "replacementString" : "",
+                            "allowInvalid" : false,
+                            "descrption" : "department for which dashboard folders have to be listed",
+                            "secret" : false,
+                            "preserveCharsLimit" : 10,
+                            "trim" : false,
+                            "internalParam" : false,
+                            "preserveChars" : "0,5",
+                            "importUrl" : false,
+                            "decrypt" : false
+                          }
+                        },
+                        "isSystemGenerated" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "dashboardsCount" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int32"
+                        }
+                      }
+                    } ]
+                  }
+                },
+                "totalCount" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : false,
+                    "departmentId" : null,
+                    "isSystemGenerated" : true,
+                    "name" : "Popular Dashboards",
+                    "id" : "4000000000209",
+                    "dashboardsCount" : "4"
+                  }, {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : false,
+                    "departmentId" : null,
+                    "isSystemGenerated" : true,
+                    "name" : "Time Based Dashboards",
+                    "id" : "4000000000213",
+                    "dashboardsCount" : "3"
+                  }, {
+                    "isEditable" : false,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "allAgents",
+                      "rolesAndSubordinates" : null,
+                      "agents" : null
+                    },
+                    "isCustomizable" : true,
+                    "departmentId" : "4000000012994",
+                    "isSystemGenerated" : true,
+                    "name" : "Public Dashboards",
+                    "id" : "4000000012992",
+                    "dashboardsCount" : "5"
+                  }, {
+                    "isEditable" : true,
+                    "accessibility" : {
+                      "teams" : null,
+                      "roles" : null,
+                      "type" : "restrictedAccess",
+                      "rolesAndSubordinates" : null,
+                      "agents" : [ "4000000016416" ]
+                    },
+                    "isCustomizable" : true,
+                    "departmentId" : "4000000012994",
+                    "isSystemGenerated" : false,
+                    "name" : "RequestDashboardsForReports",
+                    "id" : "4000000021031",
+                    "dashboardsCount" : "0"
+                  } ],
+                  "totalCount" : "4"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "dashboardFolderObject" : {
+        "description" : "dashboardFolderObject template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                "properties" : {
+                  "isEditable" : { },
+                  "accessibility" : {
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                    "properties" : {
+                      "teams" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "roles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "type" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                      },
+                      "rolesAndSubordinates" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "agents" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    },
+                    "additionalProperties" : false
+                  },
+                  "isCustomizable" : { },
+                  "departmentId" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64",
+                    "x-custom-parameters-attributes" : {
+                      "removeExif" : false,
+                      "filterMatchedContent" : false,
+                      "antivirus" : false,
+                      "replacementString" : "",
+                      "allowInvalid" : false,
+                      "descrption" : "department for which dashboard folders have to be listed",
+                      "secret" : false,
+                      "preserveCharsLimit" : 10,
+                      "trim" : false,
+                      "internalParam" : false,
+                      "preserveChars" : "0,5",
+                      "importUrl" : false,
+                      "decrypt" : false
+                    }
+                  },
+                  "isSystemGenerated" : { },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "dashboardsCount" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int32"
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "required" : [ "accessibility", "dashboardsCount", "departmentId", "id", "isCustomizable", "isEditable", "isSystemGenerated", "name" ],
+                "properties" : {
+                  "isEditable" : { },
+                  "accessibility" : {
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "required" : [ "agents", "roles", "rolesAndSubordinates", "teams", "type" ],
+                    "properties" : {
+                      "teams" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "roles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "type" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "onlyMe", "allAgents", "restrictedAccess" ]
+                      },
+                      "rolesAndSubordinates" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "agents" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  },
+                  "isCustomizable" : { },
+                  "departmentId" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "isSystemGenerated" : { },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "dashboardsCount" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int32"
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isEditable" : true,
+                  "accessibility" : {
+                    "teams" : null,
+                    "roles" : null,
+                    "type" : "restrictedAccess",
+                    "rolesAndSubordinates" : null,
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "isCustomizable" : true,
+                  "departmentId" : "4000000012994",
+                  "isSystemGenerated" : false,
+                  "name" : "RequestDashboards",
+                  "id" : "4000000027059",
+                  "dashboardsCount" : "0"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "duration" : {
+        "name" : "duration",
+        "in" : "query",
+        "description" : "Duration for export data",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "maxLength" : 100,
+          "minLength" : 0,
+          "description" : "Duration for export data",
+          "enum" : [ "LAST_30_DAYS", "LAST_7_DAYS", "THIS_WEEK", "LAST_WEEK", "THIS_MONTH", "LAST_MONTH" ]
+        }
+      },
+      "searchStr" : {
+        "name" : "searchStr",
+        "in" : "query",
+        "description" : "String to search for dashboardFolder by name.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "maxLength" : 100,
+          "minLength" : 0,
+          "description" : "String to search for dashboardFolder by name."
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "department for which dashboard folders have to be listed",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "description" : "department for which dashboard folders have to be listed",
+          "format" : "int64"
+        }
+      },
+      "limit" : {
+        "name" : "limit",
+        "in" : "query",
+        "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "maximum" : 50,
+          "minimum" : 1,
+          "pattern" : "([0-9]+)",
+          "description" : "Number of dashboards folders to fetch; default value is 50 and maximum value supported is 50",
+          "format" : "int32"
+        }
+      },
+      "from" : {
+        "name" : "from",
+        "in" : "query",
+        "description" : "Index number, starting from which dashboards folder must be fetched",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "description" : "Index number, starting from which dashboards folder must be fetched",
+          "format" : "int32"
+        }
+      },
+      "id" : {
+        "name" : "id",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "category" : {
+        "name" : "category",
+        "in" : "query",
+        "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "maxLength" : 100,
+          "minLength" : 0,
+          "description" : "folder list in which folder should be shown @ALL@ @CUSTOMIZABLE@",
+          "enum" : [ "ALL", "CUSTOMIZABLE" ]
+        }
+      },
+      "fileType" : {
+        "name" : "fileType",
+        "in" : "query",
+        "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "maxLength" : 100,
+          "minLength" : 0,
+          "description" : "Export Format in which format should be shown.This value can be @CSV@ @XLS@",
+          "enum" : [ "CSV", "XLS" ]
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "commonKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "accessibility", "name" ],
+              "properties" : {
+                "accessibility" : {
+                  "oneOf" : [ {
+                    "required" : [ "type" ],
+                    "properties" : {
+                      "type" : {
+                        "enum" : [ "onlyMe", "allAgents" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "agents", "type" ],
+                    "properties" : {
+                      "type" : {
+                        "enum" : [ "restrictedAccess" ]
+                      },
+                      "agents" : {
+                        "items" : {
+                          "format" : "int64"
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "departmentId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accessibility" : {
+                    "type" : "restrictedAccess",
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "departmentId" : 4000000012994,
+                  "name" : "RequestDashboardsForTickets"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "addDashboardFolder_commonKey" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "accessibility", "name" ],
+              "properties" : {
+                "accessibility" : {
+                  "oneOf" : [ {
+                    "required" : [ "type" ],
+                    "properties" : {
+                      "type" : {
+                        "enum" : [ "onlyMe", "allAgents" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "agents", "type" ],
+                    "properties" : {
+                      "type" : {
+                        "enum" : [ "restrictedAccess" ]
+                      },
+                      "agents" : {
+                        "items" : {
+                          "format" : "int64"
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "departmentId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "accessibility" : {
+                    "type" : "restrictedAccess",
+                    "agents" : [ "4000000016416" ]
+                  },
+                  "departmentId" : 4000000012994,
+                  "name" : "RequestDashboards"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "DashboardFolder"
+}

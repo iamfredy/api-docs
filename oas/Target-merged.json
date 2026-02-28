@@ -1,0 +1,4020 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Target",
+    "version" : "1.0.0",
+    "x-clan-group" : "integration",
+    "x-module-group" : "marketplace"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/actionTargets/{apiName}/invoke" : {
+      "post" : {
+        "tags" : [ "Target" ],
+        "summary" : "Invoke Target by Name",
+        "description" : "This API invokes a target with name in your helpdesk",
+        "operationId" : "invokeActionTarget",
+        "parameters" : [ {
+          "name" : "customActionId",
+          "in" : "query",
+          "description" : "The custom action Id of the target to be invoked",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "The custom action Id of the target to be invoked",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "apiName",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "maxLength" : 200,
+            "minLength" : 0,
+            "pattern" : "([a-z_0-9]+)"
+          }
+        }, {
+          "name" : "hash",
+          "in" : "header",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "data" ],
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "required" : [ "key", "keyValue" ],
+                      "properties" : {
+                        "keyValue" : {
+                          "maxLength" : 65546,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "key" : {
+                          "maxLength" : 300,
+                          "minLength" : 1,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "data" : [ {
+                      "keyValue" : "Oliver",
+                      "key" : "firstName"
+                    }, {
+                      "keyValue" : "Queen",
+                      "key" : "lastName1"
+                    } ]
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "InvokeOutputJson template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "response", "responseHeaders", "statusCode" ],
+                  "properties" : {
+                    "responseHeaders" : {
+                      "maxProperties" : 13,
+                      "minProperties" : 13,
+                      "required" : [ "Cache-Control", "Connection", "Content-Language", "Content-Type", "Date", "Expires", "Pragma", "Server", "Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "X-XSS-Protection", "vary" ],
+                      "properties" : {
+                        "Server" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "vary" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-Content-Type-Options" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Connection" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Pragma" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Date" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-Frame-Options" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Strict-Transport-Security" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Cache-Control" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Expires" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-XSS-Protection" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Content-Language" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Content-Type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : { }
+                    },
+                    "response" : {
+                      "additionalProperties" : { }
+                    },
+                    "statusCode" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "responseHeaders" : {
+                        "X-Frame-Options" : "SAMEORIGIN",
+                        "Server" : "ZGS",
+                        "X-Content-Type-Options" : "nosniff",
+                        "Connection" : "keep-alive",
+                        "isSLAApplied" : "false",
+                        "X-Download-Options" : "noopen",
+                        "Pragma" : "no-cache",
+                        "Date" : "Mon, 20 Apr 2020 16:55:27 GMT"
+                      },
+                      "response" : "{\"status\":\"success\"}",
+                      "statusCode" : "200"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ { } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.remoteip"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "fa0b3da91fe8b79194984007f618599b",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.invokeTargetByName"
+        }
+      }
+    },
+    "/api/v1/targets" : {
+      "get" : {
+        "tags" : [ "Target" ],
+        "summary" : "List target",
+        "description" : "This API gets a list of target in your helpdesk",
+        "operationId" : "listTargets",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of records",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 100,
+            "minimum" : 1,
+            "pattern" : "([0-9]+)",
+            "description" : "Number of records",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "from index",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "from index",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "The sorting of the created and modified Time",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "The sorting of the created and modified Time",
+            "enum" : [ "createdTime", "modifiedTime" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "targetListArray template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "additionalProperties" : { },
+                        "allOf" : [ {
+                          "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                          "properties" : {
+                            "targetName" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "description" : "The name of the target",
+                              "x-custom-parameters-attributes" : {
+                                "secret" : true
+                              }
+                            },
+                            "connectionName" : {
+                              "maxLength" : 200,
+                              "minLength" : 0,
+                              "description" : "Connection Link Name for the API",
+                              "x-custom-parameters-attributes" : {
+                                "secret" : true
+                              }
+                            },
+                            "httpMethod" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                              "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                            },
+                            "url" : {
+                              "maxLength" : 2048,
+                              "minLength" : 0,
+                              "description" : "Server endpoint to which event must be triggered",
+                              "x-custom-parameters-attributes" : {
+                                "secret" : true
+                              }
+                            }
+                          },
+                          "additionalProperties" : false
+                        }, {
+                          "required" : [ "extensionId", "targetId", "type" ],
+                          "properties" : {
+                            "targetId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "type" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                            },
+                            "extensionId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          }
+                        } ]
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "targetName" : "List all tickets",
+                        "targetId" : "31138000013137003",
+                        "connectionName" : "desk_action_default_54983163",
+                        "httpMethod" : "GET",
+                        "type" : "DEFAULT",
+                        "extensionId" : null,
+                        "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "d04a62e2bd5c67ebd8acab01aba3f5b9",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.getTargets"
+        }
+      },
+      "post" : {
+        "tags" : [ "Target" ],
+        "summary" : "Add target",
+        "description" : "This API adds a target in your helpdesk",
+        "operationId" : "addTarget",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                  "properties" : {
+                    "targetName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "The name of the target",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "connectionName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "Connection Link Name for the API",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "httpMethod" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                      "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                    },
+                    "url" : {
+                      "maxLength" : 2048,
+                      "minLength" : 0,
+                      "description" : "Server endpoint to which event must be triggered",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "properties" : {
+                    "headers" : {
+                      "maxLength" : 65535,
+                      "minLength" : 0,
+                      "description" : "Header template : Json String of headers templates can also be provided",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "targetTemplate" : {
+                      "maxLength" : 65535,
+                      "minLength" : 0,
+                      "description" : "Payload template",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    }
+                  }
+                }, {
+                  "required" : [ "httpMethod", "targetName", "url" ]
+                } ]
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "targetName" : "crmTarget",
+                    "connectionName" : "crm",
+                    "httpMethod" : "POST",
+                    "url" : "https://crm.zoho.com/api/v1/contacts",
+                    "targetTemplate" : "{\"firstName\":\"${firstName}\",\"lastName\":\"${lastName}\"}"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "targetResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                      "properties" : {
+                        "targetName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "The name of the target",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "connectionName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "Connection Link Name for the API",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "httpMethod" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                          "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                        },
+                        "url" : {
+                          "maxLength" : 2048,
+                          "minLength" : 0,
+                          "description" : "Server endpoint to which event must be triggered",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "extensionId", "targetId", "type" ],
+                      "properties" : {
+                        "targetId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                        },
+                        "extensionId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "apiName", "createdBy", "createdTime", "headers", "modifiedBy", "modifiedTime", "targetTemplate" ],
+                    "properties" : {
+                      "modifiedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "headers" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "([a-z_0-9]+)"
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "modifiedBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "targetTemplate" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "headers" : "{\"orgId\":\"54983163\"}",
+                      "modifiedTime" : 1628792012000,
+                      "targetName" : "List all tickets",
+                      "apiName" : "list_all_tickets",
+                      "targetId" : "31138000013137003",
+                      "httpMethod" : "GET",
+                      "type" : "DEFAULT",
+                      "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}",
+                      "createdBy" : "31138000000107033",
+                      "createdTime" : 1628792012000,
+                      "modifiedBy" : "31138000000107033",
+                      "connectionName" : "desk_action_default_54983163",
+                      "extensionId" : null,
+                      "targetTemplate" : null
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "ef3e3110006fa8f6cfedfa4a035f0d32",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.addTarget"
+        }
+      }
+    },
+    "/api/v1/targets/defaults" : {
+      "get" : {
+        "tags" : [ "Target" ],
+        "summary" : "List all default Targets",
+        "description" : "This api lists all the default targets in your helpdesk",
+        "operationId" : "listDefaultTarget",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "targetDefaultListArray template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "id", "isAlreadyPresent", "method", "resourceName", "targetName", "type", "url" ],
+                        "properties" : {
+                          "isAlreadyPresent" : { },
+                          "targetName" : {
+                            "maxLength" : 200,
+                            "minLength" : 0
+                          },
+                          "method" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                          },
+                          "resourceName" : {
+                            "maxLength" : 200,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                          },
+                          "url" : {
+                            "maxLength" : 2048,
+                            "minLength" : 0,
+                            "pattern" : "(https?\\:\\/\\/[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?\\/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)|(\\$\\{\\w+\\})$"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "List agents in a helpdesk",
+                        "method" : "GET",
+                        "resourceName" : "listAgents",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/agents?from=${from}&limit=${limit}&departmentIds=${departmentId}"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "List departments in a helpdesk",
+                        "method" : "GET",
+                        "resourceName" : "listDepartments",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/departments?isEnabled=true"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Mark a ticket as spam",
+                        "method" : "POST",
+                        "resourceName" : "markSpam",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/markSpam"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Add Comment for the Call",
+                        "method" : "POST",
+                        "resourceName" : "addCallComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/calls/${callId}/comments"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "List Mail reply addresses in a helpdesk",
+                        "method" : "GET",
+                        "resourceName" : "listMailReplyAddresses",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/mailReplyAddress?departmentId=${departmentId}&isActive=true"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Add Comment for the Task",
+                        "method" : "POST",
+                        "resourceName" : "addTaskComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tasks/${taskId}/comments"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Add Comment for the Event",
+                        "method" : "POST",
+                        "resourceName" : "addEventComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/events/${eventId}/comments"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Share a ticket to Another department",
+                        "method" : "PATCH",
+                        "resourceName" : "shareTicketToDepartment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Add Comment for the Ticket",
+                        "method" : "POST",
+                        "resourceName" : "addTicketComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/comments"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Add Comment for the Contact",
+                        "method" : "POST",
+                        "resourceName" : "addContactComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/contacts/${contactId}/comments"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Associate Tags for the Ticket",
+                        "method" : "POST",
+                        "resourceName" : "associateTagsToTicket",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/associateTag"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Associate Tags for the Ticket",
+                        "method" : "POST",
+                        "resourceName" : "dissociateTagsToTicket",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/dissociateTag"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Assign an agent to a ticket",
+                        "method" : "PATCH",
+                        "resourceName" : "assignTicket",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                      }, {
+                        "isAlreadyPresent" : false,
+                        "targetName" : "Add Comment for the Account",
+                        "method" : "POST",
+                        "resourceName" : "addAccountComment",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/accounts/${accountId}/comments"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Assign followers for a ticket",
+                        "method" : "POST",
+                        "resourceName" : "addFollowers",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/addFollowers"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Send Email Reply for the Ticket",
+                        "method" : "POST",
+                        "resourceName" : "sendEmailReply",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/sendReply"
+                      }, {
+                        "isAlreadyPresent" : true,
+                        "targetName" : "Get Ticket By ticket Id",
+                        "method" : "GET",
+                        "resourceName" : "getTicket",
+                        "type" : "DEFAULT",
+                        "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "4de01666c4eaf7047e83bb4b5568fa1e",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.listDefaultTargets"
+        }
+      }
+    },
+    "/api/v1/targets/{targetId}" : {
+      "get" : {
+        "tags" : [ "Target" ],
+        "summary" : "Retrieve a target",
+        "description" : "This API retrieves a target from your helpdesk",
+        "operationId" : "readTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "targetResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                      "properties" : {
+                        "targetName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "The name of the target",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "connectionName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "Connection Link Name for the API",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "httpMethod" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                          "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                        },
+                        "url" : {
+                          "maxLength" : 2048,
+                          "minLength" : 0,
+                          "description" : "Server endpoint to which event must be triggered",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "extensionId", "targetId", "type" ],
+                      "properties" : {
+                        "targetId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                        },
+                        "extensionId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "apiName", "createdBy", "createdTime", "headers", "modifiedBy", "modifiedTime", "targetTemplate" ],
+                    "properties" : {
+                      "modifiedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "headers" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "([a-z_0-9]+)"
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "modifiedBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "targetTemplate" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "headers" : "{\"orgId\":\"54983163\"}",
+                      "modifiedTime" : 1628792012000,
+                      "targetName" : "List all tickets",
+                      "apiName" : "list_all_tickets",
+                      "targetId" : "31138000013137003",
+                      "httpMethod" : "GET",
+                      "type" : "DEFAULT",
+                      "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}",
+                      "createdBy" : "31138000000107033",
+                      "createdTime" : 1628792012000,
+                      "modifiedBy" : "31138000000107033",
+                      "connectionName" : "desk_action_default_54983163",
+                      "extensionId" : null,
+                      "targetTemplate" : null
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Url Not Found Error Response" : {
+                    "value" : {
+                      "errorCode" : "URL_NOT_FOUND",
+                      "message" : "The URL you requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "527ad49596812ce378ac8b9067405f91",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.getTarget"
+        }
+      },
+      "delete" : {
+        "tags" : [ "Target" ],
+        "summary" : "Delete Target",
+        "description" : "Delete a Target from your helpdesk",
+        "operationId" : "deleteTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Url Not Found Error Response" : {
+                    "value" : {
+                      "errorCode" : "URL_NOT_FOUND",
+                      "message" : "The URL you requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "179994e5fd22add4440e53d0c7066aaa",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.deleteTarget"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Target" ],
+        "summary" : "Update target",
+        "description" : "This API updates a target in your helpdesk",
+        "operationId" : "updateTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                  "properties" : {
+                    "targetName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "The name of the target",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "connectionName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "Connection Link Name for the API",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "httpMethod" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                      "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                    },
+                    "url" : {
+                      "maxLength" : 2048,
+                      "minLength" : 0,
+                      "description" : "Server endpoint to which event must be triggered",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "properties" : {
+                    "headers" : {
+                      "maxLength" : 65535,
+                      "minLength" : 0,
+                      "description" : "Header template : Json String of headers templates can also be provided",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "targetTemplate" : {
+                      "maxLength" : 65535,
+                      "minLength" : 0,
+                      "description" : "Payload template",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    }
+                  }
+                }, { } ]
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "targetName" : "crmTarget",
+                    "connectionName" : "crm",
+                    "targetTemplate" : "{\"firstName\":\"${firstName}\",\"lastName\":\"${lastName1}\"}"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "targetResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                      "properties" : {
+                        "targetName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "The name of the target",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "connectionName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "Connection Link Name for the API",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "httpMethod" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                          "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                        },
+                        "url" : {
+                          "maxLength" : 2048,
+                          "minLength" : 0,
+                          "description" : "Server endpoint to which event must be triggered",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "extensionId", "targetId", "type" ],
+                      "properties" : {
+                        "targetId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                        },
+                        "extensionId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "apiName", "createdBy", "createdTime", "headers", "modifiedBy", "modifiedTime", "targetTemplate" ],
+                    "properties" : {
+                      "modifiedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "headers" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "([a-z_0-9]+)"
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "modifiedBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "targetTemplate" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "headers" : "{\"orgId\":\"54983163\"}",
+                      "modifiedTime" : 1628792012000,
+                      "targetName" : "List all tickets",
+                      "apiName" : "list_all_tickets",
+                      "targetId" : "31138000013137003",
+                      "httpMethod" : "GET",
+                      "type" : "DEFAULT",
+                      "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}",
+                      "createdBy" : "31138000000107033",
+                      "createdTime" : 1628792012000,
+                      "modifiedBy" : "31138000000107033",
+                      "connectionName" : "desk_action_default_54983163",
+                      "extensionId" : null,
+                      "targetTemplate" : null
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "ca292ab732e43cf077d6f4332bc3d3d5",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.updateTarget"
+        }
+      }
+    },
+    "/api/v1/targets/installDefaultTarget" : {
+      "post" : {
+        "tags" : [ "Target" ],
+        "operationId" : "installDefaultTarget",
+        "parameters" : [ {
+          "name" : "resourceName",
+          "in" : "query",
+          "description" : "The searchable string that can be used to search some string will be called on key press",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "The searchable string that can be used to search some string will be called on key press",
+            "enum" : [ "associateTagsToTicket", "dissociateTagsToTicket", "listTags", "searchTags", "markSpam", "createCommentCommon", "listAgents", "getModules", "getMyModules", "listTeams", "listAgentsByTeam", "getTeam", "assignTicketAPI", "listAgentByIds", "addFollowers", "sendEmailReplyAPI", "listMailReplyAddresses", "listDepartments", "searchDepartments", "listDepartmentsByIds", "shareTicketToDepartment", "getTicket" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Url Not Found Error Response" : {
+                    "value" : {
+                      "errorCode" : "URL_NOT_FOUND",
+                      "message" : "The URL you requested could not be found."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "targetResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                      "properties" : {
+                        "targetName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "The name of the target",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "connectionName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "Connection Link Name for the API",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "httpMethod" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                          "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                        },
+                        "url" : {
+                          "maxLength" : 2048,
+                          "minLength" : 0,
+                          "description" : "Server endpoint to which event must be triggered",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "extensionId", "targetId", "type" ],
+                      "properties" : {
+                        "targetId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                        },
+                        "extensionId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "apiName", "createdBy", "createdTime", "headers", "modifiedBy", "modifiedTime", "targetTemplate" ],
+                    "properties" : {
+                      "modifiedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "headers" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      },
+                      "apiName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0,
+                        "pattern" : "([a-z_0-9]+)"
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "modifiedBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "targetTemplate" : {
+                        "maxLength" : 65535,
+                        "minLength" : 0
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "headers" : "{\"orgId\":\"54983163\"}",
+                      "modifiedTime" : 1628792012000,
+                      "targetName" : "List all tickets",
+                      "apiName" : "list_all_tickets",
+                      "targetId" : "31138000013137003",
+                      "httpMethod" : "GET",
+                      "type" : "DEFAULT",
+                      "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}",
+                      "createdBy" : "31138000000107033",
+                      "createdTime" : 1628792012000,
+                      "modifiedBy" : "31138000000107033",
+                      "connectionName" : "desk_action_default_54983163",
+                      "extensionId" : null,
+                      "targetTemplate" : null
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 40,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "9299b2e4baa7ef1ff854235bd7d6714f",
+          "module-group" : "automation",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.installDefaultTarget"
+        }
+      }
+    },
+    "/api/v1/targets/{targetId}/invoke" : {
+      "post" : {
+        "tags" : [ "Target" ],
+        "summary" : "Invoke a target",
+        "description" : "This API invokes a target in your helpdesk",
+        "operationId" : "invokeTarget",
+        "parameters" : [ {
+          "name" : "targetId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "data" ],
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "required" : [ "key", "keyValue" ],
+                      "properties" : {
+                        "keyValue" : {
+                          "maxLength" : 65546,
+                          "minLength" : 0,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        },
+                        "key" : {
+                          "maxLength" : 300,
+                          "minLength" : 1,
+                          "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "data" : [ {
+                      "keyValue" : "Oliver",
+                      "key" : "firstName"
+                    }, {
+                      "keyValue" : "Queen",
+                      "key" : "lastName1"
+                    } ]
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "InvokeOutputJson template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "response", "responseHeaders", "statusCode" ],
+                  "properties" : {
+                    "responseHeaders" : {
+                      "maxProperties" : 13,
+                      "minProperties" : 13,
+                      "required" : [ "Cache-Control", "Connection", "Content-Language", "Content-Type", "Date", "Expires", "Pragma", "Server", "Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "X-XSS-Protection", "vary" ],
+                      "properties" : {
+                        "Server" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "vary" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-Content-Type-Options" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Connection" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Pragma" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Date" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-Frame-Options" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Strict-Transport-Security" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Cache-Control" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Expires" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "X-XSS-Protection" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Content-Language" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "Content-Type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "response" : {
+                      "additionalProperties" : false
+                    },
+                    "statusCode" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "responseHeaders" : {
+                        "X-Frame-Options" : "SAMEORIGIN",
+                        "Server" : "ZGS",
+                        "X-Content-Type-Options" : "nosniff",
+                        "Connection" : "keep-alive",
+                        "isSLAApplied" : "false",
+                        "X-Download-Options" : "noopen",
+                        "Pragma" : "no-cache",
+                        "Date" : "Mon, 20 Apr 2020 16:55:27 GMT"
+                      },
+                      "response" : "{\"status\":\"success\"}",
+                      "statusCode" : "200"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 15,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "integration",
+          "apihash" : "b16fa7d1b564f5f8de7c55450d4c8693",
+          "module-group" : "marketplace",
+          "apimethod" : "com.zoho.desk.targets.core.TargetService.invokeTarget"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "invokeListViewInput" : {
+        "required" : [ "key", "keyValue" ],
+        "properties" : {
+          "keyValue" : {
+            "maxLength" : 65546,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          },
+          "key" : {
+            "maxLength" : 300,
+            "minLength" : 1,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "data2" : {
+        "items" : {
+          "required" : [ "key", "keyValue" ],
+          "properties" : {
+            "keyValue" : {
+              "maxLength" : 65546,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            },
+            "key" : {
+              "maxLength" : 300,
+              "minLength" : 1,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "targetCommon" : {
+        "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+        "properties" : {
+          "targetName" : {
+            "maxLength" : 200,
+            "minLength" : 0,
+            "description" : "The name of the target",
+            "x-custom-parameters-attributes" : {
+              "secret" : true
+            }
+          },
+          "connectionName" : {
+            "maxLength" : 200,
+            "minLength" : 0,
+            "description" : "Connection Link Name for the API",
+            "x-custom-parameters-attributes" : {
+              "secret" : true
+            }
+          },
+          "httpMethod" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+            "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+          },
+          "url" : {
+            "maxLength" : 2048,
+            "minLength" : 0,
+            "description" : "Server endpoint to which event must be triggered",
+            "x-custom-parameters-attributes" : {
+              "secret" : true
+            }
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "targetListViewObject" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+          "properties" : {
+            "targetName" : {
+              "maxLength" : 200,
+              "minLength" : 0,
+              "description" : "The name of the target",
+              "x-custom-parameters-attributes" : {
+                "secret" : true
+              }
+            },
+            "connectionName" : {
+              "maxLength" : 200,
+              "minLength" : 0,
+              "description" : "Connection Link Name for the API",
+              "x-custom-parameters-attributes" : {
+                "secret" : true
+              }
+            },
+            "httpMethod" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+              "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+            },
+            "url" : {
+              "maxLength" : 2048,
+              "minLength" : 0,
+              "description" : "Server endpoint to which event must be triggered",
+              "x-custom-parameters-attributes" : {
+                "secret" : true
+              }
+            }
+          },
+          "additionalProperties" : false
+        }, {
+          "required" : [ "extensionId", "targetId", "type" ],
+          "properties" : {
+            "targetId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "type" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+            },
+            "extensionId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            }
+          }
+        } ]
+      },
+      "listDefaultTargetJson" : {
+        "required" : [ "id", "isAlreadyPresent", "method", "resourceName", "targetName", "type", "url" ],
+        "properties" : {
+          "isAlreadyPresent" : { },
+          "targetName" : {
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "method" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+          },
+          "resourceName" : {
+            "maxLength" : 200,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "type" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+          },
+          "url" : {
+            "maxLength" : 2048,
+            "minLength" : 0,
+            "pattern" : "(https?\\:\\/\\/[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?\\/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)|(\\$\\{\\w+\\})$"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "defaultTargetdata" : {
+        "items" : {
+          "required" : [ "id", "isAlreadyPresent", "method", "resourceName", "targetName", "type", "url" ],
+          "properties" : {
+            "isAlreadyPresent" : { },
+            "targetName" : {
+              "maxLength" : 200,
+              "minLength" : 0
+            },
+            "method" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+            },
+            "resourceName" : {
+              "maxLength" : 200,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "type" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+            },
+            "url" : {
+              "maxLength" : 2048,
+              "minLength" : 0,
+              "pattern" : "(https?\\:\\/\\/[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?\\/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)|(\\$\\{\\w+\\})$"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "data" : {
+        "items" : {
+          "additionalProperties" : false,
+          "allOf" : [ {
+            "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+            "properties" : {
+              "targetName" : {
+                "maxLength" : 200,
+                "minLength" : 0,
+                "description" : "The name of the target",
+                "x-custom-parameters-attributes" : {
+                  "secret" : true
+                }
+              },
+              "connectionName" : {
+                "maxLength" : 200,
+                "minLength" : 0,
+                "description" : "Connection Link Name for the API",
+                "x-custom-parameters-attributes" : {
+                  "secret" : true
+                }
+              },
+              "httpMethod" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+              },
+              "url" : {
+                "maxLength" : 2048,
+                "minLength" : 0,
+                "description" : "Server endpoint to which event must be triggered",
+                "x-custom-parameters-attributes" : {
+                  "secret" : true
+                }
+              }
+            },
+            "additionalProperties" : false
+          }, {
+            "required" : [ "extensionId", "targetId", "type" ],
+            "properties" : {
+              "targetId" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "type" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+              },
+              "extensionId" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            }
+          } ]
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "InvokeOutputJson" : {
+        "description" : "InvokeOutputJson template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "response", "responseHeaders", "statusCode" ],
+              "properties" : {
+                "responseHeaders" : {
+                  "maxProperties" : 13,
+                  "minProperties" : 13,
+                  "required" : [ "Cache-Control", "Connection", "Content-Language", "Content-Type", "Date", "Expires", "Pragma", "Server", "Strict-Transport-Security", "X-Content-Type-Options", "X-Frame-Options", "X-XSS-Protection", "vary" ],
+                  "properties" : {
+                    "Server" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "vary" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "X-Content-Type-Options" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Connection" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Pragma" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Date" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "X-Frame-Options" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Strict-Transport-Security" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Cache-Control" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Expires" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "X-XSS-Protection" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Content-Language" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "Content-Type" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "response" : {
+                  "additionalProperties" : { }
+                },
+                "statusCode" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "responseHeaders" : {
+                    "X-Frame-Options" : "SAMEORIGIN",
+                    "Server" : "ZGS",
+                    "X-Content-Type-Options" : "nosniff",
+                    "Connection" : "keep-alive",
+                    "isSLAApplied" : "false",
+                    "X-Download-Options" : "noopen",
+                    "Pragma" : "no-cache",
+                    "Date" : "Mon, 20 Apr 2020 16:55:27 GMT"
+                  },
+                  "response" : "{\"status\":\"success\"}",
+                  "statusCode" : "200"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "targetResponse" : {
+        "description" : "targetResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                  "properties" : {
+                    "targetName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "The name of the target",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "connectionName" : {
+                      "maxLength" : 200,
+                      "minLength" : 0,
+                      "description" : "Connection Link Name for the API",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    },
+                    "httpMethod" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                      "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                    },
+                    "url" : {
+                      "maxLength" : 2048,
+                      "minLength" : 0,
+                      "description" : "Server endpoint to which event must be triggered",
+                      "x-custom-parameters-attributes" : {
+                        "secret" : true
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "required" : [ "extensionId", "targetId", "type" ],
+                  "properties" : {
+                    "targetId" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "type" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                    },
+                    "extensionId" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  }
+                } ]
+              }, {
+                "required" : [ "apiName", "createdBy", "createdTime", "headers", "modifiedBy", "modifiedTime", "targetTemplate" ],
+                "properties" : {
+                  "modifiedTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "headers" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0
+                  },
+                  "apiName" : {
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "pattern" : "([a-z_0-9]+)"
+                  },
+                  "createdBy" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "createdTime" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                  },
+                  "modifiedBy" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "targetTemplate" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "headers" : "{\"orgId\":\"54983163\"}",
+                  "modifiedTime" : 1628792012000,
+                  "targetName" : "List all tickets",
+                  "apiName" : "list_all_tickets",
+                  "targetId" : "31138000013137003",
+                  "httpMethod" : "GET",
+                  "type" : "DEFAULT",
+                  "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}",
+                  "createdBy" : "31138000000107033",
+                  "createdTime" : 1628792012000,
+                  "modifiedBy" : "31138000000107033",
+                  "connectionName" : "desk_action_default_54983163",
+                  "extensionId" : null,
+                  "targetTemplate" : null
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "targetDefaultListArray" : {
+        "description" : "targetDefaultListArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "id", "isAlreadyPresent", "method", "resourceName", "targetName", "type", "url" ],
+                    "properties" : {
+                      "isAlreadyPresent" : { },
+                      "targetName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0
+                      },
+                      "method" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                      },
+                      "resourceName" : {
+                        "maxLength" : 200,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "type" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                      },
+                      "url" : {
+                        "maxLength" : 2048,
+                        "minLength" : 0,
+                        "pattern" : "(https?\\:\\/\\/[0-9a-zA-Z][-.\\w]*(:[0-9]{1,5})?\\/[a-zA-Z0-9\\-\\.\\?\\,|\\:\\'\\/\\\\\\+=&amp;%\\${}#_\\[\\]@!\\(\\)\\*;~]*)|(\\$\\{\\w+\\})$"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "List agents in a helpdesk",
+                    "method" : "GET",
+                    "resourceName" : "listAgents",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/agents?from=${from}&limit=${limit}&departmentIds=${departmentId}"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "List departments in a helpdesk",
+                    "method" : "GET",
+                    "resourceName" : "listDepartments",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/departments?isEnabled=true"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Mark a ticket as spam",
+                    "method" : "POST",
+                    "resourceName" : "markSpam",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/markSpam"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Add Comment for the Call",
+                    "method" : "POST",
+                    "resourceName" : "addCallComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/calls/${callId}/comments"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "List Mail reply addresses in a helpdesk",
+                    "method" : "GET",
+                    "resourceName" : "listMailReplyAddresses",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/mailReplyAddress?departmentId=${departmentId}&isActive=true"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Add Comment for the Task",
+                    "method" : "POST",
+                    "resourceName" : "addTaskComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tasks/${taskId}/comments"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Add Comment for the Event",
+                    "method" : "POST",
+                    "resourceName" : "addEventComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/events/${eventId}/comments"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Share a ticket to Another department",
+                    "method" : "PATCH",
+                    "resourceName" : "shareTicketToDepartment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Add Comment for the Ticket",
+                    "method" : "POST",
+                    "resourceName" : "addTicketComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/comments"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Add Comment for the Contact",
+                    "method" : "POST",
+                    "resourceName" : "addContactComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/contacts/${contactId}/comments"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Associate Tags for the Ticket",
+                    "method" : "POST",
+                    "resourceName" : "associateTagsToTicket",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/associateTag"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Associate Tags for the Ticket",
+                    "method" : "POST",
+                    "resourceName" : "dissociateTagsToTicket",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/dissociateTag"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Assign an agent to a ticket",
+                    "method" : "PATCH",
+                    "resourceName" : "assignTicket",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                  }, {
+                    "isAlreadyPresent" : false,
+                    "targetName" : "Add Comment for the Account",
+                    "method" : "POST",
+                    "resourceName" : "addAccountComment",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/accounts/${accountId}/comments"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Assign followers for a ticket",
+                    "method" : "POST",
+                    "resourceName" : "addFollowers",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/addFollowers"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Send Email Reply for the Ticket",
+                    "method" : "POST",
+                    "resourceName" : "sendEmailReply",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}/sendReply"
+                  }, {
+                    "isAlreadyPresent" : true,
+                    "targetName" : "Get Ticket By ticket Id",
+                    "method" : "GET",
+                    "resourceName" : "getTicket",
+                    "type" : "DEFAULT",
+                    "url" : "https://desk.zoho.com/api/v1/tickets/${ticketId}"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "targetListArray" : {
+        "description" : "targetListArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                      "properties" : {
+                        "targetName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "The name of the target",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "connectionName" : {
+                          "maxLength" : 200,
+                          "minLength" : 0,
+                          "description" : "Connection Link Name for the API",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        },
+                        "httpMethod" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                          "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                        },
+                        "url" : {
+                          "maxLength" : 2048,
+                          "minLength" : 0,
+                          "description" : "Server endpoint to which event must be triggered",
+                          "x-custom-parameters-attributes" : {
+                            "secret" : true
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "extensionId", "targetId", "type" ],
+                      "properties" : {
+                        "targetId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "type" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "DEFAULT", "EXTENSION_DEFINED", "USER_DEFINED" ]
+                        },
+                        "extensionId" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "targetName" : "List all tickets",
+                    "targetId" : "31138000013137003",
+                    "connectionName" : "desk_action_default_54983163",
+                    "httpMethod" : "GET",
+                    "type" : "DEFAULT",
+                    "extensionId" : null,
+                    "url" : "https://deskapi.zoho.com/api/v1/tickets?from=${from}&limit=${limit}"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "targetId" : {
+        "name" : "targetId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "InvokeInputJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "key", "keyValue" ],
+                    "properties" : {
+                      "keyValue" : {
+                        "maxLength" : 65546,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "key" : {
+                        "maxLength" : 300,
+                        "minLength" : 1,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "keyValue" : "Oliver",
+                    "key" : "firstName"
+                  }, {
+                    "keyValue" : "Queen",
+                    "key" : "lastName1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "targetJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                "properties" : {
+                  "targetName" : {
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "description" : "The name of the target",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "connectionName" : {
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "description" : "Connection Link Name for the API",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "httpMethod" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                    "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                  },
+                  "url" : {
+                    "maxLength" : 2048,
+                    "minLength" : 0,
+                    "description" : "Server endpoint to which event must be triggered",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "properties" : {
+                  "headers" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "description" : "Header template : Json String of headers templates can also be provided",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "targetTemplate" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "description" : "Payload template",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  }
+                }
+              }, {
+                "required" : [ "httpMethod", "targetName", "url" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "targetName" : "crmTarget",
+                  "connectionName" : "crm",
+                  "httpMethod" : "POST",
+                  "url" : "https://crm.zoho.com/api/v1/contacts",
+                  "targetTemplate" : "{\"firstName\":\"${firstName}\",\"lastName\":\"${lastName}\"}"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateTarget_targetJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "connectionName", "httpMethod", "targetName", "url" ],
+                "properties" : {
+                  "targetName" : {
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "description" : "The name of the target",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "connectionName" : {
+                    "maxLength" : 200,
+                    "minLength" : 0,
+                    "description" : "Connection Link Name for the API",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "httpMethod" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "The HTTP Method of the endpoint available values are GET|PUT|POST|PATCH|DELETE",
+                    "enum" : [ "GET", "POST", "PATCH", "PUT", "DELETE" ]
+                  },
+                  "url" : {
+                    "maxLength" : 2048,
+                    "minLength" : 0,
+                    "description" : "Server endpoint to which event must be triggered",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "properties" : {
+                  "headers" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "description" : "Header template : Json String of headers templates can also be provided",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  },
+                  "targetTemplate" : {
+                    "maxLength" : 65535,
+                    "minLength" : 0,
+                    "description" : "Payload template",
+                    "x-custom-parameters-attributes" : {
+                      "secret" : true
+                    }
+                  }
+                }
+              }, { } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "targetName" : "crmTarget",
+                  "connectionName" : "crm",
+                  "targetTemplate" : "{\"firstName\":\"${firstName}\",\"lastName\":\"${lastName1}\"}"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "invokeTarget_InvokeInputJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "key", "keyValue" ],
+                    "properties" : {
+                      "keyValue" : {
+                        "maxLength" : 65546,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "key" : {
+                        "maxLength" : 300,
+                        "minLength" : 1,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "keyValue" : "Oliver",
+                    "key" : "firstName"
+                  }, {
+                    "keyValue" : "Queen",
+                    "key" : "lastName1"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "Target"
+}

@@ -1,0 +1,2811 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Role",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "users"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/roles/{roleId}" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get role",
+        "description" : "This API fetches the details of a particular role.",
+        "operationId" : "getRole",
+        "parameters" : [ {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "roleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "description", "name", "shareDataWithPeers" ],
+                      "properties" : {
+                        "shareDataWithPeers" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "reportsTo" ],
+                      "properties" : {
+                        "reportsTo" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                    "properties" : {
+                      "isDefault" : { },
+                      "immediateSubRoles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isVisible" : { }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isDefault" : false,
+                      "shareDataWithPeers" : true,
+                      "immediateSubRoles" : [ ],
+                      "name" : "Customer Care Associate",
+                      "description" : "Can work on own tickets and can not re-assign tickets.",
+                      "reportsTo" : 5000000008807,
+                      "id" : "5000000002973",
+                      "isVisible" : true
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "67f3c8fecf0547539d4b1a691f579210",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRoleDetails"
+        }
+      },
+      "patch" : {
+        "tags" : [ "Role" ],
+        "summary" : "Update role",
+        "description" : "This API updates details of an existing role.",
+        "operationId" : "updateRole",
+        "parameters" : [ {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "properties" : {
+                  "shareDataWithPeers" : { },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "description" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "shareDataWithPeers" : true,
+                    "name" : "Customer Care and Sales Associate",
+                    "description" : "Can work on own tickets and can not re-assign tickets.",
+                    "reportsTo" : 5000000008807
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "roleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "description", "name", "shareDataWithPeers" ],
+                      "properties" : {
+                        "shareDataWithPeers" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "reportsTo" ],
+                      "properties" : {
+                        "reportsTo" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                    "properties" : {
+                      "isDefault" : { },
+                      "immediateSubRoles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isVisible" : { }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isDefault" : false,
+                      "shareDataWithPeers" : true,
+                      "immediateSubRoles" : [ ],
+                      "name" : "Customer Care Associate",
+                      "description" : "Can work on own tickets and can not re-assign tickets.",
+                      "reportsTo" : 5000000008807,
+                      "id" : "5000000002973",
+                      "isVisible" : true
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE", "Desk.basic.UPDATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "57a11555f0559fba7f4a19e6495c4158",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.updateRole"
+        }
+      }
+    },
+    "/api/v1/rolesByIds" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List roles by role IDs",
+        "description" : "This API lists details of the roles whose IDs are passed in the API request.",
+        "operationId" : "getRolesByIds",
+        "parameters" : [ {
+          "name" : "roleIds",
+          "in" : "query",
+          "description" : "Comma separated role ids. Maximum allowed count is 50",
+          "required" : true,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "uniqueItems" : false,
+            "description" : "Comma separated role ids. Maximum allowed count is 50",
+            "items" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64",
+              "x-custom-parameters-attributes" : [ false, "", false, false, false, "Comma separated role ids. Maximum allowed count is 50", false, 10, ",", false, false, "0,5", false, false, "Roles" ]
+            }
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "roleResponseArray template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "additionalProperties" : false,
+                        "allOf" : [ {
+                          "additionalProperties" : false,
+                          "allOf" : [ {
+                            "required" : [ "description", "name", "shareDataWithPeers" ],
+                            "properties" : {
+                              "shareDataWithPeers" : { },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "description" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "additionalProperties" : false
+                          }, {
+                            "required" : [ "reportsTo" ],
+                            "properties" : {
+                              "reportsTo" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            }
+                          } ]
+                        }, {
+                          "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                          "properties" : {
+                            "isDefault" : { },
+                            "immediateSubRoles" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "isVisible" : { }
+                          }
+                        } ]
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "isDefault" : true,
+                        "shareDataWithPeers" : true,
+                        "immediateSubRoles" : [ "50000785582324", "50000000779019", "50000001319909" ],
+                        "name" : "CEO",
+                        "description" : "Agent belongs to this role can access all other user's data.",
+                        "reportsTo" : null,
+                        "id" : "50000000008337",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ "50000091844659" ],
+                        "name" : "Manager",
+                        "description" : "Agents belongs to this cannot see admin role users data",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000008339",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "PortalUser",
+                        "description" : "User belongs to this role are portal users they can access their cases and solutions only",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000008341",
+                        "isVisible" : false
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Development Team Member",
+                        "description" : "Development team members from Engineering",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000469017",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Product Team Member",
+                        "description" : "Products Managers",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000551386",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : true,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Sales Team Member",
+                        "description" : "",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000779019",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Personal",
+                        "description" : "Agents belongs to this role can see only unassigned and his/her data",
+                        "reportsTo" : null,
+                        "id" : "50000002634005",
+                        "isVisible" : false
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Marketing Team Member",
+                        "description" : "",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000009610999",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : true,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "LightAgent",
+                        "description" : "Agents belonging to this role can access all user's data.",
+                        "reportsTo" : null,
+                        "id" : "50000565365005",
+                        "isVisible" : false
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "8f09c44990097939a159487373ad10df",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesByIds"
+        }
+      }
+    },
+    "/api/v1/personalRole" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get personal role",
+        "description" : "This API fetches the details of the personal role configured in your help desk. Agents with personal role can view only the tickets assigned to them and unassigned tickets.",
+        "operationId" : "getPersonalRole",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "roleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "description", "name", "shareDataWithPeers" ],
+                      "properties" : {
+                        "shareDataWithPeers" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "reportsTo" ],
+                      "properties" : {
+                        "reportsTo" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                    "properties" : {
+                      "isDefault" : { },
+                      "immediateSubRoles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isVisible" : { }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isDefault" : false,
+                      "shareDataWithPeers" : true,
+                      "immediateSubRoles" : [ ],
+                      "name" : "Customer Care Associate",
+                      "description" : "Can work on own tickets and can not re-assign tickets.",
+                      "reportsTo" : 5000000008807,
+                      "id" : "5000000002973",
+                      "isVisible" : true
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 120,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3d92427db456cd8a5fb1df748bc0c3ad",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getPersonalRole"
+        }
+      }
+    },
+    "/api/v1/roles/count" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "Get role count",
+        "description" : "This API fetches the number of roles configured in your help desk.",
+        "operationId" : "getRoleCount",
+        "parameters" : [ {
+          "name" : "isDefault",
+          "in" : "query",
+          "description" : "Key that denotes whether the roles must be default roles or custom roles",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that denotes whether the roles must be default roles or custom roles"
+          }
+        }, {
+          "name" : "isVisible",
+          "in" : "query",
+          "description" : "Key that filters roles according to their visibility in the UI",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that filters roles according to their visibility in the UI"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "deptCountResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "count" ],
+                  "properties" : {
+                    "count" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "count" : 5
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "7c1e144fe54f4f12f13a969e93b0d6a3",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesCount"
+        }
+      }
+    },
+    "/api/v1/roles/{roleId}/agents" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List agents by role",
+        "description" : "This API lists agents mapped to a particular role.",
+        "operationId" : "getAgentsByRole",
+        "parameters" : [ {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "roleAssociatedAgent template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "associatedAgents" ],
+                  "properties" : {
+                    "associatedAgents" : {
+                      "uniqueItems" : false,
+                      "items" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "associatedAgents" : [ "50000000009163", "50000000009300", "50000000010007", "50000000010011", "50000000062391", "50000000062393" ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 60000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c9554f5e3dcaa3b3596782556c5fce47",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getAssociatedAgentIds"
+        }
+      }
+    },
+    "/api/v1/roles/{roleId}/delete" : {
+      "post" : {
+        "tags" : [ "Role" ],
+        "summary" : "Delete role",
+        "description" : "This API deletes a role from your help desk.",
+        "operationId" : "deleteRole",
+        "parameters" : [ {
+          "name" : "roleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "transferToRoleId" ],
+                "properties" : {
+                  "transferToRoleId" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "transferToRoleId" : "5000000008807"
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE", "Desk.basic.DELETE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 15,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 900000,
+                  "threshold" : 500,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "3d53c69eb4b4036168238d7e6af03e9d",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.deleteRole"
+        }
+      }
+    },
+    "/api/v1/roles" : {
+      "get" : {
+        "tags" : [ "Role" ],
+        "summary" : "List roles",
+        "description" : "This API lists a particular number of roles, based on the limit specified.",
+        "operationId" : "getRoles",
+        "parameters" : [ {
+          "name" : "isDefault",
+          "in" : "query",
+          "description" : "Key that denotes whether the roles must be default roles or custom roles",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that denotes whether the roles must be default roles or custom roles"
+          }
+        }, {
+          "name" : "searchStr",
+          "in" : "query",
+          "description" : "String to search for roles by name or description. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for roles whose name or description start with the string, 2) *string* - Searches for roles whose name or description contain the string, 3) string -  Searches for roles whose name or description is an exact match for the string",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+",
+            "description" : "String to search for roles by name or description. The string must contain at least one character. Three search methods are supported: 1) string* - Searches for roles whose name or description start with the string, 2) *string* - Searches for roles whose name or description contain the string, 3) string -  Searches for roles whose name or description is an exact match for the string"
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of roles to display. The default value is 15 and the maximum value allowed is 500.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maximum" : 500,
+            "pattern" : "([0-9]+)",
+            "description" : "Number of roles to display. The default value is 15 and the maximum value allowed is 500.",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the roles must be listed",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "minimum" : 0,
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which the roles must be listed",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "isVisible",
+          "in" : "query",
+          "description" : "Key that filters roles according to their visibility in the UI",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that filters roles according to their visibility in the UI"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "roleResponseArray template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "additionalProperties" : false,
+                        "allOf" : [ {
+                          "additionalProperties" : false,
+                          "allOf" : [ {
+                            "required" : [ "description", "name", "shareDataWithPeers" ],
+                            "properties" : {
+                              "shareDataWithPeers" : { },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "description" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "additionalProperties" : false
+                          }, {
+                            "required" : [ "reportsTo" ],
+                            "properties" : {
+                              "reportsTo" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            }
+                          } ]
+                        }, {
+                          "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                          "properties" : {
+                            "isDefault" : { },
+                            "immediateSubRoles" : {
+                              "uniqueItems" : false,
+                              "items" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "isVisible" : { }
+                          }
+                        } ]
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "isDefault" : true,
+                        "shareDataWithPeers" : true,
+                        "immediateSubRoles" : [ "50000785582324", "50000000779019", "50000001319909" ],
+                        "name" : "CEO",
+                        "description" : "Agent belongs to this role can access all other user's data.",
+                        "reportsTo" : null,
+                        "id" : "50000000008337",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ "50000091844659" ],
+                        "name" : "Manager",
+                        "description" : "Agents belongs to this cannot see admin role users data",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000008339",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "PortalUser",
+                        "description" : "User belongs to this role are portal users they can access their cases and solutions only",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000008341",
+                        "isVisible" : false
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Development Team Member",
+                        "description" : "Development team members from Engineering",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000469017",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Product Team Member",
+                        "description" : "Products Managers",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000551386",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : true,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Sales Team Member",
+                        "description" : "",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000000779019",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Personal",
+                        "description" : "Agents belongs to this role can see only unassigned and his/her data",
+                        "reportsTo" : null,
+                        "id" : "50000002634005",
+                        "isVisible" : false
+                      }, {
+                        "isDefault" : false,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "Marketing Team Member",
+                        "description" : "",
+                        "reportsTo" : "50000000008337",
+                        "id" : "50000009610999",
+                        "isVisible" : true
+                      }, {
+                        "isDefault" : true,
+                        "shareDataWithPeers" : false,
+                        "immediateSubRoles" : [ ],
+                        "name" : "LightAgent",
+                        "description" : "Agents belonging to this role can access all user's data.",
+                        "reportsTo" : null,
+                        "id" : "50000565365005",
+                        "isVisible" : false
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ", "Desk.basic.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 60,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 200,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "dcd728edb960fd015cffe4f76e3fb6dd",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.getRolesList"
+        }
+      },
+      "post" : {
+        "tags" : [ "Role" ],
+        "summary" : "Create role",
+        "description" : "This API creates a role in your help desk.",
+        "operationId" : "addRole",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "description", "name", "shareDataWithPeers" ],
+                  "properties" : {
+                    "shareDataWithPeers" : { },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "description" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "properties" : {
+                    "reportsTo" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  }
+                }, {
+                  "required" : [ "name", "shareDataWithPeers" ]
+                } ]
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : {
+                    "shareDataWithPeers" : true,
+                    "name" : "Customer Care Associate",
+                    "description" : "Can work on own tickets and can not re-assign tickets.",
+                    "reportsTo" : 5000000008807
+                  }
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "roleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "description", "name", "shareDataWithPeers" ],
+                      "properties" : {
+                        "shareDataWithPeers" : { },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "description" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    }, {
+                      "required" : [ "reportsTo" ],
+                      "properties" : {
+                        "reportsTo" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    } ]
+                  }, {
+                    "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                    "properties" : {
+                      "isDefault" : { },
+                      "immediateSubRoles" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isVisible" : { }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "isDefault" : false,
+                      "shareDataWithPeers" : true,
+                      "immediateSubRoles" : [ ],
+                      "name" : "Customer Care Associate",
+                      "description" : "Can work on own tickets and can not re-assign tickets.",
+                      "reportsTo" : 5000000008807,
+                      "id" : "5000000002973",
+                      "isVisible" : true
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE", "Desk.basic.CREATE" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 1200000,
+                  "threshold" : 150,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "9a1c27583cb4dad53d77e3e3b8d1f2e5",
+          "module-group" : "users",
+          "apimethod" : "com.zoho.support.restapi.RolesService.createRole"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "roleupdateJson" : {
+        "required" : [ "description", "name", "shareDataWithPeers" ],
+        "properties" : {
+          "shareDataWithPeers" : { },
+          "name" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "description" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "roleJson" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "required" : [ "description", "name", "shareDataWithPeers" ],
+          "properties" : {
+            "shareDataWithPeers" : { },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "description" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "additionalProperties" : false
+        }, {
+          "required" : [ "reportsTo" ],
+          "properties" : {
+            "reportsTo" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            }
+          }
+        } ]
+      },
+      "roleResponse" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "additionalProperties" : false,
+          "allOf" : [ {
+            "required" : [ "description", "name", "shareDataWithPeers" ],
+            "properties" : {
+              "shareDataWithPeers" : { },
+              "name" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "description" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "additionalProperties" : false
+          }, {
+            "required" : [ "reportsTo" ],
+            "properties" : {
+              "reportsTo" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            }
+          } ]
+        }, {
+          "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+          "properties" : {
+            "isDefault" : { },
+            "immediateSubRoles" : {
+              "uniqueItems" : false,
+              "items" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "isVisible" : { }
+          }
+        } ]
+      },
+      "roleArray" : {
+        "items" : {
+          "additionalProperties" : false,
+          "allOf" : [ {
+            "additionalProperties" : false,
+            "allOf" : [ {
+              "required" : [ "description", "name", "shareDataWithPeers" ],
+              "properties" : {
+                "shareDataWithPeers" : { },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : false
+            }, {
+              "required" : [ "reportsTo" ],
+              "properties" : {
+                "reportsTo" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              }
+            } ]
+          }, {
+            "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+            "properties" : {
+              "isDefault" : { },
+              "immediateSubRoles" : {
+                "uniqueItems" : false,
+                "items" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "isVisible" : { }
+            }
+          } ]
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "roleResponse" : {
+        "description" : "roleResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "additionalProperties" : false,
+                "allOf" : [ {
+                  "required" : [ "description", "name", "shareDataWithPeers" ],
+                  "properties" : {
+                    "shareDataWithPeers" : { },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "description" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                }, {
+                  "required" : [ "reportsTo" ],
+                  "properties" : {
+                    "reportsTo" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  }
+                } ]
+              }, {
+                "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                "properties" : {
+                  "isDefault" : { },
+                  "immediateSubRoles" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "id" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  },
+                  "isVisible" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "isDefault" : false,
+                  "shareDataWithPeers" : true,
+                  "immediateSubRoles" : [ ],
+                  "name" : "Customer Care Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807,
+                  "id" : "5000000002973",
+                  "isVisible" : true
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "roleResponseArray" : {
+        "description" : "roleResponseArray template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "additionalProperties" : false,
+                      "allOf" : [ {
+                        "required" : [ "description", "name", "shareDataWithPeers" ],
+                        "properties" : {
+                          "shareDataWithPeers" : { },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "description" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }, {
+                        "required" : [ "reportsTo" ],
+                        "properties" : {
+                          "reportsTo" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        }
+                      } ]
+                    }, {
+                      "required" : [ "id", "immediateSubRoles", "isDefault", "isVisible" ],
+                      "properties" : {
+                        "isDefault" : { },
+                        "immediateSubRoles" : {
+                          "uniqueItems" : false,
+                          "items" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        },
+                        "isVisible" : { }
+                      }
+                    } ]
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "isDefault" : true,
+                    "shareDataWithPeers" : true,
+                    "immediateSubRoles" : [ "50000785582324", "50000000779019", "50000001319909" ],
+                    "name" : "CEO",
+                    "description" : "Agent belongs to this role can access all other user's data.",
+                    "reportsTo" : null,
+                    "id" : "50000000008337",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ "50000091844659" ],
+                    "name" : "Manager",
+                    "description" : "Agents belongs to this cannot see admin role users data",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000008339",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "PortalUser",
+                    "description" : "User belongs to this role are portal users they can access their cases and solutions only",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000008341",
+                    "isVisible" : false
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Development Team Member",
+                    "description" : "Development team members from Engineering",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000469017",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Product Team Member",
+                    "description" : "Products Managers",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000551386",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : true,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Sales Team Member",
+                    "description" : "",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000000779019",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Personal",
+                    "description" : "Agents belongs to this role can see only unassigned and his/her data",
+                    "reportsTo" : null,
+                    "id" : "50000002634005",
+                    "isVisible" : false
+                  }, {
+                    "isDefault" : false,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "Marketing Team Member",
+                    "description" : "",
+                    "reportsTo" : "50000000008337",
+                    "id" : "50000009610999",
+                    "isVisible" : true
+                  }, {
+                    "isDefault" : true,
+                    "shareDataWithPeers" : false,
+                    "immediateSubRoles" : [ ],
+                    "name" : "LightAgent",
+                    "description" : "Agents belonging to this role can access all user's data.",
+                    "reportsTo" : null,
+                    "id" : "50000565365005",
+                    "isVisible" : false
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "roleAssociatedAgent" : {
+        "description" : "roleAssociatedAgent template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "associatedAgents" ],
+              "properties" : {
+                "associatedAgents" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "associatedAgents" : [ "50000000009163", "50000000009300", "50000000010007", "50000000010011", "50000000062391", "50000000062393" ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "isDefault" : {
+        "name" : "isDefault",
+        "in" : "query",
+        "description" : "Key that denotes whether the roles must be default roles or custom roles",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "description" : "Key that denotes whether the roles must be default roles or custom roles"
+        }
+      },
+      "roleId" : {
+        "name" : "roleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "isVisible" : {
+        "name" : "isVisible",
+        "in" : "query",
+        "description" : "Key that filters roles according to their visibility in the UI",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "description" : "Key that filters roles according to their visibility in the UI"
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "roleupdateJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "properties" : {
+                "shareDataWithPeers" : { },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "description" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "shareDataWithPeers" : true,
+                  "name" : "Customer Care and Sales Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "deleteRoleBody" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "transferToRoleId" ],
+              "properties" : {
+                "transferToRoleId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "transferToRoleId" : "5000000008807"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "roleJson" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "description", "name", "shareDataWithPeers" ],
+                "properties" : {
+                  "shareDataWithPeers" : { },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "description" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  }
+                },
+                "additionalProperties" : false
+              }, {
+                "properties" : {
+                  "reportsTo" : {
+                    "pattern" : "([0-9]+)",
+                    "format" : "int64"
+                  }
+                }
+              }, {
+                "required" : [ "name", "shareDataWithPeers" ]
+              } ]
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : {
+                  "shareDataWithPeers" : true,
+                  "name" : "Customer Care Associate",
+                  "description" : "Can work on own tickets and can not re-assign tickets.",
+                  "reportsTo" : 5000000008807
+                }
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "Role"
+}

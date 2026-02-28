@@ -1,0 +1,4155 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "AgentTimeEntry",
+    "version" : "1.0.0",
+    "x-clan-group" : "secModule",
+    "x-module-group" : "timeEntry"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/agents/{agentId}/timeEntry" : {
+      "get" : {
+        "tags" : [ "AgentTimeEntry" ],
+        "summary" : "List Agent Time Entries",
+        "description" : "This API lists the time entries associated with an agent.",
+        "operationId" : "getTimeEntryByAgentId",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to the time entry. Value supported is @owner@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Secondary information related to the time entry. Value supported is @owner@.",
+            "enum" : [ "owner" ]
+          }
+        }, {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+            "enum" : [ "tickets", "tasks", "calls", "events" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "ID of the department",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "createdTimeRange",
+          "in" : "query",
+          "description" : "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null",
+            "description" : "Key that filters time entries created in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, createdTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of time entries to fetch",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Number of time entries to fetch",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "billStatus",
+          "in" : "query",
+          "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+            "enum" : [ "nonBillable", "billable", "billed" ]
+          }
+        }, {
+          "name" : "orderBy",
+          "in" : "query",
+          "description" : "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that sorts the time entries in ascending or descending order, based on the @executedTime@ attribute. Values allowed are @ASC@ (default) and @DESC@.",
+            "enum" : [ "ASC", "DESC" ]
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the time entries must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which the time entries must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "modifiedTimeRange",
+          "in" : "query",
+          "description" : "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z)),(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))|null",
+            "description" : "Key that filters time entries whose details were modified in a particular period of time. Enter the from and to dates in the ISO date format of yyyy-MM-ddThh:mm:ss.SSSZ; for example, modifiedTimeRange=2017-11-05T00:00:00.000Z,2018-09-05T23:59:00.000Z."
+          }
+        }, {
+          "name" : "isBillable",
+          "in" : "query",
+          "description" : "Key that returns if the time tracked is billable or not",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that returns if the time tracked is billable or not",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No content"
+          },
+          "200" : {
+            "description" : "getTimeEntryByAgentIdResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "allOf" : [ {
+                    "properties" : {
+                      "data" : {
+                        "items" : {
+                          "properties" : {
+                            "owner" : {
+                              "maxProperties" : 5,
+                              "minProperties" : 5,
+                              "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                              "properties" : {
+                                "firstName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "lastName" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "photoURL" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                },
+                                "name" : {
+                                  "maxLength" : 50,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                }
+                              },
+                              "additionalProperties" : { }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }, {
+                    "required" : [ "data" ],
+                    "properties" : {
+                      "data" : {
+                        "items" : {
+                          "oneOf" : [ {
+                            "additionalProperties" : false,
+                            "allOf" : [ {
+                              "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                              "properties" : {
+                                "executedTime" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                                },
+                                "customFields" : {
+                                  "additionalProperties" : false
+                                },
+                                "departmentId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64",
+                                  "x-custom-parameters-attributes" : {
+                                    "removeExif" : false,
+                                    "filterMatchedContent" : false,
+                                    "antivirus" : false,
+                                    "replacementString" : "",
+                                    "allowInvalid" : false,
+                                    "descrption" : "ID of the department",
+                                    "secret" : false,
+                                    "preserveCharsLimit" : 10,
+                                    "trim" : false,
+                                    "internalParam" : false,
+                                    "preserveChars" : "0,5",
+                                    "importUrl" : false,
+                                    "decrypt" : false
+                                  }
+                                },
+                                "agentCostPerHour" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "description" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "ownerId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "mode" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "MANUAL", "AUTO" ]
+                                },
+                                "isTrashed" : { },
+                                "requestId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "createdTime" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "requestChargeType" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                                },
+                                "layoutDetails" : {
+                                  "maxProperties" : 2,
+                                  "minProperties" : 2,
+                                  "required" : [ "id", "layoutName" ],
+                                  "properties" : {
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    },
+                                    "layoutName" : {
+                                      "maxLength" : 120,
+                                      "minLength" : 0,
+                                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                },
+                                "secondsSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "cf" : {
+                                  "additionalProperties" : false
+                                },
+                                "fixedCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "minutesSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "hoursSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "layoutId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "isBillable" : {
+                                  "x-custom-parameters-attributes" : {
+                                    "removeExif" : false,
+                                    "filterMatchedContent" : false,
+                                    "antivirus" : false,
+                                    "replacementString" : "",
+                                    "allowInvalid" : false,
+                                    "descrption" : "Key that returns if the time tracked is billable or not",
+                                    "secret" : false,
+                                    "preserveCharsLimit" : 10,
+                                    "trim" : false,
+                                    "internalParam" : true,
+                                    "preserveChars" : "0,5",
+                                    "importUrl" : false,
+                                    "decrypt" : false
+                                  }
+                                },
+                                "createdBy" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "invoiceId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "additionalCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "totalCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "taskId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                }
+                              },
+                              "additionalProperties" : false
+                            }, {
+                              "required" : [ "billingType", "parent" ],
+                              "properties" : {
+                                "parent" : {
+                                  "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+                                  "properties" : {
+                                    "ticketNumber" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int32"
+                                    },
+                                    "associatedTicketId" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    },
+                                    "subject" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    },
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    },
+                                    "type" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                },
+                                "billingType" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                }
+                              }
+                            } ]
+                          }, {
+                            "additionalProperties" : false,
+                            "allOf" : [ {
+                              "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                              "properties" : {
+                                "executedTime" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                                },
+                                "customFields" : {
+                                  "additionalProperties" : false
+                                },
+                                "departmentId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64",
+                                  "x-custom-parameters-attributes" : {
+                                    "removeExif" : false,
+                                    "filterMatchedContent" : false,
+                                    "antivirus" : false,
+                                    "replacementString" : "",
+                                    "allowInvalid" : false,
+                                    "descrption" : "ID of the department",
+                                    "secret" : false,
+                                    "preserveCharsLimit" : 10,
+                                    "trim" : false,
+                                    "internalParam" : false,
+                                    "preserveChars" : "0,5",
+                                    "importUrl" : false,
+                                    "decrypt" : false
+                                  }
+                                },
+                                "agentCostPerHour" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "description" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "ownerId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "mode" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "MANUAL", "AUTO" ]
+                                },
+                                "isTrashed" : { },
+                                "requestId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "createdTime" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "requestChargeType" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                                },
+                                "layoutDetails" : {
+                                  "maxProperties" : 2,
+                                  "minProperties" : 2,
+                                  "required" : [ "id", "layoutName" ],
+                                  "properties" : {
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    },
+                                    "layoutName" : {
+                                      "maxLength" : 120,
+                                      "minLength" : 0,
+                                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                },
+                                "secondsSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "cf" : {
+                                  "additionalProperties" : false
+                                },
+                                "fixedCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "minutesSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "hoursSpent" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "layoutId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "isBillable" : {
+                                  "x-custom-parameters-attributes" : {
+                                    "removeExif" : false,
+                                    "filterMatchedContent" : false,
+                                    "antivirus" : false,
+                                    "replacementString" : "",
+                                    "allowInvalid" : false,
+                                    "descrption" : "Key that returns if the time tracked is billable or not",
+                                    "secret" : false,
+                                    "preserveCharsLimit" : 10,
+                                    "trim" : false,
+                                    "internalParam" : true,
+                                    "preserveChars" : "0,5",
+                                    "importUrl" : false,
+                                    "decrypt" : false
+                                  }
+                                },
+                                "createdBy" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "invoiceId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "additionalCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "totalCost" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                                },
+                                "taskId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                }
+                              },
+                              "additionalProperties" : false
+                            }, {
+                              "required" : [ "billingType", "parent" ],
+                              "properties" : {
+                                "parent" : {
+                                  "required" : [ "id", "subject", "ticketNumber", "type" ],
+                                  "properties" : {
+                                    "ticketNumber" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int32"
+                                    },
+                                    "subject" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    },
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    },
+                                    "type" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                },
+                                "billingType" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                }
+                              }
+                            } ]
+                          } ]
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "owner" : {
+                          "firstName" : "Eswer",
+                          "lastName" : "KM",
+                          "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                          "name" : "Eswer KM",
+                          "id" : "4000000008688129"
+                        },
+                        "secondsSpent" : "21",
+                        "parent" : {
+                          "ticketNumber" : "1001",
+                          "associatedTicketId" : "4000000031007",
+                          "subject" : "Task subject",
+                          "id" : "4000000031010",
+                          "type" : "TASKS"
+                        },
+                        "executedTime" : 1466627400000,
+                        "fixedCost" : null,
+                        "departmentId" : "4000000008694",
+                        "minutesSpent" : "23",
+                        "creatorId" : "4000000008692",
+                        "agentCostPerHour" : "3.0",
+                        "description" : "Time Entry description",
+                        "hoursSpent" : "3",
+                        "ownerId" : "4000000008692",
+                        "isBillable" : true,
+                        "mode" : "MANUAL",
+                        "isTrashed" : "false",
+                        "billingType" : "FIXED_COST_FOR_TICKETS",
+                        "createdTime" : 1466061884000,
+                        "invoiceId" : "40000000086881212",
+                        "id" : "4000000033001",
+                        "requestChargeType" : "Customer Service",
+                        "additionalCost" : "10.0",
+                        "totalCost" : "20.17"
+                      }, {
+                        "owner" : {
+                          "firstName" : "Eswer",
+                          "lastName" : "KM",
+                          "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                          "name" : "Eswer KM",
+                          "id" : "4000000008688129"
+                        },
+                        "secondsSpent" : "21",
+                        "parent" : {
+                          "ticketNumber" : "1001",
+                          "associatedTicketId" : "4000000031007",
+                          "subject" : "Task subject",
+                          "id" : "4000000031010",
+                          "type" : "TASKS"
+                        },
+                        "executedTime" : 1466796600000,
+                        "fixedCost" : null,
+                        "departmentId" : "4000000008694",
+                        "minutesSpent" : "34",
+                        "creatorId" : "4000000008692",
+                        "agentCostPerHour" : "10.0",
+                        "description" : "Time Entry description",
+                        "hoursSpent" : "3",
+                        "ownerId" : "4000000012090",
+                        "isBillable" : true,
+                        "mode" : "MANUAL",
+                        "isTrashed" : "false",
+                        "billingType" : "FIXED_COST_FOR_TICKETS",
+                        "createdTime" : 1466063199000,
+                        "invoiceId" : "40000000086881212",
+                        "id" : "4000000033006",
+                        "requestChargeType" : "Product Consultation",
+                        "additionalCost" : "10.0",
+                        "totalCost" : "45.72"
+                      }, {
+                        "owner" : {
+                          "firstName" : "Eswer",
+                          "lastName" : "KM",
+                          "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                          "name" : "Eswer KM",
+                          "id" : "4000000008688129"
+                        },
+                        "secondsSpent" : "22",
+                        "parent" : {
+                          "ticketNumber" : "1001",
+                          "associatedTicketId" : "4000000031007",
+                          "subject" : "Task subject",
+                          "id" : "4000000031010",
+                          "type" : "TASKS"
+                        },
+                        "executedTime" : 1465846200000,
+                        "fixedCost" : null,
+                        "departmentId" : "4000000008694",
+                        "minutesSpent" : "22",
+                        "creatorId" : "4000000008692",
+                        "agentCostPerHour" : "20.0",
+                        "description" : "Time Entry description",
+                        "hoursSpent" : "32",
+                        "ownerId" : "4000000008692",
+                        "isBillable" : true,
+                        "mode" : "MANUAL",
+                        "isTrashed" : "false",
+                        "billingType" : "FIXED_COST_FOR_TICKETS",
+                        "createdTime" : 1466063392000,
+                        "invoiceId" : "40000000086881212",
+                        "id" : "4000000033011",
+                        "requestChargeType" : "Customer Service",
+                        "additionalCost" : "10.0",
+                        "totalCost" : "657.46"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "8c1ccaf141e1bb98a0ea40df9d627658",
+          "module-group" : "timeEntry",
+          "apimethod" : "com.zoho.support.restapi.TimeEntryService.getTimeEntries"
+        }
+      }
+    },
+    "/api/v1/agents/{agentId}/timeEntrySummation" : {
+      "get" : {
+        "tags" : [ "AgentTimeEntry" ],
+        "summary" : "Get summation of Agent Time Entries",
+        "description" : "This API fetches the sum of time entries associated with an agent.",
+        "operationId" : "getSummationOfTimeEntryForAgent",
+        "parameters" : [ {
+          "name" : "module",
+          "in" : "query",
+          "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+            "enum" : [ "tickets", "tasks", "calls", "events" ]
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "ID of the department",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "billStatus",
+          "in" : "query",
+          "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+            "enum" : [ "nonBillable", "billable", "billed" ]
+          }
+        }, {
+          "name" : "isBillable",
+          "in" : "query",
+          "description" : "Key that returns if the time tracked is billable or not",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Key that returns if the time tracked is billable or not",
+            "x-audience" : [ "company-internal" ]
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "getSummationOfTimeEntryForAgentResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "totalCosts", "totalHours", "totalMins", "totalSeconds" ],
+                  "properties" : {
+                    "totalMins" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    },
+                    "totalHours" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    },
+                    "totalCosts" : {
+                      "pattern" : "([0-9\\.]+)"
+                    },
+                    "totalSeconds" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "totalMins" : 5,
+                      "totalHours" : 12,
+                      "totalCosts" : 1000,
+                      "totalSeconds" : 24
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Stringent_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "c5c13e5611176f08d80c56c003e48fea",
+          "module-group" : "timeEntry",
+          "apimethod" : "com.zoho.support.restapi.TimeEntryService.getSummationOfTimeEntries"
+        }
+      }
+    },
+    "/api/v1/agents/{agentId}/timeEntry/{agentTimeEntryId}" : {
+      "get" : {
+        "tags" : [ "AgentTimeEntry" ],
+        "summary" : "Get an Agent Time Entry",
+        "description" : "This API fetches a time entry related to an agent.",
+        "operationId" : "getTimeEntryForAgent",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Secondary information related to the time entry. Value supported is owner.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Secondary information related to the time entry. Value supported is owner.",
+            "enum" : [ "owner" ]
+          }
+        }, {
+          "name" : "agentId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "agentTimeEntryId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "getTimeEntryForAgentResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "allOf" : [ {
+                    "properties" : {
+                      "owner" : {
+                        "maxProperties" : 5,
+                        "minProperties" : 5,
+                        "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                        "properties" : {
+                          "firstName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "lastName" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "photoURL" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                          },
+                          "name" : {
+                            "maxLength" : 50,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  }, {
+                    "oneOf" : [ {
+                      "additionalProperties" : { },
+                      "allOf" : [ {
+                        "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                        "properties" : {
+                          "executedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "customFields" : {
+                            "additionalProperties" : false
+                          },
+                          "departmentId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64",
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "allowInvalid" : false,
+                              "descrption" : "ID of the department",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          },
+                          "agentCostPerHour" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "description" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "ownerId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "mode" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "MANUAL", "AUTO" ]
+                          },
+                          "isTrashed" : { },
+                          "requestId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "createdTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "requestChargeType" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                          },
+                          "layoutDetails" : {
+                            "maxProperties" : 2,
+                            "minProperties" : 2,
+                            "required" : [ "id", "layoutName" ],
+                            "properties" : {
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "layoutName" : {
+                                "maxLength" : 120,
+                                "minLength" : 0,
+                                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "secondsSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "cf" : {
+                            "additionalProperties" : false
+                          },
+                          "fixedCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "minutesSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "hoursSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "layoutId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "isBillable" : {
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "allowInvalid" : false,
+                              "descrption" : "Key that returns if the time tracked is billable or not",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : true,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          },
+                          "createdBy" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "invoiceId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "additionalCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "totalCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "taskId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }, {
+                        "required" : [ "parent" ],
+                        "properties" : {
+                          "parent" : {
+                            "required" : [ "id", "subject", "ticketNumber", "type" ],
+                            "properties" : {
+                              "ticketNumber" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int32"
+                              },
+                              "subject" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "type" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      } ]
+                    }, {
+                      "additionalProperties" : { },
+                      "allOf" : [ {
+                        "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                        "properties" : {
+                          "executedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "customFields" : {
+                            "additionalProperties" : false
+                          },
+                          "departmentId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64",
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "allowInvalid" : false,
+                              "descrption" : "ID of the department",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          },
+                          "agentCostPerHour" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "description" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "ownerId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "mode" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "MANUAL", "AUTO" ]
+                          },
+                          "isTrashed" : { },
+                          "requestId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "createdTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "requestChargeType" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                          },
+                          "layoutDetails" : {
+                            "maxProperties" : 2,
+                            "minProperties" : 2,
+                            "required" : [ "id", "layoutName" ],
+                            "properties" : {
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "layoutName" : {
+                                "maxLength" : 120,
+                                "minLength" : 0,
+                                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "secondsSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "cf" : {
+                            "additionalProperties" : false
+                          },
+                          "fixedCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "minutesSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "hoursSpent" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "layoutId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "isBillable" : {
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "allowInvalid" : false,
+                              "descrption" : "Key that returns if the time tracked is billable or not",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : true,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          },
+                          "createdBy" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "invoiceId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "additionalCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "totalCost" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                          },
+                          "taskId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }, {
+                        "required" : [ "parent" ],
+                        "properties" : {
+                          "parent" : {
+                            "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+                            "properties" : {
+                              "ticketNumber" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int32"
+                              },
+                              "associatedTicketId" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "subject" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              },
+                              "type" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      } ]
+                    } ]
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "owner" : {
+                        "firstName" : "Eswer",
+                        "lastName" : "KM",
+                        "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                        "name" : "Eswer KM",
+                        "id" : "4000000008688129"
+                      },
+                      "secondsSpent" : "21",
+                      "parent" : {
+                        "ticketNumber" : "1001",
+                        "associatedTicketId" : "4000000031007",
+                        "subject" : "Task subject",
+                        "id" : "4000000031010",
+                        "type" : "TASKS"
+                      },
+                      "cf" : {
+                        "cf_timeentryname" : "time1"
+                      },
+                      "executedTime" : 1466627400000,
+                      "fixedCost" : null,
+                      "departmentId" : "4000000008694",
+                      "minutesSpent" : "23",
+                      "creatorId" : "4000000008692",
+                      "agentCostPerHour" : "3.0",
+                      "description" : "Time Entry description",
+                      "hoursSpent" : "3",
+                      "ownerId" : "4000000008692",
+                      "isBillable" : true,
+                      "mode" : "MANUAL",
+                      "isTrashed" : "false",
+                      "billingType" : "FIXED_COST_FOR_TICKETS",
+                      "createdTime" : 1466061884000,
+                      "invoiceId" : "40000000086881212",
+                      "id" : "4000000033001",
+                      "requestChargeType" : "Customer Service",
+                      "additionalCost" : "10.0",
+                      "totalCost" : "20.17"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "external-public" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "secModule",
+          "apihash" : "fba1027d54d59bd8fe46f25ddfcba1df",
+          "module-group" : "timeEntry",
+          "apimethod" : "com.zoho.support.restapi.TimeEntryService.getTimeEntry"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "getActivityParent" : {
+        "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+        "properties" : {
+          "ticketNumber" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "associatedTicketId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "subject" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "type" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "getTimeEntryForAgentResponse" : {
+        "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+        "properties" : {
+          "executedTime" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "customFields" : {
+            "additionalProperties" : { }
+          },
+          "departmentId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64",
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "ID of the department",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "agentCostPerHour" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+          },
+          "description" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "ownerId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "mode" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "MANUAL", "AUTO" ]
+          },
+          "isTrashed" : { },
+          "requestId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "createdTime" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "requestChargeType" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+          },
+          "layoutDetails" : {
+            "maxProperties" : 2,
+            "minProperties" : 2,
+            "required" : [ "id", "layoutName" ],
+            "properties" : {
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              },
+              "layoutName" : {
+                "maxLength" : 120,
+                "minLength" : 0,
+                "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+              }
+            },
+            "additionalProperties" : { }
+          },
+          "secondsSpent" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "cf" : {
+            "additionalProperties" : { }
+          },
+          "fixedCost" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+          },
+          "minutesSpent" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "hoursSpent" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "layoutId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "isBillable" : {
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Key that returns if the time tracked is billable or not",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : true,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          },
+          "createdBy" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "invoiceId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "additionalCost" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+          },
+          "totalCost" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+          },
+          "taskId" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "listActivityTimeEntryForAgentResponse" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+          "properties" : {
+            "executedTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+            },
+            "customFields" : {
+              "additionalProperties" : false
+            },
+            "departmentId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64",
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "ID of the department",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "agentCostPerHour" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "description" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "ownerId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "mode" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "MANUAL", "AUTO" ]
+            },
+            "isTrashed" : { },
+            "requestId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "createdTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "requestChargeType" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+            },
+            "layoutDetails" : {
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "required" : [ "id", "layoutName" ],
+              "properties" : {
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "layoutName" : {
+                  "maxLength" : 120,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "secondsSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "cf" : {
+              "additionalProperties" : false
+            },
+            "fixedCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "minutesSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "hoursSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "layoutId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "isBillable" : {
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Key that returns if the time tracked is billable or not",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : true,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "createdBy" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "invoiceId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "additionalCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "totalCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "taskId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            }
+          },
+          "additionalProperties" : false
+        }, {
+          "required" : [ "billingType", "parent" ],
+          "properties" : {
+            "parent" : {
+              "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+              "properties" : {
+                "ticketNumber" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "associatedTicketId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "subject" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "type" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : false
+            },
+            "billingType" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          }
+        } ]
+      },
+      "getTicketParent" : {
+        "required" : [ "id", "subject", "ticketNumber", "type" ],
+        "properties" : {
+          "ticketNumber" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "subject" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "type" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "listTicketTimeEntryForAgentResponse" : {
+        "additionalProperties" : { },
+        "allOf" : [ {
+          "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+          "properties" : {
+            "executedTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+            },
+            "customFields" : {
+              "additionalProperties" : false
+            },
+            "departmentId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64",
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "ID of the department",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "agentCostPerHour" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "description" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "ownerId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "mode" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "MANUAL", "AUTO" ]
+            },
+            "isTrashed" : { },
+            "requestId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "createdTime" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "requestChargeType" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+            },
+            "layoutDetails" : {
+              "maxProperties" : 2,
+              "minProperties" : 2,
+              "required" : [ "id", "layoutName" ],
+              "properties" : {
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "layoutName" : {
+                  "maxLength" : 120,
+                  "minLength" : 0,
+                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "secondsSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "cf" : {
+              "additionalProperties" : false
+            },
+            "fixedCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "minutesSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "hoursSpent" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "layoutId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "isBillable" : {
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Key that returns if the time tracked is billable or not",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : true,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            },
+            "createdBy" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "invoiceId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "additionalCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "totalCost" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+            },
+            "taskId" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            }
+          },
+          "additionalProperties" : false
+        }, {
+          "required" : [ "billingType", "parent" ],
+          "properties" : {
+            "parent" : {
+              "required" : [ "id", "subject", "ticketNumber", "type" ],
+              "properties" : {
+                "ticketNumber" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "subject" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "type" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : false
+            },
+            "billingType" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          }
+        } ]
+      },
+      "data" : {
+        "items" : {
+          "oneOf" : [ {
+            "additionalProperties" : false,
+            "allOf" : [ {
+              "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+              "properties" : {
+                "executedTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "customFields" : {
+                  "additionalProperties" : false
+                },
+                "departmentId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the department",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "agentCostPerHour" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "description" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ownerId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "mode" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "MANUAL", "AUTO" ]
+                },
+                "isTrashed" : { },
+                "requestId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "createdTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "requestChargeType" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                },
+                "layoutDetails" : {
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "required" : [ "id", "layoutName" ],
+                  "properties" : {
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "layoutName" : {
+                      "maxLength" : 120,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "secondsSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "cf" : {
+                  "additionalProperties" : false
+                },
+                "fixedCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "minutesSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "hoursSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "layoutId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "isBillable" : {
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that returns if the time tracked is billable or not",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : true,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdBy" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "invoiceId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "additionalCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "totalCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "taskId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            }, {
+              "required" : [ "billingType", "parent" ],
+              "properties" : {
+                "parent" : {
+                  "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+                  "properties" : {
+                    "ticketNumber" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    },
+                    "associatedTicketId" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "subject" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "type" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "billingType" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            } ]
+          }, {
+            "additionalProperties" : false,
+            "allOf" : [ {
+              "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+              "properties" : {
+                "executedTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "customFields" : {
+                  "additionalProperties" : false
+                },
+                "departmentId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "ID of the department",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "agentCostPerHour" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "description" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "ownerId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "mode" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "MANUAL", "AUTO" ]
+                },
+                "isTrashed" : { },
+                "requestId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "createdTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "requestChargeType" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                },
+                "layoutDetails" : {
+                  "maxProperties" : 2,
+                  "minProperties" : 2,
+                  "required" : [ "id", "layoutName" ],
+                  "properties" : {
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "layoutName" : {
+                      "maxLength" : 120,
+                      "minLength" : 0,
+                      "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "secondsSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "cf" : {
+                  "additionalProperties" : false
+                },
+                "fixedCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "minutesSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "hoursSpent" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "layoutId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "isBillable" : {
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Key that returns if the time tracked is billable or not",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : true,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdBy" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "invoiceId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "additionalCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "totalCost" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                },
+                "taskId" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            }, {
+              "required" : [ "billingType", "parent" ],
+              "properties" : {
+                "parent" : {
+                  "required" : [ "id", "subject", "ticketNumber", "type" ],
+                  "properties" : {
+                    "ticketNumber" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32"
+                    },
+                    "subject" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "type" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "billingType" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              }
+            } ]
+          } ]
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "getTimeEntryByAgentIdResponse" : {
+        "description" : "getTimeEntryByAgentIdResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "properties" : {
+                        "owner" : {
+                          "maxProperties" : 5,
+                          "minProperties" : 5,
+                          "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                          "properties" : {
+                            "firstName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "lastName" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "photoURL" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                            },
+                            "name" : {
+                              "maxLength" : 50,
+                              "minLength" : 0
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "additionalProperties" : false
+                        }
+                      }
+                    }
+                  }
+                }
+              }, {
+                "required" : [ "data" ],
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "oneOf" : [ {
+                        "additionalProperties" : false,
+                        "allOf" : [ {
+                          "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                          "properties" : {
+                            "executedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                            },
+                            "customFields" : {
+                              "additionalProperties" : false
+                            },
+                            "departmentId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64",
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "ID of the department",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "agentCostPerHour" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "description" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "ownerId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "mode" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "MANUAL", "AUTO" ]
+                            },
+                            "isTrashed" : { },
+                            "requestId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "createdTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "requestChargeType" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                            },
+                            "layoutDetails" : {
+                              "maxProperties" : 2,
+                              "minProperties" : 2,
+                              "required" : [ "id", "layoutName" ],
+                              "properties" : {
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "layoutName" : {
+                                  "maxLength" : 120,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "secondsSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "cf" : {
+                              "additionalProperties" : false
+                            },
+                            "fixedCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "minutesSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "hoursSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "layoutId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "isBillable" : {
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "Key that returns if the time tracked is billable or not",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : true,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "createdBy" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "invoiceId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "additionalCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "totalCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "taskId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "additionalProperties" : false
+                        }, {
+                          "required" : [ "billingType", "parent" ],
+                          "properties" : {
+                            "parent" : {
+                              "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+                              "properties" : {
+                                "ticketNumber" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "associatedTicketId" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "subject" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "type" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "billingType" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            }
+                          }
+                        } ]
+                      }, {
+                        "additionalProperties" : false,
+                        "allOf" : [ {
+                          "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                          "properties" : {
+                            "executedTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                            },
+                            "customFields" : {
+                              "additionalProperties" : false
+                            },
+                            "departmentId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64",
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "ID of the department",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : false,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "agentCostPerHour" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "description" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "ownerId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "mode" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "MANUAL", "AUTO" ]
+                            },
+                            "isTrashed" : { },
+                            "requestId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "createdTime" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                            },
+                            "id" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "requestChargeType" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                            },
+                            "layoutDetails" : {
+                              "maxProperties" : 2,
+                              "minProperties" : 2,
+                              "required" : [ "id", "layoutName" ],
+                              "properties" : {
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "layoutName" : {
+                                  "maxLength" : 120,
+                                  "minLength" : 0,
+                                  "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "secondsSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "cf" : {
+                              "additionalProperties" : false
+                            },
+                            "fixedCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "minutesSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "hoursSpent" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int32"
+                            },
+                            "layoutId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "isBillable" : {
+                              "x-custom-parameters-attributes" : {
+                                "removeExif" : false,
+                                "filterMatchedContent" : false,
+                                "antivirus" : false,
+                                "replacementString" : "",
+                                "allowInvalid" : false,
+                                "descrption" : "Key that returns if the time tracked is billable or not",
+                                "secret" : false,
+                                "preserveCharsLimit" : 10,
+                                "trim" : false,
+                                "internalParam" : true,
+                                "preserveChars" : "0,5",
+                                "importUrl" : false,
+                                "decrypt" : false
+                              }
+                            },
+                            "createdBy" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "invoiceId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            },
+                            "additionalCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "totalCost" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                            },
+                            "taskId" : {
+                              "pattern" : "([0-9]+)",
+                              "format" : "int64"
+                            }
+                          },
+                          "additionalProperties" : false
+                        }, {
+                          "required" : [ "billingType", "parent" ],
+                          "properties" : {
+                            "parent" : {
+                              "required" : [ "id", "subject", "ticketNumber", "type" ],
+                              "properties" : {
+                                "ticketNumber" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int32"
+                                },
+                                "subject" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                },
+                                "type" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                }
+                              },
+                              "additionalProperties" : false
+                            },
+                            "billingType" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            }
+                          }
+                        } ]
+                      } ]
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "owner" : {
+                      "firstName" : "Eswer",
+                      "lastName" : "KM",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                      "name" : "Eswer KM",
+                      "id" : "4000000008688129"
+                    },
+                    "secondsSpent" : "21",
+                    "parent" : {
+                      "ticketNumber" : "1001",
+                      "associatedTicketId" : "4000000031007",
+                      "subject" : "Task subject",
+                      "id" : "4000000031010",
+                      "type" : "TASKS"
+                    },
+                    "executedTime" : 1466627400000,
+                    "fixedCost" : null,
+                    "departmentId" : "4000000008694",
+                    "minutesSpent" : "23",
+                    "creatorId" : "4000000008692",
+                    "agentCostPerHour" : "3.0",
+                    "description" : "Time Entry description",
+                    "hoursSpent" : "3",
+                    "ownerId" : "4000000008692",
+                    "isBillable" : true,
+                    "mode" : "MANUAL",
+                    "isTrashed" : "false",
+                    "billingType" : "FIXED_COST_FOR_TICKETS",
+                    "createdTime" : 1466061884000,
+                    "invoiceId" : "40000000086881212",
+                    "id" : "4000000033001",
+                    "requestChargeType" : "Customer Service",
+                    "additionalCost" : "10.0",
+                    "totalCost" : "20.17"
+                  }, {
+                    "owner" : {
+                      "firstName" : "Eswer",
+                      "lastName" : "KM",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                      "name" : "Eswer KM",
+                      "id" : "4000000008688129"
+                    },
+                    "secondsSpent" : "21",
+                    "parent" : {
+                      "ticketNumber" : "1001",
+                      "associatedTicketId" : "4000000031007",
+                      "subject" : "Task subject",
+                      "id" : "4000000031010",
+                      "type" : "TASKS"
+                    },
+                    "executedTime" : 1466796600000,
+                    "fixedCost" : null,
+                    "departmentId" : "4000000008694",
+                    "minutesSpent" : "34",
+                    "creatorId" : "4000000008692",
+                    "agentCostPerHour" : "10.0",
+                    "description" : "Time Entry description",
+                    "hoursSpent" : "3",
+                    "ownerId" : "4000000012090",
+                    "isBillable" : true,
+                    "mode" : "MANUAL",
+                    "isTrashed" : "false",
+                    "billingType" : "FIXED_COST_FOR_TICKETS",
+                    "createdTime" : 1466063199000,
+                    "invoiceId" : "40000000086881212",
+                    "id" : "4000000033006",
+                    "requestChargeType" : "Product Consultation",
+                    "additionalCost" : "10.0",
+                    "totalCost" : "45.72"
+                  }, {
+                    "owner" : {
+                      "firstName" : "Eswer",
+                      "lastName" : "KM",
+                      "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                      "name" : "Eswer KM",
+                      "id" : "4000000008688129"
+                    },
+                    "secondsSpent" : "22",
+                    "parent" : {
+                      "ticketNumber" : "1001",
+                      "associatedTicketId" : "4000000031007",
+                      "subject" : "Task subject",
+                      "id" : "4000000031010",
+                      "type" : "TASKS"
+                    },
+                    "executedTime" : 1465846200000,
+                    "fixedCost" : null,
+                    "departmentId" : "4000000008694",
+                    "minutesSpent" : "22",
+                    "creatorId" : "4000000008692",
+                    "agentCostPerHour" : "20.0",
+                    "description" : "Time Entry description",
+                    "hoursSpent" : "32",
+                    "ownerId" : "4000000008692",
+                    "isBillable" : true,
+                    "mode" : "MANUAL",
+                    "isTrashed" : "false",
+                    "billingType" : "FIXED_COST_FOR_TICKETS",
+                    "createdTime" : 1466063392000,
+                    "invoiceId" : "40000000086881212",
+                    "id" : "4000000033011",
+                    "requestChargeType" : "Customer Service",
+                    "additionalCost" : "10.0",
+                    "totalCost" : "657.46"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getSummationOfTimeEntryForAgentResponse" : {
+        "description" : "getSummationOfTimeEntryForAgentResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "totalCosts", "totalHours", "totalMins", "totalSeconds" ],
+              "properties" : {
+                "totalMins" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "totalHours" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                },
+                "totalCosts" : {
+                  "pattern" : "([0-9\\.]+)"
+                },
+                "totalSeconds" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32"
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "totalMins" : 5,
+                  "totalHours" : 12,
+                  "totalCosts" : 1000,
+                  "totalSeconds" : 24
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getTimeEntryForAgentResponse" : {
+        "description" : "getTimeEntryForAgentResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "properties" : {
+                  "owner" : {
+                    "maxProperties" : 5,
+                    "minProperties" : 5,
+                    "required" : [ "firstName", "id", "lastName", "name", "photoURL" ],
+                    "properties" : {
+                      "firstName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "lastName" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "photoURL" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      },
+                      "name" : {
+                        "maxLength" : 50,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              }, {
+                "oneOf" : [ {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                    "properties" : {
+                      "executedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "customFields" : {
+                        "additionalProperties" : false
+                      },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "ID of the department",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "agentCostPerHour" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "description" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "ownerId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "mode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "MANUAL", "AUTO" ]
+                      },
+                      "isTrashed" : { },
+                      "requestId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "requestChargeType" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                      },
+                      "layoutDetails" : {
+                        "maxProperties" : 2,
+                        "minProperties" : 2,
+                        "required" : [ "id", "layoutName" ],
+                        "properties" : {
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "layoutName" : {
+                            "maxLength" : 120,
+                            "minLength" : 0,
+                            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "secondsSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "cf" : {
+                        "additionalProperties" : false
+                      },
+                      "fixedCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "minutesSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "hoursSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "layoutId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isBillable" : {
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Key that returns if the time tracked is billable or not",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : true,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "invoiceId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "additionalCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "totalCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "taskId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }, {
+                    "required" : [ "parent" ],
+                    "properties" : {
+                      "parent" : {
+                        "required" : [ "id", "subject", "ticketNumber", "type" ],
+                        "properties" : {
+                          "ticketNumber" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "subject" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  } ]
+                }, {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "additionalCost", "agentCostPerHour", "cf", "createdBy", "createdTime", "customFields", "departmentId", "description", "executedTime", "fixedCost", "hoursSpent", "id", "invoiceId", "isBillable", "isTrashed", "layoutDetails", "layoutId", "minutesSpent", "mode", "ownerId", "requestChargeType", "requestId", "secondsSpent", "taskId", "totalCost" ],
+                    "properties" : {
+                      "executedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "customFields" : {
+                        "additionalProperties" : false
+                      },
+                      "departmentId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64",
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "ID of the department",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "agentCostPerHour" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "description" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "ownerId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "mode" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "MANUAL", "AUTO" ]
+                      },
+                      "isTrashed" : { },
+                      "requestId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "(((19|20)\\d\\d)[-/.]{1}(0?[1-9]|1[012])[-/.]{1}(0?[1-9]|[12][0-9]|3[01])(T)([01]?[0-9]|2[0-3]):[0-5]?[0-9]:[0-5]?[0-9]([/.][\\d]{0,3})?(Z))"
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "requestChargeType" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "Customer Service", "Upgrade Request", "Product Consultation", "Support and Maintenance", "MANUAL" ]
+                      },
+                      "layoutDetails" : {
+                        "maxProperties" : 2,
+                        "minProperties" : 2,
+                        "required" : [ "id", "layoutName" ],
+                        "properties" : {
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "layoutName" : {
+                            "maxLength" : 120,
+                            "minLength" : 0,
+                            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "secondsSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "cf" : {
+                        "additionalProperties" : false
+                      },
+                      "fixedCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "minutesSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "hoursSpent" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "layoutId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "isBillable" : {
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Key that returns if the time tracked is billable or not",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : true,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      },
+                      "createdBy" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "invoiceId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "additionalCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "totalCost" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9]{1,13}(\\.[0-9]*)?)"
+                      },
+                      "taskId" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }, {
+                    "required" : [ "parent" ],
+                    "properties" : {
+                      "parent" : {
+                        "required" : [ "associatedTicketId", "id", "subject", "ticketNumber", "type" ],
+                        "properties" : {
+                          "ticketNumber" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "associatedTicketId" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "subject" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "type" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  } ]
+                } ]
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "owner" : {
+                    "firstName" : "Eswer",
+                    "lastName" : "KM",
+                    "photoURL" : "https://contacts.zoho.com/file?t=user&ID=4851669",
+                    "name" : "Eswer KM",
+                    "id" : "4000000008688129"
+                  },
+                  "secondsSpent" : "21",
+                  "parent" : {
+                    "ticketNumber" : "1001",
+                    "associatedTicketId" : "4000000031007",
+                    "subject" : "Task subject",
+                    "id" : "4000000031010",
+                    "type" : "TASKS"
+                  },
+                  "cf" : {
+                    "cf_timeentryname" : "time1"
+                  },
+                  "executedTime" : 1466627400000,
+                  "fixedCost" : null,
+                  "departmentId" : "4000000008694",
+                  "minutesSpent" : "23",
+                  "creatorId" : "4000000008692",
+                  "agentCostPerHour" : "3.0",
+                  "description" : "Time Entry description",
+                  "hoursSpent" : "3",
+                  "ownerId" : "4000000008692",
+                  "isBillable" : true,
+                  "mode" : "MANUAL",
+                  "isTrashed" : "false",
+                  "billingType" : "FIXED_COST_FOR_TICKETS",
+                  "createdTime" : 1466061884000,
+                  "invoiceId" : "40000000086881212",
+                  "id" : "4000000033001",
+                  "requestChargeType" : "Customer Service",
+                  "additionalCost" : "10.0",
+                  "totalCost" : "20.17"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "agentId" : {
+        "name" : "agentId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "module" : {
+        "name" : "module",
+        "in" : "query",
+        "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "description" : "Module from which the time entries must be fetched. Values allowed are @tickets@ and @tasks@.",
+          "enum" : [ "tickets", "tasks", "calls", "events" ]
+        }
+      },
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "description" : "ID of the department",
+          "format" : "int64"
+        }
+      },
+      "billStatus" : {
+        "name" : "billStatus",
+        "in" : "query",
+        "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "description" : "Key that filters time entries, based on their billing status: @nonBillable@ , @billable@ or @billed@",
+          "enum" : [ "nonBillable", "billable", "billed" ]
+        }
+      },
+      "isBillable" : {
+        "name" : "isBillable",
+        "in" : "query",
+        "description" : "Key that returns if the time tracked is billable or not",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "description" : "Key that returns if the time tracked is billable or not"
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "AgentTimeEntry"
+}

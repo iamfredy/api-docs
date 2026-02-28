@@ -1,0 +1,4121 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "ApiCreditNotificationRule",
+    "version" : "1.0.0",
+    "x-clan-group" : "automation",
+    "x-module-group" : "security"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/apiCredits/notificationRules" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "List all Api Credit Notification Rules",
+        "description" : "This api lists the api-credit notification rules, based on the limit specified.",
+        "operationId" : "getApiCreditNotificationRules",
+        "parameters" : [ {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "Number of api-credit notification rules must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Number of api-credit notification rules must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "from",
+          "in" : "query",
+          "description" : "Index number, starting from which the api-credit notification rules must be fetched",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Index number, starting from which the api-credit notification rules must be fetched",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "sortBy",
+          "in" : "query",
+          "description" : "Sort by a specific attribute: @percentage@. A @-@ prefix denotes descending order of sorting. Records wont be sorted if this parameter is empty",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "^-?percentage",
+            "description" : "Sort by a specific attribute: @percentage@. A @-@ prefix denotes descending order of sorting. Records wont be sorted if this parameter is empty"
+          }
+        }, {
+          "name" : "status",
+          "in" : "query",
+          "description" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+            "enum" : [ "ACTIVE", "INACTIVE" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "rulesResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+                        "properties" : {
+                          "modifiedTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "creator" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "percentage" : {
+                            "maximum" : 100,
+                            "minimum" : 50,
+                            "pattern" : "([0-9]+)",
+                            "format" : "int32"
+                          },
+                          "modifier" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "recipient" : {
+                            "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                            "properties" : {
+                              "emailIds" : {
+                                "maxItems" : 50,
+                                "uniqueItems" : false,
+                                "items" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0,
+                                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                                }
+                              },
+                              "primaryContact" : { },
+                              "profiles" : {
+                                "items" : {
+                                  "required" : [ "id", "imageUrl", "name" ],
+                                  "properties" : {
+                                    "imageUrl" : {
+                                      "maxLength" : 300,
+                                      "minLength" : 0
+                                    },
+                                    "name" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    },
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                }
+                              },
+                              "agents" : {
+                                "items" : {
+                                  "required" : [ "id", "imageUrl", "name" ],
+                                  "properties" : {
+                                    "imageUrl" : {
+                                      "maxLength" : 300,
+                                      "minLength" : 0
+                                    },
+                                    "name" : {
+                                      "maxLength" : 100,
+                                      "minLength" : 0
+                                    },
+                                    "id" : {
+                                      "pattern" : "([0-9]+)",
+                                      "format" : "int64"
+                                    }
+                                  },
+                                  "additionalProperties" : false
+                                }
+                              }
+                            },
+                            "additionalProperties" : false
+                          },
+                          "description" : {
+                            "maxLength" : 1500,
+                            "minLength" : 0
+                          },
+                          "createdTime" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          },
+                          "notificationTypes" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "enum" : [ "EMAIL", "IN_PRODUCT" ]
+                            }
+                          },
+                          "status" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "enum" : [ "ACTIVE", "INACTIVE" ],
+                            "x-custom-parameters-attributes" : {
+                              "removeExif" : false,
+                              "filterMatchedContent" : false,
+                              "antivirus" : false,
+                              "replacementString" : "",
+                              "allowInvalid" : false,
+                              "descrption" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+                              "secret" : false,
+                              "preserveCharsLimit" : 10,
+                              "trim" : false,
+                              "internalParam" : false,
+                              "preserveChars" : "0,5",
+                              "importUrl" : false,
+                              "decrypt" : false
+                            }
+                          }
+                        },
+                        "additionalProperties" : { }
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "modifiedTime" : 1713173586000,
+                        "creator" : {
+                          "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                          "name" : "Adam",
+                          "id" : "6000000000517"
+                        },
+                        "percentage" : "100",
+                        "modifier" : {
+                          "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                          "name" : "Adam",
+                          "id" : "6000000000517"
+                        },
+                        "name" : "Final alert notification",
+                        "recipient" : {
+                          "emailIds" : [ "adam@zylker.com" ],
+                          "primaryContact" : false,
+                          "profiles" : [ ],
+                          "agents" : [ {
+                            "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                            "name" : "Adam",
+                            "id" : "6000000000517"
+                          } ]
+                        },
+                        "description" : "Your api usage limit breached the threshold",
+                        "createdTime" : 1713173586000,
+                        "id" : "6000000076001",
+                        "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                        "status" : "ACTIVE"
+                      }, {
+                        "modifiedTime" : 1713173586000,
+                        "creator" : {
+                          "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000519/photo?orgId=20548283",
+                          "name" : "Philiph",
+                          "id" : "6000000000519"
+                        },
+                        "percentage" : "90",
+                        "modifier" : {
+                          "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                          "name" : "Adam",
+                          "id" : "6000000000517"
+                        },
+                        "name" : "Pre final alert notification",
+                        "recipient" : {
+                          "emailIds" : [ "adam@zylker.com" ],
+                          "primaryContact" : true,
+                          "profiles" : [ ],
+                          "agents" : [ {
+                            "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                            "name" : "Adam",
+                            "id" : "6000000000517"
+                          } ]
+                        },
+                        "description" : "Your api usage limit will breach the threshold soon.",
+                        "createdTime" : 1713173586000,
+                        "id" : "6000000076003",
+                        "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                        "status" : "ACTIVE"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "2429b949281df570974a3de807882318",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getNotificationRules"
+        }
+      },
+      "post" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Create an Api Credit Notification Rule",
+        "description" : "This api creates a new api-credit notification rule.",
+        "operationId" : "createApiCreditNotificationRule",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "name", "notificationTypes", "percentage", "recipient", "status" ],
+                "properties" : {
+                  "percentage" : {
+                    "maximum" : 100,
+                    "minimum" : 50,
+                    "pattern" : "([0-9]+)",
+                    "description" : "Criteria when the alert has to be sent",
+                    "format" : "int32"
+                  },
+                  "recipient" : {
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ],
+                    "properties" : {
+                      "emailIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "agentIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "primaryContact" : {
+                        "description" : "Is primaryContact needed to be added in recipient"
+                      },
+                      "profileIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "name of the alert"
+                  },
+                  "description" : {
+                    "maxLength" : 1500,
+                    "minLength" : 0,
+                    "description" : "description of the alert"
+                  },
+                  "notificationTypes" : {
+                    "uniqueItems" : true,
+                    "items" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                      "x-custom-parameters-attributes" : [ ]
+                    }
+                  },
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                    "enum" : [ "ACTIVE", "INACTIVE" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : null
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "ruleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+                  "properties" : {
+                    "modifiedTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "creator" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "percentage" : {
+                      "maximum" : 100,
+                      "minimum" : 50,
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32",
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Criteria when the alert has to be sent",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "modifier" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "name of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "recipient" : {
+                      "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                      "properties" : {
+                        "emailIds" : {
+                          "maxItems" : 50,
+                          "uniqueItems" : false,
+                          "items" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "primaryContact" : { },
+                        "profiles" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        },
+                        "agents" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "description" : {
+                      "maxLength" : 1500,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "description of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "createdTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "notificationTypes" : {
+                      "uniqueItems" : false,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "ACTIVE", "INACTIVE" ],
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "modifiedTime" : 1713173586000,
+                      "creator" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "percentage" : "100",
+                      "modifier" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "name" : "Final alert notification",
+                      "recipient" : {
+                        "emailIds" : [ "adam@zylker.com" ],
+                        "primaryContact" : false,
+                        "profiles" : [ ],
+                        "agents" : [ ]
+                      },
+                      "description" : "Your api usage limit breached the threshold",
+                      "createdTime" : 1713173586000,
+                      "id" : "6000000076001",
+                      "notificationTypes" : [ "EMAIL" ],
+                      "status" : "ACTIVE"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : { },
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.CREATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "c483dd52efebfeabdd28b081a59c1910",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.createNotificationRule"
+        }
+      }
+    },
+    "/api/v1/apiCredits/notificationPreference" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get feature preference of  Api Credit Notification",
+        "description" : "This api fetch the api-credit notification feature preference",
+        "operationId" : "getApiCreditNotificationConfiguration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "configurationResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "preferenceState" ],
+                  "properties" : {
+                    "preferenceState" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "enabled", "disabled" ]
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "status" : "disabled"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "2bd4884ac3ffca50ebba933785281037",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getCreditNotificationPreference"
+        }
+      },
+      "post" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Update feature preference of  Api Credit Notification",
+        "description" : "This api fetch the api-credit notification feature preference",
+        "operationId" : "updateApiCreditNotificationConfiguration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "preferenceState" ],
+                "properties" : {
+                  "preferenceState" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Feature preference status. Values allowed are: @enabled@ and @disabled@",
+                    "enum" : [ "enabled", "disabled" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : null
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "configurationResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "preferenceState" ],
+                  "properties" : {
+                    "preferenceState" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "enabled", "disabled" ]
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "status" : "disabled"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "ce52c6dfe385ea22e20106881c311f8f",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.updateCreditNotificationPreference"
+        }
+      }
+    },
+    "/api/v1/apiCredits/notificationRules/{ruleId}" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get an Api Credit Notification Rule",
+        "description" : "This api fetches an api-credit notification rule.",
+        "operationId" : "getApiCreditNotificationRule",
+        "parameters" : [ {
+          "name" : "ruleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "ruleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+                  "properties" : {
+                    "modifiedTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "creator" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "percentage" : {
+                      "maximum" : 100,
+                      "minimum" : 50,
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32",
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Criteria when the alert has to be sent",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "modifier" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "name of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "recipient" : {
+                      "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                      "properties" : {
+                        "emailIds" : {
+                          "maxItems" : 50,
+                          "uniqueItems" : false,
+                          "items" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "primaryContact" : { },
+                        "profiles" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        },
+                        "agents" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "description" : {
+                      "maxLength" : 1500,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "description of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "createdTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "notificationTypes" : {
+                      "uniqueItems" : false,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "ACTIVE", "INACTIVE" ],
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "modifiedTime" : 1713173586000,
+                      "creator" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "percentage" : "100",
+                      "modifier" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "name" : "Final alert notification",
+                      "recipient" : {
+                        "emailIds" : [ "adam@zylker.com" ],
+                        "primaryContact" : false,
+                        "profiles" : [ ],
+                        "agents" : [ ]
+                      },
+                      "description" : "Your api usage limit breached the threshold",
+                      "createdTime" : 1713173586000,
+                      "id" : "6000000076001",
+                      "notificationTypes" : [ "EMAIL" ],
+                      "status" : "ACTIVE"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Lenient_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "50c3f3c664a980c8b29e162892ad882d",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getNotificationRule"
+        }
+      },
+      "delete" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Delete an Api Credit Notification Rule",
+        "description" : "This api deletes an api-credit notification rule.",
+        "operationId" : "deleteApiCreditNotificationRule",
+        "parameters" : [ {
+          "name" : "ruleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content"
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.DELETE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "15d239a13fefbff43cd20c8b8bd9d0a2",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.deleteNotificationRule"
+        }
+      },
+      "patch" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Update an Api Credit Notification Rule",
+        "description" : "This api updates an api-credit notification rule.",
+        "operationId" : "updateApiCreditNotificationRule",
+        "parameters" : [ {
+          "name" : "ruleId",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "properties" : {
+                  "percentage" : {
+                    "maximum" : 100,
+                    "minimum" : 50,
+                    "pattern" : "([0-9]+)",
+                    "description" : "Criteria when the alert has to be sent",
+                    "format" : "int32"
+                  },
+                  "recipient" : {
+                    "maxProperties" : 3,
+                    "minProperties" : 3,
+                    "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ],
+                    "properties" : {
+                      "emailIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                        }
+                      },
+                      "agentIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "primaryContact" : {
+                        "description" : "Is primaryContact needed to be added in recipient"
+                      },
+                      "profileIds" : {
+                        "uniqueItems" : true,
+                        "items" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  },
+                  "name" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "name of the alert"
+                  },
+                  "description" : {
+                    "maxLength" : 1500,
+                    "minLength" : 0,
+                    "description" : "description of the alert"
+                  },
+                  "notificationTypes" : {
+                    "uniqueItems" : true,
+                    "items" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                      "x-custom-parameters-attributes" : [ ]
+                    }
+                  },
+                  "status" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                    "enum" : [ "ACTIVE", "INACTIVE" ]
+                  }
+                },
+                "additionalProperties" : { }
+              },
+              "examples" : {
+                "Valid requestBody Definitions" : {
+                  "value" : null
+                }
+              }
+            }
+          },
+          "x-custom-request-body-attributes" : {
+            "non-empty" : false,
+            "allow-invalid" : false
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "ruleResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+                  "properties" : {
+                    "modifiedTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "creator" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "percentage" : {
+                      "maximum" : 100,
+                      "minimum" : 50,
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32",
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Criteria when the alert has to be sent",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "modifier" : {
+                      "required" : [ "id", "imageUrl", "name" ],
+                      "properties" : {
+                        "imageUrl" : {
+                          "maxLength" : 300,
+                          "minLength" : 0
+                        },
+                        "name" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "id" : {
+                          "pattern" : "([0-9]+)",
+                          "format" : "int64"
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "name of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "recipient" : {
+                      "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                      "properties" : {
+                        "emailIds" : {
+                          "maxItems" : 50,
+                          "uniqueItems" : false,
+                          "items" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                          }
+                        },
+                        "primaryContact" : { },
+                        "profiles" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        },
+                        "agents" : {
+                          "items" : {
+                            "required" : [ "id", "imageUrl", "name" ],
+                            "properties" : {
+                              "imageUrl" : {
+                                "maxLength" : 300,
+                                "minLength" : 0
+                              },
+                              "name" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "id" : {
+                                "pattern" : "([0-9]+)",
+                                "format" : "int64"
+                              }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "description" : {
+                      "maxLength" : 1500,
+                      "minLength" : 0,
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "description of the alert",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "createdTime" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    },
+                    "notificationTypes" : {
+                      "uniqueItems" : false,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                        "x-custom-parameters-attributes" : [ ]
+                      }
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "enum" : [ "ACTIVE", "INACTIVE" ],
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "modifiedTime" : 1713173586000,
+                      "creator" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "percentage" : "100",
+                      "modifier" : {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      },
+                      "name" : "Final alert notification",
+                      "recipient" : {
+                        "emailIds" : [ "adam@zylker.com" ],
+                        "primaryContact" : false,
+                        "profiles" : [ ],
+                        "agents" : [ ]
+                      },
+                      "description" : "Your api usage limit breached the threshold",
+                      "createdTime" : 1713173586000,
+                      "id" : "6000000076001",
+                      "notificationTypes" : [ "EMAIL" ],
+                      "status" : "ACTIVE"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "additionalProperties" : false,
+                  "allOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "required" : [ "errors" ],
+                    "properties" : {
+                      "errors" : {
+                        "items" : {
+                          "required" : [ "errorMessage", "errorType", "fieldName" ],
+                          "properties" : {
+                            "fieldName" : { },
+                            "errorType" : {
+                              "enum" : [ "invalid", "duplicate", "missing" ]
+                            },
+                            "errorMessage" : { }
+                          }
+                        }
+                      }
+                    }
+                  } ]
+                },
+                "examples" : {
+                  "Invalid Data Error Response" : {
+                    "value" : {
+                      "errorCode" : "INVALID_DATA",
+                      "message" : "The data does not comply to the validation restrictions defined.",
+                      "errors" : [ {
+                        "fieldName" : "/contactId",
+                        "errorType" : "invalid"
+                      }, {
+                        "fieldName" : "/departmentId",
+                        "errorType" : "invalid"
+                      } ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.UPDATE" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "WriteAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "automation",
+          "apihash" : "d03b044449c11761427ad5b021567022",
+          "module-group" : "security",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.updateNotificationRule"
+        }
+      }
+    },
+    "/api/v1/apiCredits/emailTemplate" : {
+      "get" : {
+        "tags" : [ "ApiCreditNotificationRule" ],
+        "summary" : "Get email template of  Api Credit Notification",
+        "description" : "This api fetch email template for the api-credit notification rule",
+        "operationId" : "getApiCreditNotificationEmailTemplate",
+        "parameters" : [ {
+          "name" : "percentage",
+          "in" : "query",
+          "description" : "Percentage of the notification rule",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "Percentage of the notification rule",
+            "format" : "int32"
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "emailTemplateResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "body", "fromAddress", "percentage", "subject" ],
+                  "properties" : {
+                    "subject" : {
+                      "maxLength" : 200,
+                      "minLength" : 0
+                    },
+                    "percentage" : {
+                      "maximum" : 100,
+                      "minimum" : 50,
+                      "pattern" : "([0-9]+)",
+                      "format" : "int32",
+                      "x-custom-parameters-attributes" : {
+                        "removeExif" : false,
+                        "filterMatchedContent" : false,
+                        "antivirus" : false,
+                        "replacementString" : "",
+                        "allowInvalid" : false,
+                        "descrption" : "Percentage of the notification rule",
+                        "secret" : false,
+                        "preserveCharsLimit" : 10,
+                        "trim" : false,
+                        "internalParam" : false,
+                        "preserveChars" : "0,5",
+                        "importUrl" : false,
+                        "decrypt" : false
+                      }
+                    },
+                    "fromAddress" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                    },
+                    "body" : {
+                      "maxLength" : 500,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "subject" : "Daily API limit exhausted as of 09-Nov, 2023 at 00:27",
+                      "percentage" : "100",
+                      "fromAddress" : "zohodeskteam@zohodesk.com",
+                      "body" : "Hello zohodesk administrator, 100% of the daily API limit for your Zoho Desk portal: zohodesk, with portal ID 631525936, has been exhausted as of 09-Nov, 2023 at 00:27. Your subsequent API requests will be denied until the limit resets for the next 24-hour period."
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "apihash" : "0afefd09af6b387b36c12c4d588917ab",
+          "apimethod" : "com.zoho.support.restapi.ApiCreditNotificationService.getEmailTemplate"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "recipientIdentityObject" : {
+        "required" : [ "id", "imageUrl", "name" ],
+        "properties" : {
+          "imageUrl" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "name" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "recipientIdentityArray" : {
+        "items" : {
+          "required" : [ "id", "imageUrl", "name" ],
+          "properties" : {
+            "imageUrl" : {
+              "maxLength" : 300,
+              "minLength" : 0
+            },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "recipientObject" : {
+        "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+        "properties" : {
+          "emailIds" : {
+            "maxItems" : 50,
+            "uniqueItems" : false,
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+            }
+          },
+          "primaryContact" : { },
+          "profiles" : {
+            "items" : {
+              "required" : [ "id", "imageUrl", "name" ],
+              "properties" : {
+                "imageUrl" : {
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            }
+          },
+          "agents" : {
+            "items" : {
+              "required" : [ "id", "imageUrl", "name" ],
+              "properties" : {
+                "imageUrl" : {
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            }
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "ruleResponse" : {
+        "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+        "properties" : {
+          "modifiedTime" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "creator" : {
+            "required" : [ "id", "imageUrl", "name" ],
+            "properties" : {
+              "imageUrl" : {
+                "maxLength" : 300,
+                "minLength" : 0
+              },
+              "name" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            },
+            "additionalProperties" : false
+          },
+          "percentage" : {
+            "maximum" : 100,
+            "minimum" : 50,
+            "pattern" : "([0-9]+)",
+            "format" : "int32"
+          },
+          "modifier" : {
+            "required" : [ "id", "imageUrl", "name" ],
+            "properties" : {
+              "imageUrl" : {
+                "maxLength" : 300,
+                "minLength" : 0
+              },
+              "name" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              },
+              "id" : {
+                "pattern" : "([0-9]+)",
+                "format" : "int64"
+              }
+            },
+            "additionalProperties" : false
+          },
+          "name" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "recipient" : {
+            "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+            "properties" : {
+              "emailIds" : {
+                "maxItems" : 50,
+                "uniqueItems" : false,
+                "items" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                }
+              },
+              "primaryContact" : { },
+              "profiles" : {
+                "items" : {
+                  "required" : [ "id", "imageUrl", "name" ],
+                  "properties" : {
+                    "imageUrl" : {
+                      "maxLength" : 300,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : false
+                }
+              },
+              "agents" : {
+                "items" : {
+                  "required" : [ "id", "imageUrl", "name" ],
+                  "properties" : {
+                    "imageUrl" : {
+                      "maxLength" : 300,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : false
+                }
+              }
+            },
+            "additionalProperties" : false
+          },
+          "description" : {
+            "maxLength" : 1500,
+            "minLength" : 0
+          },
+          "createdTime" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "id" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int64"
+          },
+          "notificationTypes" : {
+            "uniqueItems" : false,
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "EMAIL", "IN_PRODUCT" ]
+            }
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "enum" : [ "ACTIVE", "INACTIVE" ],
+            "x-custom-parameters-attributes" : {
+              "removeExif" : false,
+              "filterMatchedContent" : false,
+              "antivirus" : false,
+              "replacementString" : "",
+              "allowInvalid" : false,
+              "descrption" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+              "secret" : false,
+              "preserveCharsLimit" : 10,
+              "trim" : false,
+              "internalParam" : false,
+              "preserveChars" : "0,5",
+              "importUrl" : false,
+              "decrypt" : false
+            }
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "rulesArray" : {
+        "items" : {
+          "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+          "properties" : {
+            "modifiedTime" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "creator" : {
+              "required" : [ "id", "imageUrl", "name" ],
+              "properties" : {
+                "imageUrl" : {
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "percentage" : {
+              "maximum" : 100,
+              "minimum" : 50,
+              "pattern" : "([0-9]+)",
+              "format" : "int32"
+            },
+            "modifier" : {
+              "required" : [ "id", "imageUrl", "name" ],
+              "properties" : {
+                "imageUrl" : {
+                  "maxLength" : 300,
+                  "minLength" : 0
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                }
+              },
+              "additionalProperties" : false
+            },
+            "name" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "recipient" : {
+              "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+              "properties" : {
+                "emailIds" : {
+                  "maxItems" : 50,
+                  "uniqueItems" : false,
+                  "items" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                  }
+                },
+                "primaryContact" : { },
+                "profiles" : {
+                  "items" : {
+                    "required" : [ "id", "imageUrl", "name" ],
+                    "properties" : {
+                      "imageUrl" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                },
+                "agents" : {
+                  "items" : {
+                    "required" : [ "id", "imageUrl", "name" ],
+                    "properties" : {
+                      "imageUrl" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : false
+            },
+            "description" : {
+              "maxLength" : 1500,
+              "minLength" : 0
+            },
+            "createdTime" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "id" : {
+              "pattern" : "([0-9]+)",
+              "format" : "int64"
+            },
+            "notificationTypes" : {
+              "uniqueItems" : false,
+              "items" : {
+                "maxLength" : 100,
+                "minLength" : 0,
+                "enum" : [ "EMAIL", "IN_PRODUCT" ]
+              }
+            },
+            "status" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "ACTIVE", "INACTIVE" ],
+              "x-custom-parameters-attributes" : {
+                "removeExif" : false,
+                "filterMatchedContent" : false,
+                "antivirus" : false,
+                "replacementString" : "",
+                "allowInvalid" : false,
+                "descrption" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+                "secret" : false,
+                "preserveCharsLimit" : 10,
+                "trim" : false,
+                "internalParam" : false,
+                "preserveChars" : "0,5",
+                "importUrl" : false,
+                "decrypt" : false
+              }
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "rulesResponse" : {
+        "description" : "rulesResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+                    "properties" : {
+                      "modifiedTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "creator" : {
+                        "required" : [ "id", "imageUrl", "name" ],
+                        "properties" : {
+                          "imageUrl" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "percentage" : {
+                        "maximum" : 100,
+                        "minimum" : 50,
+                        "pattern" : "([0-9]+)",
+                        "format" : "int32"
+                      },
+                      "modifier" : {
+                        "required" : [ "id", "imageUrl", "name" ],
+                        "properties" : {
+                          "imageUrl" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "name" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "recipient" : {
+                        "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                        "properties" : {
+                          "emailIds" : {
+                            "maxItems" : 50,
+                            "uniqueItems" : false,
+                            "items" : {
+                              "maxLength" : 100,
+                              "minLength" : 0,
+                              "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                            }
+                          },
+                          "primaryContact" : { },
+                          "profiles" : {
+                            "items" : {
+                              "required" : [ "id", "imageUrl", "name" ],
+                              "properties" : {
+                                "imageUrl" : {
+                                  "maxLength" : 300,
+                                  "minLength" : 0
+                                },
+                                "name" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                }
+                              },
+                              "additionalProperties" : false
+                            }
+                          },
+                          "agents" : {
+                            "items" : {
+                              "required" : [ "id", "imageUrl", "name" ],
+                              "properties" : {
+                                "imageUrl" : {
+                                  "maxLength" : 300,
+                                  "minLength" : 0
+                                },
+                                "name" : {
+                                  "maxLength" : 100,
+                                  "minLength" : 0
+                                },
+                                "id" : {
+                                  "pattern" : "([0-9]+)",
+                                  "format" : "int64"
+                                }
+                              },
+                              "additionalProperties" : false
+                            }
+                          }
+                        },
+                        "additionalProperties" : false
+                      },
+                      "description" : {
+                        "maxLength" : 1500,
+                        "minLength" : 0
+                      },
+                      "createdTime" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "id" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      },
+                      "notificationTypes" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "enum" : [ "EMAIL", "IN_PRODUCT" ]
+                        }
+                      },
+                      "status" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "enum" : [ "ACTIVE", "INACTIVE" ],
+                        "x-custom-parameters-attributes" : {
+                          "removeExif" : false,
+                          "filterMatchedContent" : false,
+                          "antivirus" : false,
+                          "replacementString" : "",
+                          "allowInvalid" : false,
+                          "descrption" : "Filter the rules based on the status. Values allowed are @ACTIVE@ and @INACTIVE@",
+                          "secret" : false,
+                          "preserveCharsLimit" : 10,
+                          "trim" : false,
+                          "internalParam" : false,
+                          "preserveChars" : "0,5",
+                          "importUrl" : false,
+                          "decrypt" : false
+                        }
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "modifiedTime" : 1713173586000,
+                    "creator" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "percentage" : "100",
+                    "modifier" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "name" : "Final alert notification",
+                    "recipient" : {
+                      "emailIds" : [ "adam@zylker.com" ],
+                      "primaryContact" : false,
+                      "profiles" : [ ],
+                      "agents" : [ {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      } ]
+                    },
+                    "description" : "Your api usage limit breached the threshold",
+                    "createdTime" : 1713173586000,
+                    "id" : "6000000076001",
+                    "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                    "status" : "ACTIVE"
+                  }, {
+                    "modifiedTime" : 1713173586000,
+                    "creator" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000519/photo?orgId=20548283",
+                      "name" : "Philiph",
+                      "id" : "6000000000519"
+                    },
+                    "percentage" : "90",
+                    "modifier" : {
+                      "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                      "name" : "Adam",
+                      "id" : "6000000000517"
+                    },
+                    "name" : "Pre final alert notification",
+                    "recipient" : {
+                      "emailIds" : [ "adam@zylker.com" ],
+                      "primaryContact" : true,
+                      "profiles" : [ ],
+                      "agents" : [ {
+                        "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                        "name" : "Adam",
+                        "id" : "6000000000517"
+                      } ]
+                    },
+                    "description" : "Your api usage limit will breach the threshold soon.",
+                    "createdTime" : 1713173586000,
+                    "id" : "6000000076003",
+                    "notificationTypes" : [ "EMAIL", "IN_PRODUCT" ],
+                    "status" : "ACTIVE"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "ruleResponse" : {
+        "description" : "ruleResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "createdTime", "creator", "description", "id", "modifiedTime", "modifier", "name", "notificationTypes", "percentage", "recipient", "status" ],
+              "properties" : {
+                "modifiedTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "creator" : {
+                  "required" : [ "id", "imageUrl", "name" ],
+                  "properties" : {
+                    "imageUrl" : {
+                      "maxLength" : 300,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "percentage" : {
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Criteria when the alert has to be sent",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "modifier" : {
+                  "required" : [ "id", "imageUrl", "name" ],
+                  "properties" : {
+                    "imageUrl" : {
+                      "maxLength" : 300,
+                      "minLength" : 0
+                    },
+                    "name" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "id" : {
+                      "pattern" : "([0-9]+)",
+                      "format" : "int64"
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "name of the alert",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "recipient" : {
+                  "required" : [ "agents", "emailIds", "primaryContact", "profiles" ],
+                  "properties" : {
+                    "emailIds" : {
+                      "maxItems" : 50,
+                      "uniqueItems" : false,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "primaryContact" : { },
+                    "profiles" : {
+                      "items" : {
+                        "required" : [ "id", "imageUrl", "name" ],
+                        "properties" : {
+                          "imageUrl" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    },
+                    "agents" : {
+                      "items" : {
+                        "required" : [ "id", "imageUrl", "name" ],
+                        "properties" : {
+                          "imageUrl" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "name" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "id" : {
+                            "pattern" : "([0-9]+)",
+                            "format" : "int64"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "description" : {
+                  "maxLength" : 1500,
+                  "minLength" : 0,
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "description of the alert",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "createdTime" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "id" : {
+                  "pattern" : "([0-9]+)",
+                  "format" : "int64"
+                },
+                "notificationTypes" : {
+                  "uniqueItems" : false,
+                  "items" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  }
+                },
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "ACTIVE", "INACTIVE" ],
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "modifiedTime" : 1713173586000,
+                  "creator" : {
+                    "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                    "name" : "Adam",
+                    "id" : "6000000000517"
+                  },
+                  "percentage" : "100",
+                  "modifier" : {
+                    "imageUrl" : "https://desk.zoho.com/api/v1/agents/6000000000517/photo?orgId=20548283",
+                    "name" : "Adam",
+                    "id" : "6000000000517"
+                  },
+                  "name" : "Final alert notification",
+                  "recipient" : {
+                    "emailIds" : [ "adam@zylker.com" ],
+                    "primaryContact" : false,
+                    "profiles" : [ ],
+                    "agents" : [ ]
+                  },
+                  "description" : "Your api usage limit breached the threshold",
+                  "createdTime" : 1713173586000,
+                  "id" : "6000000076001",
+                  "notificationTypes" : [ "EMAIL" ],
+                  "status" : "ACTIVE"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "configurationResponse" : {
+        "description" : "configurationResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "preferenceState" ],
+              "properties" : {
+                "preferenceState" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "enum" : [ "enabled", "disabled" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "status" : "disabled"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emailTemplateResponse" : {
+        "description" : "emailTemplateResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "body", "fromAddress", "percentage", "subject" ],
+              "properties" : {
+                "subject" : {
+                  "maxLength" : 200,
+                  "minLength" : 0
+                },
+                "percentage" : {
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "format" : "int32",
+                  "x-custom-parameters-attributes" : {
+                    "removeExif" : false,
+                    "filterMatchedContent" : false,
+                    "antivirus" : false,
+                    "replacementString" : "",
+                    "allowInvalid" : false,
+                    "descrption" : "Percentage of the notification rule",
+                    "secret" : false,
+                    "preserveCharsLimit" : 10,
+                    "trim" : false,
+                    "internalParam" : false,
+                    "preserveChars" : "0,5",
+                    "importUrl" : false,
+                    "decrypt" : false
+                  }
+                },
+                "fromAddress" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                },
+                "body" : {
+                  "maxLength" : 500,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "subject" : "Daily API limit exhausted as of 09-Nov, 2023 at 00:27",
+                  "percentage" : "100",
+                  "fromAddress" : "zohodeskteam@zohodesk.com",
+                  "body" : "Hello zohodesk administrator, 100% of the daily API limit for your Zoho Desk portal: zohodesk, with portal ID 631525936, has been exhausted as of 09-Nov, 2023 at 00:27. Your subsequent API requests will be denied until the limit resets for the next 24-hour period."
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "ruleId" : {
+        "name" : "ruleId",
+        "in" : "path",
+        "required" : true,
+        "style" : "simple",
+        "explode" : false,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int64"
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "apiCreditNotificationRulePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "name", "notificationTypes", "percentage", "recipient", "status" ],
+              "properties" : {
+                "percentage" : {
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "description" : "Criteria when the alert has to be sent",
+                  "format" : "int32"
+                },
+                "recipient" : {
+                  "maxProperties" : 3,
+                  "minProperties" : 3,
+                  "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ],
+                  "properties" : {
+                    "emailIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "agentIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "primaryContact" : {
+                      "description" : "Is primaryContact needed to be added in recipient"
+                    },
+                    "profileIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "name of the alert"
+                },
+                "description" : {
+                  "maxLength" : 1500,
+                  "minLength" : 0,
+                  "description" : "description of the alert"
+                },
+                "notificationTypes" : {
+                  "uniqueItems" : true,
+                  "items" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  }
+                },
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                  "enum" : [ "ACTIVE", "INACTIVE" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "configurationResponse" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "preferenceState" ],
+              "properties" : {
+                "preferenceState" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Feature preference status. Values allowed are: @enabled@ and @disabled@",
+                  "enum" : [ "enabled", "disabled" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      },
+      "updateApiCreditNotificationRule_apiCreditNotificationRulePayload" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "properties" : {
+                "percentage" : {
+                  "maximum" : 100,
+                  "minimum" : 50,
+                  "pattern" : "([0-9]+)",
+                  "description" : "Criteria when the alert has to be sent",
+                  "format" : "int32"
+                },
+                "recipient" : {
+                  "maxProperties" : 3,
+                  "minProperties" : 3,
+                  "required" : [ "agentIds", "emailIds", "primaryContact", "profileIds" ],
+                  "properties" : {
+                    "emailIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "^[a-zA-Z0-9\\_]([a-zA-Z0-9\\_\\+\\-\\.\\'&]*)@(?=.{4,256}$)(([a-zA-Z0-9]+)(([\\-\\_]*[a-zA-Z0-9])*)[\\.])+[a-zA-Z]{2,22}$"
+                      }
+                    },
+                    "agentIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    },
+                    "primaryContact" : {
+                      "description" : "Is primaryContact needed to be added in recipient"
+                    },
+                    "profileIds" : {
+                      "uniqueItems" : true,
+                      "items" : {
+                        "pattern" : "([0-9]+)",
+                        "format" : "int64"
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "name" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "name of the alert"
+                },
+                "description" : {
+                  "maxLength" : 1500,
+                  "minLength" : 0,
+                  "description" : "description of the alert"
+                },
+                "notificationTypes" : {
+                  "uniqueItems" : true,
+                  "items" : {
+                    "maxLength" : 100,
+                    "minLength" : 0,
+                    "enum" : [ "EMAIL", "IN_PRODUCT" ],
+                    "x-custom-parameters-attributes" : [ ]
+                  }
+                },
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0,
+                  "description" : "Status of the api-credit notification rule. Values allowed are @ACTIVE@ and @INACTIVE@",
+                  "enum" : [ "ACTIVE", "INACTIVE" ]
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid requestBody Definitions" : {
+                "value" : null
+              }
+            }
+          }
+        },
+        "x-custom-request-body-attributes" : {
+          "non-empty" : false,
+          "allow-invalid" : false
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "ApiCreditNotificationRule"
+}

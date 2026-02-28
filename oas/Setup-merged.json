@@ -1,0 +1,4173 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Setup",
+    "version" : "1.0.0",
+    "x-clan-group" : "common",
+    "x-module-group" : "setup"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/setup/searchKeyWords" : {
+      "get" : {
+        "tags" : [ "Setup" ],
+        "summary" : "Setup Search API",
+        "description" : "This API searches for a particular setting/functionality configured in your Zoho Desk portal.",
+        "operationId" : "getSetupSearchInfo",
+        "parameters" : [ {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department in which the search must be performed.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "ID of the department in which the search must be performed.",
+            "format" : "int64",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Departments"
+            }
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "setupSearchRes template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "displayLabel", "keyWords", "parentTabName" ],
+                        "properties" : {
+                          "displayLabel" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "keyWords" : {
+                            "uniqueItems" : false,
+                            "items" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            }
+                          },
+                          "parentTabName" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "displayLabel" : "Email",
+                        "keyWords" : [ "email" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Help Center",
+                        "keyWords" : [ "Help Center", "domain" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Chat",
+                        "keyWords" : [ "chat settings" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Community",
+                        "keyWords" : [ "community", "forums", "discussions" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Social",
+                        "keyWords" : [ "social" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Phone",
+                        "keyWords" : [ "telephony", "provider names", "phone bridge", "call", "ivr", "call centre" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Web Forms",
+                        "keyWords" : [ "web forms" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "ASAP",
+                        "keyWords" : [ "ASAP", "InApp", "WebApp" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "WhatsApp",
+                        "keyWords" : [ "whatsapp", "canned messages", "im channels" ],
+                        "parentTabName" : "CHANNEL"
+                      }, {
+                        "displayLabel" : "Company",
+                        "keyWords" : [ "company details" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Rebranding",
+                        "keyWords" : [ "rebranding" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Business Hours",
+                        "keyWords" : [ "business hours" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Customer Happiness",
+                        "keyWords" : [ "customer happiness", "rating", "feedback", "survey" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Products",
+                        "keyWords" : [ "products", "items" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Departments",
+                        "keyWords" : [ "departments" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Zia",
+                        "keyWords" : [ "zia", "predictions" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Zia powered by ChatGPT",
+                        "keyWords" : [ "support.setup.search.label.ziachatgpt" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Anomaly",
+                        "keyWords" : [ "zia", "anomaly" ],
+                        "parentTabName" : "ZIA"
+                      }, {
+                        "displayLabel" : "Custom Predictors",
+                        "keyWords" : [ "custom predictors" ],
+                        "parentTabName" : "ZIA"
+                      }, {
+                        "displayLabel" : "Guided Conversation",
+                        "keyWords" : [ "guided conversation" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Gamescope",
+                        "keyWords" : [ "game" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Trial Extension",
+                        "keyWords" : [ "trial", "extension", "free", "review", "capterra", "getapp", "g2crowd", "gartner" ],
+                        "parentTabName" : "GENERAL"
+                      }, {
+                        "displayLabel" : "Ticket Status",
+                        "keyWords" : [ "ticket status", "request status" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Layouts and Fields",
+                        "keyWords" : [ "fields", "layouts and fields" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Time Tracking",
+                        "keyWords" : [ "track", "time", "timetrack", "consecutive", "concurrent", "auto", "manual", "billing" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Modules",
+                        "keyWords" : [ "tabs", "tab customization", "modules", "module customization" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Templates",
+                        "keyWords" : [ "templates" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "General Settings",
+                        "keyWords" : [ "general settings" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Personal Settings",
+                        "keyWords" : [ "Configuration", "Default Configuration", "Personal Settings" ],
+                        "parentTabName" : "CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Assignment Rules",
+                        "keyWords" : [ "assignment rules", "assign/route" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Notify",
+                        "keyWords" : [ "notification rules", "notify" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Workflows",
+                        "keyWords" : [ "workflows", "scenarios" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Blueprint",
+                        "keyWords" : [ "blueprint" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Macros",
+                        "keyWords" : [ "macros" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Escalate (SLA)",
+                        "keyWords" : [ "escalate", "sla", "contract", "service level agreement", "business hours" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Supervise",
+                        "keyWords" : [ "supervise", "time based actions" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Support Contract",
+                        "keyWords" : [ "support contract" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Schedules",
+                        "keyWords" : [ "support.setup.search.label.schedules" ],
+                        "parentTabName" : "AUTOMATION"
+                      }, {
+                        "displayLabel" : "Agents",
+                        "keyWords" : [ "agents", "users", "representative", "support rep" ],
+                        "parentTabName" : "USER_CONTROL"
+                      }, {
+                        "displayLabel" : "Teams",
+                        "keyWords" : [ "teams" ],
+                        "parentTabName" : "USER_CONTROL"
+                      }, {
+                        "displayLabel" : "Permissions",
+                        "keyWords" : [ "permissions" ],
+                        "parentTabName" : "USER_CONTROL"
+                      }, {
+                        "displayLabel" : "Import / Export",
+                        "keyWords" : [ "import/export", "migration" ],
+                        "parentTabName" : "DATA_ADMINISTRATION"
+                      }, {
+                        "displayLabel" : "Recycle Bin",
+                        "keyWords" : [ "recycle bin", "delete", "restore", "trash", "records", "data" ],
+                        "parentTabName" : "DATA_ADMINISTRATION"
+                      }, {
+                        "displayLabel" : "Zwitch",
+                        "keyWords" : [ "zwitch", "migration", "zendesk", "import" ],
+                        "parentTabName" : "DATA_ADMINISTRATION"
+                      }, {
+                        "displayLabel" : "All",
+                        "keyWords" : [ "support.setup.search.sublabel.marketplace_all" ],
+                        "parentTabName" : "MARKETPLACE"
+                      }, {
+                        "displayLabel" : "Zoho",
+                        "keyWords" : [ "marketplace", "integrations", "zoho", "plugins", "import", "mobile apps" ],
+                        "parentTabName" : "MARKETPLACE"
+                      }, {
+                        "displayLabel" : "Microsoft",
+                        "keyWords" : [ "support.setup.search.label.microsoft" ],
+                        "parentTabName" : "MARKETPLACE"
+                      }, {
+                        "displayLabel" : "Google",
+                        "keyWords" : [ "google", "G Suite", "import" ],
+                        "parentTabName" : "MARKETPLACE"
+                      }, {
+                        "displayLabel" : "Others",
+                        "keyWords" : [ "marketplace", "integrations", "others" ],
+                        "parentTabName" : "MARKETPLACE"
+                      }, {
+                        "displayLabel" : "API",
+                        "keyWords" : [ "api", "auth token", "support auth key", "zsc key" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Connections",
+                        "keyWords" : [ "connections" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Functions",
+                        "keyWords" : [ "support.setup.search.label.functions" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Webhooks",
+                        "keyWords" : [ "webhooks" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Mobile SDK",
+                        "keyWords" : [ "mobile sdks" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Build Extensions",
+                        "keyWords" : [ "build extensions" ],
+                        "parentTabName" : "DEVELOPER_SPACE"
+                      }, {
+                        "displayLabel" : "Mail Server Settings",
+                        "keyWords" : [ "mail server settings" ],
+                        "parentTabName" : "EMAIL"
+                      }, {
+                        "displayLabel" : "Support Email Address",
+                        "keyWords" : [ "support email address" ],
+                        "parentTabName" : "EMAIL"
+                      }, {
+                        "displayLabel" : "From Address",
+                        "keyWords" : [ "from address" ],
+                        "parentTabName" : "EMAIL"
+                      }, {
+                        "displayLabel" : "Other Configuration",
+                        "keyWords" : [ "auto cc", "other configuration", "reply to" ],
+                        "parentTabName" : "EMAIL"
+                      }, {
+                        "displayLabel" : "Rebrand",
+                        "keyWords" : [ "rebrand" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Access Settings",
+                        "keyWords" : [ "access settings" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Languages",
+                        "keyWords" : [ "Languages" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Help Center Customization",
+                        "keyWords" : [ "Help Center customization" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Help Center SAML",
+                        "keyWords" : [ "saml" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Federated Login",
+                        "keyWords" : [ "support.setup.search.sublabel.federatedlogin" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "SEO",
+                        "keyWords" : [ "seo" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Email Templates",
+                        "keyWords" : [ "email templates" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Users",
+                        "keyWords" : [ "users", "Help Center users", "End Users" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "User Labels",
+                        "keyWords" : [ "User Labels" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "User Groups",
+                        "keyWords" : [ "User Groups" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Google Analytics",
+                        "keyWords" : [ "google analytics" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Sales IQ",
+                        "keyWords" : [ "sales iq" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "PageSense",
+                        "keyWords" : [ "support.setup.search.sublabel.pagesense-goals" ],
+                        "parentTabName" : "HELP_CENTER"
+                      }, {
+                        "displayLabel" : "Categories",
+                        "keyWords" : [ "categories" ],
+                        "parentTabName" : "COMMUNITY"
+                      }, {
+                        "displayLabel" : "Preference",
+                        "keyWords" : [ "preference" ],
+                        "parentTabName" : "COMMUNITY"
+                      }, {
+                        "displayLabel" : "Gamification",
+                        "keyWords" : [ "gamification", "game" ],
+                        "parentTabName" : "COMMUNITY"
+                      }, {
+                        "displayLabel" : "All Providers",
+                        "keyWords" : [ "support.setup.search.sublabel.telephonyall" ],
+                        "parentTabName" : "PHONE"
+                      }, {
+                        "displayLabel" : "Feedback Widget",
+                        "keyWords" : [ "feedback form", "feedback widget" ],
+                        "parentTabName" : "WEBSITE_INTEGRATION"
+                      }, {
+                        "displayLabel" : "Advanced Web Form",
+                        "keyWords" : [ "advanced web form" ],
+                        "parentTabName" : "WEBSITE_INTEGRATION"
+                      }, {
+                        "displayLabel" : "Web",
+                        "keyWords" : [ "asap web" ],
+                        "parentTabName" : "ASAP"
+                      }, {
+                        "displayLabel" : "Mobile",
+                        "keyWords" : [ "asap mobile" ],
+                        "parentTabName" : "ASAP"
+                      }, {
+                        "displayLabel" : "Chrome Extension",
+                        "keyWords" : [ "chrome extension" ],
+                        "parentTabName" : "ASAP"
+                      }, {
+                        "displayLabel" : "Logo",
+                        "keyWords" : [ "company logo" ],
+                        "parentTabName" : "REBRANDING"
+                      }, {
+                        "displayLabel" : "Domain Mapping",
+                        "keyWords" : [ "domain mapping" ],
+                        "parentTabName" : "REBRANDING"
+                      }, {
+                        "displayLabel" : "Portal Name",
+                        "keyWords" : [ "portal name" ],
+                        "parentTabName" : "REBRANDING"
+                      }, {
+                        "displayLabel" : "Multi-branding",
+                        "keyWords" : [ "multi-brand support", "multi branding" ],
+                        "parentTabName" : "REBRANDING"
+                      }, {
+                        "displayLabel" : "Business Hours",
+                        "keyWords" : [ "business hour" ],
+                        "parentTabName" : "BUSINESS_HOURS"
+                      }, {
+                        "displayLabel" : "Holiday Lists",
+                        "keyWords" : [ "holiday list" ],
+                        "parentTabName" : "BUSINESS_HOURS"
+                      }, {
+                        "displayLabel" : "Layouts",
+                        "keyWords" : [ "edit page layout" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Layout Rules",
+                        "keyWords" : [ "layout rules" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Validation Rules",
+                        "keyWords" : [ "validation rules" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Fields List",
+                        "keyWords" : [ "field list customization", "list of fields" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Field Dependencies",
+                        "keyWords" : [ "Field Dependencies" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Field Permissions",
+                        "keyWords" : [ "field permissions" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Search Fields",
+                        "keyWords" : [ "search fields" ],
+                        "parentTabName" : "LAYOUT_FIELDS"
+                      }, {
+                        "displayLabel" : "Organize Modules",
+                        "keyWords" : [ "organize modules" ],
+                        "parentTabName" : "TAB_CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Rename Modules",
+                        "keyWords" : [ "rename modules" ],
+                        "parentTabName" : "TAB_CUSTOMIZATION"
+                      }, {
+                        "displayLabel" : "Email Templates",
+                        "keyWords" : [ "email templates" ],
+                        "parentTabName" : "TEMPLATES"
+                      }, {
+                        "displayLabel" : "Ticket Templates",
+                        "keyWords" : [ "ticket templates", "request templates" ],
+                        "parentTabName" : "TEMPLATES"
+                      }, {
+                        "displayLabel" : "Tickets",
+                        "keyWords" : [ "ccs", "secondary contacts", "send as email" ],
+                        "parentTabName" : "GENERAL_SETTING"
+                      }, {
+                        "displayLabel" : "Contacts",
+                        "keyWords" : [ "auto spam", "contact account multimapping" ],
+                        "parentTabName" : "GENERAL_SETTING"
+                      }, {
+                        "displayLabel" : "My Information",
+                        "keyWords" : [ "Agent Information", "My Profile", "general", "Expert", "Bio", "Language", "Phone" ],
+                        "parentTabName" : "PERSONAL"
+                      }, {
+                        "displayLabel" : "Preferences",
+                        "keyWords" : [ "User Preferences", "My Preferences", "Behavior", "Default", "Keyboard Shortcuts", "Shortcut keys", "Auto Suggestions" ],
+                        "parentTabName" : "PERSONAL"
+                      }, {
+                        "displayLabel" : "Direct Assignment",
+                        "keyWords" : [ "direct assignment rules" ],
+                        "parentTabName" : "ASSIGN"
+                      }, {
+                        "displayLabel" : "Round Robin",
+                        "keyWords" : [ "round robin" ],
+                        "parentTabName" : "ASSIGN"
+                      }, {
+                        "displayLabel" : "Notification Rules",
+                        "keyWords" : [ "notification rules" ],
+                        "parentTabName" : "NOTIFY"
+                      }, {
+                        "displayLabel" : "Feeds Preference",
+                        "keyWords" : [ "feeds preference" ],
+                        "parentTabName" : "NOTIFY"
+                      }, {
+                        "displayLabel" : "Rules",
+                        "keyWords" : [ "workflow rules" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "keyWords" : [ "workflow alerts" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "keyWords" : [ "workflow tasks" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "keyWords" : [ "workflow field updates" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Custom Functions",
+                        "keyWords" : [ "workflow custom functions" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Rules",
+                        "keyWords" : [ "macro rules" ],
+                        "parentTabName" : "MANNUAL_WORKFLOW"
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "keyWords" : [ "macro alerts" ],
+                        "parentTabName" : "MANNUAL_WORKFLOW"
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "keyWords" : [ "macro tasks" ],
+                        "parentTabName" : "MANNUAL_WORKFLOW"
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "keyWords" : [ "macro field updates" ],
+                        "parentTabName" : "MANNUAL_WORKFLOW"
+                      }, {
+                        "displayLabel" : "Custom Functions",
+                        "keyWords" : [ "support.setup.search.sublabel.macros_customfunctions" ],
+                        "parentTabName" : "WORKFLOW_RULES"
+                      }, {
+                        "displayLabel" : "Rules",
+                        "keyWords" : [ "supervise rules" ],
+                        "parentTabName" : "SUPERVISE"
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "keyWords" : [ "supervise alerts" ],
+                        "parentTabName" : "SUPERVISE"
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "keyWords" : [ "supervise tasks" ],
+                        "parentTabName" : "SUPERVISE"
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "keyWords" : [ "supervise field updates" ],
+                        "parentTabName" : "SUPERVISE"
+                      }, {
+                        "displayLabel" : "Roles",
+                        "keyWords" : [ "roles" ],
+                        "parentTabName" : "PERMISSIONS"
+                      }, {
+                        "displayLabel" : "Profiles",
+                        "keyWords" : [ "profiles" ],
+                        "parentTabName" : "PERMISSIONS"
+                      }, {
+                        "displayLabel" : "Data Sharing",
+                        "keyWords" : [ "data sharing" ],
+                        "parentTabName" : "PERMISSIONS"
+                      }, {
+                        "displayLabel" : "Import",
+                        "keyWords" : [ "import" ],
+                        "parentTabName" : "IMPORT_EXPORT"
+                      }, {
+                        "displayLabel" : "Export",
+                        "keyWords" : [ "export" ],
+                        "parentTabName" : "IMPORT_EXPORT"
+                      }, {
+                        "displayLabel" : "New Agent",
+                        "keyWords" : [ "new form", "add form", "add agent", "new agent", "new user", "add user", "new support rep" ],
+                        "parentTabName" : "AGENTS"
+                      }, {
+                        "displayLabel" : "support.setup.label.departments_active",
+                        "keyWords" : [ "active departments" ],
+                        "parentTabName" : "DEPARTMENTS"
+                      }, {
+                        "displayLabel" : "support.setup.label.departments_inactive",
+                        "keyWords" : [ "inactive departments" ],
+                        "parentTabName" : "DEPARTMENTS"
+                      }, {
+                        "displayLabel" : "Sms",
+                        "keyWords" : [ "support.setup.search.sublabel.others_sms" ],
+                        "parentTabName" : "OTHERS"
+                      }, {
+                        "displayLabel" : "JIRA",
+                        "keyWords" : [ "support.setup.search.sublabel.others_jira" ],
+                        "parentTabName" : "OTHERS"
+                      }, {
+                        "displayLabel" : "Slack",
+                        "keyWords" : [ "support.setup.search.sublabel.others_slack" ],
+                        "parentTabName" : "OTHERS"
+                      }, {
+                        "displayLabel" : "Zapier",
+                        "keyWords" : [ "Zapier" ],
+                        "parentTabName" : "OTHERS"
+                      }, {
+                        "displayLabel" : "Salesforce",
+                        "keyWords" : [ "support.setup.search.sublabel.others_salesforce" ],
+                        "parentTabName" : "OTHERS"
+                      }, {
+                        "displayLabel" : "CRM",
+                        "keyWords" : [ "crm integration" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Bigin",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_bigin" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "BugTracker",
+                        "keyWords" : [ "bug tracker integration" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Zoho Flow",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_flow" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Reports",
+                        "keyWords" : [ "reports integration" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Cliq",
+                        "keyWords" : [ "cliq integration" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Assist",
+                        "keyWords" : [ "assist" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "Lens",
+                        "keyWords" : [ "lens" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "zoho books",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_books" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "zoho invoice",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_invoice" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "zoho inventory",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_inventory" ],
+                        "parentTabName" : "ZOHO"
+                      }, {
+                        "displayLabel" : "zoho subscriptions",
+                        "keyWords" : [ "support.setup.search.sublabel.zoho_subscriptions" ],
+                        "parentTabName" : "ZOHO"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "cc4aa86e7f6b9e55de7e813ad8eb1d6c",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.desk.core.setup.SetupService.getSetupSearchDetails"
+        }
+      }
+    },
+    "/api/v1/setup/home" : {
+      "get" : {
+        "tags" : [ "Setup" ],
+        "summary" : "Display setup home page",
+        "description" : "This API displays the main Setup page of your Zoho Desk portal.",
+        "operationId" : "getSetupHomePageDetails",
+        "parameters" : [ {
+          "name" : "include",
+          "in" : "query",
+          "description" : "Additional information related to the setting/functionality. Values allowed are: @subCategories@.",
+          "required" : false,
+          "style" : "simple",
+          "explode" : true,
+          "schema" : {
+            "uniqueItems" : true,
+            "description" : "Additional information related to the setting/functionality. Values allowed are: @subCategories@.",
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "enum" : [ "subCategories" ],
+              "x-custom-parameters-attributes" : [ ]
+            }
+          }
+        }, {
+          "name" : "departmentId",
+          "in" : "query",
+          "description" : "ID of the department in which the search must be performed.",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "description" : "ID of the department in which the search must be performed.",
+            "format" : "int64",
+            "x-custom-parameters-attributes" : {
+              "entity" : "Departments"
+            }
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : false,
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "setupHomePageDetailsRes template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "allOf" : [ {
+                    "properties" : {
+                      "subCategories" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "maxProperties" : 4,
+                          "minProperties" : 4,
+                          "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+                          "properties" : {
+                            "displayLabel" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "isDepartmentBased" : { },
+                            "tabName" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "isAddAllowed" : { }
+                          },
+                          "additionalProperties" : { }
+                        }
+                      }
+                    }
+                  }, {
+                    "required" : [ "data" ],
+                    "properties" : {
+                      "data" : {
+                        "items" : {
+                          "required" : [ "categories", "displayLabel", "tabName" ],
+                          "properties" : {
+                            "displayLabel" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "tabName" : {
+                              "maxLength" : 100,
+                              "minLength" : 0
+                            },
+                            "categories" : {
+                              "items" : {
+                                "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+                                "properties" : {
+                                  "displayLabel" : {
+                                    "maxLength" : 100,
+                                    "minLength" : 0
+                                  },
+                                  "isDepartmentBased" : { },
+                                  "tabName" : {
+                                    "maxLength" : 100,
+                                    "minLength" : 0
+                                  },
+                                  "isAddAllowed" : { }
+                                },
+                                "additionalProperties" : false
+                              }
+                            }
+                          },
+                          "additionalProperties" : false
+                        }
+                      }
+                    },
+                    "additionalProperties" : { }
+                  } ]
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "displayLabel" : "Channels",
+                        "tabName" : "CHANNEL",
+                        "categories" : [ {
+                          "displayLabel" : "Email",
+                          "isDepartmentBased" : false,
+                          "tabName" : "EMAIL",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Mail Server Settings",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MAIL_SETTING",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Support Email Address",
+                            "isDepartmentBased" : true,
+                            "tabName" : "EMAIL_ADDRESS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "From Address",
+                            "isDepartmentBased" : true,
+                            "tabName" : "FROM_ADDRESS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Other Configuration",
+                            "isDepartmentBased" : false,
+                            "tabName" : "EMAIL_CONFIG",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Help Center",
+                          "isDepartmentBased" : false,
+                          "tabName" : "HELP_CENTER",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Rebrand",
+                            "isDepartmentBased" : false,
+                            "tabName" : "REBRAND",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Access Settings",
+                            "isDepartmentBased" : false,
+                            "tabName" : "ACCESS_SETTINGS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Languages",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HELPCENTER_LANGUAGES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Help Center Customization",
+                            "isDepartmentBased" : false,
+                            "tabName" : "PORTAL_CUSTOMIZE",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Help Center SAML",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HELPCENTER_SAML",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Federated Login",
+                            "isDepartmentBased" : false,
+                            "tabName" : "FEDERATED_LOGIN",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "SEO",
+                            "isDepartmentBased" : false,
+                            "tabName" : "SEO",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Email Templates",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HELPCENTER_EMAIL_TEMPLATES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Users",
+                            "isDepartmentBased" : false,
+                            "tabName" : "USERS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "User Labels",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HELPCENTER_USERLABEL",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "User Groups",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HELPCENTER_USERGROUPS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Google Analytics",
+                            "isDepartmentBased" : false,
+                            "tabName" : "GOOGLE_ANALYTICS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Sales IQ",
+                            "isDepartmentBased" : false,
+                            "tabName" : "SALES_IQ",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "PageSense",
+                            "isDepartmentBased" : false,
+                            "tabName" : "PAGESENSE_GOALS",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Chat",
+                          "isDepartmentBased" : false,
+                          "tabName" : "CHAT",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Community",
+                          "isDepartmentBased" : false,
+                          "tabName" : "COMMUNITY",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Categories",
+                            "isDepartmentBased" : false,
+                            "tabName" : "COMMUNITY_CATEGORIES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Preference",
+                            "isDepartmentBased" : false,
+                            "tabName" : "COMMUNITY_PREFERENCE",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Gamification",
+                            "isDepartmentBased" : false,
+                            "tabName" : "COMMUNITY_GAME",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Social",
+                          "isDepartmentBased" : false,
+                          "tabName" : "SOCIAL",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Phone",
+                          "isDepartmentBased" : false,
+                          "tabName" : "PHONE",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "All Providers",
+                            "isDepartmentBased" : false,
+                            "tabName" : "TELEPHONY_ALL",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Web Forms",
+                          "isDepartmentBased" : false,
+                          "tabName" : "WEBSITE_INTEGRATION",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Feedback Widget",
+                            "isDepartmentBased" : false,
+                            "tabName" : "FEEDBACK_WIDGET",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Advanced Web Form",
+                            "isDepartmentBased" : false,
+                            "tabName" : "WEB_FORM",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "ASAP",
+                          "isDepartmentBased" : false,
+                          "tabName" : "ASAP",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Web",
+                            "isDepartmentBased" : false,
+                            "tabName" : "ASAP_WEB",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Mobile",
+                            "isDepartmentBased" : false,
+                            "tabName" : "ASAP_MOBILE",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Chrome Extension",
+                            "isDepartmentBased" : false,
+                            "tabName" : "ASAP_EXTENSION",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "WhatsApp",
+                          "isDepartmentBased" : false,
+                          "tabName" : "INSTANT_MESSAGE_SETUP",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        } ]
+                      }, {
+                        "displayLabel" : "General",
+                        "tabName" : "GENERAL",
+                        "categories" : [ {
+                          "displayLabel" : "Company",
+                          "isDepartmentBased" : false,
+                          "tabName" : "COMPANY",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Rebranding",
+                          "isDepartmentBased" : false,
+                          "tabName" : "REBRANDING",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Logo",
+                            "isDepartmentBased" : false,
+                            "tabName" : "LOGO",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Domain Mapping",
+                            "isDepartmentBased" : false,
+                            "tabName" : "DOMAIN_MAPPING",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Portal Name",
+                            "isDepartmentBased" : false,
+                            "tabName" : "PORTAL_NAME",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Multi-branding",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MULTIBRANDING",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Business Hours",
+                          "isDepartmentBased" : false,
+                          "tabName" : "BUSINESS_HOURS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Business Hours",
+                            "isDepartmentBased" : false,
+                            "tabName" : "BUSINESS_HOURS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Holiday Lists",
+                            "isDepartmentBased" : false,
+                            "tabName" : "HOLIDAY_LIST",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "Customer Happiness",
+                          "isDepartmentBased" : false,
+                          "tabName" : "CUSTOMER_HAPPINESS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Guided Conversation",
+                          "isDepartmentBased" : true,
+                          "tabName" : "GC",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Products",
+                          "isDepartmentBased" : true,
+                          "tabName" : "PRODUCTS",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Departments",
+                          "isDepartmentBased" : false,
+                          "tabName" : "DEPARTMENTS",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Zia",
+                          "isDepartmentBased" : true,
+                          "tabName" : "ZIA",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Zia powered by ChatGPT",
+                          "isDepartmentBased" : false,
+                          "tabName" : "ZIA_GPT",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Gamescope",
+                          "isDepartmentBased" : false,
+                          "tabName" : "GAME",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Trial Extension",
+                          "isDepartmentBased" : false,
+                          "tabName" : "TRAIL_EXTENSION",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Customization",
+                        "tabName" : "CUSTOMIZATION",
+                        "categories" : [ {
+                          "displayLabel" : "Ticket Status",
+                          "isDepartmentBased" : true,
+                          "tabName" : "REQUEST_STATUS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Layouts and Fields",
+                          "isDepartmentBased" : false,
+                          "tabName" : "LAYOUT_FIELDS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Layouts",
+                            "isDepartmentBased" : true,
+                            "tabName" : "PAGE_LAYOUT",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Layout Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "LAYOUT_RULES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Validation Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "VALIDATION_RULES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Fields List",
+                            "isDepartmentBased" : false,
+                            "tabName" : "FIELDS_LIST",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Field Dependencies",
+                            "isDepartmentBased" : true,
+                            "tabName" : "FIELDS_MAP",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Field Permissions",
+                            "isDepartmentBased" : false,
+                            "tabName" : "FIELD_PERMISSIONS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Search Fields",
+                            "isDepartmentBased" : false,
+                            "tabName" : "SEARCH_FIELDS",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Time Tracking",
+                          "isDepartmentBased" : true,
+                          "tabName" : "TIMETRACK",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Modules",
+                          "isDepartmentBased" : false,
+                          "tabName" : "TAB_CUSTOMIZATION",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Organize Modules",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MODULES_ORGANIZE",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Rename Modules",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MODULES_RENAME",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Templates",
+                          "isDepartmentBased" : false,
+                          "tabName" : "TEMPLATES",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Email Templates",
+                            "isDepartmentBased" : true,
+                            "tabName" : "EMAIL_TEMPLATES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Ticket Templates",
+                            "isDepartmentBased" : true,
+                            "tabName" : "TICKET_TEMPLATES",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "General Settings",
+                          "isDepartmentBased" : false,
+                          "tabName" : "GENERAL_SETTING",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Tickets",
+                            "isDepartmentBased" : true,
+                            "tabName" : "CASES_GENERAL_SETTINGS",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Contacts",
+                            "isDepartmentBased" : false,
+                            "tabName" : "CONTACTS_GENERAL_SETTINGS",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Personal Settings",
+                          "isDepartmentBased" : false,
+                          "tabName" : "PERSONAL",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "My Information",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MY_INFO",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Preferences",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MY_PREFERENCE",
+                            "isAddAllowed" : false
+                          } ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Automation",
+                        "tabName" : "AUTOMATION",
+                        "categories" : [ {
+                          "displayLabel" : "Assignment Rules",
+                          "isDepartmentBased" : false,
+                          "tabName" : "ASSIGN",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Direct Assignment",
+                            "isDepartmentBased" : false,
+                            "tabName" : "DIRECT_ASSIGNMENT",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Round Robin",
+                            "isDepartmentBased" : true,
+                            "tabName" : "AUTO_ASSIGNMENT",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "Notify",
+                          "isDepartmentBased" : false,
+                          "tabName" : "NOTIFY",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Notification Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "NOTIFY_RULES",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Feeds Preference",
+                            "isDepartmentBased" : true,
+                            "tabName" : "TEAM_FEEDS",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Workflows",
+                          "isDepartmentBased" : false,
+                          "tabName" : "WORKFLOW_RULES",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "WORKFLOWS_RULES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Alerts",
+                            "isDepartmentBased" : true,
+                            "tabName" : "WORKFLOWS_ALERTS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Tasks",
+                            "isDepartmentBased" : true,
+                            "tabName" : "WORKFLOWS_TASKS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Field Updates",
+                            "isDepartmentBased" : true,
+                            "tabName" : "WORKFLOWS_FIELDUPDATES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Custom Functions",
+                            "isDepartmentBased" : true,
+                            "tabName" : "WORKFLOWS_CUSTOMFUNCTIONS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Custom Functions",
+                            "isDepartmentBased" : false,
+                            "tabName" : "MACROS_CUSTOMFUNCTIONS",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Blueprint",
+                          "isDepartmentBased" : true,
+                          "tabName" : "BLUEPRINT",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Macros",
+                          "isDepartmentBased" : false,
+                          "tabName" : "MANNUAL_WORKFLOW",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "MACROS_RULES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Alerts",
+                            "isDepartmentBased" : true,
+                            "tabName" : "MACROS_ALERTS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Tasks",
+                            "isDepartmentBased" : true,
+                            "tabName" : "MACROS_TASKS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Field Updates",
+                            "isDepartmentBased" : true,
+                            "tabName" : "MACROS_FIELDUPDATES",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "Escalate (SLA)",
+                          "isDepartmentBased" : true,
+                          "tabName" : "ESCALATE",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Supervise",
+                          "isDepartmentBased" : false,
+                          "tabName" : "SUPERVISE",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Rules",
+                            "isDepartmentBased" : true,
+                            "tabName" : "SUPERVISE_RULES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Alerts",
+                            "isDepartmentBased" : true,
+                            "tabName" : "SUPERVISE_ALERTS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Tasks",
+                            "isDepartmentBased" : true,
+                            "tabName" : "SUPERVISE_TASKS",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Field Updates",
+                            "isDepartmentBased" : true,
+                            "tabName" : "SUPERVISE_FIELDUPDATES",
+                            "isAddAllowed" : true
+                          } ]
+                        }, {
+                          "displayLabel" : "Support Contract",
+                          "isDepartmentBased" : true,
+                          "tabName" : "SUPPORT_CONTRACT",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Schedules",
+                          "isDepartmentBased" : true,
+                          "tabName" : "SCHEDULES",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Users and Control",
+                        "tabName" : "USER_CONTROL",
+                        "categories" : [ {
+                          "displayLabel" : "Agents",
+                          "isDepartmentBased" : false,
+                          "tabName" : "AGENTS",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Teams",
+                          "isDepartmentBased" : true,
+                          "tabName" : "TEAMS",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Permissions",
+                          "isDepartmentBased" : false,
+                          "tabName" : "PERMISSIONS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Roles",
+                            "isDepartmentBased" : false,
+                            "tabName" : "ROLES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Profiles",
+                            "isDepartmentBased" : false,
+                            "tabName" : "PROFILES",
+                            "isAddAllowed" : true
+                          }, {
+                            "displayLabel" : "Data Sharing",
+                            "isDepartmentBased" : false,
+                            "tabName" : "DATA_SHARING",
+                            "isAddAllowed" : false
+                          } ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Data Administration",
+                        "tabName" : "DATA_ADMINISTRATION",
+                        "categories" : [ {
+                          "displayLabel" : "Import / Export",
+                          "isDepartmentBased" : false,
+                          "tabName" : "IMPORT_EXPORT",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ {
+                            "displayLabel" : "Import",
+                            "isDepartmentBased" : false,
+                            "tabName" : "IMPORT",
+                            "isAddAllowed" : false
+                          }, {
+                            "displayLabel" : "Export",
+                            "isDepartmentBased" : false,
+                            "tabName" : "EXPORT",
+                            "isAddAllowed" : false
+                          } ]
+                        }, {
+                          "displayLabel" : "Recycle Bin",
+                          "isDepartmentBased" : false,
+                          "tabName" : "RECYCLEBIN",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Zwitch",
+                          "isDepartmentBased" : false,
+                          "tabName" : "ZWITCH",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Marketplace",
+                        "tabName" : "MARKETPLACE",
+                        "categories" : [ {
+                          "displayLabel" : "All",
+                          "isDepartmentBased" : false,
+                          "tabName" : "MARKETPLACE_ALL",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Zoho",
+                          "isDepartmentBased" : false,
+                          "tabName" : "ZOHO",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Microsoft",
+                          "isDepartmentBased" : false,
+                          "tabName" : "MICROSOFT",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Google",
+                          "isDepartmentBased" : false,
+                          "tabName" : "GOOGLE",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Others",
+                          "isDepartmentBased" : false,
+                          "tabName" : "OTHERS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        } ]
+                      }, {
+                        "displayLabel" : "Developer Space",
+                        "tabName" : "DEVELOPER_SPACE",
+                        "categories" : [ {
+                          "displayLabel" : "API",
+                          "isDepartmentBased" : false,
+                          "tabName" : "API",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Connections",
+                          "isDepartmentBased" : false,
+                          "tabName" : "CONNECTIONS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Functions",
+                          "isDepartmentBased" : true,
+                          "tabName" : "FUNCTION",
+                          "isAddAllowed" : true,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Webhooks",
+                          "isDepartmentBased" : false,
+                          "tabName" : "WEBHOOKS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Mobile SDK",
+                          "isDepartmentBased" : false,
+                          "tabName" : "MOBILE_SDK",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        }, {
+                          "displayLabel" : "Build Extensions",
+                          "isDepartmentBased" : false,
+                          "tabName" : "BUILD_EXTENSIONS",
+                          "isAddAllowed" : false,
+                          "subCategories" : [ ]
+                        } ]
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 300000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "47d42d9a8bb017b0c64c206089dc1792",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.desk.core.setup.SetupService.getSetupHomePageDetails"
+        }
+      }
+    },
+    "/api/v1/settings" : {
+      "get" : {
+        "tags" : [ "Setup" ],
+        "summary" : "List Setting Modules",
+        "description" : "This API list the setting modules.",
+        "operationId" : "getSettingEntities",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "settingEntityResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "apiKey", "displayLabel" ],
+                        "properties" : {
+                          "displayLabel" : {
+                            "maxLength" : 100,
+                            "minLength" : 0
+                          },
+                          "apiKey" : {
+                            "maxLength" : 100,
+                            "minLength" : 0,
+                            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "data" : [ {
+                        "displayLabel" : "Assignment Rules",
+                        "apiKey" : "assignment_rules"
+                      }, {
+                        "displayLabel" : "Notify to",
+                        "apiKey" : "notify"
+                      }, {
+                        "displayLabel" : "Workflow",
+                        "apiKey" : "workflow"
+                      }, {
+                        "displayLabel" : "Skills",
+                        "apiKey" : "skills"
+                      }, {
+                        "displayLabel" : "Blueprint",
+                        "apiKey" : "blueprint"
+                      }, {
+                        "displayLabel" : "Macros",
+                        "apiKey" : "macros"
+                      }, {
+                        "displayLabel" : "Escalate (SLA)",
+                        "apiKey" : "escalate"
+                      }, {
+                        "displayLabel" : "Supervise",
+                        "apiKey" : "supervise"
+                      }, {
+                        "displayLabel" : "Schedules",
+                        "apiKey" : "schedules"
+                      }, {
+                        "displayLabel" : "Workflow Alerts",
+                        "apiKey" : "alerts"
+                      }, {
+                        "displayLabel" : "Workflow Tasks",
+                        "apiKey" : "tasks"
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "apiKey" : "field_updates"
+                      }, {
+                        "displayLabel" : "Custom Functions",
+                        "apiKey" : "custom_functions"
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "policy" : "ReadAPI_Standard_UserPolicy"
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "common",
+          "apihash" : "613cc27ac28a0fa2999f726d638f2dba",
+          "module-group" : "setup",
+          "apimethod" : "com.zoho.support.restapi.AuditLogService.getSettingEntities"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "setupSearchInfo" : {
+        "required" : [ "displayLabel", "keyWords", "parentTabName" ],
+        "properties" : {
+          "displayLabel" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "keyWords" : {
+            "uniqueItems" : false,
+            "items" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "parentTabName" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "setupSearchArr" : {
+        "items" : {
+          "required" : [ "displayLabel", "keyWords", "parentTabName" ],
+          "properties" : {
+            "displayLabel" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "keyWords" : {
+              "uniqueItems" : false,
+              "items" : {
+                "maxLength" : 100,
+                "minLength" : 0
+              }
+            },
+            "parentTabName" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "categories" : {
+        "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+        "properties" : {
+          "displayLabel" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isDepartmentBased" : { },
+          "tabName" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "isAddAllowed" : { }
+        },
+        "additionalProperties" : { }
+      },
+      "categoriesArr" : {
+        "items" : {
+          "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+          "properties" : {
+            "displayLabel" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "isDepartmentBased" : { },
+            "tabName" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "isAddAllowed" : { }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "getSetupHomePageDetails" : {
+        "required" : [ "categories", "displayLabel", "tabName" ],
+        "properties" : {
+          "displayLabel" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "tabName" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "categories" : {
+            "items" : {
+              "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+              "properties" : {
+                "displayLabel" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isDepartmentBased" : { },
+                "tabName" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "isAddAllowed" : { }
+              },
+              "additionalProperties" : false
+            }
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "setupHomePageDetailsArr" : {
+        "items" : {
+          "required" : [ "categories", "displayLabel", "tabName" ],
+          "properties" : {
+            "displayLabel" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "tabName" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "categories" : {
+              "items" : {
+                "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+                "properties" : {
+                  "displayLabel" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "isDepartmentBased" : { },
+                  "tabName" : {
+                    "maxLength" : 100,
+                    "minLength" : 0
+                  },
+                  "isAddAllowed" : { }
+                },
+                "additionalProperties" : false
+              }
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "settingEntityJson" : {
+        "required" : [ "apiKey", "displayLabel" ],
+        "properties" : {
+          "displayLabel" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "apiKey" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "listOfSettingEntities" : {
+        "items" : {
+          "required" : [ "apiKey", "displayLabel" ],
+          "properties" : {
+            "displayLabel" : {
+              "maxLength" : 100,
+              "minLength" : 0
+            },
+            "apiKey" : {
+              "maxLength" : 100,
+              "minLength" : 0,
+              "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "setupSearchRes" : {
+        "description" : "setupSearchRes template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "displayLabel", "keyWords", "parentTabName" ],
+                    "properties" : {
+                      "displayLabel" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "keyWords" : {
+                        "uniqueItems" : false,
+                        "items" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "parentTabName" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Email",
+                    "keyWords" : [ "email" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Help Center",
+                    "keyWords" : [ "Help Center", "domain" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Chat",
+                    "keyWords" : [ "chat settings" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Community",
+                    "keyWords" : [ "community", "forums", "discussions" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Social",
+                    "keyWords" : [ "social" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Phone",
+                    "keyWords" : [ "telephony", "provider names", "phone bridge", "call", "ivr", "call centre" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Web Forms",
+                    "keyWords" : [ "web forms" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "ASAP",
+                    "keyWords" : [ "ASAP", "InApp", "WebApp" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "WhatsApp",
+                    "keyWords" : [ "whatsapp", "canned messages", "im channels" ],
+                    "parentTabName" : "CHANNEL"
+                  }, {
+                    "displayLabel" : "Company",
+                    "keyWords" : [ "company details" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Rebranding",
+                    "keyWords" : [ "rebranding" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Business Hours",
+                    "keyWords" : [ "business hours" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Customer Happiness",
+                    "keyWords" : [ "customer happiness", "rating", "feedback", "survey" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Products",
+                    "keyWords" : [ "products", "items" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Departments",
+                    "keyWords" : [ "departments" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Zia",
+                    "keyWords" : [ "zia", "predictions" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Zia powered by ChatGPT",
+                    "keyWords" : [ "support.setup.search.label.ziachatgpt" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Anomaly",
+                    "keyWords" : [ "zia", "anomaly" ],
+                    "parentTabName" : "ZIA"
+                  }, {
+                    "displayLabel" : "Custom Predictors",
+                    "keyWords" : [ "custom predictors" ],
+                    "parentTabName" : "ZIA"
+                  }, {
+                    "displayLabel" : "Guided Conversation",
+                    "keyWords" : [ "guided conversation" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Gamescope",
+                    "keyWords" : [ "game" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Trial Extension",
+                    "keyWords" : [ "trial", "extension", "free", "review", "capterra", "getapp", "g2crowd", "gartner" ],
+                    "parentTabName" : "GENERAL"
+                  }, {
+                    "displayLabel" : "Ticket Status",
+                    "keyWords" : [ "ticket status", "request status" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Layouts and Fields",
+                    "keyWords" : [ "fields", "layouts and fields" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Time Tracking",
+                    "keyWords" : [ "track", "time", "timetrack", "consecutive", "concurrent", "auto", "manual", "billing" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Modules",
+                    "keyWords" : [ "tabs", "tab customization", "modules", "module customization" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Templates",
+                    "keyWords" : [ "templates" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "General Settings",
+                    "keyWords" : [ "general settings" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Personal Settings",
+                    "keyWords" : [ "Configuration", "Default Configuration", "Personal Settings" ],
+                    "parentTabName" : "CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Assignment Rules",
+                    "keyWords" : [ "assignment rules", "assign/route" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Notify",
+                    "keyWords" : [ "notification rules", "notify" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Workflows",
+                    "keyWords" : [ "workflows", "scenarios" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Blueprint",
+                    "keyWords" : [ "blueprint" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Macros",
+                    "keyWords" : [ "macros" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Escalate (SLA)",
+                    "keyWords" : [ "escalate", "sla", "contract", "service level agreement", "business hours" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Supervise",
+                    "keyWords" : [ "supervise", "time based actions" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Support Contract",
+                    "keyWords" : [ "support contract" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Schedules",
+                    "keyWords" : [ "support.setup.search.label.schedules" ],
+                    "parentTabName" : "AUTOMATION"
+                  }, {
+                    "displayLabel" : "Agents",
+                    "keyWords" : [ "agents", "users", "representative", "support rep" ],
+                    "parentTabName" : "USER_CONTROL"
+                  }, {
+                    "displayLabel" : "Teams",
+                    "keyWords" : [ "teams" ],
+                    "parentTabName" : "USER_CONTROL"
+                  }, {
+                    "displayLabel" : "Permissions",
+                    "keyWords" : [ "permissions" ],
+                    "parentTabName" : "USER_CONTROL"
+                  }, {
+                    "displayLabel" : "Import / Export",
+                    "keyWords" : [ "import/export", "migration" ],
+                    "parentTabName" : "DATA_ADMINISTRATION"
+                  }, {
+                    "displayLabel" : "Recycle Bin",
+                    "keyWords" : [ "recycle bin", "delete", "restore", "trash", "records", "data" ],
+                    "parentTabName" : "DATA_ADMINISTRATION"
+                  }, {
+                    "displayLabel" : "Zwitch",
+                    "keyWords" : [ "zwitch", "migration", "zendesk", "import" ],
+                    "parentTabName" : "DATA_ADMINISTRATION"
+                  }, {
+                    "displayLabel" : "All",
+                    "keyWords" : [ "support.setup.search.sublabel.marketplace_all" ],
+                    "parentTabName" : "MARKETPLACE"
+                  }, {
+                    "displayLabel" : "Zoho",
+                    "keyWords" : [ "marketplace", "integrations", "zoho", "plugins", "import", "mobile apps" ],
+                    "parentTabName" : "MARKETPLACE"
+                  }, {
+                    "displayLabel" : "Microsoft",
+                    "keyWords" : [ "support.setup.search.label.microsoft" ],
+                    "parentTabName" : "MARKETPLACE"
+                  }, {
+                    "displayLabel" : "Google",
+                    "keyWords" : [ "google", "G Suite", "import" ],
+                    "parentTabName" : "MARKETPLACE"
+                  }, {
+                    "displayLabel" : "Others",
+                    "keyWords" : [ "marketplace", "integrations", "others" ],
+                    "parentTabName" : "MARKETPLACE"
+                  }, {
+                    "displayLabel" : "API",
+                    "keyWords" : [ "api", "auth token", "support auth key", "zsc key" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Connections",
+                    "keyWords" : [ "connections" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Functions",
+                    "keyWords" : [ "support.setup.search.label.functions" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Webhooks",
+                    "keyWords" : [ "webhooks" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Mobile SDK",
+                    "keyWords" : [ "mobile sdks" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Build Extensions",
+                    "keyWords" : [ "build extensions" ],
+                    "parentTabName" : "DEVELOPER_SPACE"
+                  }, {
+                    "displayLabel" : "Mail Server Settings",
+                    "keyWords" : [ "mail server settings" ],
+                    "parentTabName" : "EMAIL"
+                  }, {
+                    "displayLabel" : "Support Email Address",
+                    "keyWords" : [ "support email address" ],
+                    "parentTabName" : "EMAIL"
+                  }, {
+                    "displayLabel" : "From Address",
+                    "keyWords" : [ "from address" ],
+                    "parentTabName" : "EMAIL"
+                  }, {
+                    "displayLabel" : "Other Configuration",
+                    "keyWords" : [ "auto cc", "other configuration", "reply to" ],
+                    "parentTabName" : "EMAIL"
+                  }, {
+                    "displayLabel" : "Rebrand",
+                    "keyWords" : [ "rebrand" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Access Settings",
+                    "keyWords" : [ "access settings" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Languages",
+                    "keyWords" : [ "Languages" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Help Center Customization",
+                    "keyWords" : [ "Help Center customization" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Help Center SAML",
+                    "keyWords" : [ "saml" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Federated Login",
+                    "keyWords" : [ "support.setup.search.sublabel.federatedlogin" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "SEO",
+                    "keyWords" : [ "seo" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Email Templates",
+                    "keyWords" : [ "email templates" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Users",
+                    "keyWords" : [ "users", "Help Center users", "End Users" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "User Labels",
+                    "keyWords" : [ "User Labels" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "User Groups",
+                    "keyWords" : [ "User Groups" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Google Analytics",
+                    "keyWords" : [ "google analytics" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Sales IQ",
+                    "keyWords" : [ "sales iq" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "PageSense",
+                    "keyWords" : [ "support.setup.search.sublabel.pagesense-goals" ],
+                    "parentTabName" : "HELP_CENTER"
+                  }, {
+                    "displayLabel" : "Categories",
+                    "keyWords" : [ "categories" ],
+                    "parentTabName" : "COMMUNITY"
+                  }, {
+                    "displayLabel" : "Preference",
+                    "keyWords" : [ "preference" ],
+                    "parentTabName" : "COMMUNITY"
+                  }, {
+                    "displayLabel" : "Gamification",
+                    "keyWords" : [ "gamification", "game" ],
+                    "parentTabName" : "COMMUNITY"
+                  }, {
+                    "displayLabel" : "All Providers",
+                    "keyWords" : [ "support.setup.search.sublabel.telephonyall" ],
+                    "parentTabName" : "PHONE"
+                  }, {
+                    "displayLabel" : "Feedback Widget",
+                    "keyWords" : [ "feedback form", "feedback widget" ],
+                    "parentTabName" : "WEBSITE_INTEGRATION"
+                  }, {
+                    "displayLabel" : "Advanced Web Form",
+                    "keyWords" : [ "advanced web form" ],
+                    "parentTabName" : "WEBSITE_INTEGRATION"
+                  }, {
+                    "displayLabel" : "Web",
+                    "keyWords" : [ "asap web" ],
+                    "parentTabName" : "ASAP"
+                  }, {
+                    "displayLabel" : "Mobile",
+                    "keyWords" : [ "asap mobile" ],
+                    "parentTabName" : "ASAP"
+                  }, {
+                    "displayLabel" : "Chrome Extension",
+                    "keyWords" : [ "chrome extension" ],
+                    "parentTabName" : "ASAP"
+                  }, {
+                    "displayLabel" : "Logo",
+                    "keyWords" : [ "company logo" ],
+                    "parentTabName" : "REBRANDING"
+                  }, {
+                    "displayLabel" : "Domain Mapping",
+                    "keyWords" : [ "domain mapping" ],
+                    "parentTabName" : "REBRANDING"
+                  }, {
+                    "displayLabel" : "Portal Name",
+                    "keyWords" : [ "portal name" ],
+                    "parentTabName" : "REBRANDING"
+                  }, {
+                    "displayLabel" : "Multi-branding",
+                    "keyWords" : [ "multi-brand support", "multi branding" ],
+                    "parentTabName" : "REBRANDING"
+                  }, {
+                    "displayLabel" : "Business Hours",
+                    "keyWords" : [ "business hour" ],
+                    "parentTabName" : "BUSINESS_HOURS"
+                  }, {
+                    "displayLabel" : "Holiday Lists",
+                    "keyWords" : [ "holiday list" ],
+                    "parentTabName" : "BUSINESS_HOURS"
+                  }, {
+                    "displayLabel" : "Layouts",
+                    "keyWords" : [ "edit page layout" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Layout Rules",
+                    "keyWords" : [ "layout rules" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Validation Rules",
+                    "keyWords" : [ "validation rules" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Fields List",
+                    "keyWords" : [ "field list customization", "list of fields" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Field Dependencies",
+                    "keyWords" : [ "Field Dependencies" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Field Permissions",
+                    "keyWords" : [ "field permissions" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Search Fields",
+                    "keyWords" : [ "search fields" ],
+                    "parentTabName" : "LAYOUT_FIELDS"
+                  }, {
+                    "displayLabel" : "Organize Modules",
+                    "keyWords" : [ "organize modules" ],
+                    "parentTabName" : "TAB_CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Rename Modules",
+                    "keyWords" : [ "rename modules" ],
+                    "parentTabName" : "TAB_CUSTOMIZATION"
+                  }, {
+                    "displayLabel" : "Email Templates",
+                    "keyWords" : [ "email templates" ],
+                    "parentTabName" : "TEMPLATES"
+                  }, {
+                    "displayLabel" : "Ticket Templates",
+                    "keyWords" : [ "ticket templates", "request templates" ],
+                    "parentTabName" : "TEMPLATES"
+                  }, {
+                    "displayLabel" : "Tickets",
+                    "keyWords" : [ "ccs", "secondary contacts", "send as email" ],
+                    "parentTabName" : "GENERAL_SETTING"
+                  }, {
+                    "displayLabel" : "Contacts",
+                    "keyWords" : [ "auto spam", "contact account multimapping" ],
+                    "parentTabName" : "GENERAL_SETTING"
+                  }, {
+                    "displayLabel" : "My Information",
+                    "keyWords" : [ "Agent Information", "My Profile", "general", "Expert", "Bio", "Language", "Phone" ],
+                    "parentTabName" : "PERSONAL"
+                  }, {
+                    "displayLabel" : "Preferences",
+                    "keyWords" : [ "User Preferences", "My Preferences", "Behavior", "Default", "Keyboard Shortcuts", "Shortcut keys", "Auto Suggestions" ],
+                    "parentTabName" : "PERSONAL"
+                  }, {
+                    "displayLabel" : "Direct Assignment",
+                    "keyWords" : [ "direct assignment rules" ],
+                    "parentTabName" : "ASSIGN"
+                  }, {
+                    "displayLabel" : "Round Robin",
+                    "keyWords" : [ "round robin" ],
+                    "parentTabName" : "ASSIGN"
+                  }, {
+                    "displayLabel" : "Notification Rules",
+                    "keyWords" : [ "notification rules" ],
+                    "parentTabName" : "NOTIFY"
+                  }, {
+                    "displayLabel" : "Feeds Preference",
+                    "keyWords" : [ "feeds preference" ],
+                    "parentTabName" : "NOTIFY"
+                  }, {
+                    "displayLabel" : "Rules",
+                    "keyWords" : [ "workflow rules" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Alerts",
+                    "keyWords" : [ "workflow alerts" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Tasks",
+                    "keyWords" : [ "workflow tasks" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Field Updates",
+                    "keyWords" : [ "workflow field updates" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Custom Functions",
+                    "keyWords" : [ "workflow custom functions" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Rules",
+                    "keyWords" : [ "macro rules" ],
+                    "parentTabName" : "MANNUAL_WORKFLOW"
+                  }, {
+                    "displayLabel" : "Alerts",
+                    "keyWords" : [ "macro alerts" ],
+                    "parentTabName" : "MANNUAL_WORKFLOW"
+                  }, {
+                    "displayLabel" : "Tasks",
+                    "keyWords" : [ "macro tasks" ],
+                    "parentTabName" : "MANNUAL_WORKFLOW"
+                  }, {
+                    "displayLabel" : "Field Updates",
+                    "keyWords" : [ "macro field updates" ],
+                    "parentTabName" : "MANNUAL_WORKFLOW"
+                  }, {
+                    "displayLabel" : "Custom Functions",
+                    "keyWords" : [ "support.setup.search.sublabel.macros_customfunctions" ],
+                    "parentTabName" : "WORKFLOW_RULES"
+                  }, {
+                    "displayLabel" : "Rules",
+                    "keyWords" : [ "supervise rules" ],
+                    "parentTabName" : "SUPERVISE"
+                  }, {
+                    "displayLabel" : "Alerts",
+                    "keyWords" : [ "supervise alerts" ],
+                    "parentTabName" : "SUPERVISE"
+                  }, {
+                    "displayLabel" : "Tasks",
+                    "keyWords" : [ "supervise tasks" ],
+                    "parentTabName" : "SUPERVISE"
+                  }, {
+                    "displayLabel" : "Field Updates",
+                    "keyWords" : [ "supervise field updates" ],
+                    "parentTabName" : "SUPERVISE"
+                  }, {
+                    "displayLabel" : "Roles",
+                    "keyWords" : [ "roles" ],
+                    "parentTabName" : "PERMISSIONS"
+                  }, {
+                    "displayLabel" : "Profiles",
+                    "keyWords" : [ "profiles" ],
+                    "parentTabName" : "PERMISSIONS"
+                  }, {
+                    "displayLabel" : "Data Sharing",
+                    "keyWords" : [ "data sharing" ],
+                    "parentTabName" : "PERMISSIONS"
+                  }, {
+                    "displayLabel" : "Import",
+                    "keyWords" : [ "import" ],
+                    "parentTabName" : "IMPORT_EXPORT"
+                  }, {
+                    "displayLabel" : "Export",
+                    "keyWords" : [ "export" ],
+                    "parentTabName" : "IMPORT_EXPORT"
+                  }, {
+                    "displayLabel" : "New Agent",
+                    "keyWords" : [ "new form", "add form", "add agent", "new agent", "new user", "add user", "new support rep" ],
+                    "parentTabName" : "AGENTS"
+                  }, {
+                    "displayLabel" : "support.setup.label.departments_active",
+                    "keyWords" : [ "active departments" ],
+                    "parentTabName" : "DEPARTMENTS"
+                  }, {
+                    "displayLabel" : "support.setup.label.departments_inactive",
+                    "keyWords" : [ "inactive departments" ],
+                    "parentTabName" : "DEPARTMENTS"
+                  }, {
+                    "displayLabel" : "Sms",
+                    "keyWords" : [ "support.setup.search.sublabel.others_sms" ],
+                    "parentTabName" : "OTHERS"
+                  }, {
+                    "displayLabel" : "JIRA",
+                    "keyWords" : [ "support.setup.search.sublabel.others_jira" ],
+                    "parentTabName" : "OTHERS"
+                  }, {
+                    "displayLabel" : "Slack",
+                    "keyWords" : [ "support.setup.search.sublabel.others_slack" ],
+                    "parentTabName" : "OTHERS"
+                  }, {
+                    "displayLabel" : "Zapier",
+                    "keyWords" : [ "Zapier" ],
+                    "parentTabName" : "OTHERS"
+                  }, {
+                    "displayLabel" : "Salesforce",
+                    "keyWords" : [ "support.setup.search.sublabel.others_salesforce" ],
+                    "parentTabName" : "OTHERS"
+                  }, {
+                    "displayLabel" : "CRM",
+                    "keyWords" : [ "crm integration" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Bigin",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_bigin" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "BugTracker",
+                    "keyWords" : [ "bug tracker integration" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Zoho Flow",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_flow" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Reports",
+                    "keyWords" : [ "reports integration" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Cliq",
+                    "keyWords" : [ "cliq integration" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Assist",
+                    "keyWords" : [ "assist" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "Lens",
+                    "keyWords" : [ "lens" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "zoho books",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_books" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "zoho invoice",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_invoice" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "zoho inventory",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_inventory" ],
+                    "parentTabName" : "ZOHO"
+                  }, {
+                    "displayLabel" : "zoho subscriptions",
+                    "keyWords" : [ "support.setup.search.sublabel.zoho_subscriptions" ],
+                    "parentTabName" : "ZOHO"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "setupHomePageDetailsRes" : {
+        "description" : "setupHomePageDetailsRes template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "allOf" : [ {
+                "properties" : {
+                  "subCategories" : {
+                    "uniqueItems" : false,
+                    "items" : {
+                      "maxProperties" : 4,
+                      "minProperties" : 4,
+                      "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+                      "properties" : {
+                        "displayLabel" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "isDepartmentBased" : { },
+                        "tabName" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "isAddAllowed" : { }
+                      },
+                      "additionalProperties" : { }
+                    }
+                  }
+                }
+              }, {
+                "required" : [ "data" ],
+                "properties" : {
+                  "data" : {
+                    "items" : {
+                      "required" : [ "categories", "displayLabel", "tabName" ],
+                      "properties" : {
+                        "displayLabel" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "tabName" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        },
+                        "categories" : {
+                          "items" : {
+                            "required" : [ "displayLabel", "isAddAllowed", "isDepartmentBased", "tabName" ],
+                            "properties" : {
+                              "displayLabel" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "isDepartmentBased" : { },
+                              "tabName" : {
+                                "maxLength" : 100,
+                                "minLength" : 0
+                              },
+                              "isAddAllowed" : { }
+                            },
+                            "additionalProperties" : false
+                          }
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  }
+                },
+                "additionalProperties" : { }
+              } ]
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Channels",
+                    "tabName" : "CHANNEL",
+                    "categories" : [ {
+                      "displayLabel" : "Email",
+                      "isDepartmentBased" : false,
+                      "tabName" : "EMAIL",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Mail Server Settings",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MAIL_SETTING",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Support Email Address",
+                        "isDepartmentBased" : true,
+                        "tabName" : "EMAIL_ADDRESS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "From Address",
+                        "isDepartmentBased" : true,
+                        "tabName" : "FROM_ADDRESS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Other Configuration",
+                        "isDepartmentBased" : false,
+                        "tabName" : "EMAIL_CONFIG",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Help Center",
+                      "isDepartmentBased" : false,
+                      "tabName" : "HELP_CENTER",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Rebrand",
+                        "isDepartmentBased" : false,
+                        "tabName" : "REBRAND",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Access Settings",
+                        "isDepartmentBased" : false,
+                        "tabName" : "ACCESS_SETTINGS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Languages",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HELPCENTER_LANGUAGES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Help Center Customization",
+                        "isDepartmentBased" : false,
+                        "tabName" : "PORTAL_CUSTOMIZE",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Help Center SAML",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HELPCENTER_SAML",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Federated Login",
+                        "isDepartmentBased" : false,
+                        "tabName" : "FEDERATED_LOGIN",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "SEO",
+                        "isDepartmentBased" : false,
+                        "tabName" : "SEO",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Email Templates",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HELPCENTER_EMAIL_TEMPLATES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Users",
+                        "isDepartmentBased" : false,
+                        "tabName" : "USERS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "User Labels",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HELPCENTER_USERLABEL",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "User Groups",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HELPCENTER_USERGROUPS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Google Analytics",
+                        "isDepartmentBased" : false,
+                        "tabName" : "GOOGLE_ANALYTICS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Sales IQ",
+                        "isDepartmentBased" : false,
+                        "tabName" : "SALES_IQ",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "PageSense",
+                        "isDepartmentBased" : false,
+                        "tabName" : "PAGESENSE_GOALS",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Chat",
+                      "isDepartmentBased" : false,
+                      "tabName" : "CHAT",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Community",
+                      "isDepartmentBased" : false,
+                      "tabName" : "COMMUNITY",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Categories",
+                        "isDepartmentBased" : false,
+                        "tabName" : "COMMUNITY_CATEGORIES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Preference",
+                        "isDepartmentBased" : false,
+                        "tabName" : "COMMUNITY_PREFERENCE",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Gamification",
+                        "isDepartmentBased" : false,
+                        "tabName" : "COMMUNITY_GAME",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Social",
+                      "isDepartmentBased" : false,
+                      "tabName" : "SOCIAL",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Phone",
+                      "isDepartmentBased" : false,
+                      "tabName" : "PHONE",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "All Providers",
+                        "isDepartmentBased" : false,
+                        "tabName" : "TELEPHONY_ALL",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Web Forms",
+                      "isDepartmentBased" : false,
+                      "tabName" : "WEBSITE_INTEGRATION",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Feedback Widget",
+                        "isDepartmentBased" : false,
+                        "tabName" : "FEEDBACK_WIDGET",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Advanced Web Form",
+                        "isDepartmentBased" : false,
+                        "tabName" : "WEB_FORM",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "ASAP",
+                      "isDepartmentBased" : false,
+                      "tabName" : "ASAP",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Web",
+                        "isDepartmentBased" : false,
+                        "tabName" : "ASAP_WEB",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Mobile",
+                        "isDepartmentBased" : false,
+                        "tabName" : "ASAP_MOBILE",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Chrome Extension",
+                        "isDepartmentBased" : false,
+                        "tabName" : "ASAP_EXTENSION",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "WhatsApp",
+                      "isDepartmentBased" : false,
+                      "tabName" : "INSTANT_MESSAGE_SETUP",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    } ]
+                  }, {
+                    "displayLabel" : "General",
+                    "tabName" : "GENERAL",
+                    "categories" : [ {
+                      "displayLabel" : "Company",
+                      "isDepartmentBased" : false,
+                      "tabName" : "COMPANY",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Rebranding",
+                      "isDepartmentBased" : false,
+                      "tabName" : "REBRANDING",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Logo",
+                        "isDepartmentBased" : false,
+                        "tabName" : "LOGO",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Domain Mapping",
+                        "isDepartmentBased" : false,
+                        "tabName" : "DOMAIN_MAPPING",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Portal Name",
+                        "isDepartmentBased" : false,
+                        "tabName" : "PORTAL_NAME",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Multi-branding",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MULTIBRANDING",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Business Hours",
+                      "isDepartmentBased" : false,
+                      "tabName" : "BUSINESS_HOURS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Business Hours",
+                        "isDepartmentBased" : false,
+                        "tabName" : "BUSINESS_HOURS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Holiday Lists",
+                        "isDepartmentBased" : false,
+                        "tabName" : "HOLIDAY_LIST",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "Customer Happiness",
+                      "isDepartmentBased" : false,
+                      "tabName" : "CUSTOMER_HAPPINESS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Guided Conversation",
+                      "isDepartmentBased" : true,
+                      "tabName" : "GC",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Products",
+                      "isDepartmentBased" : true,
+                      "tabName" : "PRODUCTS",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Departments",
+                      "isDepartmentBased" : false,
+                      "tabName" : "DEPARTMENTS",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Zia",
+                      "isDepartmentBased" : true,
+                      "tabName" : "ZIA",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Zia powered by ChatGPT",
+                      "isDepartmentBased" : false,
+                      "tabName" : "ZIA_GPT",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Gamescope",
+                      "isDepartmentBased" : false,
+                      "tabName" : "GAME",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Trial Extension",
+                      "isDepartmentBased" : false,
+                      "tabName" : "TRAIL_EXTENSION",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Customization",
+                    "tabName" : "CUSTOMIZATION",
+                    "categories" : [ {
+                      "displayLabel" : "Ticket Status",
+                      "isDepartmentBased" : true,
+                      "tabName" : "REQUEST_STATUS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Layouts and Fields",
+                      "isDepartmentBased" : false,
+                      "tabName" : "LAYOUT_FIELDS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Layouts",
+                        "isDepartmentBased" : true,
+                        "tabName" : "PAGE_LAYOUT",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Layout Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "LAYOUT_RULES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Validation Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "VALIDATION_RULES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Fields List",
+                        "isDepartmentBased" : false,
+                        "tabName" : "FIELDS_LIST",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Field Dependencies",
+                        "isDepartmentBased" : true,
+                        "tabName" : "FIELDS_MAP",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Field Permissions",
+                        "isDepartmentBased" : false,
+                        "tabName" : "FIELD_PERMISSIONS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Search Fields",
+                        "isDepartmentBased" : false,
+                        "tabName" : "SEARCH_FIELDS",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Time Tracking",
+                      "isDepartmentBased" : true,
+                      "tabName" : "TIMETRACK",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Modules",
+                      "isDepartmentBased" : false,
+                      "tabName" : "TAB_CUSTOMIZATION",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Organize Modules",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MODULES_ORGANIZE",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Rename Modules",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MODULES_RENAME",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Templates",
+                      "isDepartmentBased" : false,
+                      "tabName" : "TEMPLATES",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Email Templates",
+                        "isDepartmentBased" : true,
+                        "tabName" : "EMAIL_TEMPLATES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Ticket Templates",
+                        "isDepartmentBased" : true,
+                        "tabName" : "TICKET_TEMPLATES",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "General Settings",
+                      "isDepartmentBased" : false,
+                      "tabName" : "GENERAL_SETTING",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Tickets",
+                        "isDepartmentBased" : true,
+                        "tabName" : "CASES_GENERAL_SETTINGS",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Contacts",
+                        "isDepartmentBased" : false,
+                        "tabName" : "CONTACTS_GENERAL_SETTINGS",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Personal Settings",
+                      "isDepartmentBased" : false,
+                      "tabName" : "PERSONAL",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "My Information",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MY_INFO",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Preferences",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MY_PREFERENCE",
+                        "isAddAllowed" : false
+                      } ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Automation",
+                    "tabName" : "AUTOMATION",
+                    "categories" : [ {
+                      "displayLabel" : "Assignment Rules",
+                      "isDepartmentBased" : false,
+                      "tabName" : "ASSIGN",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Direct Assignment",
+                        "isDepartmentBased" : false,
+                        "tabName" : "DIRECT_ASSIGNMENT",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Round Robin",
+                        "isDepartmentBased" : true,
+                        "tabName" : "AUTO_ASSIGNMENT",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "Notify",
+                      "isDepartmentBased" : false,
+                      "tabName" : "NOTIFY",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Notification Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "NOTIFY_RULES",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Feeds Preference",
+                        "isDepartmentBased" : true,
+                        "tabName" : "TEAM_FEEDS",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Workflows",
+                      "isDepartmentBased" : false,
+                      "tabName" : "WORKFLOW_RULES",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "WORKFLOWS_RULES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "isDepartmentBased" : true,
+                        "tabName" : "WORKFLOWS_ALERTS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "isDepartmentBased" : true,
+                        "tabName" : "WORKFLOWS_TASKS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "isDepartmentBased" : true,
+                        "tabName" : "WORKFLOWS_FIELDUPDATES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Custom Functions",
+                        "isDepartmentBased" : true,
+                        "tabName" : "WORKFLOWS_CUSTOMFUNCTIONS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Custom Functions",
+                        "isDepartmentBased" : false,
+                        "tabName" : "MACROS_CUSTOMFUNCTIONS",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Blueprint",
+                      "isDepartmentBased" : true,
+                      "tabName" : "BLUEPRINT",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Macros",
+                      "isDepartmentBased" : false,
+                      "tabName" : "MANNUAL_WORKFLOW",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "MACROS_RULES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "isDepartmentBased" : true,
+                        "tabName" : "MACROS_ALERTS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "isDepartmentBased" : true,
+                        "tabName" : "MACROS_TASKS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "isDepartmentBased" : true,
+                        "tabName" : "MACROS_FIELDUPDATES",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "Escalate (SLA)",
+                      "isDepartmentBased" : true,
+                      "tabName" : "ESCALATE",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Supervise",
+                      "isDepartmentBased" : false,
+                      "tabName" : "SUPERVISE",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Rules",
+                        "isDepartmentBased" : true,
+                        "tabName" : "SUPERVISE_RULES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Alerts",
+                        "isDepartmentBased" : true,
+                        "tabName" : "SUPERVISE_ALERTS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Tasks",
+                        "isDepartmentBased" : true,
+                        "tabName" : "SUPERVISE_TASKS",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Field Updates",
+                        "isDepartmentBased" : true,
+                        "tabName" : "SUPERVISE_FIELDUPDATES",
+                        "isAddAllowed" : true
+                      } ]
+                    }, {
+                      "displayLabel" : "Support Contract",
+                      "isDepartmentBased" : true,
+                      "tabName" : "SUPPORT_CONTRACT",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Schedules",
+                      "isDepartmentBased" : true,
+                      "tabName" : "SCHEDULES",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Users and Control",
+                    "tabName" : "USER_CONTROL",
+                    "categories" : [ {
+                      "displayLabel" : "Agents",
+                      "isDepartmentBased" : false,
+                      "tabName" : "AGENTS",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Teams",
+                      "isDepartmentBased" : true,
+                      "tabName" : "TEAMS",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Permissions",
+                      "isDepartmentBased" : false,
+                      "tabName" : "PERMISSIONS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Roles",
+                        "isDepartmentBased" : false,
+                        "tabName" : "ROLES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Profiles",
+                        "isDepartmentBased" : false,
+                        "tabName" : "PROFILES",
+                        "isAddAllowed" : true
+                      }, {
+                        "displayLabel" : "Data Sharing",
+                        "isDepartmentBased" : false,
+                        "tabName" : "DATA_SHARING",
+                        "isAddAllowed" : false
+                      } ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Data Administration",
+                    "tabName" : "DATA_ADMINISTRATION",
+                    "categories" : [ {
+                      "displayLabel" : "Import / Export",
+                      "isDepartmentBased" : false,
+                      "tabName" : "IMPORT_EXPORT",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ {
+                        "displayLabel" : "Import",
+                        "isDepartmentBased" : false,
+                        "tabName" : "IMPORT",
+                        "isAddAllowed" : false
+                      }, {
+                        "displayLabel" : "Export",
+                        "isDepartmentBased" : false,
+                        "tabName" : "EXPORT",
+                        "isAddAllowed" : false
+                      } ]
+                    }, {
+                      "displayLabel" : "Recycle Bin",
+                      "isDepartmentBased" : false,
+                      "tabName" : "RECYCLEBIN",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Zwitch",
+                      "isDepartmentBased" : false,
+                      "tabName" : "ZWITCH",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Marketplace",
+                    "tabName" : "MARKETPLACE",
+                    "categories" : [ {
+                      "displayLabel" : "All",
+                      "isDepartmentBased" : false,
+                      "tabName" : "MARKETPLACE_ALL",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Zoho",
+                      "isDepartmentBased" : false,
+                      "tabName" : "ZOHO",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Microsoft",
+                      "isDepartmentBased" : false,
+                      "tabName" : "MICROSOFT",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Google",
+                      "isDepartmentBased" : false,
+                      "tabName" : "GOOGLE",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Others",
+                      "isDepartmentBased" : false,
+                      "tabName" : "OTHERS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    } ]
+                  }, {
+                    "displayLabel" : "Developer Space",
+                    "tabName" : "DEVELOPER_SPACE",
+                    "categories" : [ {
+                      "displayLabel" : "API",
+                      "isDepartmentBased" : false,
+                      "tabName" : "API",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Connections",
+                      "isDepartmentBased" : false,
+                      "tabName" : "CONNECTIONS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Functions",
+                      "isDepartmentBased" : true,
+                      "tabName" : "FUNCTION",
+                      "isAddAllowed" : true,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Webhooks",
+                      "isDepartmentBased" : false,
+                      "tabName" : "WEBHOOKS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Mobile SDK",
+                      "isDepartmentBased" : false,
+                      "tabName" : "MOBILE_SDK",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    }, {
+                      "displayLabel" : "Build Extensions",
+                      "isDepartmentBased" : false,
+                      "tabName" : "BUILD_EXTENSIONS",
+                      "isAddAllowed" : false,
+                      "subCategories" : [ ]
+                    } ]
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "settingEntityResponse" : {
+        "description" : "settingEntityResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "data" ],
+              "properties" : {
+                "data" : {
+                  "items" : {
+                    "required" : [ "apiKey", "displayLabel" ],
+                    "properties" : {
+                      "displayLabel" : {
+                        "maxLength" : 100,
+                        "minLength" : 0
+                      },
+                      "apiKey" : {
+                        "maxLength" : 100,
+                        "minLength" : 0,
+                        "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "data" : [ {
+                    "displayLabel" : "Assignment Rules",
+                    "apiKey" : "assignment_rules"
+                  }, {
+                    "displayLabel" : "Notify to",
+                    "apiKey" : "notify"
+                  }, {
+                    "displayLabel" : "Workflow",
+                    "apiKey" : "workflow"
+                  }, {
+                    "displayLabel" : "Skills",
+                    "apiKey" : "skills"
+                  }, {
+                    "displayLabel" : "Blueprint",
+                    "apiKey" : "blueprint"
+                  }, {
+                    "displayLabel" : "Macros",
+                    "apiKey" : "macros"
+                  }, {
+                    "displayLabel" : "Escalate (SLA)",
+                    "apiKey" : "escalate"
+                  }, {
+                    "displayLabel" : "Supervise",
+                    "apiKey" : "supervise"
+                  }, {
+                    "displayLabel" : "Schedules",
+                    "apiKey" : "schedules"
+                  }, {
+                    "displayLabel" : "Workflow Alerts",
+                    "apiKey" : "alerts"
+                  }, {
+                    "displayLabel" : "Workflow Tasks",
+                    "apiKey" : "tasks"
+                  }, {
+                    "displayLabel" : "Field Updates",
+                    "apiKey" : "field_updates"
+                  }, {
+                    "displayLabel" : "Custom Functions",
+                    "apiKey" : "custom_functions"
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "departmentId" : {
+        "name" : "departmentId",
+        "in" : "query",
+        "description" : "ID of the department in which the search must be performed.",
+        "required" : false,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "description" : "ID of the department in which the search must be performed.",
+          "format" : "int64",
+          "x-custom-parameters-attributes" : {
+            "entity" : "Departments"
+          }
+        }
+      },
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "Setup"
+}

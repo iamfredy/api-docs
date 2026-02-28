@@ -1,0 +1,3030 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Integrations",
+    "version" : "1.0.0",
+    "x-clan-group" : "reports",
+    "x-module-group" : "reports"
+  },
+  "servers" : [ {
+    "url" : "https://desk.zoho.com"
+  } ],
+  "paths" : {
+    "/api/v1/integrations/info" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get integrations basic info",
+        "description" : "Get integrations basic info by type",
+        "operationId" : "getAvailableIntegrationsInfo",
+        "parameters" : [ {
+          "name" : "type",
+          "in" : "query",
+          "description" : "To filter the integrations by their type",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "description" : "To filter the integrations by their type",
+            "enum" : [ "zoho", "microsoft", "others" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "integrationsInfoResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "integrations" ],
+                  "properties" : {
+                    "integrations" : {
+                      "items" : {
+                        "required" : [ "apiName", "displayName", "label", "visibility" ],
+                        "properties" : {
+                          "apiName" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "visibility" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "displayName" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          },
+                          "label" : {
+                            "maxLength" : 300,
+                            "minLength" : 0
+                          }
+                        },
+                        "additionalProperties" : false
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "integrations" : [ {
+                        "apiName" : "Zohocrm",
+                        "visibility" : true,
+                        "displayName" : "Zoho CRM",
+                        "label" : "Enabled",
+                        "status" : "enabled"
+                      }, {
+                        "apiName" : "Zohobugtracker",
+                        "visibility" : true,
+                        "displayName" : "Zoho BugTracker",
+                        "label" : "Enabled",
+                        "status" : "enabled"
+                      }, {
+                        "apiName" : "Zohoprojects",
+                        "visibility" : true,
+                        "displayName" : "Zoho Projects",
+                        "label" : "",
+                        "status" : ""
+                      } ]
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "anyOf" : [ {
+                    "required" : [ "errorCode", "message" ],
+                    "properties" : {
+                      "message" : { },
+                      "errorCode" : {
+                        "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                      }
+                    }
+                  }, {
+                    "additionalProperties" : { },
+                    "allOf" : [ {
+                      "required" : [ "errorCode", "message" ],
+                      "properties" : {
+                        "message" : { },
+                        "errorCode" : {
+                          "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                        }
+                      }
+                    }, {
+                      "required" : [ "errors" ],
+                      "properties" : {
+                        "errors" : {
+                          "items" : {
+                            "required" : [ "errorMessage", "errorType", "fieldName" ],
+                            "properties" : {
+                              "fieldName" : { },
+                              "errorType" : {
+                                "enum" : [ "invalid", "duplicate", "missing" ]
+                              },
+                              "errorMessage" : { }
+                            }
+                          }
+                        }
+                      }
+                    } ]
+                  } ]
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "a23571e5ec075efd8433307beea08e1c",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegrationsService.getAvailableIntegrationsInfo"
+        }
+      }
+    },
+    "/api/v1/integrations/agentstudio" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Agent Studio Integration Status",
+        "description" : "Checks whether Agent Studio integration is currently enabled.",
+        "operationId" : "getAgentStudioIntegrationStatus",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns the Agent Studio integration status.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "isIntegrationEnabled" ],
+                  "properties" : {
+                    "isIntegrationEnabled" : {
+                      "description" : "Indicates whether Agent Studio integration is enabled.",
+                      "example" : true
+                    },
+                    "createdBy" : {
+                      "description" : "The Agent ID of the user who created the integration.",
+                      "example" : "9222000000002097"
+                    }
+                  },
+                  "additionalProperties" : { }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "18b6fdd045be72bab0285fc09cc3bd74",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.getIntegration"
+        }
+      },
+      "post" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Create Agent Studio Integration",
+        "description" : "Creates an integration for Agent Studio. Admin privileges are required.",
+        "operationId" : "createAgentStudioIntegration",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Integration created successfully",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "status" ],
+                  "properties" : {
+                    "status" : {
+                      "maxLength" : 20,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Success response" : {
+                    "value" : {
+                      "status" : "success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Integration failed response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "message", "status" ],
+                  "properties" : {
+                    "status" : {
+                      "maxLength" : 20,
+                      "minLength" : 0
+                    },
+                    "message" : {
+                      "maxLength" : 200,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Error response" : {
+                    "value" : {
+                      "status" : "error",
+                      "message" : "Some error message here."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "424" : {
+            "description" : "Integration failed response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "message", "status" ],
+                  "properties" : {
+                    "status" : {
+                      "maxLength" : 20,
+                      "minLength" : 0
+                    },
+                    "message" : {
+                      "maxLength" : 200,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "examples" : {
+                  "Error response" : {
+                    "value" : {
+                      "status" : "error",
+                      "message" : "Some error message here."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.CREATE" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 20,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "9cff29de69376603ba3c3e3db586c4d2",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.createIntegration"
+        }
+      }
+    },
+    "/api/v1/integrations/agentstudio/agents" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Predefined Agents",
+        "description" : "Retrieves a list of predefined agents available for Agent Studio integration.",
+        "operationId" : "getPredefinedAgentStudioAgents",
+        "parameters" : [ {
+          "name" : "view",
+          "in" : "query",
+          "description" : "Specifies the response format for agent details. Use 'detailed' to get complete agent configurations and metadata, or 'summary' for a concise overview.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "Specifies the response format for agent details. Use 'detailed' to get complete agent configurations and metadata, or 'summary' for a concise overview.",
+            "enum" : [ "detailed" ]
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "To Paginate agents",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "To Paginate agents"
+          }
+        }, {
+          "name" : "agentState",
+          "in" : "query",
+          "description" : "To fetch agents by its state",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : "To fetch agents by its state",
+            "enum" : [ "deployed", "not-deployed" ]
+          }
+        }, {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "List of predefined agents available for Agent Studio integration.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "properties" : {
+                    "status" : {
+                      "example" : "success"
+                    },
+                    "agents" : {
+                      "items" : {
+                        "required" : [ "agentName", "description", "isUpcoming", "tags" ],
+                        "properties" : {
+                          "templateName" : {
+                            "example" : "zoho_desk_resolution_expert_agent"
+                          },
+                          "agentName" : {
+                            "example" : "Resolution Expert"
+                          },
+                          "description" : {
+                            "example" : "Documents ticket resolutions..."
+                          },
+                          "agentMode" : {
+                            "example" : "async"
+                          },
+                          "roleName" : {
+                            "example" : "A virtual support agent specialized in..."
+                          },
+                          "guidelines" : {
+                            "example" : "You are “Resolution Expert,” an AI Agent that..."
+                          },
+                          "actions" : {
+                            "items" : {
+                              "required" : [ "description", "displayName" ],
+                              "properties" : {
+                                "displayName" : {
+                                  "example" : "Ticket View"
+                                },
+                                "description" : {
+                                  "example" : "Access all tickets in the help desk"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "additionalProperties" : { }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "fac1802891876b57340236124470403a",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.getAgents"
+        }
+      },
+      "post" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Predefined Agent Deploy Url",
+        "description" : "Retrieves deployUrl of a predefined agent from a given template in Agent Studio.",
+        "operationId" : "getPredefinedAgentStudioAgentsDeployUrl",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "required" : [ "agentTemplateName" ],
+                "properties" : {
+                  "agentTemplateName" : {
+                    "description" : "Unique name of the agent template to instantiate.",
+                    "example" : "zoho_desk_resolution_expert_agent"
+                  }
+                },
+                "additionalProperties" : { }
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Returns details of the predefined agent to be hired.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "agent", "status" ],
+                  "properties" : {
+                    "agent" : {
+                      "required" : [ "agentId", "agentName", "deployUrl", "deploymentState", "zuid" ],
+                      "properties" : {
+                        "deploymentState" : {
+                          "example" : "active"
+                        },
+                        "agentId" : {
+                          "example" : "9222000000002097"
+                        },
+                        "deployUrl" : {
+                          "format" : "uri",
+                          "example" : "https://ziaagents.zoho.com/108223615/agents/details/9222000000002097?signature=..."
+                        },
+                        "agentName" : {
+                          "example" : "Resolution Expert"
+                        },
+                        "zuid" : {
+                          "example" : 108224011
+                        }
+                      }
+                    },
+                    "status" : {
+                      "example" : "success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "BAD_REQUEST",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "integrations.CREATE" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "business-unit-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "707d5c4d50cb340d052553755dc75ac8",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.desk.integ.agentstudio.restapi.AgentStudioService.hireAgent"
+        }
+      }
+    },
+    "/api/v1/integrations" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get  Integrarion Status Details",
+        "description" : "This API returns available Integrations for a particular Portal",
+        "operationId" : "getAvailableIntegrations",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "getAvailableIntegrationsResponse template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "ASSIST", "BIGIN", "BOOKS", "BUG", "CHAT", "CLIQ", "CLOUD_ATTACHMENTS", "CRM", "INVENTORY", "INVOICE", "JIRA", "LENS", "MAIL", "MICROSOFT_SSO", "REPORTS", "SALESFORCE", "SLACK", "SUBSCRIPTIONS", "isCrmIntegrated" ],
+                  "properties" : {
+                    "BIGIN" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : { }
+                    },
+                    "MICROSOFT_SSO" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "isSSOUser", "status" ],
+                      "properties" : {
+                        "isSSOUser" : { },
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : { }
+                    },
+                    "SUBSCRIPTIONS" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "SLACK" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "CHAT" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "SALESFORCE" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "ASSIST" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "JIRA" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "INVOICE" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "BOOKS" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "CLIQ" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "isCrmIntegrated" : { },
+                    "INVENTORY" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "MAIL" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "BUG" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "REPORTS" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "CLOUD_ATTACHMENTS" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "LENS" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    },
+                    "CRM" : {
+                      "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                      "properties" : {
+                        "IS_SUPPORTED" : { },
+                        "installedOn" : {
+                          "maxLength" : 100,
+                          "minLength" : 0,
+                          "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                        },
+                        "status" : {
+                          "maxLength" : 100,
+                          "minLength" : 0
+                        }
+                      },
+                      "additionalProperties" : false
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "BIGIN" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : 1569941199000,
+                        "status" : "enabled"
+                      },
+                      "MICROSOFT_SSO" : {
+                        "isSSOUser" : false,
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : 1569941199000,
+                        "status" : "not Configured"
+                      },
+                      "SUBSCRIPTIONS" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "SLACK" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : ""
+                      },
+                      "CHAT" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "ASSIST" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : 1569941199000,
+                        "status" : "enabled"
+                      },
+                      "JIRA" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "INVOICE" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "BOOKS" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "CLIQ" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "isCrmIntegrated" : true,
+                      "MAIL" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : 1569941199000,
+                        "status" : "enabled"
+                      },
+                      "INVENTORY" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "BUG" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "REPORTS" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "not Configured"
+                      },
+                      "CLOUD_ATTACHMENTS" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : "",
+                        "status" : "enabled"
+                      },
+                      "CRM" : {
+                        "IS_SUPPORTED" : true,
+                        "installedOn" : 1569941199000,
+                        "status" : "enabled"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          },
+          "500" : {
+            "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Internal Server Error Response" : {
+                    "value" : {
+                      "errorCode" : "INTERNAL_SERVER_ERROR",
+                      "message" : "An internal server error occurred while performing this operation."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : {
+              "iscscope" : [ "SupCrmAPI" ]
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "b47c56dca5d37169f37d5d930ab41be9",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegrationService.getAvailableIntegrations"
+        }
+      }
+    },
+    "/api/v1/integrations/reports" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Get Report Integrarion Details",
+        "description" : "This API returns report integration details for setup.",
+        "operationId" : "getReportIntegrationsDetails",
+        "parameters" : [ {
+          "name" : "orgId",
+          "in" : "query",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "pattern" : "([0-9]+)",
+            "format" : "int32",
+            "x-custom-parameters-attributes" : { }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "getReportIntegrationsDetails template definitions",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "status", "url" ],
+                  "properties" : {
+                    "url" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : { }
+                },
+                "examples" : {
+                  "Valid responses Definitions" : {
+                    "value" : {
+                      "url" : "https://analytics.zoho.com/workspace/15694000000921001",
+                      "status" : "ENABLED"
+                    }
+                  }
+                }
+              }
+            },
+            "x-custom-response-attributes" : {
+              "disable-safe-headers" : "[]"
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 600000,
+                  "threshold" : 30,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            },
+            "authentication" : { }
+          },
+          "clan-group" : "reports",
+          "apihash" : "14cc71ec62c8403293f59e44dc352ed4",
+          "module-group" : "reports",
+          "apimethod" : "com.zoho.support.restapi.IntegrationService.getReportIntegrationsDetails"
+        }
+      }
+    },
+    "/api/v1/integrations/{service}/channels" : {
+      "get" : {
+        "tags" : [ "Integrations" ],
+        "summary" : "Fetch channel information for Cliq or Slack",
+        "description" : "Fetches information about channels for the specified service (Cliq or Slack).",
+        "operationId" : "getChannelsInfo",
+        "parameters" : [ {
+          "name" : "service",
+          "in" : "path",
+          "description" : "The service name, either 'cliq' or 'slack'.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "description" : "",
+            "enum" : [ "slack" ]
+          }
+        }, {
+          "name" : "channelIds",
+          "in" : "query",
+          "description" : "Comma-separated channel IDs.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "description" : "",
+            "items" : {
+              "description" : ""
+            }
+          }
+        }, {
+          "name" : "workspaceId",
+          "in" : "query",
+          "description" : "The workspace ID for the service.",
+          "required" : true,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "description" : ""
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successful response with channel information.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "data" ],
+                  "properties" : {
+                    "data" : {
+                      "items" : {
+                        "required" : [ "id", "name" ],
+                        "properties" : {
+                          "id" : {
+                            "description" : "Channel ID."
+                          },
+                          "name" : {
+                            "description" : "Channel name."
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No content available."
+          },
+          "401" : {
+            "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "UnAuthenticatedErrorResponse" : {
+                    "value" : {
+                      "errorCode" : "UNAUTHORIZED",
+                      "message" : "You are not authorized to perform this operation."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403" : {
+            "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Forbidden Error Response" : {
+                    "value" : {
+                      "errorCode" : "FORBIDDEN",
+                      "message" : "You are not authorized to access this resource."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422" : {
+            "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                },
+                "examples" : {
+                  "Unprocessable Entity Error Response" : {
+                    "value" : {
+                      "errorCode" : "UNPROCESSABLE_ENTITY",
+                      "message" : "The value passed for the 'from' query parameter is invalid."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "org-oauth" : [ "Desk.accessAll.ALL" ]
+        }, {
+          "iam-oauth2-schema" : [ "Desk.integrations.READ" ]
+        }, {
+          "cookie-auth" : [ "cookie-auth" ]
+        } ],
+        "x-audience" : [ "company-internal" ],
+        "x-custom-url-attribute" : {
+          "security" : {
+            "throttle" : {
+              "inline" : [ {
+                "scope" : "APPSERVER",
+                "rules" : [ {
+                  "duration" : 60000,
+                  "lock-period" : 180000,
+                  "threshold" : 50,
+                  "hip" : false
+                }, {
+                  "duration" : 3600000,
+                  "lock-period" : 600000,
+                  "threshold" : 300,
+                  "hip" : false
+                } ],
+                "window" : "ROLLING",
+                "key" : "url.path+user.zuid"
+              } ]
+            },
+            "extraparams" : {
+              "disable" : true,
+              "ignore" : false
+            }
+          },
+          "clan-group" : "integration",
+          "apihash" : "",
+          "module-group" : "integration",
+          "apimethod" : "com.zoho.support.restapi.IntegChatService.getChannelsInfo"
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "integrationsObject" : {
+        "required" : [ "apiName", "displayName", "label", "visibility" ],
+        "properties" : {
+          "apiName" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "visibility" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "displayName" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          },
+          "label" : {
+            "maxLength" : 300,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "integrationsArray" : {
+        "items" : {
+          "required" : [ "apiName", "displayName", "label", "visibility" ],
+          "properties" : {
+            "apiName" : {
+              "maxLength" : 300,
+              "minLength" : 0
+            },
+            "visibility" : {
+              "maxLength" : 300,
+              "minLength" : 0
+            },
+            "displayName" : {
+              "maxLength" : 300,
+              "minLength" : 0
+            },
+            "label" : {
+              "maxLength" : 300,
+              "minLength" : 0
+            }
+          },
+          "additionalProperties" : false
+        }
+      },
+      "integrationStatus" : {
+        "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+        "properties" : {
+          "IS_SUPPORTED" : { },
+          "installedOn" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "microsoftIntegrationStatus" : {
+        "required" : [ "IS_SUPPORTED", "installedOn", "isSSOUser", "status" ],
+        "properties" : {
+          "isSSOUser" : { },
+          "IS_SUPPORTED" : { },
+          "installedOn" : {
+            "maxLength" : 100,
+            "minLength" : 0,
+            "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+          },
+          "status" : {
+            "maxLength" : 100,
+            "minLength" : 0
+          }
+        },
+        "additionalProperties" : { }
+      },
+      "errorDetailArr" : {
+        "items" : {
+          "required" : [ "errorMessage", "errorType", "fieldName" ],
+          "properties" : {
+            "fieldName" : { },
+            "errorType" : {
+              "enum" : [ "invalid", "duplicate", "missing" ]
+            },
+            "errorMessage" : { }
+          }
+        }
+      },
+      "errorJson" : {
+        "required" : [ "errorCode", "message" ],
+        "properties" : {
+          "message" : { },
+          "errorCode" : {
+            "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+          }
+        }
+      }
+    },
+    "responses" : {
+      "integrationsInfoResponse" : {
+        "description" : "integrationsInfoResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "integrations" ],
+              "properties" : {
+                "integrations" : {
+                  "items" : {
+                    "required" : [ "apiName", "displayName", "label", "visibility" ],
+                    "properties" : {
+                      "apiName" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      },
+                      "visibility" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      },
+                      "displayName" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      },
+                      "label" : {
+                        "maxLength" : 300,
+                        "minLength" : 0
+                      }
+                    },
+                    "additionalProperties" : false
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "integrations" : [ {
+                    "apiName" : "Zohocrm",
+                    "visibility" : true,
+                    "displayName" : "Zoho CRM",
+                    "label" : "Enabled",
+                    "status" : "enabled"
+                  }, {
+                    "apiName" : "Zohobugtracker",
+                    "visibility" : true,
+                    "displayName" : "Zoho BugTracker",
+                    "label" : "Enabled",
+                    "status" : "enabled"
+                  }, {
+                    "apiName" : "Zohoprojects",
+                    "visibility" : true,
+                    "displayName" : "Zoho Projects",
+                    "label" : "",
+                    "status" : ""
+                  } ]
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "agentStudioCreateIntegrationSuccess" : {
+        "description" : "Integration created successfully",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "status" ],
+              "properties" : {
+                "status" : {
+                  "maxLength" : 20,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Success response" : {
+                "value" : {
+                  "status" : "success"
+                }
+              }
+            }
+          }
+        }
+      },
+      "agentStudioCreateIntegrationFailure" : {
+        "description" : "Integration failed response",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "message", "status" ],
+              "properties" : {
+                "status" : {
+                  "maxLength" : 20,
+                  "minLength" : 0
+                },
+                "message" : {
+                  "maxLength" : 200,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Error response" : {
+                "value" : {
+                  "status" : "error",
+                  "message" : "Some error message here."
+                }
+              }
+            }
+          }
+        }
+      },
+      "predefinedAgentListResponse" : {
+        "description" : "List of predefined agents available for Agent Studio integration.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "properties" : {
+                "status" : {
+                  "example" : "success"
+                },
+                "agents" : {
+                  "items" : {
+                    "required" : [ "agentName", "description" ],
+                    "properties" : {
+                      "templateName" : {
+                        "example" : "zoho_desk_resolution_expert_agent"
+                      },
+                      "agentName" : {
+                        "example" : "Resolution Expert"
+                      },
+                      "description" : {
+                        "example" : "Documents ticket resolutions..."
+                      },
+                      "agentMode" : {
+                        "example" : "async"
+                      },
+                      "roleName" : {
+                        "example" : "A virtual support agent specialized in..."
+                      },
+                      "guidelines" : {
+                        "example" : "You are “Resolution Expert,” an AI Agent that..."
+                      },
+                      "actions" : {
+                        "items" : {
+                          "required" : [ "description", "displayName" ],
+                          "properties" : {
+                            "displayName" : {
+                              "example" : "Ticket View"
+                            },
+                            "description" : {
+                              "example" : "Access all tickets in the help desk"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "additionalProperties" : { }
+            }
+          }
+        }
+      },
+      "getAvailableIntegrationsResponse" : {
+        "description" : "getAvailableIntegrationsResponse template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "ASSIST", "BIGIN", "BOOKS", "BUG", "CHAT", "CLIQ", "CLOUD_ATTACHMENTS", "CRM", "INVENTORY", "INVOICE", "JIRA", "LENS", "MAIL", "MICROSOFT_SSO", "REPORTS", "SALESFORCE", "SLACK", "SUBSCRIPTIONS", "isCrmIntegrated" ],
+              "properties" : {
+                "BIGIN" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "MICROSOFT_SSO" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "isSSOUser", "status" ],
+                  "properties" : {
+                    "isSSOUser" : { },
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "SUBSCRIPTIONS" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "SLACK" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "CHAT" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "SALESFORCE" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "ASSIST" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "JIRA" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "INVOICE" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "BOOKS" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "CLIQ" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "isCrmIntegrated" : { },
+                "INVENTORY" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "MAIL" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "BUG" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "REPORTS" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "CLOUD_ATTACHMENTS" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "LENS" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                },
+                "CRM" : {
+                  "required" : [ "IS_SUPPORTED", "installedOn", "status" ],
+                  "properties" : {
+                    "IS_SUPPORTED" : { },
+                    "installedOn" : {
+                      "maxLength" : 100,
+                      "minLength" : 0,
+                      "pattern" : "[^0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s]+|^$"
+                    },
+                    "status" : {
+                      "maxLength" : 100,
+                      "minLength" : 0
+                    }
+                  },
+                  "additionalProperties" : false
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "BIGIN" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "MICROSOFT_SSO" : {
+                    "isSSOUser" : false,
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "not Configured"
+                  },
+                  "SUBSCRIPTIONS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "SLACK" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : ""
+                  },
+                  "CHAT" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "ASSIST" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "JIRA" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "INVOICE" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "BOOKS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "CLIQ" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "isCrmIntegrated" : true,
+                  "MAIL" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  },
+                  "INVENTORY" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "BUG" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "REPORTS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "not Configured"
+                  },
+                  "CLOUD_ATTACHMENTS" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : "",
+                    "status" : "enabled"
+                  },
+                  "CRM" : {
+                    "IS_SUPPORTED" : true,
+                    "installedOn" : 1569941199000,
+                    "status" : "enabled"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "getReportIntegrationsDetails" : {
+        "description" : "getReportIntegrationsDetails template definitions",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "status", "url" ],
+              "properties" : {
+                "url" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                },
+                "status" : {
+                  "maxLength" : 100,
+                  "minLength" : 0
+                }
+              },
+              "additionalProperties" : { }
+            },
+            "examples" : {
+              "Valid responses Definitions" : {
+                "value" : {
+                  "url" : "https://analytics.zoho.com/workspace/15694000000921001",
+                  "status" : "ENABLED"
+                }
+              }
+            }
+          }
+        },
+        "x-custom-response-attributes" : {
+          "disable-safe-headers" : "[]"
+        }
+      },
+      "emptyResponse" : {
+        "description" : "No content"
+      },
+      "fileResponse" : {
+        "description" : "File response",
+        "content" : {
+          "application/octet-stream" : {
+            "schema" : {
+              "format" : "binary"
+            }
+          }
+        }
+      },
+      "badRequestErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "BAD_REQUEST",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unauthorizedErrorResponse" : {
+        "description" : "This errorCode value appears if the authentication token in the API request is invalid",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "UnAuthenticatedErrorResponse" : {
+                "value" : {
+                  "errorCode" : "UNAUTHORIZED",
+                  "message" : "You are not authorized to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "invalidOauthErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken is invalid or expired.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Oauth Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_OAUTH",
+                  "message" : "The OauthToken is invalid or has expired."
+                }
+              }
+            }
+          }
+        }
+      },
+      "scopeMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the OAuthToken does not contain the scope required to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "ScopeMisMatch Error Response" : {
+                "value" : {
+                  "errorCode" : "SCOPE_MISMATCH",
+                  "message" : "The OAuthToken does not contain the scope required to perform this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "oauthOrgMisMatchErrorResponse" : {
+        "description" : "This errorCode value appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "OAuth Org Mismatch Error Response" : {
+                "value" : {
+                  "errorCode" : "OAUTH_ORG_MISMATCH",
+                  "message" : "The OAuthToken is not valid for specified organization."
+                }
+              }
+            }
+          }
+        }
+      },
+      "forbiddenErrorResponse" : {
+        "description" : "This errorCode value appears if the user does not have all the permissions required to access the resource.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Forbidden Error Response" : {
+                "value" : {
+                  "errorCode" : "FORBIDDEN",
+                  "message" : "You are not authorized to access this resource."
+                }
+              }
+            }
+          }
+        }
+      },
+      "urlNotFoundErrorResponse" : {
+        "description" : "This errorCode value appears if the URL provided is invalid or does not exist.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Url Not Found Error Response" : {
+                "value" : {
+                  "errorCode" : "URL_NOT_FOUND",
+                  "message" : "The URL you requested could not be found."
+                }
+              }
+            }
+          }
+        }
+      },
+      "methodNotAllowedErrorResponse" : {
+        "description" : "This errorCode value appears if the method in the API request is known by the server but disabled for the API requested.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Method Not Allowed Error Response" : {
+                "value" : {
+                  "errorCode" : "METHOD_NOT_ALLOWED",
+                  "message" : "This HTTP method is not allowed on this URL."
+                }
+              }
+            }
+          }
+        }
+      },
+      "resourceSizeExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the size of the resource exceeds the limit defined by the server.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Resource Size Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "RESOURCE_SIZE_EXCEEDED",
+                  "message" : "Attachment size is too large. The maximum size supported is 20 MB."
+                }
+              }
+            }
+          }
+        }
+      },
+      "unSupportedMediaTypeErrorResponse" : {
+        "description" : "This errorCode value appears if the server refuses the request as a result of receiving the input in an unsupported format.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unsupported Media Type Error Response" : {
+                "value" : {
+                  "errorCode" : "UNSUPPORTED_MEDIA_TYPE",
+                  "message" : "The given content type is not supported. Please provide the input Content-Type as application/json"
+                }
+              }
+            }
+          }
+        }
+      },
+      "unprocessableEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The value passed for the 'from' query parameter is invalid."
+                }
+              }
+            }
+          }
+        }
+      },
+      "missingEntityErrorResponse" : {
+        "description" : "This errorCode value appears if the input does not contain the mandatory parameters for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Unprocessable Entity Error Response" : {
+                "value" : {
+                  "errorCode" : "UNPROCESSABLE_ENTITY",
+                  "message" : "The mandatory parameter 'permission' is missing"
+                }
+              }
+            }
+          }
+        }
+      },
+      "thresholdExceedErrorResponse" : {
+        "description" : "This errorCode value appears if the user sends too many requests within a given amount of time (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Threshold Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "THRESHOLD_EXCEEDED",
+                  "message" : "The maximum number of API calls that can be made per day has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "concurrentRateLimitExceededErrorResponse" : {
+        "description" : "This errorCode value appears if the user fires too many requests in a simultaneous/concurrent manner (\"rate limiting\").",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Concurrent Rate Limit Exceeded Error Response" : {
+                "value" : {
+                  "errorCode" : "TOO_MANY_REQUESTS",
+                  "message" : "The maximum number of Concurrent API Calls that can be made has been exceeded."
+                }
+              }
+            }
+          }
+        }
+      },
+      "internalErrorResponse" : {
+        "description" : "This errorCode value appears if the server encounters an unexpected condition that prevents it from fulfilling the request.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "required" : [ "errorCode", "message" ],
+              "properties" : {
+                "message" : { },
+                "errorCode" : {
+                  "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                }
+              }
+            },
+            "examples" : {
+              "Internal Server Error Response" : {
+                "value" : {
+                  "errorCode" : "INTERNAL_SERVER_ERROR",
+                  "message" : "An internal server error occurred while performing this operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "licenseErrorResponse" : {
+        "description" : "This errorCode value appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use\nThe possible values for the feature key are\n    *AGENTS*\n    *LIGHT_AGENTS*\n    *TEAM*\nThe possible values for the editionType key are\n    *FREE*\n    *PROFESSIONAL*\n    *ENTERPRISE*",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "editionType", "feature", "isTrial", "maxAllowedEntity" ],
+                "properties" : {
+                  "maxAllowedEntity" : {
+                    "pattern" : "([0-9]+)"
+                  },
+                  "feature" : {
+                    "enum" : [ "AGENTS", "LIGHT_AGENTS", "TEAM" ]
+                  },
+                  "editionType" : {
+                    "enum" : [ "ENTERPRISE", "PROFESSIONAL", "STANDARD", "EXPRESS", "FREE" ]
+                  },
+                  "isTrial" : { }
+                }
+              } ]
+            },
+            "examples" : {
+              "LicenseAccessLimited Error Response" : {
+                "value" : {
+                  "errorCode" : "LICENSE_ACCESS_LIMITED",
+                  "maxAllowedEntity" : "10",
+                  "feature" : "AGENTS",
+                  "editionType" : "FREE",
+                  "isTrial" : false,
+                  "message" : "Your Zoho Desk Edition does not support this feature/operation."
+                }
+              }
+            }
+          }
+        }
+      },
+      "multipleUnprocessEntityResponse" : {
+        "description" : "This errorCode value appears if the input does not fulfil the conditions necessary for successfully executing the API.",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "anyOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "additionalProperties" : { },
+                "allOf" : [ {
+                  "required" : [ "errorCode", "message" ],
+                  "properties" : {
+                    "message" : { },
+                    "errorCode" : {
+                      "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                    }
+                  }
+                }, {
+                  "required" : [ "errors" ],
+                  "properties" : {
+                    "errors" : {
+                      "items" : {
+                        "required" : [ "errorMessage", "errorType", "fieldName" ],
+                        "properties" : {
+                          "fieldName" : { },
+                          "errorType" : {
+                            "enum" : [ "invalid", "duplicate", "missing" ]
+                          },
+                          "errorMessage" : { }
+                        }
+                      }
+                    }
+                  }
+                } ]
+              } ]
+            }
+          }
+        }
+      },
+      "invalidDataErrorResponse" : {
+        "description" : "This errorCode value appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the errorType param.\nThe possible values for the errorType key are:\n*invalid* - the field contains an invalid value *duplicate* - the field contains a value that already exists *missing* - the field does not contain a value\nThe field that contains the inaccurate value is returned in the fieldName param, which is represented in the JSON Pointer convention",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "additionalProperties" : { },
+              "allOf" : [ {
+                "required" : [ "errorCode", "message" ],
+                "properties" : {
+                  "message" : { },
+                  "errorCode" : {
+                    "enum" : [ "BAD_REQUEST", "UNAUTHORIZED", "INVALID_OAUTH", "SCOPE_MISMATCH", "OAUTH_ORG_MISMATCH", "FORBIDDEN", "LICENSE_ACCESS_LIMITED", "URL_NOT_FOUND", "METHOD_NOT_ALLOWED", "RESOURCE_SIZE_EXCEEDED", "UNSUPPORTED_MEDIA_TYPE", "INVALID_DATA", "EMPTY_PAYLOAD", "UNPROCESSABLE_ENTITY", "ONLY_LIVECHAT_USER", "DUPLICATE_CONTRACT", "INTEGRATION_ADMIN_ERROR", "THRESHOLD_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR" ]
+                  }
+                }
+              }, {
+                "required" : [ "errors" ],
+                "properties" : {
+                  "errors" : {
+                    "items" : {
+                      "required" : [ "errorMessage", "errorType", "fieldName" ],
+                      "properties" : {
+                        "fieldName" : { },
+                        "errorType" : {
+                          "enum" : [ "invalid", "duplicate", "missing" ]
+                        },
+                        "errorMessage" : { }
+                      }
+                    }
+                  }
+                }
+              } ]
+            },
+            "examples" : {
+              "Invalid Data Error Response" : {
+                "value" : {
+                  "errorCode" : "INVALID_DATA",
+                  "message" : "The data does not comply to the validation restrictions defined.",
+                  "errors" : [ {
+                    "fieldName" : "/contactId",
+                    "errorType" : "invalid"
+                  }, {
+                    "fieldName" : "/departmentId",
+                    "errorType" : "invalid"
+                  } ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "parameters" : {
+      "orgId" : {
+        "name" : "orgId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([0-9]+)",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : { }
+        }
+      },
+      "portalId" : {
+        "name" : "portalId",
+        "in" : "query",
+        "required" : true,
+        "style" : "form",
+        "explode" : true,
+        "schema" : {
+          "pattern" : "([a-zA-Z0-9\\-\\:])+",
+          "format" : "int32",
+          "x-custom-parameters-attributes" : {
+            "decrypt" : true
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "cookie-auth" : {
+        "type" : "apiKey",
+        "name" : "X-CSRF-TOKEN",
+        "in" : "cookie"
+      },
+      "org-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      },
+      "iam-oauth2-schema" : {
+        "type" : "oauth2",
+        "description" : "Oauth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.zia.create" : "CREATE Operations on data generated by ZIA",
+              "Desk.zia.update" : "UPDATE Operations on data generated by ZIA",
+              "Desk.zia.read" : "READ Operations on data generated by ZIA",
+              "Desk.zia.delete" : "DELETE Operations on data generated by ZIA",
+              "Desk.calls.create" : "CREATE operations on calls module",
+              "Desk.calls.update" : "UPDATE operations on calls module",
+              "Desk.calls.read" : "READ operations on calls module",
+              "Desk.calls.delete" : "DELETE operations on calls module",
+              "Desk.extensions.create" : "To create stored data, extension logs, and configuration params",
+              "Desk.extensions.read" : "To read stored data, extension logs, and configuration params",
+              "Desk.extensions.update" : "To update stored data, extension logs, and configuration params",
+              "Desk.extensions.delete" : "To delete stored data, extension logs, and configuration params",
+              "Desk.search.read" : "READ Search across data in your desk account.",
+              "Desk.events.create" : "CREATE Desk events",
+              "Desk.events.update" : "UPDATE Desk events",
+              "Desk.events.read" : "READ Desk events",
+              "Desk.events.delete" : "DELETE Desk events",
+              "Desk.articles.create" : "CREATE Articles and its sub resources",
+              "Desk.articles.update" : "UPDATE Articles and its sub resources",
+              "Desk.articles.read" : "READ Articles and its sub resources",
+              "Desk.articles.delete" : "DELETE Articles and its sub resources",
+              "Desk.basic.create" : "CREATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.update" : "UPDATE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.read" : "READ Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.basic.delete" : "DELETE Basic desk data such as organizations,agents,departments,role,profile,group",
+              "Desk.tasks.create" : "CREATE Tasks and its sub resources",
+              "Desk.tasks.read" : "READ Tasks and its sub resources",
+              "Desk.tasks.update" : "UPDATE Tasks and its sub resources",
+              "Desk.tasks.delete" : "DELETE Tasks and its sub resources",
+              "Desk.settings.create" : "CREATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.update" : "UPDATE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.read" : "READ All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.settings.delete" : "DELETE All settings data such as customizations,automations,permissions,organization,license",
+              "Desk.contacts.create" : "CREATE Contacts and its sub resources",
+              "Desk.contacts.update" : "UPDATE Contacts and its sub resources",
+              "Desk.contacts.read" : "READ Contacts and its sub resources",
+              "Desk.contacts.delete" : "DELETE Contacts and its sub resources",
+              "Desk.feeds.create" : "CREATE Feeds resource",
+              "Desk.feeds.update" : "UPDATE Feeds resource",
+              "Desk.feeds.read" : "READ Feeds resource",
+              "Desk.feeds.delete" : "DELETE Feeds resource",
+              "Desk.tickets.create" : "CREATE Tickets and its sub resources",
+              "Desk.tickets.update" : "UPDATE Tickets and its sub resources",
+              "Desk.tickets.read" : "READ Tickets and its sub resources",
+              "Desk.tickets.delete" : "DELETE Tickets and its sub resources",
+              "Desk.phonebridge.read" : "READ phonebridge",
+              "Desk.phonebridge.create" : "CREATE phonebridge",
+              "Desk.community.create" : "CREATE Operations on community topics, comments and categories",
+              "Desk.community.update" : "UPDATE Operations on community topics, comments and categories",
+              "Desk.community.read" : "READ Operations on community topics, comments and categories",
+              "Desk.community.delete" : "DELETE Operations on community topics, comments and categories",
+              "Desk.imports" : "CUSTOM Grants access to import data into Zoho Desk modules",
+              "Desk.exports" : "CUSTOM Scope for Zoho Desk Export API's for ZohoDesk Modules",
+              "Desk.products.create" : "CREATE Allow operations on products",
+              "Desk.products.update" : "UPDATE Allow operations on products",
+              "Desk.products.read" : "READ Allow operations on products",
+              "Desk.products.delete" : "DELETE Allow operations on products",
+              "Desk.settings.extension.create" : "CREATE Allow access to all extension related data",
+              "Desk.settings.extension.update" : "UPDATE Allow access to all extension related data",
+              "Desk.settings.extension.read" : "READ Allow access to all extension related data",
+              "Desk.settings.extension.delete" : "DELETE Allow access to all extension related data",
+              "Desk.activities.create" : "CREATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.read" : "READ To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.update" : "UPDATE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.activities.delete" : "DELETE To manage activities such as tasks, calls, events and its sub resources",
+              "Desk.deskOembed.read" : "null",
+              "Desk.integrations.create" : "Grants access to create integration related data",
+              "Desk.integrations.update" : "Grants access to update integration related data",
+              "Desk.integrations.read" : "Grants access to read integration related data",
+              "Desk.integrations.delete" : "Grants access to delete integration related data"
+            }
+          }
+        }
+      },
+      "jwt-oauth" : {
+        "type" : "oauth2",
+        "description" : "Org OAuth description",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "/oauth/v2/org/auth",
+            "tokenUrl" : "/oauth/v2/token",
+            "scopes" : {
+              "Desk.accessAll.ALL" : "All Operations on data generated by Zoho Desk"
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-entity" : "Integrations"
+}
