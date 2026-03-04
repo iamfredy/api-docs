@@ -3,6 +3,12 @@ import { DocsPage, DocsBody } from 'fumadocs-ui/page';
 import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 
+export async function generateStaticParams() {
+  return source.generateParams();
+}
+
+export const dynamic = 'force-static';
+
 export default async function Page({
   params,
 }: {
