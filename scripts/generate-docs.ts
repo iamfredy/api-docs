@@ -35,7 +35,9 @@ async function main() {
     }
 
     try {
-      const openapi = createOpenAPI({ input: [filePath] });
+const relPath = path.relative(process.cwd(), filePath);
+const openapi = createOpenAPI({ input: [relPath] });
+
       await generateFiles({
         input: openapi,
         output: './content/docs',
