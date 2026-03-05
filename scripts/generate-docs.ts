@@ -44,22 +44,21 @@ async function main() {
       }
     }
 
-    try {
-      const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-      const cleaned = stripPatterns(raw);
-      const tmpPath = path.join(process.cwd(), '.oas-tmp', path.basename(filePath));
-      fs.mkdirSync(path.dirname(tmpPath), { recursive: true });
-      fs.writeFileSync(tmpPath, JSON.stringify(cleaned));
-      const relPath = path.relative(process.cwd(), tmpPath);
-      const openapi = createOpenAPI({ input: [relPath] });
-      await generateFiles({
-        input: openapi,
-        output: './content/docs',
-        per: 'operation',
-        groupBy: 'tag',
-      });
-      succeeded++;
-    } catch (err) {
+  try {
+  const raw = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+  const cleaned = stripPatterns(raw);
+  fs.writeFileSync(filePath, JSON.stringify(cleaned, null, 2));
+  const relPath = path.relative(process.cwd(), filePath);
+  const openapi = createOpenAPI({ input: [relPath] });
+  await generateFiles({
+    input: openapi,
+    output: './content/docs',
+    per: 'operation',
+    groupBy: 'tag',
+  });
+  succeeded++;
+} 
+ catch (err) {
       failed++;
       failures.push(fileName);
       console.warn(`⚠ Skipped ${fileName}: ${(err as Error).message}`);

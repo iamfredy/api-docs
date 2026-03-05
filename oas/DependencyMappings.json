@@ -1,302 +1,588 @@
 {
-  "openapi" : "3.1.0",
-  "info" : {
-    "title" : "DependencyMappings",
-    "version" : "1.0.0"
+  "openapi": "3.1.0",
+  "info": {
+    "title": "DependencyMappings",
+    "version": "1.0.0"
   },
-  "paths" : {
-    "/api/v1/availableDependencyMappings" : {
-      "get" : {
-        "tags" : [ "DependencyMappings" ],
-        "summary" : "Get possible dependency mappings in a layout",
-        "description" : "This API fetches the parent and child fields using which you can configure dependency mappings in a layout.",
-        "operationId" : "getAvailableDepMappings",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/layoutId"
-        }, {
-          "$ref" : "./Common.json#/components/parameters/orgId"
-        } ],
-        "responses" : {
-          "422" : {
-            "$ref" : "./Common.json#/components/responses/multipleUnprocessEntityResponse"
+  "paths": {
+    "/api/v1/availableDependencyMappings": {
+      "get": {
+        "tags": [
+          "DependencyMappings"
+        ],
+        "summary": "Get possible dependency mappings in a layout",
+        "description": "This API fetches the parent and child fields using which you can configure dependency mappings in a layout.",
+        "operationId": "getAvailableDepMappings",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/layoutId"
           },
-          "200" : {
-            "$ref" : "#/components/responses/getAvailableDepMappings"
+          {
+            "$ref": "./Common.json#/components/parameters/orgId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getAvailableDepMappings"
+          },
+          "422": {
+            "$ref": "./Common.json#/components/responses/multipleUnprocessEntityResponse"
           }
         },
-        "security" : [ {
-          "iam-oauth2-schema" : [ "Desk.settings.READ" ]
-        } ],
-        "x-audience" : [ "external-public" ]
+        "security": [
+          {
+            "iam-oauth2-schema": [
+              "Desk.settings.READ"
+            ]
+          }
+        ],
+        "x-audience": [
+          "external-public"
+        ]
       }
     },
-    "/api/v1/dependencyMappings" : {
-      "get" : {
-        "tags" : [ "DependencyMappings" ],
-        "summary" : "List dependency mappings in a layout",
-        "description" : "This API lists the dependency mappings configured in a layout. ",
-        "operationId" : "getDependencyMappingsByLayoutId",
-        "parameters" : [ {
-          "$ref" : "#/components/parameters/layoutId"
-        }, {
-          "$ref" : "./Common.json#/components/parameters/orgId"
-        } ],
-        "responses" : {
-          "422" : {
-            "$ref" : "./Common.json#/components/responses/multipleUnprocessEntityResponse"
+    "/api/v1/dependencyMappings": {
+      "get": {
+        "tags": [
+          "DependencyMappings"
+        ],
+        "summary": "List dependency mappings in a layout",
+        "description": "This API lists the dependency mappings configured in a layout. ",
+        "operationId": "getDependencyMappingsByLayoutId",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/layoutId"
           },
-          "200" : {
-            "$ref" : "#/components/responses/getDependencyMappingsByLayoutIdResponse"
+          {
+            "$ref": "./Common.json#/components/parameters/orgId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/getDependencyMappingsByLayoutIdResponse"
           },
-          "204" : {
-            "$ref" : "./Common.json#/components/responses/emptyResponse"
+          "204": {
+            "$ref": "./Common.json#/components/responses/emptyResponse"
+          },
+          "422": {
+            "$ref": "./Common.json#/components/responses/multipleUnprocessEntityResponse"
           }
         },
-        "security" : [ {
-          "iam-oauth2-schema" : [ "Desk.basic.READ" ]
-        } ],
-        "x-audience" : [ "external-public" ]
+        "security": [
+          {
+            "iam-oauth2-schema": [
+              "Desk.basic.READ"
+            ]
+          }
+        ],
+        "x-audience": [
+          "external-public"
+        ]
       }
     }
   },
-  "components" : {
-    "schemas" : {
-      "picklistJSON" : {
-        "type" : [ "null", "object" ],
-        "additionalProperties" : false,
-        "properties" : {
-          "displayLabel" : {
-            "type" : [ "string", "null" ],
-            "maxLength" : 200,
-            "minLength" : 0,
-            "pattern" : "([0-9a-zA-Z_\\-\\.\\$@\\?\\,\\:\\'\\/\\!\\P{InBasicLatin}\\s])+"
+  "components": {
+    "schemas": {
+      "picklistJSON": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "displayLabel": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 200,
+            "minLength": 0
           },
-          "allowedValues" : {
-            "type" : [ "null", "array" ],
-            "items" : {
-              "type" : [ "string", "null" ],
-              "maxLength" : 120,
-              "minLength" : 0,
-              "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+          "allowedValues": {
+            "type": [
+              "null",
+              "array"
+            ],
+            "items": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "maxLength": 120,
+              "minLength": 0
             },
-            "uniqueItems" : false
+            "uniqueItems": false
           },
-          "id" : {
-            "type" : [ "string", "null", "integer" ],
-            "format" : "int64",
-            "pattern" : "([0-9]+)"
+          "id": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64"
           }
         },
-        "required" : [ "allowedValues", "displayLabel", "id" ]
+        "required": [
+          "allowedValues",
+          "displayLabel",
+          "id"
+        ]
       },
-      "picklistJSONArr" : {
-        "type" : [ "null", "array" ],
-        "items" : {
-          "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+      "picklistJSONArr": {
+        "type": [
+          "null",
+          "array"
+        ],
+        "items": {
+          "$ref": "./DependencyMappings.json#/components/schemas/picklistJSON"
         }
       },
-      "dependencyJSON" : {
-        "type" : [ "null", "object" ],
-        "additionalProperties" : false,
-        "properties" : {
-          "parent" : {
-            "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+      "dependencyJSON": {
+        "type": [
+          "null",
+          "object"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "parent": {
+            "$ref": "./DependencyMappings.json#/components/schemas/picklistJSON"
           },
-          "mappings" : {
-            "type" : [ "null", "object" ],
-            "additionalProperties" : false,
-            "patternProperties" : {
-              "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+" : {
-                "type" : [ "null", "array" ],
-                "items" : {
-                  "type" : [ "string", "null" ],
-                  "maxLength" : 120,
-                  "minLength" : 0,
-                  "pattern" : "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+"
+          "mappings": {
+            "type": [
+              "null",
+              "object"
+            ],
+            "additionalProperties": false,
+            "patternProperties": {
+              "[0-9a-zA-Z_\\-\\.\\$@\\?\\:\\/\\!\\P{InBasicLatin}\\s()]+": {
+                "type": [
+                  "null",
+                  "array"
+                ],
+                "items": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "maxLength": 120,
+                  "minLength": 0
                 },
-                "uniqueItems" : false
+                "uniqueItems": false
               }
             }
           },
-          "id" : {
-            "type" : [ "string", "null", "integer" ],
-            "format" : "int64",
-            "pattern" : "([0-9]+)"
+          "id": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64"
           },
-          "childId" : {
-            "type" : [ "string", "null", "integer" ],
-            "format" : "int64",
-            "pattern" : "([0-9]+)"
+          "childId": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64"
           },
-          "layoutId" : {
-            "type" : [ "string", "null", "integer" ],
-            "format" : "int64",
-            "pattern" : "([0-9]+)"
+          "layoutId": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64"
           },
-          "parentId" : {
-            "type" : [ "string", "null", "integer" ],
-            "format" : "int64",
-            "pattern" : "([0-9]+)"
+          "parentId": {
+            "type": [
+              "string",
+              "null",
+              "integer"
+            ],
+            "format": "int64"
           },
-          "child" : {
-            "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSON"
+          "child": {
+            "$ref": "./DependencyMappings.json#/components/schemas/picklistJSON"
           }
         },
-        "required" : [ "child", "childId", "id", "layoutId", "mappings", "parent", "parentId" ]
+        "required": [
+          "child",
+          "childId",
+          "id",
+          "layoutId",
+          "mappings",
+          "parent",
+          "parentId"
+        ]
       },
-      "dependencyJSONArr" : {
-        "type" : [ "null", "array" ],
-        "items" : {
-          "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSON"
+      "dependencyJSONArr": {
+        "type": [
+          "null",
+          "array"
+        ],
+        "items": {
+          "$ref": "./DependencyMappings.json#/components/schemas/dependencyJSON"
         }
       }
     },
-    "responses" : {
-      "getAvailableDepMappings" : {
-        "description" : "getAvailableDepMappings template definitions",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "type" : [ "null", "object" ],
-              "additionalProperties" : false,
-              "properties" : {
-                "children" : {
-                  "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSONArr"
+    "responses": {
+      "getAvailableDepMappings": {
+        "description": "getAvailableDepMappings template definitions",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": [
+                "null",
+                "object"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "children": {
+                  "$ref": "./DependencyMappings.json#/components/schemas/picklistJSONArr"
                 },
-                "parents" : {
-                  "$ref" : "./DependencyMappings.json#/components/schemas/picklistJSONArr"
+                "parents": {
+                  "$ref": "./DependencyMappings.json#/components/schemas/picklistJSONArr"
                 }
               },
-              "required" : [ "children", "parents" ]
+              "required": [
+                "children",
+                "parents"
+              ]
             },
-            "examples" : {
-              "Valid responses Definitions" : {
-                "value" : {
-                  "children" : [ {
-                    "displayLabel" : "Category",
-                    "allowedValues" : [ "-None-", "Call", "Meeting", "Demo" ],
-                    "id" : "4000000000145"
-                  }, {
-                    "displayLabel" : "Status",
-                    "allowedValues" : [ "Not Started", "Deferred", "In Progress", "Waiting on someone else", "Completed_july1", "Completed_newDept" ],
-                    "id" : "4000000000147"
-                  }, {
-                    "displayLabel" : "Priority",
-                    "allowedValues" : [ "High", "Highest", "Low", "Lowest", "Normal" ],
-                    "id" : "4000000000149"
-                  } ],
-                  "parents" : [ {
-                    "displayLabel" : "Category",
-                    "allowedValues" : [ "-None-", "Call", "Meeting", "Demo" ],
-                    "id" : "4000000000145"
-                  }, {
-                    "displayLabel" : "Status",
-                    "allowedValues" : [ "Not Started", "Deferred", "In Progress", "Waiting on someone else", "Completed_july1", "Completed_newDept" ],
-                    "id" : "4000000000147"
-                  }, {
-                    "displayLabel" : "Priority",
-                    "allowedValues" : [ "High", "Highest", "Low", "Lowest", "Normal" ],
-                    "id" : "4000000000149"
-                  } ]
+            "examples": {
+              "Valid responses Definitions": {
+                "value": {
+                  "children": [
+                    {
+                      "displayLabel": "Category",
+                      "allowedValues": [
+                        "-None-",
+                        "Call",
+                        "Meeting",
+                        "Demo"
+                      ],
+                      "id": "4000000000145"
+                    },
+                    {
+                      "displayLabel": "Status",
+                      "allowedValues": [
+                        "Not Started",
+                        "Deferred",
+                        "In Progress",
+                        "Waiting on someone else",
+                        "Completed_july1",
+                        "Completed_newDept"
+                      ],
+                      "id": "4000000000147"
+                    },
+                    {
+                      "displayLabel": "Priority",
+                      "allowedValues": [
+                        "High",
+                        "Highest",
+                        "Low",
+                        "Lowest",
+                        "Normal"
+                      ],
+                      "id": "4000000000149"
+                    }
+                  ],
+                  "parents": [
+                    {
+                      "displayLabel": "Category",
+                      "allowedValues": [
+                        "-None-",
+                        "Call",
+                        "Meeting",
+                        "Demo"
+                      ],
+                      "id": "4000000000145"
+                    },
+                    {
+                      "displayLabel": "Status",
+                      "allowedValues": [
+                        "Not Started",
+                        "Deferred",
+                        "In Progress",
+                        "Waiting on someone else",
+                        "Completed_july1",
+                        "Completed_newDept"
+                      ],
+                      "id": "4000000000147"
+                    },
+                    {
+                      "displayLabel": "Priority",
+                      "allowedValues": [
+                        "High",
+                        "Highest",
+                        "Low",
+                        "Lowest",
+                        "Normal"
+                      ],
+                      "id": "4000000000149"
+                    }
+                  ]
                 }
               }
             }
           }
         }
       },
-      "getDependencyMappingsByLayoutIdResponse" : {
-        "description" : "getDependencyMappingsByLayoutIdResponse template definitions",
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "oneOf" : [ {
-                "type" : [ "null", "object" ],
-                "additionalProperties" : false,
-                "properties" : {
-                  "data" : {
-                    "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
-                  }
+      "getDependencyMappingsByLayoutIdResponse": {
+        "description": "getDependencyMappingsByLayoutIdResponse template definitions",
+        "content": {
+          "application/json": {
+            "schema": {
+              "oneOf": [
+                {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "data": {
+                      "$ref": "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
                 },
-                "required" : [ "data" ]
-              }, {
-                "type" : [ "null", "object" ],
-                "additionalProperties" : false,
-                "properties" : {
-                  "data" : {
-                    "$ref" : "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
-                  }
-                },
-                "required" : [ "data" ]
-              } ]
+                {
+                  "type": [
+                    "null",
+                    "object"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "data": {
+                      "$ref": "./DependencyMappings.json#/components/schemas/dependencyJSONArr"
+                    }
+                  },
+                  "required": [
+                    "data"
+                  ]
+                }
+              ]
             },
-            "examples" : {
-              "Valid responses Definitions" : {
-                "value" : {
-                  "data" : [ {
-                    "parent" : {
-                      "displayLabel" : "Category",
-                      "allowedValues" : [ "General", "Defects" ],
-                      "id" : "4000000000421"
+            "examples": {
+              "Valid responses Definitions": {
+                "value": {
+                  "data": [
+                    {
+                      "parent": {
+                        "displayLabel": "Category",
+                        "allowedValues": [
+                          "General",
+                          "Defects"
+                        ],
+                        "id": "4000000000421"
+                      },
+                      "mappings": {
+                        "General": [
+                          "Sub General"
+                        ],
+                        "Defects": [
+                          "Sub Defects"
+                        ]
+                      },
+                      "id": "4000000007315",
+                      "childId": "4000000000423",
+                      "layoutId": "4000000007177",
+                      "parentId": "4000000000421",
+                      "child": {
+                        "displayLabel": "Sub Category",
+                        "allowedValues": [
+                          "Sub General",
+                          "Sub Defects"
+                        ],
+                        "id": "4000000000423"
+                      }
                     },
-                    "mappings" : {
-                      "General" : [ "Sub General" ],
-                      "Defects" : [ "Sub Defects" ]
+                    {
+                      "parent": {
+                        "displayLabel": "Category",
+                        "allowedValues": [
+                          "General",
+                          "Defects"
+                        ],
+                        "id": "4000000000421"
+                      },
+                      "mappings": {
+                        "General": [
+                          "Open",
+                          "On Hold",
+                          "Escalated",
+                          "Closed",
+                          "Closed1",
+                          "newDeptClosed",
+                          "julyDeptClosed",
+                          "Open_july",
+                          "Open_newDept"
+                        ],
+                        "Defects": [
+                          "Open",
+                          "On Hold",
+                          "Escalated",
+                          "Closed",
+                          "Closed1",
+                          "newDeptClosed",
+                          "julyDeptClosed",
+                          "Open_july",
+                          "Open_newDept"
+                        ]
+                      },
+                      "id": "4000000031003",
+                      "childId": "4000000000367",
+                      "layoutId": "4000000007177",
+                      "parentId": "4000000000421",
+                      "child": {
+                        "displayLabel": "Status",
+                        "allowedValues": [
+                          "Open",
+                          "On Hold",
+                          "Escalated",
+                          "Closed",
+                          "Closed1",
+                          "newDeptClosed",
+                          "julyDeptClosed",
+                          "Open_july",
+                          "Open_newDept"
+                        ],
+                        "id": "4000000000367"
+                      }
                     },
-                    "id" : "4000000007315",
-                    "childId" : "4000000000423",
-                    "layoutId" : "4000000007177",
-                    "parentId" : "4000000000421",
-                    "child" : {
-                      "displayLabel" : "Sub Category",
-                      "allowedValues" : [ "Sub General", "Sub Defects" ],
-                      "id" : "4000000000423"
+                    {
+                      "parent": {
+                        "displayLabel": "Status",
+                        "allowedValues": [
+                          "Open",
+                          "On Hold",
+                          "Escalated",
+                          "Closed",
+                          "Closed1",
+                          "newDeptClosed",
+                          "julyDeptClosed",
+                          "Open_july",
+                          "Open_newDept"
+                        ],
+                        "id": "4000000000367"
+                      },
+                      "mappings": {
+                        "newDeptClosed": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Open_july": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Escalated": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Open_newDept": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "On Hold": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Closed": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Closed1": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "julyDeptClosed": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "Open": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ]
+                      },
+                      "id": "4000000032003",
+                      "childId": "4000000000409",
+                      "layoutId": "4000000007177",
+                      "parentId": "4000000000367",
+                      "child": {
+                        "displayLabel": "Mode",
+                        "allowedValues": [
+                          "Phone",
+                          "Email",
+                          "Web",
+                          "Twitter",
+                          "Facebook",
+                          "Chat",
+                          "Forums",
+                          "Feedback Widget"
+                        ],
+                        "id": "4000000000409"
+                      }
                     }
-                  }, {
-                    "parent" : {
-                      "displayLabel" : "Category",
-                      "allowedValues" : [ "General", "Defects" ],
-                      "id" : "4000000000421"
-                    },
-                    "mappings" : {
-                      "General" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
-                      "Defects" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ]
-                    },
-                    "id" : "4000000031003",
-                    "childId" : "4000000000367",
-                    "layoutId" : "4000000007177",
-                    "parentId" : "4000000000421",
-                    "child" : {
-                      "displayLabel" : "Status",
-                      "allowedValues" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
-                      "id" : "4000000000367"
-                    }
-                  }, {
-                    "parent" : {
-                      "displayLabel" : "Status",
-                      "allowedValues" : [ "Open", "On Hold", "Escalated", "Closed", "Closed1", "newDeptClosed", "julyDeptClosed", "Open_july", "Open_newDept" ],
-                      "id" : "4000000000367"
-                    },
-                    "mappings" : {
-                      "newDeptClosed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Open_july" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Escalated" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Open_newDept" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "On Hold" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Closed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Closed1" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "julyDeptClosed" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "Open" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ]
-                    },
-                    "id" : "4000000032003",
-                    "childId" : "4000000000409",
-                    "layoutId" : "4000000007177",
-                    "parentId" : "4000000000367",
-                    "child" : {
-                      "displayLabel" : "Mode",
-                      "allowedValues" : [ "Phone", "Email", "Web", "Twitter", "Facebook", "Chat", "Forums", "Feedback Widget" ],
-                      "id" : "4000000000409"
-                    }
-                  } ]
+                  ]
                 }
               }
             }
@@ -304,27 +590,30 @@
         }
       }
     },
-    "parameters" : {
-      "layoutId" : {
-        "name" : "layoutId",
-        "in" : "query",
-        "description" : "ID of the layout in which the dependency is mapped",
-        "required" : true,
-        "style" : "form",
-        "explode" : true,
-        "schema" : {
-          "type" : [ "string", "null", "integer" ],
-          "format" : "int64",
-          "description" : "ID of the layout in which the dependency is mapped",
-          "pattern" : "([0-9]+)"
+    "parameters": {
+      "layoutId": {
+        "name": "layoutId",
+        "in": "query",
+        "description": "ID of the layout in which the dependency is mapped",
+        "required": true,
+        "style": "form",
+        "explode": true,
+        "schema": {
+          "type": [
+            "string",
+            "null",
+            "integer"
+          ],
+          "format": "int64",
+          "description": "ID of the layout in which the dependency is mapped"
         }
       }
     },
-    "securitySchemes" : {
-      "iam-oauth2-schema" : {
-        "$ref" : "./Common.json#/components/securitySchemes/iam-oauth2-schema"
+    "securitySchemes": {
+      "iam-oauth2-schema": {
+        "$ref": "./Common.json#/components/securitySchemes/iam-oauth2-schema"
       }
     }
   },
-  "x-entity" : "DependencyMappings"
+  "x-entity": "DependencyMappings"
 }
