@@ -9,7 +9,7 @@ export const gitConfig = {
 export function baseOptions(): BaseLayoutProps {
   return {
     nav: {
-      title: 'My App',
+      title: 'Zoho Desk API Documentation',
     },
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
