@@ -1,0 +1,218 @@
+---
+title: Errors
+description: Understand the error codes returned by Zoho Desk APIs.
+---
+
+Zoho Desk uses HTTP status codes to indicate success or failure of API calls. Status codes in the 2xx range indicate success, 4xx range indicate error in the information provided, and 5xx range indicate server side errors.
+
+## HTTP Status Codes
+
+| Status Code | Description |
+|-------------|-------------|
+| 200 | OK |
+| 201 | Created |
+| 204 | No content |
+| 400 | Bad request |
+| 401 | Unauthorized |
+| 403 | Forbidden (Unauthorised access) |
+| 404 | URL not found |
+| 405 | Method not allowed (Method called is not supported for the API invoked) |
+| 413 | Payload Too Large |
+| 415 | Unsupported Media Type |
+| 422 | Unprocessable Entity |
+| 429 | Too Many Requests |
+| 500 | Internal error |
+
+Besides HTTP status codes, error responses also include a machine-parsable `errorCode` param to simplify error handling.
+
+## Error Codes
+
+### UNAUTHORIZED
+Appears if the authentication token in the API request is invalid.
+```json
+{
+  "errorCode": "UNAUTHORIZED",
+  "message": "You are not authorized to perform this operation."
+}
+```
+
+### INVALID_OAUTH
+Appears if the OAuthToken is invalid or expired.
+```json
+{
+  "message": "The OauthToken is invalid or has expired.",
+  "errorCode": "INVALID_OAUTH"
+}
+```
+
+### SCOPE_MISMATCH
+Appears if the OAuthToken does not contain the scope required to perform the operation.
+```json
+{
+  "errorCode": "SCOPE_MISMATCH",
+  "message": "The OAuthToken does not contain the scope required to perform this operation."
+}
+```
+
+### OAUTH_ORG_MISMATCH
+Appears if the user chooses a different organization while generating the OAuthToken instead of the organization in which they want to perform the operation.
+```json
+{
+  "errorCode": "OAUTH_ORG_MISMATCH",
+  "message": "The OAuthToken is not valid for specified organization."
+}
+```
+
+### FORBIDDEN
+Appears if the user does not have all the permissions required to access the resource.
+```json
+{
+  "errorCode": "FORBIDDEN",
+  "message": "You are not authorized to access this resource."
+}
+```
+
+### LICENSE_ACCESS_LIMITED
+Appears if the user is unable to perform an action due to the limitations of the Zoho Desk edition in use.
+
+The possible values for the `feature` key are: `AGENTS`, `LIGHT_AGENTS`, `TEAM`
+
+The possible values for the `editionType` key are: `FREE`, `EXPRESS`, `STANDARD`, `PROFESSIONAL`, `ENTERPRISE`
+```json
+{
+  "maxAllowedEntity": "10",
+  "unitName": "ORG",
+  "feature": "AGENTS",
+  "errorCode": "LICENSE_ACCESS_LIMITED",
+  "editionType": "FREE",
+  "message": "Your Zoho Desk Edition does not support this feature/operation.",
+  "isTrial": false
+}
+```
+
+### URL_NOT_FOUND
+Appears if the URL provided is invalid or does not exist.
+```json
+{
+  "errorCode": "URL_NOT_FOUND",
+  "message": "The URL you requested could not be found."
+}
+```
+
+### METHOD_NOT_ALLOWED
+Appears if the method in the API request is known by the server but disabled for the API requested.
+```json
+{
+  "errorCode": "METHOD_NOT_ALLOWED",
+  "message": "This HTTP method is not allowed on this URL."
+}
+```
+
+### RESOURCE_SIZE_EXCEEDED
+Appears if the size of the resource exceeds the limit defined by the server.
+```json
+{
+  "errorCode": "RESOURCE_SIZE_EXCEEDED",
+  "message": "Attachment size is too large. The maximum size supported is 20 MB."
+}
+```
+
+### UNSUPPORTED_MEDIA_TYPE
+Appears if the server refuses the request as a result of receiving the input in an unsupported format.
+```json
+{
+  "errorCode": "UNSUPPORTED_MEDIA_TYPE",
+  "message": "The given content type is not supported. Please provide the input Content-Type as application/json"
+}
+```
+
+### INVALID_DATA
+Appears if there are inaccuracies, such as duplicate entries or invalid IDs, in the data given by the user. The type of inaccuracy is identified by the `errorType` param.
+
+The possible values for the `errorType` key are:
+- `invalid` - the field contains an invalid value
+- `duplicate` - the field contains a value that already exists
+- `missing` - the field does not contain a value
+
+The field that contains the inaccurate value is returned in the `fieldName` param, represented in the JSON Pointer convention.
+```json
+{
+  "errorCode": "INVALID_DATA",
+  "message": "The data does not comply to the validation restrictions defined.",
+  "errors": [
+    { "fieldName": "/contactId", "errorType": "invalid" },
+    { "fieldName": "/departmentId", "errorType": "invalid" }
+  ]
+}
+```
+
+### UNPROCESSABLE_ENTITY
+Appears if the input does not fulfil the conditions necessary for successfully executing the API.
+```json
+{
+  "errorCode": "UNPROCESSABLE_ENTITY",
+  "message": "The value passed for the 'from' query parameter is invalid."
+}
+```
+
+### ONLY_LIVECHAT_USER
+Appears if the API request tries to remove the last user remaining in a department that has live chat enabled.
+```json
+{
+  "errorCode": "ONLY_LIVECHAT_USER",
+  "departmentIds": ["1301000000033146"],
+  "message": "The given user is the only user with chat enabled in the department"
+}
+```
+
+### DUPLICATE_CONTRACT
+Appears if the user creates a contract for an SLA with existing or overlapping time periods. The key `existingContracts` is an array containing one or more contract entities.
+```json
+{
+  "errorCode": "DUPLICATE_CONTRACT",
+  "message": "Validation failed for the condition : ContractAlreadyExists for the given period",
+  "errorDetails": {
+    "slaName": "Bronze SLAs",
+    "existingContracts": [
+      { "contractName": "Annual Contract", "startDate": "2022-03-11", "endDate": "2023-03-11" }
+    ]
+  }
+}
+```
+
+### INTEGRATION_ADMIN_ERROR
+Appears if the API request tries to deactivate a user who has enabled integrations in the help desk portal. The `integration` param returns the integration the user enabled. Possible values: `LIVECHAT`
+```json
+{
+  "errorCode": "INTEGRATION_ADMIN_ERROR",
+  "message": "The given user is the admin of the following integration",
+  "integration": "LIVECHAT"
+}
+```
+
+### THRESHOLD_EXCEEDED
+Appears if the user sends too many requests within a given amount of time (rate limiting).
+```json
+{
+  "errorCode": "THRESHOLD_EXCEEDED",
+  "message": "The maximum number of API calls that can be made per day has been exceeded."
+}
+```
+
+### TOO_MANY_REQUESTS
+Appears if the user fires too many requests in a simultaneous/concurrent manner (rate limiting).
+```json
+{
+  "errorCode": "TOO_MANY_REQUESTS",
+  "message": "The maximum number of Concurrent API Calls that can be made has been exceeded."
+}
+```
+
+### INTERNAL_SERVER_ERROR
+Appears if the server encounters an unexpected condition that prevents it from fulfilling the request.
+```json
+{
+  "errorCode": "INTERNAL_SERVER_ERROR",
+  "message": "An internal server error occurred while performing this operation."
+}
+```

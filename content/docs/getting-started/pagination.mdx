@@ -1,0 +1,88 @@
+---
+title: Pagination
+description: Learn how pagination works in Zoho Desk APIs.
+full: true
+---
+
+import { DocsWithSamples, SamplePanel, SamplePanelTitle, ShikiCode, ParamsTable } from '@/components/docs-with-samples';
+import { CodeBlockTabs, CodeBlockTabsList, CodeBlockTabsTrigger, CodeBlockTab } from 'fumadocs-ui/components/codeblock';
+
+export const samples = (
+  <div className="flex flex-col gap-4">
+    <SamplePanel>
+      <SamplePanelTitle>Request Example with pagination</SamplePanelTitle>
+      <CodeBlockTabs defaultValue="curl">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="curl">cURL</CodeBlockTabsTrigger>
+          <CodeBlockTabsTrigger value="js">JavaScript</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+        <CodeBlockTab value="curl">
+          <ShikiCode lang="bash" code={`curl -X GET 'https://desk.zoho.com/api/v1/accounts?from=1&limit=1' \\
+  -H "orgId:2389290" \\
+  -H "Authorization:Zoho-oauthtoken 1000.67013ab3960787bcf3affae67e649fc0.83a789c859e040bf11e7d05f9c8b5ef6" \\
+  -H "featureFlags:multiLayout,ticketTeam"`} />
+        </CodeBlockTab>
+        <CodeBlockTab value="js">
+          <ShikiCode lang="js" code={`const response = await fetch(
+  'https://desk.zoho.com/api/v1/accounts?from=1&limit=1',
+  {
+    headers: {
+      'orgId': '2389290',
+      'Authorization': 'Zoho-oauthtoken 1000.67013...',
+      'featureFlags': 'multiLayout,ticketTeam'
+    }
+  }
+);
+const data = await response.json();`} />
+        </CodeBlockTab>
+      </CodeBlockTabs>
+    </SamplePanel>
+    <SamplePanel>
+      <SamplePanelTitle>Response Example</SamplePanelTitle>
+      <CodeBlockTabs defaultValue="200">
+        <CodeBlockTabsList>
+          <CodeBlockTabsTrigger value="200">200</CodeBlockTabsTrigger>
+        </CodeBlockTabsList>
+        <CodeBlockTab value="200">
+          <ShikiCode lang="json" code={`{
+  "data": [{
+    "website": "112121",
+    "accountName": "Admin Account",
+    "phone": "121212",
+    "createdTime": "2015-02-16T16:57:44.000Z",
+    "zohoCRMAccount": { "id": "3275400000537001" },
+    "customerHappiness": {
+      "badPercentage": "30",
+      "okPercentage": "30",
+      "goodPercentage": "40"
+    },
+    "id": "1892000000052077",
+    "email": "admin@zylker.com"
+  }]
+}`} />
+        </CodeBlockTab>
+      </CodeBlockTabs>
+    </SamplePanel>
+  </div>
+);
+
+<DocsWithSamples samples={samples}>
+
+In Zoho Desk, you can fetch multiple resources using listing APIs, such as list tickets, list agents and list departments and so on. The retrieval and arrangement of these resources on end-users' screen is called pagination. Pagination in listing APIs is made possible by two parameters: `from` and `limit`.
+
+<ParamsTable params={[
+  {
+    name: "from",
+    type: "integer",
+    description: "Indicates the offset from which the records are to be fetched. The default value of from parameter is 1."
+  },
+  {
+    name: "limit",
+    type: "integer",
+    description: "Indicates the number of records the API must fetch. The default value of limit will be 10. A single API request can fetch a maximum of 50 resources. However, some APIs support higher limits, which is mentioned in the API document, wherever applicable."
+  }
+]} />
+
+The paginated responses are retrieved in the form of JSON objects that contain a key called **data** and a JSON array of resources (objects) as the value.
+
+</DocsWithSamples>
