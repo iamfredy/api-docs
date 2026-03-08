@@ -1,4 +1,29 @@
 ---
 title: Ratelimit Response Headers
-description: Understand the rate limit response headers returned by Zoho Desk APIs.
+description: Learn about the rate limit response headers returned by Zoho Desk APIs.
 ---
+
+You can track how many API credits are used and how many are remaining by checking the response headers of your API call.
+
+| Response Header Name | Description |
+|---|---|
+| X-Rate-Limit-Request-Weight-v3 | The number of credits used for that specific API call. |
+| X-Rate-Limit-Remaining-v3 | The credits left for the portal for the current day. |
+| Retry-After | The time (in seconds) you need to wait before trying the next API request. This appears in the response header only after you reach the rate limit. |
+
+<Callout>
+The Retry-After header appears only when your portal hits the maximum daily credit limit.
+</Callout>
+
+## Success Response Header
+```http
+HTTP/1.1 200 OK
+X-Rate-Limit-Request-Weight-v3: 3
+X-Rate-Limit-Remaining-v3: 950
+```
+
+## Too Many Requests Response Header
+```http
+HTTP/1.1 429 Too Many Requests
+Retry-After: 34
+```
