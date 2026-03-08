@@ -2,3 +2,55 @@
 title: Credit Consumption Model
 description: Understand how API credits are consumed in Zoho Desk.
 ---
+
+Zoho Desk uses two types of credit consumption models depending on the nature of the API.
+
+## Fixed Credit Consumption
+
+The number of credits consumed remains fixed, regardless of how much data is processed.
+
+**Example:** Fetch a single record → 1 credit/call
+
+## Variable Credit Consumption
+
+This credit consumption depends on how many records you are working with or how intensive the operation is.
+
+### 1. Credits for Bulk Write Operations
+
+When adding, updating, or deleting multiple records in a single API request, credits are consumed based on the number of records processed. Simply, more records = more credits used.
+
+Each API has a defined configured credit value, and the total credit consumption is calculated using a formula.
+
+| Operation | Defined Credit |
+|---|---|
+| Update multiple records | 1 credit for every 2 records |
+| Delete multiple records (Move records to trash) | 6 credits per record |
+| Restore records from the recycle bin | 6 credits per record |
+| Execute generic action | 1 credit per record |
+
+<Callout>
+If the record ID is not specified, 50 credits will be consumed by default.
+</Callout>
+
+For example, updating 50 records will use 25 credits. Restoring 50 records from the recycle bin will consume 300 credits.
+
+### 2. Credits for Fetching Multiple Records
+
+When you fetch multiple records, credits are consumed based on the range of records retrieved. The larger the range, the more credits are used. This applies to APIs that search for or fetch a large number of records.
+
+| Record Range | Credits |
+|---|---|
+| 0 to 2,000 | 3 credits |
+| 2,001 to 10,000 | 10 credits |
+| 10,001 to 100,000 | 50 credits |
+| Above 100,001 | 100 credits |
+
+For example, if an API is invoked with `from=5` and `limit=50`, it will retrieve 50 records starting from index 5 (records 5 to 54). Since these records are near the beginning of the dataset, the operation is lighter and will consume around 3 credits.
+
+However, fetching the same number of records from a much later point — for example, from index 10,005 to 10,054 — is more resource-intensive and may consume up to 50 credits.
+
+All APIs support a maximum of 50 records per request. The deeper the data range, the higher the credit consumption.
+
+<Callout>
+Fetching a record by its ID or number (e.g., Ticket ID or Ticket Number) counts as a single record. Only one credit will be consumed.
+</Callout>
