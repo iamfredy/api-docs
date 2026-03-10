@@ -1,0 +1,82 @@
+---
+title: "Step 2: Making the Authorization Request"
+description: Learn how to make an authorization request to obtain a grant token from Zoho.
+---
+
+To use the Zoho Desk APIs, the user must authenticate the application to make API calls on their behalf with an access token.
+
+The access token, in return, must be obtained from a grant token (authorization code). The Zoho Desk APIs use the authorization code grant type to provide access to protected resources.
+
+There are two ways in which you can generate the grant token based on the client type.
+
+- [Web-based Application](#web-based-application)
+- [Self Client](#generating-oauth-tokens-using-self-client)
+
+## Web-based Application
+
+Web-based applications are chosen when your application is used by multiple users and requires user intervention during authorization. For this client type, you must use redirection-based code generation. In this authorization flow, obtain an authorization grant by invoking the authorization URI that contains the parameters listed in the table below.
+
+| Parameter | Description |
+|---|---|
+| client_id | Client ID generated after registering the client. |
+| response_type | `code` |
+| redirect_uri | Redirect URI mentioned while registering the client. |
+| scope | The various scopes associated with Zoho Desk. You can use the list of scopes as per your requirement. |
+| access_type | `offline` / `online`. In cases where refresh tokens can't be stored, use `online` access_type. The default will be `online`. |
+| state | An opaque value used by the client to maintain state between the request and callback. |
+
+After you invoke the authorization URI, a user-consent page opens.
+![User Consent Page](/images/APIDocument_grant_aaccess_page.65ec52ab305e4d0e2b3d.png)
+
+**When the user clicks Accept:**
+
+The application gets authorized. The grant token is sent as a parameter in the `redirect_uri`.
+![Grant-Token](/images/APIDocument_auth_code.9341658c8ffa3dabdb6b.png)
+A back-end script from your end needs to store the following details from the redirect URL:
+
+- `code={grant_token}` — Used to generate access and refresh tokens.
+- `location={domain}` — Tells you the domain of the user from which you have to make API calls.
+- `accounts-server={accounts_URL}` — Your accounts URL, used to generate access and refresh tokens.
+
+The application then exchanges the authorization code for an access token.
+
+**When the user clicks Reject:**
+
+The browser redirects to the redirect URI with the parameter `error=access_denied`, and your application is denied access to the user's data in Zoho Desk.
+
+<Callout type="info">
+The grant token is valid only for one minute.
+</Callout>
+
+### Authorization Grant API URL
+```http
+GET https://accounts.zoho.com/oauth/v2/auth
+```
+
+**Query Parameters**
+```
+?response_type=code
+&client_id=1000.R2Z0WWOLFVMR287126QED3B4JWQ5EN
+&scope=Desk.tickets.READ,Desk.basic.READ
+&redirect_uri=https://www.zylker.com/oauthgrant
+&state=-5466400890088961855
+```
+
+## Generating OAuth Tokens Using Self Client
+
+Use this method to generate the grant token if your application does not have a domain and a redirect URL. You can also use this option when your application is a standalone server-side application performing a back-end job.
+
+1. Go to [Zoho Developer Console](https://api-console.zoho.com).
+2. Choose **Self Client** from the list of client types, and click **Create Now**.
+3. Click **OK** in the pop-up to enable a self client for your account. Your client ID and client secret are displayed under the **Client Secret** tab.
+4. Now, your client ID and client secret are displayed under the Client Secret tab.
+![Self-Client](/images/APIDocument_self-client-id-secret.4f3d4a483b8085166bc1.png)
+5. Click the **Generate Code** tab and enter the required scope separated by commas. Refer to our list of [Scopes](/docs/authentication-oauth/oauth-scopes) for more details.
+6. Select the **Time Duration** for which the grant token is valid. After this time, the grant token expires.
+7. Enter a description and click **Generate**.
+![Generate Code](/images/APIDocument_self-client-grant-token.8828feaaa6e90dac5594.png)
+8. The generated code for the specified scope is displayed. Copy the grant token.
+![Generated Token](/images/APIDOcument_self-client-grant-token2.636f8841ef224df2e788.png)
+<Callout>
+Generating the grant token is a one-time process, provided you generate the access and refresh tokens within the time the grant token is valid for.
+</Callout>

@@ -1,0 +1,39 @@
+---
+title: "Step 4: Refreshing your Access Tokens"
+description: Learn how to refresh your access tokens using the refresh token.
+---
+
+Access tokens generally expire in one hour, which means a new access token has to be generated to keep the process going. You can eliminate the need to perform the entire procedure to generate access tokens by using refresh tokens. Once the access token expires, the refresh token can be used to generate a new access token.
+
+Refresh token can be obtained only when `access_type` is set to `offline` while creating the access token.
+
+<Callout>
+- A user in an organization can have a maximum of 20 refresh tokens. Each refresh token can have a maximum of 15 active (non-expired) access tokens.
+- When a user creates a 16th access token, the system deletes the first created access token.
+- When a user creates the 21st refresh token, the system deletes the first created refresh token.
+- We have provided a sample test OAuth token in all examples so that you can test any example on your own. Replace the sample OAuth token with your actual token to test requests from your Desk account.
+</Callout>
+
+### Access Token From Refresh Token API URL
+```http
+POST https://accounts.zoho.com/oauth/v2/token
+```
+
+**Query Parameters**
+```
+?refresh_token=1000.dd7e67013ab396012e3d6eb1a9bc08.40bf11e7d0a1781ffec859e
+&client_id=1000.R2Z0WWOLFVMR287126QED3B4JWQ5EN
+&client_secret=39c689de68c712fa5f1f06c3b1319ab98f59fa921b
+&scope=Desk.tickets.READ,Desk.basic.READ
+&redirect_uri=https://www.zylker.com/oauthgrant
+&grant_type=refresh_token
+```
+
+### Response Example
+```json
+{
+  "access_token": "1000.2d4437b4f862641d76dedac5f95a3f8a.fac6eb7129da540de1d53b06562e744d",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```

@@ -1,4 +1,71 @@
 ---
 title: Authentication (OAuth)
-description: Learn how to authenticate with Zoho Desk APIs using OAuth.
+description: Learn how Zoho Desk uses OAuth 2.0 for API authentication and authorization.
 ---
+
+Zoho Desk's APIs use the industry-standard OAuth 2.0 protocol for authentication and authorization. This protocol delegates user authentication to the service that hosts the user account and authorizes third-party applications to access the user account. Each API request must include an OAuthToken to retrieve any resource from your Zoho Desk portal.
+
+- [Why should we use OAuth 2.0?](#why-should-we-use-oauth-20)
+- [How OAuth 2.0 works?](#how-oauth-20-works)
+- [Terminologies](#terminologies)
+- [Tokens](#tokens)
+- [Scopes](/docs/authentication-oauth/oauth-scopes)
+
+To view a sample reference code in Java to help you understand the OAuth authorization flow for Zoho Desk Rest APIs, [click here](#).
+
+## Why should we use OAuth 2.0?
+
+- Clients are not required to support password authentication or store user credentials.
+- Clients gain delegated access, i.e., access only to resources authenticated by the user.
+- Users can revoke the client's delegated access anytime.
+- OAuth 2.0 access tokens expire after a set time. If the client faces a security breach, user data will be compromised only until the access token is valid.
+
+## How OAuth 2.0 works?
+
+OAuth 2.0 works by allowing a client application to request access to protected resources on behalf of a user, without ever handling the user's credentials directly. The authorization server issues tokens that the client uses to authenticate subsequent API requests.
+![API Plan Details](/images/APIDocument_oauth-2-workflow.c9e4d8fd546e94a23cd2.png)
+## Terminologies
+
+The following are some terms you need to know before you start using the Zoho Desk APIs.
+
+**Protected resources**
+The Zoho Desk resources, such as Tickets, Contacts, Tasks, etc.
+
+**Resource server**
+The Zoho Desk server that hosts protected resources.
+
+**Resource owner**
+Any end-user of your account, who can grant access to the protected resources.
+
+**Client**
+An application that sends requests to the resource server to access the protected resources on behalf of the end-user.
+
+**Client ID**
+The consumer key generated from the connected application.
+
+**Client Secret**
+The consumer secret generated from the connected application.
+
+**Authentication server**
+Authorization server provides the necessary credentials (such as Access and Refresh tokens) to the client. In this case, it will be the Zoho Desk authorization server.
+
+**Authentication code**
+The authorization server creates a temporary token and sends it to the client via the browser. The client will send this code to the authorization server to obtain access and refresh tokens.
+
+## Tokens
+
+**Access Token**
+A token that is sent to the resource server to access the protected resources of the user. The Access token provides secure and temporary access to Zoho Desk APIs and is used by the applications to make requests to the connected app. Each access token will be valid only for an hour and can be used only for the set of operations that are described in the scope.
+
+**Refresh Token**
+A token that can be used to obtain new access tokens. This token has an unlimited lifetime until it is revoked by the end-user.
+
+### Sample Success Response
+```json
+{
+  "access_token": "1000.67013ab3960787bcf3affae67e649fc0.83a789c859e040bf11e7d05f9c8b5ef6",
+  "refresh_token": "1000.aed4288cd9cfb2d63d093faef1b98890.2f4aa58ddadbec9fbbfd683805da839b",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```

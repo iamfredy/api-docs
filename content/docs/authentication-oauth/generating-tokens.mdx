@@ -1,0 +1,46 @@
+---
+title: "Step 3: Generating Tokens"
+description: Learn how to generate access and refresh tokens using the authorization code.
+---
+
+Invoke a URL in the following format to exchange the authorization code (obtained at the end of the previous step) with an OAuthToken.
+
+| Parameter | Description |
+|---|---|
+| code | Authorization code obtained after generating the grant token. |
+| client_id | Client ID obtained after registering the client. |
+| client_secret | Client secret obtained after registering the client. |
+| grant_type | `authorization_code` |
+| redirect_uri | Redirect URI mentioned while registering the client. |
+
+After invoking the URL, you will be presented with an access token, which you must include in all API calls.
+
+<Callout>
+- Each access token is valid for only an hour and used only for the operations defined in the scope.
+- Refresh token does not expire. Use it to refresh access tokens when they expire.
+- You can only generate a maximum of five refresh tokens in a minute.
+</Callout>
+
+### Access Token API URL
+```http
+POST https://accounts.zoho.com/oauth/v2/token
+```
+
+**Query Parameters**
+```
+?code=1000.fadbca4c2be2f08b0ce82a54f4313.ba5325853af6f12a0f160
+&grant_type=authorization_code
+&client_id=1000.R2Z0WWOLFVMR287126QED3B4JWQ5EN
+&client_secret=39c689de68c712fa5f1f06c3b1319ab98f59fa921b
+&redirect_uri=https://www.zylker.com/oauthgrant
+```
+
+### Response Example
+```json
+{
+  "access_token": "1000.67013ab3960787bcf3affae67e649fc0.83a789c859e040bf11e7d05f9c8b5ef6",
+  "refresh_token": "1000.aed4288cd9cfb2d63d093faef1b98890.2f4aa58ddadbec9fbbfd683805da839b",
+  "token_type": "Bearer",
+  "expires_in": 3600
+}
+```
