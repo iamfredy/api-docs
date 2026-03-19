@@ -25,13 +25,16 @@ async function main() {
 
   console.log(`Found ${oasFiles.length} OAS file(s)`);
 
-  // --- Clean up orphaned generated folders ---
+  // --- Clean up orphaned generated MDX files ---
+  // Multiple OAS files can share the same tag (and thus the same output folder),
+  // so we must clean up at the file level, not folder level.
   const metaPath = path.join(outputDir, 'meta.json');
   const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
   const staticPages = new Set<string>(meta.pages ?? []);
 
-  const expectedGenerated = new Set(
-    oasFiles.map((f) => path.basename(f, '.json').toLowerCase().replace(/\s+/g, '-'))
+  // Build set of existing OAS filenames (e.g. "oas/Account.json")
+  const existingOasFiles = new Set(
+    oasFiles.map((f) => 'oas/' + path.basename(f))
   );
 
   const existingDirs = fs
@@ -39,18 +42,47 @@ async function main() {
     .filter((d) => d.isDirectory())
     .map((d) => d.name);
 
-  let cleaned = 0;
+  let cleanedFiles = 0;
+  let cleanedDirs = 0;
   for (const dir of existingDirs) {
-    if (staticPages.has(dir)) continue;       // protected manual folder
-    if (expectedGenerated.has(dir)) continue;  // still has an OAS file
-    // Orphaned generated folder — remove it
-    fs.rmSync(path.join(outputDir, dir), { recursive: true, force: true });
-    console.log(`Removed orphaned folder: ${dir}`);
-    cleaned++;
+    if (staticPages.has(dir)) continue; // protected manual folder
+
+    const dirPath = path.join(outputDir, dir);
+    const mdxFiles = fs.readdirSync(dirPath).filter((f) => f.endsWith('.mdx'));
+
+    for (const mdxFile of mdxFiles) {
+      const mdxPath = path.join(dirPath, mdxFile);
+      const content = fs.readFileSync(mdxPath, 'utf-8');
+      // Match document={"oas/SomeFile.json"} in generated MDX
+      const docMatch = content.match(/document=\{"(oas\/[^"]+)"\}/);
+      if (docMatch && !existingOasFiles.has(docMatch[1])) {
+        fs.rmSync(mdxPath);
+        console.log(`Removed orphaned file: ${dir}/${mdxFile} (referenced ${docMatch[1]})`);
+        cleanedFiles++;
+      }
+    }
+
+    // Remove the directory if it's now empty
+    const remaining = fs.readdirSync(dirPath);
+    if (remaining.length === 0) {
+      fs.rmSync(dirPath, { recursive: true });
+      console.log(`Removed empty folder: ${dir}`);
+      cleanedDirs++;
+    }
   }
-  if (cleaned > 0) {
-    console.log(`Cleaned ${cleaned} orphaned folder(s)`);
+  if (cleanedFiles > 0 || cleanedDirs > 0) {
+    console.log(`Cleaned ${cleanedFiles} orphaned file(s), ${cleanedDirs} empty folder(s)`);
   }
+
+  // Suppress noisy openapi-sampler warnings about allOf type conflicts.
+  // These are harmless — openapi-sampler resolves them by using the last type.
+  const originalWarn = console.warn;
+  console.warn = (...args: unknown[]) => {
+    if (typeof args[0] === 'string' && args[0].includes("schemas with different types can't be merged")) {
+      return;
+    }
+    originalWarn.apply(console, args);
+  };
 
   let succeeded = 0;
   let skipped = 0;
@@ -91,6 +123,9 @@ async function main() {
       console.warn(`⚠ Skipped ${fileName}: ${(err as Error).message}`);
     }
   }
+
+  // Restore original console.warn
+  console.warn = originalWarn;
 
   console.log(`\n✓ Done — ${succeeded} generated, ${skipped} skipped, ${failed} failed`);
   if (failures.length > 0) {
