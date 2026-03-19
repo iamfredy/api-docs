@@ -7,7 +7,7 @@ const oasDir = path.resolve(process.cwd(), 'oas');
 const oasFiles = fs
   .readdirSync(oasDir)
   .filter((f) => f.endsWith('.json'))
-  .map((f) => path.resolve(oasDir, f));
+  .map((f) => path.join('oas', f));
 
 export const openapi = createOpenAPI({
   input: oasFiles,

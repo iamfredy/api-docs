@@ -25,6 +25,33 @@ async function main() {
 
   console.log(`Found ${oasFiles.length} OAS file(s)`);
 
+  // --- Clean up orphaned generated folders ---
+  const metaPath = path.join(outputDir, 'meta.json');
+  const meta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+  const staticPages = new Set<string>(meta.pages ?? []);
+
+  const expectedGenerated = new Set(
+    oasFiles.map((f) => path.basename(f, '.json').toLowerCase().replace(/\s+/g, '-'))
+  );
+
+  const existingDirs = fs
+    .readdirSync(outputDir, { withFileTypes: true })
+    .filter((d) => d.isDirectory())
+    .map((d) => d.name);
+
+  let cleaned = 0;
+  for (const dir of existingDirs) {
+    if (staticPages.has(dir)) continue;       // protected manual folder
+    if (expectedGenerated.has(dir)) continue;  // still has an OAS file
+    // Orphaned generated folder — remove it
+    fs.rmSync(path.join(outputDir, dir), { recursive: true, force: true });
+    console.log(`Removed orphaned folder: ${dir}`);
+    cleaned++;
+  }
+  if (cleaned > 0) {
+    console.log(`Cleaned ${cleaned} orphaned folder(s)`);
+  }
+
   let succeeded = 0;
   let skipped = 0;
   let failed = 0;
