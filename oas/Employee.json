@@ -1,0 +1,387 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Employee API",
+    "description": "A RESTful API for managing employee records.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "support@example.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Production Server"
+    },
+    {
+      "url": "http://localhost:8080/v1",
+      "description": "Local Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Employees",
+      "description": "Operations related to employee management"
+    }
+  ],
+  "paths": {
+    "/employees": {
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "List all employees",
+        "description": "Retrieves a list of all employees in the system. Can be paginated.",
+        "operationId": "listEmployees",
+        "responses": {
+          "200": {
+            "description": "A successful response containing an array of employees.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Create a new employee",
+        "description": "Adds a new employee record to the system.",
+        "operationId": "createEmployee",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployeeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/employees/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "description": "The unique identifier (UUID) of the employee.",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Get an employee by ID",
+        "description": "Retrieves the details of a specific employee by their UUID.",
+        "operationId": "getEmployeeById",
+        "responses": {
+          "200": {
+            "description": "A successful response containing the employee details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Update an existing employee",
+        "description": "Updates an existing employee's record. All fields in the input are required to replace the existing resource.",
+        "operationId": "updateEmployee",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EmployeeInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Employee successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Employee"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Employees"
+        ],
+        "summary": "Delete an employee",
+        "description": "Removes an employee record from the system.",
+        "operationId": "deleteEmployee",
+        "responses": {
+          "204": {
+            "description": "Employee successfully deleted. No content returned."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "required": [
+          "id",
+          "firstName",
+          "lastName",
+          "email",
+          "department",
+          "position",
+          "hireDate"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique identifier for the employee.",
+            "examples": [
+              "550e8400-e29b-41d4-a716-446655440000"
+            ]
+          },
+          "firstName": {
+            "type": "string",
+            "description": "The employee's given name.",
+            "examples": [
+              "John"
+            ]
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The employee's family name.",
+            "examples": [
+              "Smith"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The employee's work email address.",
+            "examples": [
+              "john.smith@example.com"
+            ]
+          },
+          "department": {
+            "type": "string",
+            "description": "The department the employee works in.",
+            "examples": [
+              "Engineering"
+            ]
+          },
+          "position": {
+            "type": "string",
+            "description": "The employee's job title or role.",
+            "examples": [
+              "Senior Backend Developer"
+            ]
+          },
+          "salary": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.0,
+            "description": "The employee's annual salary.",
+            "examples": [
+              115000.00
+            ]
+          },
+          "hireDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date the employee was hired.",
+            "examples": [
+              "2021-04-15"
+            ]
+          }
+        }
+      },
+      "EmployeeInput": {
+        "type": "object",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "department",
+          "position",
+          "hireDate"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "The employee's given name.",
+            "examples": [
+              "John"
+            ]
+          },
+          "lastName": {
+            "type": "string",
+            "description": "The employee's family name.",
+            "examples": [
+              "Smith"
+            ]
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "description": "The employee's work email address.",
+            "examples": [
+              "john.smith@example.com"
+            ]
+          },
+          "department": {
+            "type": "string",
+            "description": "The department the employee works in.",
+            "examples": [
+              "Engineering"
+            ]
+          },
+          "position": {
+            "type": "string",
+            "description": "The employee's job title or role.",
+            "examples": [
+              "Senior Backend Developer"
+            ]
+          },
+          "salary": {
+            "type": "number",
+            "format": "double",
+            "minimum": 0.0,
+            "description": "The employee's annual salary.",
+            "examples": [
+              115000.00
+            ]
+          },
+          "hireDate": {
+            "type": "string",
+            "format": "date",
+            "description": "The date the employee was hired.",
+            "examples": [
+              "2021-04-15"
+            ]
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": [
+          "code",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32",
+            "description": "HTTP status code."
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message explaining the issue."
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "The server cannot process the request due to a client error (e.g., malformed syntax).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "The requested resource could not be found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "The server encountered an unexpected condition.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    }
+  }
+}
