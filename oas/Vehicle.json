@@ -1,0 +1,169 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Vehicle Management API",
+    "description": "A sample CRUD API for managing a fleet of vehicles.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/vehicles": {
+      "get": {
+        "summary": "List all vehicles",
+        "operationId": "listVehicles",
+        "responses": {
+          "200": {
+            "description": "A list of vehicles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Vehicle"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new vehicle",
+        "operationId": "createVehicle",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vehicle"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Vehicle created successfully"
+          }
+        }
+      }
+    },
+    "/vehicles/{vehicleId}": {
+      "parameters": [
+        {
+          "name": "vehicleId",
+          "in": "path",
+          "required": true,
+          "description": "The unique identifier of the vehicle",
+          "schema": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get vehicle details",
+        "operationId": "getVehicleById",
+        "responses": {
+          "200": {
+            "description": "Vehicle details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Vehicle"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update an existing vehicle",
+        "operationId": "updateVehicle",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Vehicle"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a vehicle",
+        "operationId": "deleteVehicle",
+        "responses": {
+          "204": {
+            "description": "Vehicle deleted successfully"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Vehicle": {
+        "type": "object",
+        "required": [
+          "make",
+          "model",
+          "year"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "readOnly": true
+          },
+          "make": {
+            "type": "string",
+            "examples": [
+              "Tesla"
+            ]
+          },
+          "model": {
+            "type": "string",
+            "examples": [
+              "Model 3"
+            ]
+          },
+          "year": {
+            "type": "integer",
+            "minimum": 1900,
+            "examples": [
+              2024
+            ]
+          },
+          "vin": {
+            "type": "string",
+            "pattern": "^[A-HJ-NPR-Z0-9]{17}$",
+            "description": "Vehicle Identification Number"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "rented",
+              "maintenance"
+            ],
+            "default": "available"
+          }
+        }
+      }
+    }
+  }
+}
