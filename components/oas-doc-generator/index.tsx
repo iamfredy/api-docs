@@ -1,6 +1,11 @@
 'use client';
 
 import { useCallback, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import {
+  oasPreviewHydratedKey,
+  oasPreviewStorageKey,
+  type StoredPreview,
+} from '@/lib/oas-preview-storage';
 
 const HTTP_METHODS = ['get', 'put', 'post', 'delete', 'options', 'head', 'patch', 'trace'] as const;
 const MAX_SELECTED = 5;
@@ -26,6 +31,8 @@ type PreviewResponse = {
   previewUrl: string;
   exportUrl: string;
   portableUrl: string;
+  document?: Record<string, unknown>;
+  operations?: { path: string; method: string }[];
   merge: MergeStats;
   server: { url: string; assumed: boolean };
   patterns: { repaired: number; dropped: number; total: number };
@@ -318,6 +325,11 @@ async function buildPortableHtml(iframe: HTMLIFrameElement, title: string): Prom
   if (doc.readyState !== 'complete') {
     await new Promise((resolve) => iframe.addEventListener('load', resolve, { once: true }));
   }
+  if (isNextNotFoundPage(doc)) {
+    throw new Error(
+      'The preview page did not load (404). Click Preview again, then download once the rendered documentation appears.',
+    );
+  }
   // A frame caught mid-navigation would export as an empty shell, which is worse than an error.
   const rendered = await waitUntil(() => !!doc.querySelector('article h2'), 5000);
   if (!rendered) {
@@ -389,6 +401,50 @@ async function buildPortableHtml(iframe: HTMLIFrameElement, title: string): Prom
   root.querySelector('body')?.setAttribute('data-oas-export', '');
 
   return `<!DOCTYPE html>\n${root.outerHTML}`;
+}
+
+function isNextNotFoundPage(doc: Document): boolean {
+  const heading = doc.querySelector('h1')?.textContent?.trim();
+  if (heading === '404') return true;
+  return (
+    /This page could not be found/i.test(doc.body?.innerText ?? '') &&
+    !doc.querySelector('article h2')
+  );
+}
+
+function rememberPreview(data: PreviewResponse, fallbackDocument?: Record<string, unknown>) {
+  const document = data.document ?? fallbackDocument;
+  if (!document) return;
+  const stored: StoredPreview = {
+    document,
+    operations: data.operations ?? [],
+    title: data.title,
+  };
+  try {
+    sessionStorage.removeItem(oasPreviewHydratedKey(data.id));
+    sessionStorage.setItem(oasPreviewStorageKey(data.id), JSON.stringify(stored));
+  } catch {
+    /* quota or private mode — restore-on-404 will not be available */
+  }
+}
+
+function downloadPortableOas(preview: PreviewResponse) {
+  let document = preview.document;
+  if (!document) {
+    try {
+      const raw = sessionStorage.getItem(oasPreviewStorageKey(preview.id));
+      if (raw) document = (JSON.parse(raw) as StoredPreview).document;
+    } catch {
+      /* ignore */
+    }
+  }
+  if (document) {
+    const base =
+      preview.title.replace(/[^\w.-]+/g, '-').replace(/^-|-$/g, '') || 'api';
+    downloadBlob(`${base}-portable.json`, JSON.stringify(document, null, 2), 'application/json');
+    return;
+  }
+  window.location.assign(preview.portableUrl);
 }
 
 function downloadBlob(filename: string, contents: string, mime: string) {
@@ -526,7 +582,9 @@ export function OasDocGenerator() {
       if (!response.ok) {
         throw new Error(data.error || `Preview failed (${response.status})`);
       }
-      setPreview(data as PreviewResponse);
+      const nextPreview = data as PreviewResponse;
+      rememberPreview(nextPreview, documentObj);
+      setPreview(nextPreview);
     } catch (error) {
       setPreview(null);
       setPreviewError(error instanceof Error ? error.message : 'Preview failed.');
@@ -699,13 +757,13 @@ export function OasDocGenerator() {
               {busy === 'download' ? 'Preparing…' : 'Download HTML'}
             </button>
             {preview ? (
-              <a
-                href={preview.portableUrl}
-                download
+              <button
+                type="button"
+                onClick={() => downloadPortableOas(preview)}
                 className="rounded-md border border-fd-border bg-fd-secondary px-3 py-2 text-xs font-semibold hover:bg-fd-accent"
               >
                 Download portable OAS
-              </a>
+              </button>
             ) : null}
           </div>
         </section>
@@ -795,7 +853,10 @@ export function OasDocGenerator() {
               <iframe
                 ref={iframeRef}
                 key={preview.id}
-                onLoad={() => setFrameReady(true)}
+                onLoad={(event) => {
+                  const doc = event.currentTarget.contentDocument;
+                  setFrameReady(!!doc && !isNextNotFoundPage(doc) && !!doc.querySelector('article h2'));
+                }}
                 title="OAS documentation preview"
                 src={preview.previewUrl}
                 className={`h-full w-full border-0 ${expanded ? 'min-h-[45rem]' : 'min-h-[32rem]'}`}

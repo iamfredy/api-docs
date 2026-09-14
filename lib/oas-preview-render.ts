@@ -1,9 +1,19 @@
+import { mkdirSync, readdirSync, readFileSync, unlinkSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createOpenAPI } from 'fumadocs-openapi/server';
 import { createAPIPage } from 'fumadocs-openapi/ui';
 import { cloneAndAddSchemaTypes } from '@/lib/add-schema-types';
 import type { MergeStats } from '@/lib/oas-merge';
 import { normalizePatterns, normalizeServers, type PatternStats } from '@/lib/oas-normalize';
 import previewClient from '@/components/oas-preview-api-page.client';
+
+export const PREVIEW_SESSION_ID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+export function isPreviewSessionId(id: string): boolean {
+  return PREVIEW_SESSION_ID_RE.test(id);
+}
 
 export const OAS_PREVIEW_MAX_BYTES = 3 * 1024 * 1024; // 3 MB
 export const OAS_PREVIEW_MAX_OPERATIONS = 5;
@@ -51,6 +61,15 @@ function store(): Map<string, PreviewSession> {
   return globalStore.__oasPreviewStore;
 }
 
+function sessionDir() {
+  return join(tmpdir(), 'oas-preview-sessions');
+}
+
+function sessionFile(id: string): string | null {
+  if (!isPreviewSessionId(id)) return null;
+  return join(sessionDir(), `${id}.json`);
+}
+
 function pruneExpired(now = Date.now()) {
   const s = store();
   for (const [id, session] of s) {
@@ -58,16 +77,74 @@ function pruneExpired(now = Date.now()) {
   }
 }
 
+function pruneDisk(now = Date.now()) {
+  try {
+    for (const name of readdirSync(sessionDir())) {
+      if (!name.endsWith('.json')) continue;
+      const file = join(sessionDir(), name);
+      try {
+        const session = JSON.parse(readFileSync(file, 'utf8')) as PreviewSession;
+        if (!session?.createdAt || now - session.createdAt > OAS_PREVIEW_TTL_MS) {
+          unlinkSync(file);
+        }
+      } catch {
+        try {
+          unlinkSync(file);
+        } catch {
+          /* ignore */
+        }
+      }
+    }
+  } catch {
+    /* directory may not exist yet */
+  }
+}
+
+function persistToDisk(session: PreviewSession) {
+  const file = sessionFile(session.id);
+  if (!file) return;
+  try {
+    mkdirSync(sessionDir(), { recursive: true });
+    writeFileSync(file, JSON.stringify(session), 'utf8');
+  } catch (error) {
+    console.error('oas-preview: failed to persist session', error);
+  }
+}
+
+function readFromDisk(id: string): PreviewSession | undefined {
+  const file = sessionFile(id);
+  if (!file) return undefined;
+  try {
+    const session = JSON.parse(readFileSync(file, 'utf8')) as PreviewSession;
+    if (!session?.id || session.id !== id || typeof session.createdAt !== 'number') {
+      return undefined;
+    }
+    if (Date.now() - session.createdAt > OAS_PREVIEW_TTL_MS) {
+      try {
+        unlinkSync(file);
+      } catch {
+        /* ignore */
+      }
+      return undefined;
+    }
+    store().set(id, session);
+    return session;
+  } catch {
+    return undefined;
+  }
+}
+
 export function putPreviewSession(
   document: Record<string, unknown>,
   operations: PreviewOperation[],
   mergeStats: MergeStats,
+  id = crypto.randomUUID(),
 ): PreviewSession {
   pruneExpired();
+  pruneDisk();
   const { document: normalized } = cloneAndAddSchemaTypes(document);
   const server = normalizeServers(normalized as Record<string, unknown>);
   const patternStats = normalizePatterns(normalized);
-  const id = crypto.randomUUID();
   const info = normalized.info as { title?: string } | undefined;
   const session: PreviewSession = {
     id,
@@ -80,12 +157,13 @@ export function putPreviewSession(
     patternStats,
   };
   store().set(id, session);
+  persistToDisk(session);
   return session;
 }
 
 export function getPreviewSession(id: string): PreviewSession | undefined {
   pruneExpired();
-  return store().get(id);
+  return store().get(id) ?? readFromDisk(id);
 }
 
 /** In-app iframe: full fidelity, including playground UI. */

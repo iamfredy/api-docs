@@ -1,5 +1,8 @@
 import type { ReactNode } from 'react';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function OasPreviewFrameLayout({ children }: { children: ReactNode }) {
   return (
     <main className="mx-auto w-full max-w-[1400px] bg-fd-background px-4 py-6 text-fd-foreground md:px-8 md:py-10">
