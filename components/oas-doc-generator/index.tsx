@@ -1,8 +1,8 @@
 'use client';
 
-import { useCallback, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from 'react';
+import { writePreviewCookies } from '@/lib/oas-preview-cookies-client';
 import {
-  oasPreviewHydratedKey,
   oasPreviewStorageKey,
   type StoredPreview,
 } from '@/lib/oas-preview-storage';
@@ -421,10 +421,9 @@ function rememberPreview(data: PreviewResponse, fallbackDocument?: Record<string
     title: data.title,
   };
   try {
-    sessionStorage.removeItem(oasPreviewHydratedKey(data.id));
     sessionStorage.setItem(oasPreviewStorageKey(data.id), JSON.stringify(stored));
   } catch {
-    /* quota or private mode — restore-on-404 will not be available */
+    /* quota or private mode — open-in-new-tab may not be able to re-render */
   }
 }
 
@@ -475,6 +474,15 @@ export function OasDocGenerator() {
   const [expanded, setExpanded] = useState(false);
   // Exporting reads the frame's live DOM, so it must not start while the frame is still loading.
   const [frameReady, setFrameReady] = useState(false);
+
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin) return;
+      if (event.data?.type === 'oas-preview-ready') setFrameReady(true);
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
 
   const applyParsedText = useCallback((text: string, sourceName?: string | null) => {
     setEditorText(text);
@@ -584,6 +592,17 @@ export function OasDocGenerator() {
       }
       const nextPreview = data as PreviewResponse;
       rememberPreview(nextPreview, documentObj);
+      if (nextPreview.document && nextPreview.operations) {
+        try {
+          await writePreviewCookies(
+            nextPreview.id,
+            nextPreview.document,
+            nextPreview.operations,
+          );
+        } catch (cookieError) {
+          console.warn(cookieError);
+        }
+      }
       setPreview(nextPreview);
     } catch (error) {
       setPreview(null);

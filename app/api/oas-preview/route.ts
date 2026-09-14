@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import { encodePreviewCookies } from '@/lib/oas-preview-cookies';
+import { PREVIEW_COOKIE_PATH } from '@/lib/oas-preview-cookies-shared';
 import { OAS_PREVIEW_MAX_BYTES, getPreviewSession } from '@/lib/oas-preview-render';
 import { preparePreviewSession, previewSessionPayload } from '@/lib/oas-preview-prepare';
 
@@ -28,13 +30,23 @@ export async function POST(request: Request) {
   }
 
   try {
-    return NextResponse.json(previewSessionPayload(prepared.session), {
+    const response = NextResponse.json(previewSessionPayload(prepared.session), {
       headers: { 'Cache-Control': 'private, no-store' },
     });
+    for (const cookie of encodePreviewCookies(prepared.session)) {
+      response.cookies.set({
+        name: cookie.name,
+        value: cookie.value,
+        path: PREVIEW_COOKIE_PATH,
+        maxAge: 1800,
+        sameSite: 'lax',
+      });
+    }
+    return response;
   } catch (error) {
     console.error('oas-preview POST failed', error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to create preview session.' },
+      { error: error instanceof Error ? error.message : 'Failed to create preview.' },
       { status: 500 },
     );
   }

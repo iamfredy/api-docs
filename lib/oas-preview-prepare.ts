@@ -69,7 +69,7 @@ export type PreparePreviewSuccess = {
   session: PreviewSession;
 };
 
-export function previewSessionPayload(session: PreviewSession) {
+export function previewSessionPayload(session: PreviewSession, extra?: { html?: string }) {
   return {
     id: session.id,
     title: session.title,
@@ -81,6 +81,7 @@ export function previewSessionPayload(session: PreviewSession) {
     merge: session.mergeStats,
     server: session.server,
     patterns: session.patternStats,
+    ...extra,
   };
 }
 

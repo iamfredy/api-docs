@@ -1,8 +1,10 @@
 import { connection } from 'next/server';
-import { OasPreviewFrameHydrate } from '@/components/oas-preview-frame-hydrate';
+import { OasPreviewFrameClient } from '@/components/oas-preview-frame-client';
+import { readPreviewFromCookies } from '@/lib/oas-preview-cookies';
 import {
   createPreviewAPIPage,
   getPreviewSession,
+  putPreviewSession,
   toOperationItems,
 } from '@/lib/oas-preview-render';
 
@@ -16,23 +18,34 @@ export default async function OasPreviewFramePage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  // Production used to prerender this route, call notFound() with an empty store,
-  // and then serve that static 404 for every preview id.
   await connection();
   const { id } = await params;
-  const session = getPreviewSession(id);
+  let session = getPreviewSession(id);
   if (!session) {
-    return <OasPreviewFrameHydrate id={id} />;
+    const fromCookie = await readPreviewFromCookies(id);
+    if (fromCookie) {
+      session = putPreviewSession(fromCookie.document, fromCookie.operations, {
+        rewritten: 0,
+        sources: [],
+        missing: [],
+        unresolved: [],
+      }, id);
+    }
+  }
+  if (session) {
+    const APIPage = createPreviewAPIPage(session.document);
+    return (
+      <APIPage
+        document="preview"
+        operations={toOperationItems(session.operations)}
+        showTitle
+        showDescription
+      />
+    );
   }
 
-  const APIPage = createPreviewAPIPage(session.document);
-
-  return (
-    <APIPage
-      document="preview"
-      operations={toOperationItems(session.operations)}
-      showTitle
-      showDescription
-    />
-  );
+  // Catalyst/OpenNext and other serverless hosts do not share memory between
+  // the Preview POST and this GET. The client re-sends the document in a
+  // Server Action so rendering happens in the same request as the payload.
+  return <OasPreviewFrameClient id={id} />;
 }
