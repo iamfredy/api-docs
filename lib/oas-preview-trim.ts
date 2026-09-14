@@ -37,9 +37,8 @@ export function trimDocumentForPreview(
   for (const op of operations) {
     const pathItem = paths[op.path];
     if (!isPlainObject(pathItem)) continue;
-    const current = isPlainObject(trimmedPaths[op.path])
-      ? { ...trimmedPaths[op.path] }
-      : {};
+    const existing = trimmedPaths[op.path];
+    const current: Record<string, unknown> = isPlainObject(existing) ? { ...existing } : {};
     if (pathItem.parameters) current.parameters = pathItem.parameters;
     if (pathItem.summary) current.summary = pathItem.summary;
     if (pathItem.description) current.description = pathItem.description;

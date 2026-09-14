@@ -5,8 +5,10 @@ const withMDX = createMDX();
 const config = {
   reactStrictMode: true,
   transpilePackages: ['ajv'],
-  serverActions: {
-    bodySizeLimit: '4mb',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4mb',
+    },
   },
   async headers() {
     return [
