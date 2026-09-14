@@ -368,6 +368,18 @@ That file is what a servlet / docs UI can serve as the catalog of available spec
 
 > In short: **product OAS is split for maintainability; merged OAS is portable for tooling; Fumadocs documents the portable files; static pages greet the reader first.**
 
+### Three touch-ups applied while a spec is loaded
+
+The blueprints are written for Java tooling, and three details in them do not survive a trip through a
+web browser. `lib/openapi.ts` repairs each spec in memory as it is read, so the files on disk stay
+exactly as the product's merge tool produced them:
+
+| Touch-up | What it fixes | Why it is needed |
+| --- | --- | --- |
+| Shared definitions are inlined | `$ref`s such as `./Common.json#/components/parameters/orgId` become in-document references | Almost every file in `oas/` still points at `Common.json`, and a spec read as data has no folder to resolve neighbours against |
+| A base URL is filled in | Adds `https://desk.zoho.com` when a spec declares no absolute server | Without it the request samples are built against a placeholder host on the server and the real host in the browser, and the page reports a mismatch |
+| Regex patterns are translated | Rewrites Java-only syntax such as `\P{InBasicLatin}` or `\,` into the JavaScript equivalent, dropping the handful that have none | The browser compiles every pattern it renders, and a single unusable one takes the whole page down |
+
 ---
 
 ## Map of the project folder
