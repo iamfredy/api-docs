@@ -10,6 +10,11 @@ const config = {
       bodySizeLimit: '4mb',
     },
   },
+  // OpenNext/Slate traces only statically visible files. These folders are read
+  // with fs at runtime, so they must be included explicitly or the origin 503s.
+  outputFileTracingIncludes: {
+    '/*': ['./oas/**/*', './resources/oas/**/*'],
+  },
   async headers() {
     return [
       {
