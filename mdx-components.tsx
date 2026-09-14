@@ -4,6 +4,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import { APIPage } from '@/components/api-page';
 import { DocsWithSamples, SamplePanel, SamplePanelTitle, ShikiCode, ParamsTable } from '@/components/docs-with-samples';
+import { OasDocGenerator } from '@/components/oas-doc-generator';
 
 export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -14,8 +15,9 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
     SamplePanelTitle,
     ShikiCode,
     ParamsTable,
-CreditCalculator,
-CreditLimitCalculator,
+    CreditCalculator,
+    CreditLimitCalculator,
+    OasDocGenerator,
     ...components,
   };
 }
